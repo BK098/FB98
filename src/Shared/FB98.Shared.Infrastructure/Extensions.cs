@@ -20,10 +20,10 @@ namespace FB98.Shared.Infrastructure
 			AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 			services.AddControllers()
-				.ConfigureApplicationPartManager(manager =>
-				{
-					manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
-				});
+			.ConfigureApplicationPartManager(manager =>
+			{
+				manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
+			});
 
 			services.AddSingleton<ILocalizedMessageService, LocalizedMessageService>();
 			services.AddSingleton<ErrorHandlerMiddleware>();
