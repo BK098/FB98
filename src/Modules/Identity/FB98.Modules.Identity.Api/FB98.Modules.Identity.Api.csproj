@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FB98.Modules.Identity.Application\FB98.Modules.Identity.Application.csproj" />
-    <ProjectReference Include="..\WebAPIServer.Modules.Identity.Application\FB98.Modules.Identity.Application\FB98.Modules.Identity.Application.csproj" />
   </ItemGroup>
 
 </Project>
