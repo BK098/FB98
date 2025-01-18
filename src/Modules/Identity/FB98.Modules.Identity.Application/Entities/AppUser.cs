@@ -7,5 +7,7 @@ namespace FB98.Modules.Identity.Application.Entities
 		public string Firstname { get; set; } = string.Empty;
 		public string Lastname { get; set; } = string.Empty;
 		public byte Age { get; set; } = 0;
+		public string? RefreshToken { get; set; }
+		public DateTime RefreshTokenExpiryTime { get; set; }
 	}
 }

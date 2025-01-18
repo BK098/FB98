@@ -61,6 +61,51 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account created successfully.
+        /// </summary>
+        internal static string AccountCreatedSuccessfully {
+            get {
+                return ResourceManager.GetString("AccountCreatedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your account has been locked.
+        /// </summary>
+        internal static string AccountLocked {
+            get {
+                return ResourceManager.GetString("AccountLocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Age must be between 1 and 99.
+        /// </summary>
+        internal static string AgeRange {
+            get {
+                return ResourceManager.GetString("AgeRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current password is required.
+        /// </summary>
+        internal static string CurrentPasswordRequired {
+            get {
+                return ResourceManager.GetString("CurrentPasswordRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email already exists.
+        /// </summary>
+        internal static string EmailAlreadyExists {
+            get {
+                return ResourceManager.GetString("EmailAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your email is not in the correct format.
         /// </summary>
         internal static string EmailInvalid {
@@ -70,11 +115,83 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email not found.
+        /// </summary>
+        internal static string EmailNotFound {
+            get {
+                return ResourceManager.GetString("EmailNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your email cannot be empty.
         /// </summary>
         internal static string EmailRequired {
             get {
                 return ResourceManager.GetString("EmailRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Firstname is required.
+        /// </summary>
+        internal static string FirstnameRequired {
+            get {
+                return ResourceManager.GetString("FirstnameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid email or password.
+        /// </summary>
+        internal static string InvalidLogin {
+            get {
+                return ResourceManager.GetString("InvalidLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid refresh token.
+        /// </summary>
+        internal static string InvalidRefreshToken {
+            get {
+                return ResourceManager.GetString("InvalidRefreshToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Token.
+        /// </summary>
+        internal static string InvalidToken {
+            get {
+                return ResourceManager.GetString("InvalidToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lastname is required.
+        /// </summary>
+        internal static string LastnameRequired {
+            get {
+                return ResourceManager.GetString("LastnameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login successful.
+        /// </summary>
+        internal static string LoginSuccess {
+            get {
+                return ResourceManager.GetString("LoginSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New password must be different from the current password.
+        /// </summary>
+        internal static string PasswordMustBeDifferent {
+            get {
+                return ResourceManager.GetString("PasswordMustBeDifferent", resourceCulture);
             }
         }
         
@@ -115,11 +232,65 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password reset link has been sent to your email.
+        /// </summary>
+        internal static string PasswordResetLinkSent {
+            get {
+                return ResourceManager.GetString("PasswordResetLinkSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password must be at least 6 characters long.
         /// </summary>
         internal static string PasswordTooShort {
             get {
                 return ResourceManager.GetString("PasswordTooShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid phone number.
+        /// </summary>
+        internal static string PhoneNumberInvalid {
+            get {
+                return ResourceManager.GetString("PhoneNumberInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Phone number is required.
+        /// </summary>
+        internal static string PhoneNumberRequired {
+            get {
+                return ResourceManager.GetString("PhoneNumberRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Token refreshed successfully.
+        /// </summary>
+        internal static string TokenRefreshed {
+            get {
+                return ResourceManager.GetString("TokenRefreshed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Token refreshed successfully.
+        /// </summary>
+        internal static string TokenRefreshedSuccessfully {
+            get {
+                return ResourceManager.GetString("TokenRefreshedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validation Failed.
+        /// </summary>
+        internal static string ValidationFailed {
+            get {
+                return ResourceManager.GetString("ValidationFailed", resourceCulture);
             }
         }
     }

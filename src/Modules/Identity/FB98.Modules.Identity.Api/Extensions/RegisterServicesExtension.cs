@@ -14,6 +14,9 @@ namespace FB98.Modules.Identity.Api.Extensions
 
 			services.AddScoped<IValidator<LoginDto>, LoginDtoValidation>();
 			services.AddScoped<IValidator<RegisterDto>, RegisterDtoValidation>();
+			services.AddScoped<IValidator<ForgotPasswordDto>, ForgotPasswordDtoValidation>();
+			services.AddScoped<IValidator<ResetPasswordDto>, ResetPasswordDtoValidation>();
+			services.AddScoped<IValidator<ChangePasswordDto>, ChangePasswordDtoValidation>();
 
 			return services;
 		}

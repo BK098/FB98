@@ -153,4 +153,46 @@
   <data name="LastnameRequired" xml:space="preserve">
     <value>Họ không được để trống</value>
   </data>
+  <data name="LoginSuccess" xml:space="preserve">
+    <value>Đăng nhập thành công</value>
+  </data>
+  <data name="InvalidLogin" xml:space="preserve">
+    <value>Email hoặc mật khẩu không đúng</value>
+  </data>
+  <data name="ValidationFailed" xml:space="preserve">
+    <value>Xác thực không thành công</value>
+  </data>
+  <data name="InvalidToken" xml:space="preserve">
+    <value>Token không hợp lệ</value>
+  </data>
+  <data name="EmailNotFound" xml:space="preserve">
+    <value>Email không tồn tại</value>
+  </data>
+  <data name="TokenRefreshed" xml:space="preserve">
+    <value>Token đã được làm mới thành công</value>
+  </data>
+  <data name="PasswordResetLinkSent" xml:space="preserve">
+    <value>Liên kết đặt lại mật khẩu đã được gửi đến email của bạn</value>
+  </data>
+  <data name="AccountCreatedSuccessfully" xml:space="preserve">
+    <value>Tài khoản đã được tạo thành công</value>
+  </data>
+  <data name="AccountLocked" xml:space="preserve">
+    <value>Tài khoản của bạn đã bị khóa</value>
+  </data>
+  <data name="EmailAlreadyExists" xml:space="preserve">
+    <value>Email đã tồn tại</value>
+  </data>
+  <data name="InvalidRefreshToken" xml:space="preserve">
+    <value>Token làm mới không hợp lệ</value>
+  </data>
+  <data name="TokenRefreshedSuccessfully" xml:space="preserve">
+    <value>Token đã được làm mới thành công</value>
+  </data>
+  <data name="CurrentPasswordRequired" xml:space="preserve">
+    <value>Mật khẩu hiện tại không được để trống</value>
+  </data>
+  <data name="PasswordMustBeDifferent" xml:space="preserve">
+    <value>Mật khẩu mới không được trùng với mật khẩu cũ</value>
+  </data>
 </root>

@@ -1,4 +1,5 @@
 using FB98.Shared.Infrastructure.Api;
+using FB98.Shared.Infrastructure.Email;
 using FB98.Shared.Infrastructure.Events;
 using FB98.Shared.Infrastructure.Exceptions;
 using FB98.Shared.Infrastructure.Localization;
@@ -18,7 +19,7 @@ namespace FB98.Shared.Infrastructure
 		public static IServiceCollection AddInfrastructure(this IServiceCollection services)
 		{
 			AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-
+			services.AddTransient<IEmailSender, EmailSender>();
 			services.AddControllers()
 			.ConfigureApplicationPartManager(manager =>
 			{

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FB98.Modules.Identity.Application.Data.Migrations
 {
     [DbContext(typeof(IdentityModuleDbContext))]
-    [Migration("20250117232008_InitialMigration")]
+    [Migration("20250118133629_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -79,6 +79,12 @@ namespace FB98.Modules.Identity.Application.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
