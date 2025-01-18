@@ -1,0 +1,83 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35431.28
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AAE12A81-E41E-4E48-9393-027908EE6500}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{A27AF2A8-E17A-4926-8193-97AA2DAA2E83}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bootrapper", "Bootrapper", "{89CCE45F-195D-41E6-954E-B30ACB1FDC7F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{04894FAB-AF99-40DE-82F7-BAEE2A3E7C60}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{9B47936B-5CBE-4B35-A77C-36E9B627FB7E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FB98.Bootstrapper", "src\Bootstrapper\FB98.Bootstrapper\FB98.Bootstrapper.csproj", "{85EFF086-F548-4D80-BA06-91668EDD7EBC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FB98.Shared.Infrastructure", "src\Shared\FB98.Shared.Infrastructure\FB98.Shared.Infrastructure.csproj", "{E056089B-68E5-4F0F-ADF3-134B7373D01F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FB98.Shared.Abstractions", "src\Shared\FB98.Shared.Abstractions\FB98.Shared.Abstractions.csproj", "{C4319772-D10F-4427-A7D8-D33EE26B2026}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{29297B68-C888-4183-A4C2-D7F65B3AACA5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{45668706-EE47-427A-8FA6-61AD88408A65}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{77F674AD-BE82-4325-BD5F-BA0E20DDE09D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FB98.Modules.Identity.Api", "src\Modules\Identity\FB98.Modules.Identity.Api\FB98.Modules.Identity.Api.csproj", "{A679DF6F-DE48-4CEC-BFCA-A4128300FFF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FB98.Modules.Identity.Application", "src\Modules\Identity\FB98.Modules.Identity.Application\FB98.Modules.Identity.Application.csproj", "{00904E79-A27C-45BB-8961-EE3452A1AD5B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{85EFF086-F548-4D80-BA06-91668EDD7EBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85EFF086-F548-4D80-BA06-91668EDD7EBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85EFF086-F548-4D80-BA06-91668EDD7EBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85EFF086-F548-4D80-BA06-91668EDD7EBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E056089B-68E5-4F0F-ADF3-134B7373D01F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E056089B-68E5-4F0F-ADF3-134B7373D01F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E056089B-68E5-4F0F-ADF3-134B7373D01F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E056089B-68E5-4F0F-ADF3-134B7373D01F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4319772-D10F-4427-A7D8-D33EE26B2026}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4319772-D10F-4427-A7D8-D33EE26B2026}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4319772-D10F-4427-A7D8-D33EE26B2026}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4319772-D10F-4427-A7D8-D33EE26B2026}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29297B68-C888-4183-A4C2-D7F65B3AACA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29297B68-C888-4183-A4C2-D7F65B3AACA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29297B68-C888-4183-A4C2-D7F65B3AACA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29297B68-C888-4183-A4C2-D7F65B3AACA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A679DF6F-DE48-4CEC-BFCA-A4128300FFF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A679DF6F-DE48-4CEC-BFCA-A4128300FFF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A679DF6F-DE48-4CEC-BFCA-A4128300FFF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A679DF6F-DE48-4CEC-BFCA-A4128300FFF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00904E79-A27C-45BB-8961-EE3452A1AD5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00904E79-A27C-45BB-8961-EE3452A1AD5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00904E79-A27C-45BB-8961-EE3452A1AD5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00904E79-A27C-45BB-8961-EE3452A1AD5B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{89CCE45F-195D-41E6-954E-B30ACB1FDC7F} = {AAE12A81-E41E-4E48-9393-027908EE6500}
+		{04894FAB-AF99-40DE-82F7-BAEE2A3E7C60} = {AAE12A81-E41E-4E48-9393-027908EE6500}
+		{9B47936B-5CBE-4B35-A77C-36E9B627FB7E} = {AAE12A81-E41E-4E48-9393-027908EE6500}
+		{85EFF086-F548-4D80-BA06-91668EDD7EBC} = {89CCE45F-195D-41E6-954E-B30ACB1FDC7F}
+		{E056089B-68E5-4F0F-ADF3-134B7373D01F} = {9B47936B-5CBE-4B35-A77C-36E9B627FB7E}
+		{C4319772-D10F-4427-A7D8-D33EE26B2026} = {9B47936B-5CBE-4B35-A77C-36E9B627FB7E}
+		{77F674AD-BE82-4325-BD5F-BA0E20DDE09D} = {04894FAB-AF99-40DE-82F7-BAEE2A3E7C60}
+		{A679DF6F-DE48-4CEC-BFCA-A4128300FFF7} = {77F674AD-BE82-4325-BD5F-BA0E20DDE09D}
+		{00904E79-A27C-45BB-8961-EE3452A1AD5B} = {77F674AD-BE82-4325-BD5F-BA0E20DDE09D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FB124796-B94E-488A-ACB3-193B9B8DA8DA}
+	EndGlobalSection
+EndGlobal
