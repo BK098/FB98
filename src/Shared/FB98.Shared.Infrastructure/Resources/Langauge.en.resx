@@ -153,4 +153,46 @@
   <data name="LastnameRequired" xml:space="preserve">
     <value>Lastname is required</value>
   </data>
+  <data name="LoginSuccess" xml:space="preserve">
+    <value>Login successful</value>
+  </data>
+  <data name="InvalidLogin" xml:space="preserve">
+    <value>Invalid email or password</value>
+  </data>
+  <data name="ValidationFailed" xml:space="preserve">
+    <value>Validation failed</value>
+  </data>
+  <data name="InvalidToken" xml:space="preserve">
+    <value>Invalid Token</value>
+  </data>
+  <data name="EmailNotFound" xml:space="preserve">
+    <value>Email not found in the system</value>
+  </data>
+  <data name="TokenRefreshed" xml:space="preserve">
+    <value>Token refreshed successfully</value>
+  </data>
+  <data name="PasswordResetLinkSent" xml:space="preserve">
+    <value>Password reset link has been sent to your email</value>
+  </data>
+  <data name="AccountCreatedSuccessfully" xml:space="preserve">
+    <value>Account created successfully</value>
+  </data>
+  <data name="AccountLocked" xml:space="preserve">
+    <value>Your account has been locked</value>
+  </data>
+  <data name="EmailAlreadyExists" xml:space="preserve">
+    <value>Email already exists</value>
+  </data>
+  <data name="InvalidRefreshToken" xml:space="preserve">
+    <value>Invalid refresh token</value>
+  </data>
+  <data name="TokenRefreshedSuccessfully" xml:space="preserve">
+    <value>Token refreshed successfully</value>
+  </data>
+  <data name="CurrentPasswordRequired" xml:space="preserve">
+    <value>Current password is required</value>
+  </data>
+  <data name="PasswordMustBeDifferent" xml:space="preserve">
+    <value>New password must be different from the current password</value>
+  </data>
 </root>

@@ -2,10 +2,9 @@
 
 namespace FB98.Modules.Identity.Application.Models
 {
-	public class LoginDto
+	public class ForgotPasswordDto
 	{
 		[EmailAddress]
-		public string? Email { get; set; }
-		public string? Password { get; set; }
+		public string? Email {  get; set; }
 	}
 }

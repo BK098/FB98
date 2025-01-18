@@ -13,12 +13,12 @@ namespace FB98.Modules.Identity.Application.Validations
 				.NotEmpty().WithMessage("EmailRequired")
 				.EmailAddress().WithMessage("EmailInvalid");
 
-			RuleFor(x => x.Password)
-				.NotEmpty().WithMessage(message.GetLocalizedMessage("PasswordRequired"))
-				.MinimumLength(6).WithMessage(message.GetLocalizedMessage("PasswordTooShort"))
-				.Matches(@"[A-Z]").WithMessage(message.GetLocalizedMessage("PasswordMustContainUppercase"))
-				.Matches(@"[0-9]").WithMessage(message.GetLocalizedMessage("PasswordMustContainNumber"))
-				.Matches(@"[\W]").WithMessage(message.GetLocalizedMessage("PasswordMustContainSpecialCharacter"));
+				RuleFor(x => x.Password)
+					.NotEmpty().WithMessage(message.GetLocalizedMessage("PasswordRequired"))
+					.MinimumLength(6).WithMessage(message.GetLocalizedMessage("PasswordTooShort"))
+					.Matches(@"[A-Z]").WithMessage(message.GetLocalizedMessage("PasswordMustContainUppercase"))
+					.Matches(@"[0-9]").WithMessage(message.GetLocalizedMessage("PasswordMustContainNumber"))
+					.Matches(@"[\W]").WithMessage(message.GetLocalizedMessage("PasswordMustContainSpecialCharacter"));
 
 
 			RuleFor(x => x.Age)

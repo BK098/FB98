@@ -5,6 +5,7 @@ using FB98.Shared.Infrastructure.Postgres;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Runtime.CompilerServices;
@@ -16,10 +17,10 @@ namespace FB98.Modules.Identity.Api
 
 	internal static class IdentityModule
 	{
-		internal static string JWT_KEY = "DuAnCuaNhom7AnhEmMovieNeuBanMuonThemThongTinChiTietThiToiChiu";
-		public static IServiceCollection AddIdentityModule(this IServiceCollection services)
+		public static IServiceCollection AddIdentityModule(this IServiceCollection services, IConfiguration configuration)
 		{
 			services.AddLocalization(options => options.ResourcesPath = "Modules/Identity/Resources");
+			services.AddMemoryCache();
 
 			services.AddPostgres<IdentityModuleDbContext>();
 			services.AddRegisterServicesIdentity();
@@ -34,6 +35,12 @@ namespace FB98.Modules.Identity.Api
 			.AddEntityFrameworkStores<IdentityModuleDbContext>()
 			.AddDefaultTokenProviders();
 
+			services.Configure<DataProtectionTokenProviderOptions>(options =>
+			{
+				options.TokenLifespan = TimeSpan.FromHours(1); // Đặt thời gian hết hạn là 1 giờ
+			});
+
+
 			services.AddAuthentication(options =>
 			{
 				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -43,10 +50,13 @@ namespace FB98.Modules.Identity.Api
 			{
 				options.TokenValidationParameters = new TokenValidationParameters
 				{
+					ValidateIssuer = true,
+					ValidateAudience = true,
+					ValidateLifetime = true,
 					ValidateIssuerSigningKey = true,
-					IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JWT_KEY)),
-					ValidateIssuer = false,
-					ValidateAudience = false
+					ValidIssuer = configuration["Jwt:Issuer"], // Giá trị phải khớp
+					ValidAudience = configuration["Jwt:Audience"], // Giá trị phải khớp
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])!)
 				};
 				options.Events = new JwtBearerEvents
 				{
@@ -56,7 +66,6 @@ namespace FB98.Modules.Identity.Api
 						return Task.CompletedTask;
 					}
 				};
-
 				options.SaveToken = true;
 			});
 			services.AddSession(options =>
@@ -65,7 +74,6 @@ namespace FB98.Modules.Identity.Api
 				options.Cookie.HttpOnly = true;
 				options.Cookie.IsEssential = true;
 			});
-
 
 			return services;
 		}

@@ -1,6 +1,8 @@
 ﻿using FB98.Modules.Identity.Application.Models;
 using FB98.Modules.Identity.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FB98.Modules.Identity.Api.Controllers
 {
@@ -14,77 +16,65 @@ namespace FB98.Modules.Identity.Api.Controllers
 		[HttpPost("login")]
 		public async Task<IActionResult> Login([FromBody] LoginDto model)
 		{
-			var response = await _authenticationService.LoginAsync(model);
-			if (response.IsSuccess)
+			var result = await _authenticationService.LoginAsync(model);
+			if (!result.IsSuccess)
 			{
-				return Ok(response);
+				return BadRequest(result);
 			}
-			else
-			{
-				return BadRequest(response);
-			}
+			return Ok(result);
+
 		}
 
 		[HttpPost("register")]
 		public async Task<IActionResult> Register([FromBody] RegisterDto model)
 		{
-			var response = await _authenticationService.RegisterAsync(model);
-			if (response.IsSuccess)
+			var result = await _authenticationService.RegisterAsync(model);
+			if (!result.IsSuccess)
 			{
-				return Ok(response);
+				return BadRequest(result);
 			}
-			else
-			{
-				return BadRequest(response);
-			}
+			return Ok(result);
 		}
 
-		//[HttpPost("refresh-token")]
-		//public async Task<IActionResult> RefreshToken()
-		//{
-		//	if (Request.Cookies.TryGetValue("refresh_token", out var refreshToken))
-		//	{
-		//		// Kiểm tra refreshToken hợp lệ (ví dụ: kiểm tra trong cơ sở dữ liệu)
-		//		var user = await _authenticationService.ValidateRefreshToken(refreshToken);
-		//		if (user == null) return Unauthorized();
+		[HttpPost("forgot-password")]
+		public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto model)
+		{
+			var result = await _authenticationService.ForgotPasswordAsync(model);
+			if (!result.IsSuccess)
+			{
+				return BadRequest(result);
+			}
+			return Ok(result);
+		}
+		[HttpPost("reset-password")]
+		public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto model)
+		{
+			var result = await _authenticationService.ResetPasswordAsync(model);
+			if (!result.IsSuccess)
+			{
+				return BadRequest(result);
+			}
+			return Ok(result);
+		}
 
-		//		// Tạo Access Token mới
-		//		var newAccessToken = await _tokenService.GenerateAccessToken(user);
+		[Authorize]
+		[HttpPost("change-password")]
+		public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto model)
+		{
+			// Lấy user ID từ token
+			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+			if (userId == null)
+			{
+				return Unauthorized(new { message = "User is not authorized" });
+			}
 
-		//		// Cập nhật Access Token trong cookie
-		//		Response.Cookies.Append("access_token", newAccessToken, new CookieOptions
-		//		{
-		//			HttpOnly = true,
-		//			Secure = true,
-		//			SameSite = SameSiteMode.Strict,
-		//			Expires = DateTimeOffset.UtcNow.AddMinutes(15)
-		//		});
+			var result = await _authenticationService.ChangePasswordAsync(userId, model);
+			if (!result.IsSuccess)
+			{
+				return BadRequest(result);
+			}
 
-		//		return Ok(new { message = "Token refreshed" });
-		//	}
-
-		//	return Unauthorized();
-		//}
-
-		//private void SetTokensInCookies(string accessToken)
-		//{
-		//	var refreshToken = _tokenService.GenerateRefreshToken();
-
-		//	Response.Cookies.Append("access_token", accessToken, new CookieOptions
-		//	{
-		//		HttpOnly = true,
-		//		Secure = true,
-		//		SameSite = SameSiteMode.Strict,
-		//		Expires = DateTimeOffset.UtcNow.AddMinutes(15)
-		//	});
-
-		//	Response.Cookies.Append("refresh_token", refreshToken, new CookieOptions
-		//	{
-		//		HttpOnly = true,
-		//		Secure = true,
-		//		SameSite = SameSiteMode.Strict,
-		//		Expires = DateTimeOffset.UtcNow.AddDays(7) // Refresh Token có thời gian sống lâu hơn
-		//	});
-		//}
+			return Ok(result);
+		}
 	}
 }
