@@ -41,13 +41,17 @@ builder.Services.AddSwaggerGen(opt =>
 		}
 	});
 });
-
-var app = builder.Build();
-if (app.Environment.IsDevelopment())
+builder.WebHost.ConfigureKestrel(options =>
 {
-	app.UseSwagger();
-	app.UseSwaggerUI();
-}
+	options.ListenAnyIP(5000); // HTTP
+	options.ListenAnyIP(5001, listenOptions =>
+	{
+		listenOptions.UseHttps("/app/Certificates/aspnetapp.pfx", null);
+	});
+});
+var app = builder.Build();
+app.UseSwagger();
+app.UseSwaggerUI();
 //default
 app.UseHttpsRedirection();
 app.UseStaticFiles();
