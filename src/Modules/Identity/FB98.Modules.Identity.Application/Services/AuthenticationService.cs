@@ -1,5 +1,10 @@
-﻿using FB98.Modules.Identity.Application.Entities;
-using FB98.Modules.Identity.Application.Models;
+﻿using FB98.Modules.Identity.Application.Authentication.ForgotPassword;
+using FB98.Modules.Identity.Application.Authentication.Login;
+using FB98.Modules.Identity.Application.Authentication.RefreshToken;
+using FB98.Modules.Identity.Application.Authentication.Register;
+using FB98.Modules.Identity.Application.Authentication.ResetPassword;
+using FB98.Modules.Identity.Application.ProfileManagement.ChangePassword;
+using FB98.Modules.Identity.Application.Share.Entities;
 using FB98.Shared.Abstractions.Responses;
 using FB98.Shared.Infrastructure.Localization;
 using FluentValidation;
@@ -63,12 +68,12 @@ namespace FB98.Modules.Identity.Application.Services
 					return ApiResponseBuilder.Error<LoginResponseDto>("Invalid email or password", statusCode: 401);
 				}
 
-				var token = GenerateJwtToken(user);
-
+				var accessToken = GenerateJwtToken(user);
+				var refreshToken = GenerateRefreshToken();
 				// Trả về phản hồi thành công
 				return ApiResponseBuilder.Success(new LoginResponseDto
 				{
-					Token = token,
+					Token = accessToken,
 					Expiration = DateTime.UtcNow.AddMinutes(60)
 				}, _localizedMessage.GetLocalizedMessage("LoginSuccess"));
 			}
@@ -88,7 +93,7 @@ namespace FB98.Modules.Identity.Application.Services
 					return ApiResponseBuilder.ValidationError<object>(validationResult.Errors, _localizedMessage.GetLocalizedMessage("ValidationFailed"));
 				}
 
-				var existingUser = await _userManager.FindByEmailAsync(model.Email);
+				var existingUser = await _userManager.FindByEmailAsync(model.Email!);
 				if (existingUser != null)
 				{
 					return ApiResponseBuilder.Error<object>(_localizedMessage.GetLocalizedMessage("EmailAlreadyExists"), statusCode: 400);
@@ -135,9 +140,17 @@ namespace FB98.Modules.Identity.Application.Services
 
 				var userId = principal.FindFirstValue(ClaimTypes.NameIdentifier);
 				var user = await _userManager.FindByIdAsync(userId!);
-				if (user == null || user.RefreshToken != model.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+				if (user == null || user.RefreshToken != model.RefreshToken)
 				{
 					return ApiResponseBuilder.Error<TokenResponseDto>(_localizedMessage.GetLocalizedMessage("InvalidRefreshToken"), statusCode: 400);
+				}
+				if (user.IsRevoked)
+				{
+					return ApiResponseBuilder.Error<TokenResponseDto>(_localizedMessage.GetLocalizedMessage("RevokedToken"), statusCode: 403);
+				}
+				if (user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+				{
+					return ApiResponseBuilder.Error<TokenResponseDto>(_localizedMessage.GetLocalizedMessage("ExpiredRefreshToken"), statusCode: 400);
 				}
 
 				var newToken = GenerateJwtToken(user);
@@ -176,7 +189,6 @@ namespace FB98.Modules.Identity.Application.Services
 
 				var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 				var encodedToken = HttpUtility.UrlEncode(token);
-				Console.WriteLine($"\x1b[91m \x1b[4m {encodedToken} \x1b[24m \x1b[39m");
 				var resetLink = $"{_configuration["FrontendBaseUrl"]}/reset-password?token={HttpUtility.UrlEncode(token)}&email={HttpUtility.UrlEncode(model.Email)}";
 
 				await _emailSender.SendEmailAsync(user.Email!, "Reset Password", resetLink);
@@ -253,8 +265,30 @@ namespace FB98.Modules.Identity.Application.Services
 				return ApiResponseBuilder.Error<object>("An unexpected error occurred", statusCode: 500);
 			}
 		}
+		public async Task<ApiResponse<object>> RevokeTokenAsync(string userId)
+		{
+			try
+			{
+				var user = await _userManager.FindByIdAsync(userId);
+				if (user == null)
+				{
+					return ApiResponseBuilder.Error<object>("Token already revoked", statusCode: 400);
+				}
+				user.IsRevoked = true;
+				user.RevokedAt = DateTime.UtcNow;
+				await _userManager.UpdateAsync(user);
+				_logger.LogInformation($"Revoking token for user {userId} at {DateTime.UtcNow}");
 
+				return ApiResponseBuilder.Success<object>("", _localizedMessage.GetLocalizedMessage("RevokedSuccessfully"));
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, $"An error occurred while revoking token for user {userId}");
+				return ApiResponseBuilder.Error<object>("An unexpected error occurred", statusCode: 500);
+			}
+		}
 
+		#region Send and Check OTP
 		//public async Task<ApiResponse<object>> SendOtpAsync(string phoneNumber)
 		//{
 		//	var otp = new Random().Next(100000, 999999).ToString();
@@ -276,6 +310,7 @@ namespace FB98.Modules.Identity.Application.Services
 
 		//	return ApiResponseBuilder.Success<object>(null, "OTP verified successfully");
 		//}
+		#endregion
 
 		private string GenerateJwtToken(AppUser user)
 		{
@@ -326,6 +361,5 @@ namespace FB98.Modules.Identity.Application.Services
 
 			return principal;
 		}
-
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using FB98.Modules.Identity.Api.Extensions;
-using FB98.Modules.Identity.Application.Data;
-using FB98.Modules.Identity.Application.Entities;
+using FB98.Modules.Identity.Application.Share.Data;
+using FB98.Modules.Identity.Application.Share.Entities;
 using FB98.Shared.Infrastructure.Postgres;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -14,19 +14,15 @@ using System.Text;
 [assembly: InternalsVisibleTo("FB98.Bootstrapper")]
 namespace FB98.Modules.Identity.Api
 {
-
 	internal static class IdentityModule
 	{
 		public static IServiceCollection AddIdentityModule(this IServiceCollection services, IConfiguration configuration)
 		{
-			services.AddLocalization(options => options.ResourcesPath = "Modules/Identity/Resources");
 			services.AddMemoryCache();
-
 			services.AddPostgres<IdentityModuleDbContext>();
 			services.AddRegisterServicesIdentity();
 			services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
 			{
-				// Tùy chỉnh các quy tắc xác thực (nếu cần)
 				options.Password.RequireDigit = true;
 				options.Password.RequiredLength = 6;
 				options.Password.RequireUppercase = true;
@@ -37,9 +33,8 @@ namespace FB98.Modules.Identity.Api
 
 			services.Configure<DataProtectionTokenProviderOptions>(options =>
 			{
-				options.TokenLifespan = TimeSpan.FromHours(1); // Đặt thời gian hết hạn là 1 giờ
+				options.TokenLifespan = TimeSpan.FromHours(1);
 			});
-
 
 			services.AddAuthentication(options =>
 			{
@@ -56,7 +51,7 @@ namespace FB98.Modules.Identity.Api
 					ValidateIssuerSigningKey = true,
 					ValidIssuer = configuration["Jwt:Issuer"], // Giá trị phải khớp
 					ValidAudience = configuration["Jwt:Audience"], // Giá trị phải khớp
-					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])!)
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
 				};
 				options.Events = new JwtBearerEvents
 				{
@@ -86,7 +81,6 @@ namespace FB98.Modules.Identity.Api
 			}
 			//app.UseMiddleware<TokenCookieMiddleware>();
 			app.UseSession();
-			app.UseRouting();
 			app.UseAuthentication();
 			app.UseAuthorization();
 			return app;

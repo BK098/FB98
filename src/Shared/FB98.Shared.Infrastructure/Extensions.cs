@@ -20,6 +20,7 @@ namespace FB98.Shared.Infrastructure
 		{
 			AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 			services.AddTransient<IEmailSender, EmailSender>();
+			services.AddLocalization(options => options.ResourcesPath = "Shared/Resources");
 			services.AddControllers()
 			.ConfigureApplicationPartManager(manager =>
 			{
@@ -35,12 +36,14 @@ namespace FB98.Shared.Infrastructure
 			return services;
 		}
 
+		private static readonly string[] optionsAction = ["en", "vi"];
+
 		public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
 		{
 			app.UseMiddleware<ErrorHandlerMiddleware>();
 			app.UseRequestLocalization(options =>
 			{
-				var supportedCultures = new[] { "en", "vi" }; // Các ngôn ngữ hỗ trợ
+				var supportedCultures = optionsAction; // Các ngôn ngữ hỗ trợ
 				options.SetDefaultCulture("vi") // Ngôn ngữ mặc định
 					   .AddSupportedCultures(supportedCultures)
 					   .AddSupportedUICultures(supportedCultures);

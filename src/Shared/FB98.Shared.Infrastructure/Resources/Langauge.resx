@@ -195,4 +195,19 @@
   <data name="PasswordMustBeDifferent" xml:space="preserve">
     <value>New password must be different from the current password</value>
   </data>
+  <data name="InvalidPassword" xml:space="preserve">
+    <value>Current password is incorrect</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>User not found</value>
+  </data>
+  <data name="PasswordChangeFailed" xml:space="preserve">
+    <value>Failed to change password</value>
+  </data>
+  <data name="PasswordChanged" xml:space="preserve">
+    <value>Password changed successfully</value>
+  </data>
+  <data name="LoggedOut" xml:space="preserve">
+    <value>Logged out</value>
+  </data>
 </root>
