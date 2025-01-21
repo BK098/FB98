@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace FB98.Shared.Infrastructure.Modules
 {
 	internal sealed class ModuleRegistry : IModuleRegistry
 	{
-		private readonly List<ModuleBroadcastRegistration> _broadcastRegistrations = new();
+		private readonly List<ModuleBroadcastRegistration> _broadcastRegistrations = [];
 
 		public IEnumerable<ModuleBroadcastRegistration> GetBroadcastRegistration(string key)
 			=> _broadcastRegistrations.Where(x => x.Key == key);

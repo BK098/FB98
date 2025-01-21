@@ -38,7 +38,7 @@ namespace FB98.Shared.Infrastructure.Modules
 						(Task)eventDispatcher.GetType()
 							.GetMethod(nameof(IEventDispatcher.PublishAsync))
 							?.MakeGenericMethod(eventType)
-							.Invoke(eventDispatcher, new[] { @event });
+							.Invoke(eventDispatcher, [@event]);
 				}
 
 				return registry;

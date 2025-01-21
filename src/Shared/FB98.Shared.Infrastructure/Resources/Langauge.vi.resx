@@ -195,4 +195,19 @@
   <data name="PasswordMustBeDifferent" xml:space="preserve">
     <value>Mật khẩu mới không được trùng với mật khẩu cũ</value>
   </data>
+  <data name="InvalidPassword" xml:space="preserve">
+    <value>Mật khẩu hiện tại không chính xác</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>Không tìm thấy người dùng</value>
+  </data>
+  <data name="PasswordChangeFailed" xml:space="preserve">
+    <value>Thay đổi mật khẩu thất bại</value>
+  </data>
+  <data name="PasswordChanged" xml:space="preserve">
+    <value>Mật khẩu đã được thay đổi thành công</value>
+  </data>
+  <data name="LoggedOut" xml:space="preserve">
+    <value>Đăng xuất thành công</value>
+  </data>
 </root>

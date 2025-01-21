@@ -19,12 +19,12 @@ builder.Services.AddSwaggerGen(opt =>
 	opt.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
 	opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
 	{
-		In = ParameterLocation.Header,
-		Description = "Please enter token",
 		Name = "Authorization",
 		Type = SecuritySchemeType.Http,
+		In = ParameterLocation.Header,
+		Scheme = "bearer",
 		BearerFormat = "JWT",
-		Scheme = "bearer"
+		Description = "Nhập Bearer Token zô đây đi",
 	});
 	opt.AddSecurityRequirement(new OpenApiSecurityRequirement
 	{
@@ -37,17 +37,14 @@ builder.Services.AddSwaggerGen(opt =>
 					Type = ReferenceType.SecurityScheme
 				}
 			},
-			new string[]{}
+			Array.Empty<string>()
 		}
 	});
 });
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
-	app.UseSwagger();
-	app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 //default
 app.UseHttpsRedirection();
 app.UseStaticFiles();

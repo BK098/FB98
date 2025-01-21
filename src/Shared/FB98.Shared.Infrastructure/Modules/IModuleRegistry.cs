@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace FB98.Shared.Infrastructure.Modules
+﻿namespace FB98.Shared.Infrastructure.Modules
 {
 	public interface IModuleRegistry
 	{

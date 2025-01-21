@@ -1,4 +1,4 @@
-version: '3.8'
+#version: '3.8'
 
 networks:
   fb98_network:
@@ -28,8 +28,8 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_USER: postgres # can change
+      POSTGRES_PASSWORD: yourpassword # can change
       POSTGRES_DB: fb98db
     networks:
       - fb98_network
@@ -41,12 +41,26 @@ services:
     ports:
       - "8080:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com # can change
+      PGADMIN_DEFAULT_PASSWORD: admin # can change
     depends_on:
       - db
     networks:
       - fb98_network
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest # can change
+      RABBITMQ_DEFAULT_PASS: guest # can change
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - rabbitmq_logs:/var/log/rabbitmq
 volumes:
+  rabbitmq_data:
+  rabbitmq_logs:
   app_data:
   db_data:
