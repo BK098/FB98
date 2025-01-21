@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace FB98.Shared.Infrastructure.Modules
+﻿namespace FB98.Shared.Infrastructure.Modules
 {
 	public sealed class ModuleBroadcastRegistration
 	{

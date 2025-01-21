@@ -1,4 +1,8 @@
-﻿using FB98.Modules.Identity.Application.Models;
+﻿using FB98.Modules.Identity.Application.Authentication.ForgotPassword;
+using FB98.Modules.Identity.Application.Authentication.Login;
+using FB98.Modules.Identity.Application.Authentication.Register;
+using FB98.Modules.Identity.Application.Authentication.ResetPassword;
+using FB98.Modules.Identity.Application.ProfileManagement.ChangePassword;
 using FB98.Shared.Abstractions.Responses;
 
 namespace FB98.Modules.Identity.Application.Services
@@ -10,5 +14,6 @@ namespace FB98.Modules.Identity.Application.Services
 		Task<ApiResponse<object>> ForgotPasswordAsync(ForgotPasswordDto model);
 		Task<ApiResponse<object>> ResetPasswordAsync(ResetPasswordDto model);
 		Task<ApiResponse<object>> ChangePasswordAsync(string userId, ChangePasswordDto model);
+		Task<ApiResponse<object>> RevokeTokenAsync(string userId);	
 	}
 }

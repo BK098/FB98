@@ -31,11 +31,12 @@ namespace FB98.Shared.Abstractions.Responses
 			var errors = new Dictionary<string, List<object>>();
 			foreach (var error in validationErrors)
 			{
-				if (!errors.ContainsKey(error.PropertyName))
+				if (!errors.TryGetValue(error.PropertyName, out List<object>? value))
 				{
-					errors[error.PropertyName] = new List<object>();
+					value = [];
+					errors[error.PropertyName] = value;
 				}
-				errors[error.PropertyName].Add(error.ErrorMessage);
+				value.Add(error.ErrorMessage);
 			}
 
 			return new ApiResponse<T>
