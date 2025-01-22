@@ -6,6 +6,7 @@ networks:
 
 services:
   fb98.bootstrapper:
+    image: bkhang1227/fb98:bootstrapper
     build:
       context: .
       dockerfile: Dockerfile
@@ -23,7 +24,8 @@ services:
       - app_data:/app/data
 
   db:
-    image: postgres:15
+    image: bkhang1227/fb98:database
+    #image: postgres:15
     container_name: postgres-db
     ports:
       - "5432:5432"
@@ -36,7 +38,8 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
   pgadmin:
-    image: dpage/pgadmin4
+    image: bkhang1227/fb98:pgadmin
+    #image: dpage/pgadmin4
     container_name: pgadmin
     ports:
       - "8080:80"
@@ -48,7 +51,8 @@ services:
     networks:
       - fb98_network
   rabbitmq:
-    image: rabbitmq:3-management
+    image: bkhang1227/fb98:rabbitmq
+    # image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
       - "5672:5672"
