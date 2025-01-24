@@ -1,4 +1,4 @@
-﻿using FB98.Modules.Identity.Application.Share.Entities;
+﻿using FB98.Modules.Identity.Domain.Entities;
 using FB98.Shared.Abstractions.CQRS;
 using FB98.Shared.Abstractions.Responses;
 using FB98.Shared.Infrastructure.Email;

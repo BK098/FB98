@@ -210,4 +210,16 @@
   <data name="LoggedOut" xml:space="preserve">
     <value>Logged out</value>
   </data>
+  <data name="DeviceAlreadyLoggedIn" xml:space="preserve">
+    <value>Device Already Logged In</value>
+  </data>
+  <data name="PasswordResetFailed" xml:space="preserve">
+    <value>Failed to reset password</value>
+  </data>
+  <data name="TokenRevoked" xml:space="preserve">
+    <value>Token revoked successfully</value>
+  </data>
+  <data name="DeviceTokenRevoked" xml:space="preserve">
+    <value>Device token revoked successfully</value>
+  </data>
 </root>

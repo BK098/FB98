@@ -24,7 +24,7 @@ builder.Services.AddSwaggerGen(opt =>
 		In = ParameterLocation.Header,
 		Scheme = "bearer",
 		BearerFormat = "JWT",
-		Description = "Nhập Bearer Token zô đây đi",
+		Description = "Nhập Bearer Token zô đây đi, hứa không làm gì",
 	});
 	opt.AddSecurityRequirement(new OpenApiSecurityRequirement
 	{
@@ -41,19 +41,35 @@ builder.Services.AddSwaggerGen(opt =>
 		}
 	});
 });
+//CQRS
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("AllowSpecificOrigin", policy =>
+	{
+		// Đổi lại để phù hợp với API của front-end 
+		policy.WithOrigins("http://localhost:5173")
+			  .AllowCredentials()
+			  .AllowAnyHeader()
+			  .AllowAnyMethod();
+		// Đổi lại để phù hợp với API của front-end 
+		policy.WithOrigins("http://localhost:3000")
+			  .AllowCredentials()
+			  .AllowAnyHeader()
+			  .AllowAnyMethod();
+	});
+});
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
-	app.UseSwagger();
-	app.UseSwaggerUI();
-}
+//CORS
+app.UseCors("AllowSpecificOrigin");
+//Swagger
+app.UseSwagger();
+app.UseSwaggerUI();
 //default
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.MapControllers();
 app.UseRouting();
-
 //Module
 app.UseIdentityModule();
 app.UseInfrastructure();

@@ -1,6 +1,6 @@
 ﻿using FB98.Modules.Identity.Api.Extensions;
-using FB98.Modules.Identity.Application.Share.Data;
-using FB98.Modules.Identity.Application.Share.Entities;
+using FB98.Modules.Identity.DataAccess.Data;
+using FB98.Modules.Identity.Domain.Entities;
 using FB98.Shared.Infrastructure.Postgres;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -18,6 +18,7 @@ namespace FB98.Modules.Identity.Api
 	{
 		public static IServiceCollection AddIdentityModule(this IServiceCollection services, IConfiguration configuration)
 		{
+			services.AddHttpContextAccessor();
 			services.AddMemoryCache();
 			services.AddPostgres<IdentityModuleDbContext>();
 			services.AddRegisterServicesIdentity();

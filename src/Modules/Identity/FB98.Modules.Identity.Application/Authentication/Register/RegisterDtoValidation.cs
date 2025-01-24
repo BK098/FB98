@@ -19,10 +19,6 @@ namespace FB98.Modules.Identity.Application.Authentication.Register
 				.Matches(@"[0-9]").WithMessage(message.GetLocalizedMessage("PasswordMustContainNumber"))
 				.Matches(@"[\W]").WithMessage(message.GetLocalizedMessage("PasswordMustContainSpecialCharacter"));
 
-
-			RuleFor(x => x.Age)
-				.InclusiveBetween(1, 99).WithMessage(message.GetLocalizedMessage("AgeRange"));
-
 			RuleFor(x => x.PhoneNumber)
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("PhoneNumberRequired"))
 				.Matches(@"^((\+84)|0)(3|5|7|8|9)[0-9]{8}$").WithMessage(message.GetLocalizedMessage("PhoneNumberInvalid"));
@@ -32,6 +28,11 @@ namespace FB98.Modules.Identity.Application.Authentication.Register
 
 			RuleFor(x => x.Lastname)
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("LastnameRequired"));
+
+			RuleFor(x => x.BirthOfDate)
+				.NotEmpty().WithMessage(message.GetLocalizedMessage("BirthOfDateRequired"))
+				.Must(date => date <= DateOnly.FromDateTime(DateTime.Today) && date >= DateOnly.FromDateTime(DateTime.UtcNow.AddYears(-99)))
+				.WithMessage(message.GetLocalizedMessage("BirthOfDateInvalid"));
 		}
 	}
 }
