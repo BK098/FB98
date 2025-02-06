@@ -8,6 +8,7 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..\..</DockerfileContext>
         <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
+        <Configurations>Debug;Release;IdentityModule</Configurations>
     </PropertyGroup>
 
     <ItemGroup>
@@ -25,6 +26,7 @@
 
     <ItemGroup>
         <Folder Include="Certificates\" />
+        <Folder Include="Extensions\" />
     </ItemGroup>
 
 </Project>

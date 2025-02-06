@@ -32,6 +32,11 @@ namespace FB98.Modules.Identity.Api
 			.AddEntityFrameworkStores<IdentityModuleDbContext>()
 			.AddDefaultTokenProviders();
 
+			//services.AddAuthentication().AddGoogle(options =>
+			//{
+			//	options.ClientId = 
+			//})
+
 			services.Configure<DataProtectionTokenProviderOptions>(options =>
 			{
 				options.TokenLifespan = TimeSpan.FromHours(1);
