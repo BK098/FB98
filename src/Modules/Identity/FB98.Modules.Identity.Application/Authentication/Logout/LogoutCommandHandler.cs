@@ -1,4 +1,5 @@
-﻿using FB98.Modules.Identity.Application.Share.Entities;
+﻿using FB98.Modules.Identity.Application.Abtractions;
+using FB98.Modules.Identity.Domain.Entities;
 using FB98.Shared.Abstractions.CQRS;
 using FB98.Shared.Abstractions.Responses;
 using FB98.Shared.Infrastructure.Localization;
@@ -10,11 +11,14 @@ namespace FB98.Modules.Identity.Application.Authentication.Logout
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly ILocalizedMessageService _localizedMessage;
+		private readonly ITokenStoreRepository _tokenStoreRepository;
 		public LogoutCommandHandler(UserManager<AppUser> userManager,
-			ILocalizedMessageService localizedMessage)
+			ILocalizedMessageService localizedMessage,
+			ITokenStoreRepository tokenStoreRepository)
 		{
 			_userManager = userManager;
 			_localizedMessage = localizedMessage;
+			_tokenStoreRepository = tokenStoreRepository;
 		}
 		public async Task<ApiResponse<object>> Handle(LogoutCommand request, CancellationToken cancellationToken)
 		{
@@ -25,7 +29,9 @@ namespace FB98.Modules.Identity.Application.Authentication.Logout
 				{
 					return ApiResponseBuilder.Error<object>(_localizedMessage.GetLocalizedMessage("UserNotFound"), statusCode: 404);
 				}
-				user.RefreshToken = null;
+
+
+				//await _tokenStoreRepository.RevokeByDeviceIdAsync();
 				await _userManager.UpdateAsync(user);
 
 				return ApiResponseBuilder.Success<object>("", _localizedMessage.GetLocalizedMessage("LoggedOut"));

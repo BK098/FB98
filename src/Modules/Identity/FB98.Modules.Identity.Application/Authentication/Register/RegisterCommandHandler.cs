@@ -1,4 +1,4 @@
-﻿using FB98.Modules.Identity.Application.Share.Entities;
+﻿using FB98.Modules.Identity.Domain.Entities;
 using FB98.Shared.Abstractions.CQRS;
 using FB98.Shared.Abstractions.Responses;
 using FB98.Shared.Infrastructure.Localization;
@@ -48,8 +48,8 @@ namespace FB98.Modules.Identity.Application.Authentication.Register
 					PhoneNumber = model.PhoneNumber,
 					Firstname = model.Firstname!,
 					Lastname = model.Lastname!,
-					Age = (byte)model.Age,
-					RefreshToken = default!
+					Age = CaculatorAge(model.BirthOfDate),
+					BirthOfDate = model.BirthOfDate
 				};
 				var result = await _userManager.CreateAsync(user, model.Password!);
 
@@ -66,9 +66,20 @@ namespace FB98.Modules.Identity.Application.Authentication.Register
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "An error occurred during registration");
+				_logger.LogError(ex, "An error occurred: Register");
 				return ApiResponseBuilder.Error<object>("An unexpected error occurred", statusCode: 500);
 			}
+		}
+		private byte CaculatorAge(DateOnly birthOfDate)
+		{
+			var currentDate = DateOnly.FromDateTime(DateTime.Today);
+			int age = currentDate.Year - birthOfDate.Year;
+
+			if(currentDate < birthOfDate.AddYears(age))
+			{
+				--age;
+			}
+			return (byte)age;
 		}
 	}
 }

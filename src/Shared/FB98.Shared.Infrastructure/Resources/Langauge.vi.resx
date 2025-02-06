@@ -210,4 +210,16 @@
   <data name="LoggedOut" xml:space="preserve">
     <value>Đăng xuất thành công</value>
   </data>
+  <data name="DeviceAlreadyLoggedIn" xml:space="preserve">
+    <value>Thiết bị này đã đăng nhập trước đó</value>
+  </data>
+  <data name="PasswordResetFailed" xml:space="preserve">
+    <value>Đặt lại mật khẩu thất bại</value>
+  </data>
+  <data name="TokenRevoked" xml:space="preserve">
+    <value>Token đã được thu hồi thành công</value>
+  </data>
+  <data name="DeviceTokenRevoked" xml:space="preserve">
+    <value>Token của thiết bị đã được thu hồi thành công</value>
+  </data>
 </root>

@@ -4,7 +4,7 @@ namespace FB98.Shared.Abstractions.Responses
 {
 	public static class ApiResponseBuilder
 	{
-		public static ApiResponse<T> Success<T>(T data, string message = "Operation successful", int statusCode = 200)
+		public static ApiResponse<T> Success<T>(T data, string message, int statusCode = 200)
 		{
 			return new ApiResponse<T>
 			{

@@ -1,4 +1,4 @@
-﻿using FB98.Modules.Identity.Application.Share.Entities;
+﻿using FB98.Modules.Identity.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -6,9 +6,9 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace FB98.Modules.Identity.Application.Share.Services
+namespace FB98.Modules.Identity.Application.Services
 {
-	public class TokenService: ITokenService
+	public class TokenService : ITokenService
 	{
 		private readonly IConfiguration _configuration;
 
@@ -17,7 +17,7 @@ namespace FB98.Modules.Identity.Application.Share.Services
 			_configuration = configuration;
 		}
 
-		public string GenerateJwtToken(AppUser user)
+		public string GenerateAccessToken(AppUser user)
 		{
 			var claims = new[]
 			{

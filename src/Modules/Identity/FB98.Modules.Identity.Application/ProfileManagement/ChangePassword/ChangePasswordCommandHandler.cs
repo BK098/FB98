@@ -1,4 +1,4 @@
-﻿using FB98.Modules.Identity.Application.Share.Entities;
+﻿using FB98.Modules.Identity.Domain.Entities;
 using FB98.Shared.Abstractions.CQRS;
 using FB98.Shared.Abstractions.Responses;
 using FB98.Shared.Infrastructure.Localization;
@@ -62,7 +62,7 @@ namespace FB98.Modules.Identity.Application.ProfileManagement.ChangePassword
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Error occurred while changing password");
+				_logger.LogError(ex, "An error occurred: change password");
 				return ApiResponseBuilder.Error<object>("An unexpected error occurred", statusCode: 500);
 			}
 		}

@@ -8,6 +8,7 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..\..</DockerfileContext>
         <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
+        <Configurations>Debug;Release;IdentityModule</Configurations>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,7 +18,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-  </ItemGroup>
+    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\Modules\Identity\FB98.Modules.Identity.Api\FB98.Modules.Identity.Api.csproj" />
@@ -25,6 +26,7 @@
 
     <ItemGroup>
         <Folder Include="Certificates\" />
+        <Folder Include="Extensions\" />
     </ItemGroup>
 
 </Project>
