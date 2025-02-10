@@ -1,77 +1,37 @@
+using FB98.Modules.Customers.Api;
 using FB98.Modules.Identity.Api;
 using FB98.Shared.Infrastructure;
+using FB98.Shared.Infrastructure.Configurations;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDistributedMemoryCache();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddCustomSwagger();
+builder.Services.AddCustomCors(builder.Configuration);
+
 
 builder.Services.AddInfrastructure();
 builder.Services.AddIdentityModule(builder.Configuration);
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(opt =>
-{
-	opt.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
-	opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-	{
-		Name = "Authorization",
-		Type = SecuritySchemeType.Http,
-		In = ParameterLocation.Header,
-		Scheme = "bearer",
-		BearerFormat = "JWT",
-		Description = "Nhập Bearer Token zô đây đi, hứa không làm gì",
-	});
-	opt.AddSecurityRequirement(new OpenApiSecurityRequirement
-	{
-		{
-			new OpenApiSecurityScheme
-			{
-				Reference = new OpenApiReference
-				{
-					Id = "Bearer",
-					Type = ReferenceType.SecurityScheme
-				}
-			},
-			Array.Empty<string>()
-		}
-	});
-});
-//CQRS
-builder.Services.AddCors(options =>
-{
-	options.AddPolicy("AllowSpecificOrigin", policy =>
-	{
-		// Đổi lại để phù hợp với API của front-end 
-		policy.WithOrigins("http://localhost:5173")
-			  .AllowCredentials()
-			  .AllowAnyHeader()
-			  .AllowAnyMethod();
-		// Đổi lại để phù hợp với API của front-end 
-		policy.WithOrigins("http://localhost:3000")
-			  .AllowCredentials()
-			  .AllowAnyHeader()
-			  .AllowAnyMethod();
-	});
-});
+builder.Services.AddCustomersModule(builder.Configuration);
 
 var app = builder.Build();
-//CORS
-app.UseCors("AllowSpecificOrigin");
-//Swagger
-app.UseSwagger();
-app.UseSwaggerUI();
+
+
 //default
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.MapControllers();
 app.UseRouting();
+app.UseCustomCors();
+app.UseCustomSwagger();
 //Module
 app.UseIdentityModule();
+app.UseCustomersModule();
 app.UseInfrastructure();
 
 //default
