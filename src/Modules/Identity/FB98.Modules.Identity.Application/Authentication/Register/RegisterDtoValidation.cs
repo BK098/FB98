@@ -1,7 +1,4 @@
-﻿using FB98.Shared.Infrastructure.Localization;
-using FluentValidation;
-
-namespace FB98.Modules.Identity.Application.Authentication.Register
+﻿namespace FB98.Modules.Identity.Application.Authentication.Register
 {
 	public class RegisterDtoValidation : AbstractValidator<RegisterDto>
 	{

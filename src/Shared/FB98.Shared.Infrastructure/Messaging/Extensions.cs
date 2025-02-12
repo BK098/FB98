@@ -1,6 +1,5 @@
-﻿using FB98.Shared.Infrastructure;
+﻿using FB98.Shared.Abstractions.Messaging;
 using Microsoft.Extensions.DependencyInjection;
-using FB98.Shared.Abstractions.Messaging;
 
 namespace FB98.Shared.Infrastructure.Messaging
 {

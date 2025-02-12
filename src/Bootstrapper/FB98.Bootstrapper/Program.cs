@@ -1,11 +1,13 @@
+using FB98.Bootstrapper.Extensions;
+using FB98.Module.Systems.Api;
+using FB98.Modules.Catalog.Api;
 using FB98.Modules.Customers.Api;
 using FB98.Modules.Identity.Api;
+using FB98.Modules.Warehouse.Api;
 using FB98.Shared.Infrastructure;
 using FB98.Shared.Infrastructure.Configurations;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -14,25 +16,29 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCustomSwagger();
 builder.Services.AddCustomCors(builder.Configuration);
 
-
-builder.Services.AddInfrastructure();
 builder.Services.AddIdentityModule(builder.Configuration);
 builder.Services.AddCustomersModule(builder.Configuration);
+builder.Services.AddCatalogModule(builder.Configuration);
+builder.Services.AddSystemModule(builder.Configuration);
+builder.Services.AddWarehouseModule(builder.Configuration);
+builder.Services.AddInfrastructure();
+builder.Services.AddRegisterServices();
 
 var app = builder.Build();
 
-
 //default
+app.UseRouting();
+app.UseInfrastructure();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.MapControllers();
-app.UseRouting();
 app.UseCustomCors();
 app.UseCustomSwagger();
+
 //Module
 app.UseIdentityModule();
 app.UseCustomersModule();
-app.UseInfrastructure();
-
+app.UseCatalogModule();
+app.UseWarehouseModule();
 //default
 app.Run();

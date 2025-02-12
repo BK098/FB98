@@ -1,7 +1,4 @@
-﻿using FB98.Shared.Infrastructure.Localization;
-using FluentValidation;
-
-namespace FB98.Modules.Identity.Application.ProfileManagement.ChangePassword
+﻿namespace FB98.Modules.Identity.Application.ProfileManagement.ChangePassword
 {
 	public class ChangePasswordDtoValidation : AbstractValidator<ChangePasswordDto>
 	{

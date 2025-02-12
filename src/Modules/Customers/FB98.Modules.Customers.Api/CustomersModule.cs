@@ -9,7 +9,7 @@ namespace FB98.Modules.Customers.Api
 	internal static class CustomersModule
 	{
 		public static IServiceCollection AddCustomersModule(this IServiceCollection services, IConfiguration configuration)
-		{	
+		{
 			//services.AddPostgres<CustomersModuleDbContext>();
 			//services.AddRegisterServicesCustomers();
 			//

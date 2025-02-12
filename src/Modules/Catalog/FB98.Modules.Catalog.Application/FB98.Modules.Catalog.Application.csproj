@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Configurations>Debug;Release;CatalogModule</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Services\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FB98.Modules.Catalog.Domain\FB98.Modules.Catalog.Domain.csproj" />
+  </ItemGroup>
+    <ItemGroup>
+        <Using Include="FB98.Shared.Abstractions.CQRS" />
+        <Using Include="FB98.Shared.Abstractions.Responses" />
+        <Using Include="FB98.Shared.Infrastructure.Localization" />
+        <Using Include="FluentValidation" />
+        <Using Include="Microsoft.Extensions.Logging" />
+        <Using Include="FB98.Shared.Infrastructure.Repositpries" />
+        <Using Include="AutoMapper" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="ComboManagement\Create\" />
+      <Folder Include="ComboManagement\Delete\" />
+      <Folder Include="ComboManagement\GetAll\" />
+      <Folder Include="ComboManagement\GetDetail\" />
+      <Folder Include="ComboManagement\Update\" />
+    </ItemGroup>
+</Project>

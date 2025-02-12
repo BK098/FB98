@@ -1,12 +1,8 @@
 ﻿using FB98.Modules.Identity.Application.Abtractions;
 using FB98.Modules.Identity.Application.Services;
 using FB98.Modules.Identity.Domain.Entities;
-using FB98.Shared.Abstractions.CQRS;
-using FB98.Shared.Abstractions.Responses;
-using FB98.Shared.Infrastructure.Localization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,26 +10,26 @@ using System.Text;
 
 namespace FB98.Modules.Identity.Application.Authentication.RefreshToken
 {
-	public class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, ApiResponse<TokenResponseDto>>
+	internal sealed class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, ApiResponse<TokenResponseDto>>
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly IConfiguration _configuration;
 		private readonly ILogger<RefreshTokenCommandHandler> _logger;
-		private readonly ILocalizedMessageService _localizedMessage;
+		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ITokenService _tokenService;
 		private readonly ITokenStoreRepository _tokenStoreRepository;
 
 		public RefreshTokenCommandHandler(UserManager<AppUser> userManager,
 			IConfiguration configuration,
 			ILogger<RefreshTokenCommandHandler> logger,
-			ILocalizedMessageService localizedMessage,
+			ILocalizedMessageService localizedMessageService,
 			ITokenService tokenService,
 			ITokenStoreRepository tokenStoreRepository)
 		{
 			_userManager = userManager;
 			_configuration = configuration;
 			_logger = logger;
-			_localizedMessage = localizedMessage;
+			_localizedMessageService = localizedMessageService;
 			_tokenService = tokenService;
 			_tokenStoreRepository = tokenStoreRepository;
 		}
@@ -45,7 +41,9 @@ namespace FB98.Modules.Identity.Application.Authentication.RefreshToken
 				var principal = GetPrincipalFromExpiredToken(model.Token);
 				if (principal == null)
 				{
-					return ApiResponseBuilder.Error<TokenResponseDto>(_localizedMessage.GetLocalizedMessage("InvalidToken"), statusCode: 400);
+					return ApiResponseBuilder.Error<TokenResponseDto>(
+						_localizedMessageService.GetLocalizedMessage("InvalidToken"),
+						statusCode: 400);
 				}
 
 				var userId = principal.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -54,15 +52,21 @@ namespace FB98.Modules.Identity.Application.Authentication.RefreshToken
 
 				if (user == null || refreshToken?.Token != model.RefreshToken)
 				{
-					return ApiResponseBuilder.Error<TokenResponseDto>(_localizedMessage.GetLocalizedMessage("InvalidRefreshToken"), statusCode: 400);
+					return ApiResponseBuilder.Error<TokenResponseDto>(
+						_localizedMessageService.GetLocalizedMessage("InvalidRefreshToken"),
+						statusCode: 400);
 				}
 				if (refreshToken.IsRevoked)
 				{
-					return ApiResponseBuilder.Error<TokenResponseDto>(_localizedMessage.GetLocalizedMessage("RevokedToken"), statusCode: 403);
+					return ApiResponseBuilder.Error<TokenResponseDto>(
+						_localizedMessageService.GetLocalizedMessage("RevokedToken"),
+						statusCode: 403);
 				}
 				if (refreshToken.ExpiresAt <= DateTime.UtcNow)
 				{
-					return ApiResponseBuilder.Error<TokenResponseDto>(_localizedMessage.GetLocalizedMessage("ExpiredRefreshToken"), statusCode: 400);
+					return ApiResponseBuilder.Error<TokenResponseDto>(
+						_localizedMessageService.GetLocalizedMessage("ExpiredRefreshToken"),
+						statusCode: 400);
 				}
 
 				var newToken = _tokenService.GenerateAccessToken(user);
@@ -73,11 +77,15 @@ namespace FB98.Modules.Identity.Application.Authentication.RefreshToken
 				await _tokenStoreRepository.UpdateAsync(refreshToken);
 				await _userManager.UpdateAsync(user);
 
-				return ApiResponseBuilder.Success(new TokenResponseDto
+				var tokenResponse = new TokenResponseDto
 				{
 					Token = newToken,
 					RefreshToken = newRefreshToken
-				}, _localizedMessage.GetLocalizedMessage("TokenRefreshed"));
+				};
+				return ApiResponseBuilder.Success(
+					tokenResponse,
+					_localizedMessageService.GetLocalizedMessage("TokenRefreshed"),
+					statusCode: 201);
 			}
 			catch (Exception ex)
 			{

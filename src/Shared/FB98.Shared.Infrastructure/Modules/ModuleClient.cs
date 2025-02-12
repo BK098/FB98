@@ -28,6 +28,6 @@ namespace FB98.Shared.Infrastructure.Modules
 		}
 
 		public static object TranslateType(object @object, Type targetType)
-			=> JsonSerializer.Deserialize(JsonSerializer.Serialize(@object), targetType);
+			=> JsonSerializer.Deserialize(JsonSerializer.Serialize(@object), targetType)!;
 	}
 }

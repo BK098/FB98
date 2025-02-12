@@ -1,4 +1,4 @@
-﻿using FB98.Shared.Abstractions.Events;
+﻿using FB98.Shared.Abstractions.Events.Base;
 using FB98.Shared.Abstractions.Modules;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -35,10 +35,10 @@ namespace FB98.Shared.Infrastructure.Modules
 					registry.AddBroadcastRegistration(registration);
 
 					Task Handle(object @event) =>
-						(Task)eventDispatcher.GetType()
-							.GetMethod(nameof(IEventDispatcher.PublishAsync))
-							?.MakeGenericMethod(eventType)
-							.Invoke(eventDispatcher, [@event]);
+					(Task?)eventDispatcher.GetType()
+					.GetMethod(nameof(IEventDispatcher.PublishAsync))
+					?.MakeGenericMethod(eventType)
+					.Invoke(eventDispatcher, [@event])!;
 				}
 
 				return registry;

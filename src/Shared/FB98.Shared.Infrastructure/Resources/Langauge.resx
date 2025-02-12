@@ -138,9 +138,6 @@
   <data name="PasswordMustContainUppercase" xml:space="preserve">
     <value>Password must contain at least one uppercase letter</value>
   </data>
-  <data name="AgeRange" xml:space="preserve">
-    <value>Age must be between 1 and 99</value>
-  </data>
   <data name="PhoneNumberRequired" xml:space="preserve">
     <value>Phone number is required</value>
   </data>
@@ -158,9 +155,6 @@
   </data>
   <data name="InvalidLogin" xml:space="preserve">
     <value>Invalid email or password</value>
-  </data>
-  <data name="ValidationFailed" xml:space="preserve">
-    <value>Validation Failed</value>
   </data>
   <data name="InvalidToken" xml:space="preserve">
     <value>Invalid Token</value>
@@ -221,5 +215,32 @@
   </data>
   <data name="DeviceTokenRevoked" xml:space="preserve">
     <value>Device token revoked successfully</value>
+  </data>
+  <data name="NameRequired" xml:space="preserve">
+    <value>Name is required</value>
+  </data>
+  <data name="NameEmpty" xml:space="preserve">
+    <value>Name cannot be empty</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>Not found</value>
+  </data>
+  <data name="GreaterThanOrEqualTo0" xml:space="preserve">
+    <value>Greater Than Or Equal To Zero</value>
+  </data>
+  <data name="NotNull" xml:space="preserve">
+    <value>Not null</value>
+  </data>
+  <data name="NotEmpty" xml:space="preserve">
+    <value>Not empty</value>
+  </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="Existed" xml:space="preserve">
+    <value>Existed</value>
+  </data>
+  <data name="Created" xml:space="preserve">
+    <value>Created</value>
   </data>
 </root>

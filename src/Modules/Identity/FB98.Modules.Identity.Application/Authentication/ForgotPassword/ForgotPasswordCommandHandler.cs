@@ -1,35 +1,30 @@
 ﻿using FB98.Modules.Identity.Domain.Entities;
-using FB98.Shared.Abstractions.CQRS;
-using FB98.Shared.Abstractions.Responses;
 using FB98.Shared.Infrastructure.Email;
-using FB98.Shared.Infrastructure.Localization;
-using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using System.Web;
 
 namespace FB98.Modules.Identity.Application.Authentication.ForgotPassword
 {
-	internal class ForgotPasswordCommandHandler : ICommandHandler<ForgotPasswordCommand, ApiResponse<object>>
+	internal sealed class ForgotPasswordCommandHandler : ICommandHandler<ForgotPasswordCommand, ApiResponse<object>>
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly ILogger<ForgotPasswordCommandHandler> _logger;
 		private readonly IValidator<ForgotPasswordDto> _validator;
-		private readonly ILocalizedMessageService _localizedMessage;
+		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly IConfiguration _configuration;
 		private readonly IEmailSender _emailSender;
 		public ForgotPasswordCommandHandler(UserManager<AppUser> userManager,
 			ILogger<ForgotPasswordCommandHandler> logger,
 			IValidator<ForgotPasswordDto> validator,
-			ILocalizedMessageService localizedMessage,
+			ILocalizedMessageService localizedMessageService,
 			IConfiguration configuration,
 			IEmailSender emailSender)
 		{
 			_userManager = userManager;
 			_logger = logger;
 			_validator = validator;
-			_localizedMessage = localizedMessage;
+			_localizedMessageService = localizedMessageService;
 			_configuration = configuration;
 			_emailSender = emailSender;
 		}
@@ -41,22 +36,23 @@ namespace FB98.Modules.Identity.Application.Authentication.ForgotPassword
 				var validationResult = await _validator.ValidateAsync(model, cancellationToken);
 				if (!validationResult.IsValid)
 				{
-					return ApiResponseBuilder.ValidationError<object>(validationResult.Errors, _localizedMessage.GetLocalizedMessage("ValidationFailed"));
+					return ApiResponseBuilder.ValidationError<object>(validationResult.Errors, _localizedMessageService.GetLocalizedMessage("ValidationFailed"));
 				}
 				var user = await _userManager.FindByEmailAsync(model.Email!);
 				if (user == null)
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessage.GetLocalizedMessage("UserNotFound"), statusCode: 404);
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("UserNotFound"), statusCode: 404);
 				}
 
 				var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 				var encodedToken = HttpUtility.UrlEncode(token);
 				var resetLink = $"{_configuration["FrontendBaseUrl"]}/reset-password?token={HttpUtility.UrlEncode(token)}&email={HttpUtility.UrlEncode(model.Email)}";
-
-				_logger.LogInformation(HttpUtility.HtmlDecode(encodedToken));
+#if DEBUG
+				_logger.LogInformation("Encoded token: {EncodedToken}", HttpUtility.HtmlDecode(encodedToken));
+#endif
 				await _emailSender.SendEmailAsync(user.Email!, "Reset Password", resetLink);
 
-				return ApiResponseBuilder.Success<object>("", _localizedMessage.GetLocalizedMessage("PasswordResetLinkSent"));
+				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("PasswordResetLinkSent"));
 			}
 			catch (Exception ex)
 			{

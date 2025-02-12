@@ -1,22 +1,17 @@
 ﻿using FB98.Modules.Identity.Application.Abtractions;
 using FB98.Modules.Identity.Application.Services;
 using FB98.Modules.Identity.Domain.Entities;
-using FB98.Shared.Abstractions.CQRS;
-using FB98.Shared.Abstractions.Responses;
-using FB98.Shared.Infrastructure.Localization;
-using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
 
 namespace FB98.Modules.Identity.Application.Authentication.Login
 {
-	public class LoginCommandHandler : ICommandHandler<LoginCommand, ApiResponse<LoginResponseDto>>
+	internal sealed class LoginCommandHandler : ICommandHandler<LoginCommand, ApiResponse<LoginResponseDto>>
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly ILogger<LoginCommandHandler> _logger;
 		private readonly IValidator<LoginDto> _validator;
-		private readonly ILocalizedMessageService _localizedMessage;
+		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ITokenService _tokenService;
 		private readonly ITokenStoreRepository _tokenStoreRepository;
 		private readonly IHttpContextAccessor _httpContextAccessor;
@@ -25,7 +20,7 @@ namespace FB98.Modules.Identity.Application.Authentication.Login
 			UserManager<AppUser> userManager,
 			ILogger<LoginCommandHandler> logger,
 			IValidator<LoginDto> validator,
-			ILocalizedMessageService localizedMessage,
+			ILocalizedMessageService localizedMessageService,
 			ITokenService tokenService,
 			ITokenStoreRepository tokenStoreRepository,
 			IHttpContextAccessor httpContextAccessor)
@@ -33,7 +28,7 @@ namespace FB98.Modules.Identity.Application.Authentication.Login
 			_userManager = userManager;
 			_logger = logger;
 			_validator = validator;
-			_localizedMessage = localizedMessage;
+			_localizedMessageService = localizedMessageService;
 			_tokenService = tokenService;
 			_tokenStoreRepository = tokenStoreRepository;
 			_httpContextAccessor = httpContextAccessor;
@@ -46,13 +41,13 @@ namespace FB98.Modules.Identity.Application.Authentication.Login
 				var validationResult = await _validator.ValidateAsync(model, cancellationToken);
 				if (!validationResult.IsValid)
 				{
-					return ApiResponseBuilder.ValidationError<LoginResponseDto>(validationResult.Errors, _localizedMessage.GetLocalizedMessage("ValidationFailed"));
+					return ApiResponseBuilder.ValidationError<LoginResponseDto>(validationResult.Errors, _localizedMessageService.GetLocalizedMessage("ValidationFailed"));
 				}
 
 				var user = await _userManager.FindByEmailAsync(model.Email!);
 				if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password!))
 				{
-					return ApiResponseBuilder.Error<LoginResponseDto>(_localizedMessage.GetLocalizedMessage("InvalidLogin"), statusCode: 401);
+					return ApiResponseBuilder.Error<LoginResponseDto>(_localizedMessageService.GetLocalizedMessage("InvalidLogin"), statusCode: 401);
 				}
 
 				var accessToken = _tokenService.GenerateAccessToken(user);
@@ -68,7 +63,7 @@ namespace FB98.Modules.Identity.Application.Authentication.Login
 						if (!existingToken.IsRevoked)
 						{
 							return ApiResponseBuilder.Error<LoginResponseDto>(
-								_localizedMessage.GetLocalizedMessage("DeviceAlreadyLoggedIn"),
+								_localizedMessageService.GetLocalizedMessage("DeviceAlreadyLoggedIn"),
 								statusCode: 403
 							);
 						}
@@ -81,11 +76,14 @@ namespace FB98.Modules.Identity.Application.Authentication.Login
 						existingToken.IsRevoked = false;
 						await _tokenStoreRepository.UpdateAsync(existingToken);
 
-						return ApiResponseBuilder.Success(new LoginResponseDto
+						var loginResponse = new LoginResponseDto
 						{
 							Token = accessToken,
 							Expiration = DateTime.UtcNow.AddMinutes(30)
-						}, _localizedMessage.GetLocalizedMessage("LoginSuccess"));
+						};
+						return ApiResponseBuilder.Success(
+							loginResponse,
+							_localizedMessageService.GetLocalizedMessage("LoginSuccess"));
 					}
 				}
 				var tokenStore = new TokenStore
@@ -109,7 +107,7 @@ namespace FB98.Modules.Identity.Application.Authentication.Login
 				{
 					Token = accessToken,
 					Expiration = DateTime.UtcNow.AddMinutes(30)
-				}, _localizedMessage.GetLocalizedMessage("LoginSuccess"));
+				}, _localizedMessageService.GetLocalizedMessage("LoginSuccess"));
 			}
 			catch (Exception ex)
 			{

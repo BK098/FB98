@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace FB98.Shared.Utils.Extensions
 {
@@ -24,6 +25,24 @@ namespace FB98.Shared.Utils.Extensions
 
 			return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
 		}
+		static Regex? ConvertToUnsign_rg;
+		public static string ConvertToUnsign(this string strInput)
+		{
+			if (string.IsNullOrEmpty(strInput))
+				return strInput;
+			if (ReferenceEquals(ConvertToUnsign_rg, null))
+			{
+				ConvertToUnsign_rg = new Regex(@"[\p{IsCombiningDiacriticalMarks}]+", RegexOptions.Compiled);
+			}
 
+			// Chuỗi chuẩn hóa thành NFD (tách dấu)
+			var temp = strInput.Normalize(NormalizationForm.FormD);
+
+			// Loại bỏ dấu và thay thế "đ" với "d"
+			return ConvertToUnsign_rg.Replace(temp, string.Empty)
+.Replace("đ", "d")
+.Replace("Đ", "D")
+.ToLower(); // Nếu bạn cần chữ thường
+		}
 	}
 }

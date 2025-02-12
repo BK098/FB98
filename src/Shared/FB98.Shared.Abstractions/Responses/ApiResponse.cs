@@ -3,7 +3,7 @@
 	public class ApiResponse<T>
 	{
 		public bool IsSuccess { get; set; }
-		public string Message { get; set; } = default!;
+		public string? Message { get; set; }
 		public T? Data { get; set; }
 		public Dictionary<string, List<object>>? Errors { get; set; }
 		public int StatusCode { get; set; }

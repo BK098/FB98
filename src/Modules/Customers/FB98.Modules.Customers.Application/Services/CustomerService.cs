@@ -1,4 +1,4 @@
-﻿using FB98.Shared.Abstractions.Events;
+﻿using FB98.Shared.Abstractions.Events.Base;
 
 namespace FB98.Modules.Customers.Application.Services
 {
@@ -10,6 +10,6 @@ namespace FB98.Modules.Customers.Application.Services
 			_eventDispatcher = eventDispatcher;
 		}
 
-		
+
 	}
 }

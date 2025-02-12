@@ -1,7 +1,4 @@
-﻿using FB98.Shared.Infrastructure.Localization;
-using FluentValidation;
-
-namespace FB98.Modules.Identity.Application.Authentication.Login
+﻿namespace FB98.Modules.Identity.Application.Authentication.Login
 {
 	public class LoginValidation : AbstractValidator<LoginDto>
 	{

@@ -31,11 +31,7 @@ namespace FB98.Modules.Identity.Api.Controllers
 				DeviceId = deviceId
 			});
 			var result = await _mediator.Send(request);
-			if (result.IsSuccess)
-			{
-				return Ok(result);
-			}
-			return BadRequest(result);
+			return StatusCode(result.StatusCode, result);
 		}
 
 		[Authorize]
@@ -50,11 +46,7 @@ namespace FB98.Modules.Identity.Api.Controllers
 			var UserId = Guid.Parse(userId);
 			var request = new RevokeAllDeviceTokenCommand(UserId);
 			var result = await _mediator.Send(request);
-			if (result.IsSuccess)
-			{
-				return Ok(result);
-			}
-			return BadRequest(result);
+			return StatusCode(result.StatusCode, result);
 		}
 	}
 }

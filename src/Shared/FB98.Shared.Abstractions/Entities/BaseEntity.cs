@@ -6,7 +6,17 @@ namespace FB98.Shared.Abstractions.Entities
 	{
 		[Key]
 		public Guid Id { get; set; }
-		public DateTime CreateAt { get; private set; } = DateTime.Now;
-		public DateTime UpdateAt { get; set; }
+		public DateTime CreateAt { get; private set; }
+		public DateTime UpdateAt { get; private set; }
+
+		public void SetUpdatedAt()
+		{
+			UpdateAt = DateTime.UtcNow;
+		}
+
+		public void SetCreatedAt()
+		{
+			CreateAt = DateTime.UtcNow;
+		}
 	}
 }

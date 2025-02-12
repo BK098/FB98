@@ -43,9 +43,8 @@ namespace FB98.Modules.Identity.Api.Controllers
 					SameSite = SameSiteMode.Strict,
 					Expires = DateTimeOffset.UtcNow.AddDays(7)
 				});
-				return Ok(result);
 			}
-			return BadRequest(result);
+			return StatusCode(result.StatusCode, result);
 		}
 
 		[HttpPost("register")]
@@ -53,11 +52,7 @@ namespace FB98.Modules.Identity.Api.Controllers
 		{
 			var request = new RegisterCommand(model);
 			var result = await _mediator.Send(request);
-			if (!result.IsSuccess)
-			{
-				return BadRequest(result);
-			}
-			return Ok(result);
+			return StatusCode(result.StatusCode, result);
 		}
 
 		[Authorize]
@@ -75,9 +70,8 @@ namespace FB98.Modules.Identity.Api.Controllers
 			{
 				Response.Cookies.Delete("access_token");
 				Response.Cookies.Delete("refresh_token");
-				return Ok(result);
 			}
-			return BadRequest(result);
+			return StatusCode(result.StatusCode, result);
 		}
 
 		[HttpPost("forgot-password")]
@@ -85,11 +79,7 @@ namespace FB98.Modules.Identity.Api.Controllers
 		{
 			var request = new ForgotPasswordCommand(model);
 			var result = await _mediator.Send(request);
-			if (!result.IsSuccess)
-			{
-				return BadRequest(result);
-			}
-			return Ok(result);
+			return StatusCode(result.StatusCode, result);
 		}
 
 		[HttpPost("reset-password")]
@@ -97,11 +87,7 @@ namespace FB98.Modules.Identity.Api.Controllers
 		{
 			var request = new ResetPasswordCommand(model);
 			var result = await _mediator.Send(request);
-			if (!result.IsSuccess)
-			{
-				return BadRequest(result);
-			}
-			return Ok(result);
+			return StatusCode(result.StatusCode, result);
 		}
 
 		[HttpPost("refresh-token")]
@@ -118,9 +104,8 @@ namespace FB98.Modules.Identity.Api.Controllers
 					SameSite = SameSiteMode.Strict,
 					Expires = DateTimeOffset.UtcNow.AddMinutes(30)
 				});
-				return Ok(result);
 			}
-			return BadRequest(result);
+			return StatusCode(result.StatusCode, result);
 		}
 
 		[Authorize(Roles = "Admin")]
@@ -129,11 +114,7 @@ namespace FB98.Modules.Identity.Api.Controllers
 		{
 			var request = new RevokeTokenCommand(userId);
 			var result = await _mediator.Send(request);
-			if (!result.IsSuccess)
-			{
-				return BadRequest(result);
-			}
-			return Ok(result);
+			return StatusCode(result.StatusCode, result);
 		}
 	}
 }

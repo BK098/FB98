@@ -1,30 +1,23 @@
-﻿using FB98.Modules.Identity.Application.Authentication.ForgotPassword;
-using FB98.Modules.Identity.Application.Authentication.RefreshToken;
-using FB98.Modules.Identity.Domain.Entities;
-using FB98.Shared.Abstractions.CQRS;
-using FB98.Shared.Abstractions.Responses;
-using FB98.Shared.Infrastructure.Localization;
-using FluentValidation;
+﻿using FB98.Modules.Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
 using System.Web;
 
 namespace FB98.Modules.Identity.Application.Authentication.ResetPassword
 {
-	public class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordCommand, ApiResponse<object>>
+	internal sealed class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordCommand, ApiResponse<object>>
 	{
 		private readonly IValidator<ResetPasswordDto> _validator;
-		private readonly ILocalizedMessageService _localizedMessage;
+		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly UserManager<AppUser> _userManager;
 		private readonly ILogger<ResetPasswordCommandHandler> _logger;
 		public ResetPasswordCommandHandler(
 			IValidator<ResetPasswordDto> validator,
-			ILocalizedMessageService localizedMessage,
+			ILocalizedMessageService localizedMessageService,
 			UserManager<AppUser> userManager,
 			ILogger<ResetPasswordCommandHandler> logger)
 		{
 			_validator = validator;
-			_localizedMessage = localizedMessage;
+			_localizedMessageService = localizedMessageService;
 			_userManager = userManager;
 			_logger = logger;
 		}
@@ -36,27 +29,23 @@ namespace FB98.Modules.Identity.Application.Authentication.ResetPassword
 				var validationResult = await _validator.ValidateAsync(model, cancellationToken);
 				if (!validationResult.IsValid)
 				{
-					return ApiResponseBuilder.ValidationError<object>(validationResult.Errors, _localizedMessage.GetLocalizedMessage("ValidationFailed"));
+					return ApiResponseBuilder.ValidationError<object>(validationResult.Errors, _localizedMessageService.GetLocalizedMessage("ValidationFailed"));
 				}
 
 				var user = await _userManager.FindByEmailAsync(model.Email!);
 				if (user == null)
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessage.GetLocalizedMessage("UserNotFound"), statusCode: 404);
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("UserNotFound"), statusCode: 404);
 				}
 
 				var decodedToken = HttpUtility.UrlDecode(model.Token);
 				var result = await _userManager.ResetPasswordAsync(user, decodedToken!, model.Password!);
 				if (!result.Succeeded)
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessage.GetLocalizedMessage("PasswordResetFailed"),
-						errors: result.Errors.ToDictionary(e => e.Code, e => new List<object> 
-						{ 
-							e.Description 
-						}), statusCode: 400
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("PasswordResetFailed"), statusCode: 400
 					);
 				}
-				return ApiResponseBuilder.Success<object>("", "Password reset successfully");
+				return ApiResponseBuilder.Success<object>("", "Password reset successfully", statusCode: 204);
 			}
 			catch (Exception ex)
 			{

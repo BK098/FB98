@@ -27,11 +27,7 @@ namespace FB98.Modules.Identity.Api.Controllers
 
 			var request = new ChangePasswordCommand(userId, model);
 			var result = await _mediator.Send(request);
-			if (!result.IsSuccess)
-			{
-				return BadRequest(result);
-			}
-			return Ok(result);
+			return StatusCode(result.StatusCode, result);
 		}
 	}
 }

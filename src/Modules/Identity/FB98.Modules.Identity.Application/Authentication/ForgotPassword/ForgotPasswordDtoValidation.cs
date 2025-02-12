@@ -1,7 +1,4 @@
-﻿using FB98.Shared.Infrastructure.Localization;
-using FluentValidation;
-
-namespace FB98.Modules.Identity.Application.Authentication.ForgotPassword
+﻿namespace FB98.Modules.Identity.Application.Authentication.ForgotPassword
 {
 	public class ForgotPasswordDtoValidation : AbstractValidator<ForgotPasswordDto>
 	{

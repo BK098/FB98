@@ -1,13 +1,10 @@
 ﻿using FB98.Modules.Identity.Application.Abtractions;
 using FB98.Modules.Identity.Domain.Entities;
-using FB98.Shared.Abstractions.CQRS;
-using FB98.Shared.Abstractions.Responses;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
 
 namespace FB98.Modules.Identity.Application.Authentication.RevokeToken
 {
-	internal class RevokeTokenCommandHandler : ICommandHandler<RevokeTokenCommand, ApiResponse<object>>
+	internal sealed class RevokeTokenCommandHandler : ICommandHandler<RevokeTokenCommand, ApiResponse<object>>
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly ITokenStoreRepository _tokenStoreRepository;
@@ -33,7 +30,7 @@ namespace FB98.Modules.Identity.Application.Authentication.RevokeToken
 				await _tokenStoreRepository.RevokeAllByUserIdAsync(user!.Id);
 				await _userManager.UpdateAsync(user);
 
-				return ApiResponseBuilder.Success<object>("", "Token revoked successfully");
+				return ApiResponseBuilder.Success<object>("", "Token revoked successfully", statusCode: 204);
 			}
 			catch (Exception ex)
 			{

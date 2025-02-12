@@ -8,7 +8,7 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..\..</DockerfileContext>
         <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
-        <Configurations>Debug;Release;IdentityModule</Configurations>
+        <Configurations>Debug;Release;IdentityModule;CatalogModule</Configurations>
     </PropertyGroup>
 
     <ItemGroup>
@@ -20,13 +20,16 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\Modules\Catalog\FB98.Modules.Catalog.Api\FB98.Modules.Catalog.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Customers\FB98.Modules.Customers.Api\FB98.Modules.Customers.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Identity\FB98.Modules.Identity.Api\FB98.Modules.Identity.Api.csproj" />
+        <ProjectReference Include="..\..\Modules\Systems\FB98.Module.Systems.Api\FB98.Module.Systems.Api.csproj" />
+        <ProjectReference Include="..\..\Modules\Warehouse\FB98.Modules.Warehouse.Api\FB98.Modules.Warehouse.Api.csproj" />
     </ItemGroup>
 
     <ItemGroup>
         <Folder Include="Certificates\" />
-        <Folder Include="Extensions\" />
+        <Folder Include="wwwroot\" />
     </ItemGroup>
 
 </Project>

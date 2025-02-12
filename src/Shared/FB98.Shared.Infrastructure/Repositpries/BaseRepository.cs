@@ -16,7 +16,7 @@ namespace FB98.Shared.Infrastructure.Repositpries
 		}
 		public virtual async Task<TEntity?> GetByIdAsync(Guid? id)
 		{
-			var entity = await _dbSet.SingleOrDefaultAsync(x => x.Id.Equals(id));
+			var entity = await _dbSet.FirstOrDefaultAsync(x => x.Id.Equals(id));
 			return entity;
 		}
 		public virtual async Task<TEntity?> FindByIdAsync(Guid? id)

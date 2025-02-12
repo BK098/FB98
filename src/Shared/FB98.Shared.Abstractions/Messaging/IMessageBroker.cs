@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace FB98.Shared.Abstractions.Messaging
+﻿namespace FB98.Shared.Abstractions.Messaging
 {
 	public interface IMessageBroker
 	{

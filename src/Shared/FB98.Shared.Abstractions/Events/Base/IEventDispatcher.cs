@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace FB98.Shared.Abstractions.Events
+﻿namespace FB98.Shared.Abstractions.Events.Base
 {
 	public interface IEventDispatcher
 	{

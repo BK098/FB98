@@ -4,7 +4,7 @@ namespace FB98.Shared.Abstractions.Responses
 {
 	public static class ApiResponseBuilder
 	{
-		public static ApiResponse<T> Success<T>(T data, string message, int statusCode = 200)
+		public static ApiResponse<T> Success<T>(T data, string? message = null, int statusCode = 200)
 		{
 			return new ApiResponse<T>
 			{
@@ -15,15 +15,14 @@ namespace FB98.Shared.Abstractions.Responses
 				Errors = null
 			};
 		}
-		public static ApiResponse<T> Error<T>(string message, Dictionary<string, List<object>>? errors = null, int statusCode = 400)
+		public static ApiResponse<T> Error<T>(string message, int statusCode = 400)
 		{
 			return new ApiResponse<T>
 			{
 				IsSuccess = false,
 				Message = message,
 				Data = default,
-				StatusCode = statusCode,
-				Errors = errors
+				StatusCode = statusCode
 			};
 		}
 		public static ApiResponse<T> ValidationError<T>(List<ValidationFailure> validationErrors, string message = "Validation failed")

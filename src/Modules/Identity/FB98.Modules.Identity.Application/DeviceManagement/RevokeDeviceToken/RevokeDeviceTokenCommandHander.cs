@@ -1,8 +1,4 @@
 ﻿using FB98.Modules.Identity.Application.Abtractions;
-using FB98.Shared.Abstractions.CQRS;
-using FB98.Shared.Abstractions.Responses;
-using FB98.Shared.Infrastructure.Localization;
-using Microsoft.Extensions.Logging;
 
 namespace FB98.Modules.Identity.Application.DeviceManagement.RevokeDeviceToken
 {
@@ -10,14 +6,14 @@ namespace FB98.Modules.Identity.Application.DeviceManagement.RevokeDeviceToken
 	{
 		private readonly ITokenStoreRepository _tokenStoreRepository;
 		private readonly ILogger<RevokeDeviceTokenCommandHander> _logger;
-		private readonly ILocalizedMessageService _localizedMessage;
+		private readonly ILocalizedMessageService _localizedMessageService;
 		public RevokeDeviceTokenCommandHander(ITokenStoreRepository tokenStoreRepository,
 			ILogger<RevokeDeviceTokenCommandHander> logger,
-			ILocalizedMessageService localizedMessage)
+			ILocalizedMessageService localizedMessageService)
 		{
 			_tokenStoreRepository = tokenStoreRepository;
 			_logger = logger;
-			_localizedMessage = localizedMessage;
+			_localizedMessageService = localizedMessageService;
 		}
 		public async Task<ApiResponse<object>> Handle(RevokeDeviceTokenCommand request, CancellationToken cancellationToken)
 		{
@@ -27,12 +23,12 @@ namespace FB98.Modules.Identity.Application.DeviceManagement.RevokeDeviceToken
 				var tokenStore = await _tokenStoreRepository.GetByDeviceIdAsync(model.DeviceId, model.UserId);
 				if (tokenStore == null)
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessage.GetLocalizedMessage("DeviceOrTokenNotFound"), statusCode: 404);
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("DeviceOrTokenNotFound"), statusCode: 404);
 				}
 				tokenStore.IsRevoked = true;
 				await _tokenStoreRepository.UpdateAsync(tokenStore);
 
-				return ApiResponseBuilder.Success<object>("", _localizedMessage.GetLocalizedMessage("DeviceTokenRevoked"));
+				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("DeviceTokenRevoked"));
 			}
 			catch (Exception ex)
 			{
