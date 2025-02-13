@@ -1,4 +1,4 @@
-﻿using FB98.Shared.Abstractions.Events;
+﻿using FB98.Shared.Abstractions.Events.Base;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FB98.Shared.Infrastructure.Events

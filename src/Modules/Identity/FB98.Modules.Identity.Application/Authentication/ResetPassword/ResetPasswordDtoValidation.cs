@@ -1,7 +1,4 @@
-﻿using FB98.Shared.Infrastructure.Localization;
-using FluentValidation;
-
-namespace FB98.Modules.Identity.Application.Authentication.ResetPassword
+﻿namespace FB98.Modules.Identity.Application.Authentication.ResetPassword
 {
 	public class ResetPasswordDtoValidation : AbstractValidator<ResetPasswordDto>
 	{

@@ -27,7 +27,7 @@ namespace FB98.Shared.Infrastructure.Postgres
 		public static IServiceCollection AddPostgres<T>(this IServiceCollection services) where T : DbContext
 		{
 			var options = services.GetOptions<PostgresOptions>("postgres");
-			services.AddDbContext<T>(x => 
+			services.AddDbContext<T>(x =>
 				x.UseNpgsql(options.ConnectionString,
 				sqlOptions => sqlOptions.EnableRetryOnFailure(
 					maxRetryCount: 5,
@@ -39,7 +39,9 @@ namespace FB98.Shared.Infrastructure.Postgres
 			);
 			using var scope = services.BuildServiceProvider().CreateScope();
 			var dbContext = scope.ServiceProvider.GetRequiredService<T>();
+			dbContext.Database.ExecuteSqlRaw("CREATE EXTENSION IF NOT EXISTS unaccent;");
 			dbContext.Database.Migrate();
+
 			return services;
 		}
 	}

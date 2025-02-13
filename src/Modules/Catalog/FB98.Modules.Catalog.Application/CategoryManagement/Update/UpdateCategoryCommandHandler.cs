@@ -1,0 +1,67 @@
+﻿using FB98.Modules.Catalog.Application.Abstractions;
+
+namespace FB98.Modules.Catalog.Application.CategoryManagement.Update
+{
+	internal sealed class UpdateCategoryCommandHandler : ICommandHandler<UpdateCategoryCommand, ApiResponse<object>>
+	{
+		private readonly ILogger<UpdateCategoryCommandHandler> _logger;
+		private readonly ICategoryRepository _categoryRepository;
+		private readonly IUnitOfWork _unitOfWork;
+		private readonly IMapper _mapper;
+		private readonly IValidator<UpdateCategoryDto> _validator;
+		private readonly ILocalizedMessageService _localizedMessageService;
+
+		public UpdateCategoryCommandHandler(
+			ILogger<UpdateCategoryCommandHandler> logger,
+			ICategoryRepository categoryRepository,
+			IUnitOfWork unitOfWork,
+			IMapper mapper,
+			IValidator<UpdateCategoryDto> validator,
+			ILocalizedMessageService localizedMessage)
+		{
+			_logger = logger;
+			_categoryRepository = categoryRepository;
+			_unitOfWork = unitOfWork;
+			_mapper = mapper;
+			_validator = validator;
+			_localizedMessageService = localizedMessage;
+		}
+		public async Task<ApiResponse<object>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
+		{
+			var model = request.Model;
+			var categoryId = request.CategoryId;
+			try
+			{
+				var valiationResult = await _validator.ValidateAsync(model, cancellationToken);
+				if (!valiationResult.IsValid)
+				{
+					return ApiResponseBuilder.ValidationError<object>(valiationResult.Errors);
+				}
+				var category = await _categoryRepository.GetByIdAsync(categoryId);
+				if (category is null)
+				{
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), statusCode: 404);
+				}
+				if (category.Name != model.Name)
+				{
+					var categoryExisted = await _categoryRepository.IsCategoryExistsAsync(model.Name!, cancellationToken);
+					if (!categoryExisted)
+					{
+						return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("Exsited"));
+					}
+				}
+
+				_mapper.Map(model, category);
+				_categoryRepository.Update(category);
+				await _unitOfWork.SaveChangesAsync();
+
+				return ApiResponseBuilder.Success<object>(model, _localizedMessageService.GetLocalizedMessage("Updated"));
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Error occurred while update category");
+				return ApiResponseBuilder.Error<object>("An unexpected error occurred", statusCode: 500);
+			}
+		}
+	}
+}

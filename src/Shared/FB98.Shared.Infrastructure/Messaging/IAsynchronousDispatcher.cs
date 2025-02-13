@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using FB98.Shared.Abstractions.Messaging;
+﻿using FB98.Shared.Abstractions.Messaging;
 
 namespace FB98.Shared.Infrastructure.Messaging
 {

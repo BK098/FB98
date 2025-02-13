@@ -4,12 +4,12 @@ using FB98.Modules.Identity.Application.Authentication.Logout;
 using FB98.Modules.Identity.Application.Authentication.RefreshToken;
 using FB98.Modules.Identity.Application.Authentication.Register;
 using FB98.Modules.Identity.Application.Authentication.ResetPassword;
+using FB98.Modules.Identity.Application.Authentication.RevokeToken;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using FB98.Modules.Identity.Application.Authentication.RevokeToken;
 
 namespace FB98.Modules.Identity.Api.Controllers
 {
@@ -43,9 +43,8 @@ namespace FB98.Modules.Identity.Api.Controllers
 					SameSite = SameSiteMode.Strict,
 					Expires = DateTimeOffset.UtcNow.AddDays(7)
 				});
-				return Ok(result);
 			}
-			return BadRequest(result);
+			return StatusCode(result.StatusCode, result);
 		}
 
 		[HttpPost("register")]
@@ -53,11 +52,7 @@ namespace FB98.Modules.Identity.Api.Controllers
 		{
 			var request = new RegisterCommand(model);
 			var result = await _mediator.Send(request);
-			if (!result.IsSuccess)
-			{
-				return BadRequest(result);
-			}
-			return Ok(result);
+			return StatusCode(result.StatusCode, result);
 		}
 
 		[Authorize]
@@ -75,9 +70,8 @@ namespace FB98.Modules.Identity.Api.Controllers
 			{
 				Response.Cookies.Delete("access_token");
 				Response.Cookies.Delete("refresh_token");
-				return Ok(result);
 			}
-			return BadRequest(result);
+			return StatusCode(result.StatusCode, result);
 		}
 
 		[HttpPost("forgot-password")]
@@ -85,11 +79,7 @@ namespace FB98.Modules.Identity.Api.Controllers
 		{
 			var request = new ForgotPasswordCommand(model);
 			var result = await _mediator.Send(request);
-			if (!result.IsSuccess)
-			{
-				return BadRequest(result);
-			}
-			return Ok(result);
+			return StatusCode(result.StatusCode, result);
 		}
 
 		[HttpPost("reset-password")]
@@ -97,14 +87,10 @@ namespace FB98.Modules.Identity.Api.Controllers
 		{
 			var request = new ResetPasswordCommand(model);
 			var result = await _mediator.Send(request);
-			if (!result.IsSuccess)
-			{
-				return BadRequest(result);
-			}
-			return Ok(result);
+			return StatusCode(result.StatusCode, result);
 		}
 
-		[HttpPost]
+		[HttpPost("refresh-token")]
 		public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto model)
 		{
 			var request = new RefreshTokenCommand(model);
@@ -118,32 +104,17 @@ namespace FB98.Modules.Identity.Api.Controllers
 					SameSite = SameSiteMode.Strict,
 					Expires = DateTimeOffset.UtcNow.AddMinutes(30)
 				});
-				return Ok(result);
 			}
-			return BadRequest(result);
+			return StatusCode(result.StatusCode, result);
 		}
-		[Authorize]
-		[HttpPost("revoke-token")]
-		public async Task<IActionResult> RevokeToken()
-		{
-			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-			if (userId == null)
-			{
-				return Unauthorized(new { message = "User is not authorized" });
-			}
-			var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-			if (currentUserId != userId.ToString() && !User.IsInRole("Admin"))
-			{
-				return Forbid();
-			}
 
+		[Authorize(Roles = "Admin")]
+		[HttpPost("revoke-token")]
+		public async Task<IActionResult> RevokeToken(Guid userId)
+		{
 			var request = new RevokeTokenCommand(userId);
 			var result = await _mediator.Send(request);
-			if (!result.IsSuccess)
-			{
-				return BadRequest(result);
-			}
-			return Ok(result);
+			return StatusCode(result.StatusCode, result);
 		}
 	}
 }

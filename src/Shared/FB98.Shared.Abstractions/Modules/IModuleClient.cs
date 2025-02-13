@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace FB98.Shared.Abstractions.Modules
+﻿namespace FB98.Shared.Abstractions.Modules
 {
 	public interface IModuleClient
 	{

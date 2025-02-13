@@ -79,11 +79,11 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Age must be between 1 and 99.
+        ///   Looks up a localized string similar to Created.
         /// </summary>
-        internal static string AgeRange {
+        internal static string Created {
             get {
-                return ResourceManager.GetString("AgeRange", resourceCulture);
+                return ResourceManager.GetString("Created", resourceCulture);
             }
         }
         
@@ -93,6 +93,33 @@ namespace FB98.Shared.Infrastructure.Resources {
         internal static string CurrentPasswordRequired {
             get {
                 return ResourceManager.GetString("CurrentPasswordRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleted.
+        /// </summary>
+        internal static string Deleted {
+            get {
+                return ResourceManager.GetString("Deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device Already Logged In.
+        /// </summary>
+        internal static string DeviceAlreadyLoggedIn {
+            get {
+                return ResourceManager.GetString("DeviceAlreadyLoggedIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device token revoked successfully.
+        /// </summary>
+        internal static string DeviceTokenRevoked {
+            get {
+                return ResourceManager.GetString("DeviceTokenRevoked", resourceCulture);
             }
         }
         
@@ -133,11 +160,29 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Existed.
+        /// </summary>
+        internal static string Existed {
+            get {
+                return ResourceManager.GetString("Existed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Firstname is required.
         /// </summary>
         internal static string FirstnameRequired {
             get {
                 return ResourceManager.GetString("FirstnameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Greater Than Or Equal To Zero.
+        /// </summary>
+        internal static string GreaterThanOrEqualTo0 {
+            get {
+                return ResourceManager.GetString("GreaterThanOrEqualTo0", resourceCulture);
             }
         }
         
@@ -205,6 +250,51 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name cannot be empty.
+        /// </summary>
+        internal static string NameEmpty {
+            get {
+                return ResourceManager.GetString("NameEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name is required.
+        /// </summary>
+        internal static string NameRequired {
+            get {
+                return ResourceManager.GetString("NameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not empty.
+        /// </summary>
+        internal static string NotEmpty {
+            get {
+                return ResourceManager.GetString("NotEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not found.
+        /// </summary>
+        internal static string NotFound {
+            get {
+                return ResourceManager.GetString("NotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not null.
+        /// </summary>
+        internal static string NotNull {
+            get {
+                return ResourceManager.GetString("NotNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password changed successfully.
         /// </summary>
         internal static string PasswordChanged {
@@ -268,6 +358,15 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to reset password.
+        /// </summary>
+        internal static string PasswordResetFailed {
+            get {
+                return ResourceManager.GetString("PasswordResetFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password reset link has been sent to your email.
         /// </summary>
         internal static string PasswordResetLinkSent {
@@ -322,20 +421,20 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Token revoked successfully.
+        /// </summary>
+        internal static string TokenRevoked {
+            get {
+                return ResourceManager.GetString("TokenRevoked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User not found.
         /// </summary>
         internal static string UserNotFound {
             get {
                 return ResourceManager.GetString("UserNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Validation Failed.
-        /// </summary>
-        internal static string ValidationFailed {
-            get {
-                return ResourceManager.GetString("ValidationFailed", resourceCulture);
             }
         }
     }

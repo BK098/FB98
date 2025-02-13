@@ -1,66 +1,44 @@
+using FB98.Bootstrapper.Extensions;
+using FB98.Module.Systems.Api;
+using FB98.Modules.Catalog.Api;
+using FB98.Modules.Customers.Api;
 using FB98.Modules.Identity.Api;
+using FB98.Modules.Warehouse.Api;
 using FB98.Shared.Infrastructure;
-using Microsoft.OpenApi.Models;
+using FB98.Shared.Infrastructure.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDistributedMemoryCache();
-
-builder.Services.AddInfrastructure();
-builder.Services.AddIdentityModule(builder.Configuration);
-
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(opt =>
-{
-	opt.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
-	opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-	{
-		Name = "Authorization",
-		Type = SecuritySchemeType.Http,
-		In = ParameterLocation.Header,
-		Scheme = "bearer",
-		BearerFormat = "JWT",
-		Description = "Nhập Bearer Token zô đây đi",
-	});
-	opt.AddSecurityRequirement(new OpenApiSecurityRequirement
-	{
-		{
-			new OpenApiSecurityScheme
-			{
-				Reference = new OpenApiReference
-				{
-					Id = "Bearer",
-					Type = ReferenceType.SecurityScheme
-				}
-			},
-			Array.Empty<string>()
-		}
-	});
-});
-builder.WebHost.ConfigureKestrel(options =>
-{
-	options.ListenAnyIP(5000); // HTTP
-	options.ListenAnyIP(5001, listenOptions =>
-	{
-		listenOptions.UseHttps("/app/Certificates/aspnetapp.pfx", null);
-	});
-});
+builder.Services.AddCustomSwagger();
+builder.Services.AddCustomCors(builder.Configuration);
+
+builder.Services.AddIdentityModule(builder.Configuration);
+builder.Services.AddCustomersModule(builder.Configuration);
+builder.Services.AddCatalogModule(builder.Configuration);
+builder.Services.AddSystemModule(builder.Configuration);
+builder.Services.AddWarehouseModule(builder.Configuration);
+builder.Services.AddInfrastructure();
+builder.Services.AddRegisterServices();
+
 var app = builder.Build();
-app.UseSwagger();
-app.UseSwaggerUI();
+
 //default
+app.UseRouting();
+app.UseInfrastructure();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.MapControllers();
-app.UseRouting();
+app.UseCustomCors();
+app.UseCustomSwagger();
 
 //Module
 app.UseIdentityModule();
-app.UseInfrastructure();
-
+app.UseCustomersModule();
+app.UseCatalogModule();
+app.UseWarehouseModule();
 //default
 app.Run();

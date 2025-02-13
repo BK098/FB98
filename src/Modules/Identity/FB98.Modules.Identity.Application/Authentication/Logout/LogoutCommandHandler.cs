@@ -1,20 +1,17 @@
-﻿using FB98.Modules.Identity.Application.Share.Entities;
-using FB98.Shared.Abstractions.CQRS;
-using FB98.Shared.Abstractions.Responses;
-using FB98.Shared.Infrastructure.Localization;
+﻿using FB98.Modules.Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace FB98.Modules.Identity.Application.Authentication.Logout
 {
-	internal class LogoutCommandHandler : ICommandHandler<LogoutCommand, ApiResponse<object>>
+	internal sealed class LogoutCommandHandler : ICommandHandler<LogoutCommand, ApiResponse<object>>
 	{
 		private readonly UserManager<AppUser> _userManager;
-		private readonly ILocalizedMessageService _localizedMessage;
+		private readonly ILocalizedMessageService _localizedMessageService;
 		public LogoutCommandHandler(UserManager<AppUser> userManager,
-			ILocalizedMessageService localizedMessage)
+			ILocalizedMessageService localizedMessageService)
 		{
 			_userManager = userManager;
-			_localizedMessage = localizedMessage;
+			_localizedMessageService = localizedMessageService;
 		}
 		public async Task<ApiResponse<object>> Handle(LogoutCommand request, CancellationToken cancellationToken)
 		{
@@ -23,12 +20,14 @@ namespace FB98.Modules.Identity.Application.Authentication.Logout
 				var user = await _userManager.FindByIdAsync(request.UserId);
 				if (user == null)
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessage.GetLocalizedMessage("UserNotFound"), statusCode: 404);
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("UserNotFound"), statusCode: 404);
 				}
-				user.RefreshToken = null;
+
+
+				//await _tokenStoreRepository.RevokeByDeviceIdAsync();
 				await _userManager.UpdateAsync(user);
 
-				return ApiResponseBuilder.Success<object>("", _localizedMessage.GetLocalizedMessage("LoggedOut"));
+				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("LoggedOut"), statusCode: 200);
 			}
 			catch (Exception)
 			{

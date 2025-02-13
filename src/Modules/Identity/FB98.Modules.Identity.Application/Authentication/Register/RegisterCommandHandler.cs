@@ -1,28 +1,23 @@
-﻿using FB98.Modules.Identity.Application.Share.Entities;
-using FB98.Shared.Abstractions.CQRS;
-using FB98.Shared.Abstractions.Responses;
-using FB98.Shared.Infrastructure.Localization;
-using FluentValidation;
+﻿using FB98.Modules.Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
 
 namespace FB98.Modules.Identity.Application.Authentication.Register
 {
-	public class RegisterCommandHandler : ICommandHandler<RegisterCommand, ApiResponse<object>>
+	internal sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand, ApiResponse<object>>
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly ILogger<RegisterCommandHandler> _logger;
 		private readonly IValidator<RegisterDto> _validator;
-		private readonly ILocalizedMessageService _localizedMessage;
+		private readonly ILocalizedMessageService _localizedMessageService;
 		public RegisterCommandHandler(UserManager<AppUser> userManager,
 			ILogger<RegisterCommandHandler> logger,
 			IValidator<RegisterDto> validator,
-			ILocalizedMessageService localizedMessage)
+			ILocalizedMessageService localizedMessageService)
 		{
 			_userManager = userManager;
 			_logger = logger;
 			_validator = validator;
-			_localizedMessage = localizedMessage;
+			_localizedMessageService = localizedMessageService;
 		}
 		public async Task<ApiResponse<object>> Handle(RegisterCommand request, CancellationToken cancellationToken)
 		{
@@ -32,13 +27,13 @@ namespace FB98.Modules.Identity.Application.Authentication.Register
 				var validationResult = await _validator.ValidateAsync(model, cancellationToken);
 				if (!validationResult.IsValid)
 				{
-					return ApiResponseBuilder.ValidationError<object>(validationResult.Errors, _localizedMessage.GetLocalizedMessage("ValidationFailed"));
+					return ApiResponseBuilder.ValidationError<object>(validationResult.Errors, _localizedMessageService.GetLocalizedMessage("ValidationFailed"));
 				}
 
 				var existingUser = await _userManager.FindByEmailAsync(model.Email!);
 				if (existingUser != null)
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessage.GetLocalizedMessage("EmailAlreadyExists"), statusCode: 400);
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("EmailAlreadyExists"), statusCode: 409);
 				}
 
 				var user = new AppUser
@@ -48,27 +43,33 @@ namespace FB98.Modules.Identity.Application.Authentication.Register
 					PhoneNumber = model.PhoneNumber,
 					Firstname = model.Firstname!,
 					Lastname = model.Lastname!,
-					Age = (byte)model.Age,
-					RefreshToken = default!
+					Age = CaculatorAge(model.BirthOfDate),
+					BirthOfDate = model.BirthOfDate
 				};
 				var result = await _userManager.CreateAsync(user, model.Password!);
 
 				if (!result.Succeeded)
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessage.GetLocalizedMessage("UserCreationFailed"),
-						errors: result.Errors.ToDictionary(
-							e => e.Code,
-							e => new List<object> { e.Description }
-						),
-						statusCode: 400);
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("UserCreationFailed"), statusCode: 400);
 				}
-				return ApiResponseBuilder.Success<object>("", _localizedMessage.GetLocalizedMessage("AccountCreatedSuccessfully"));
+				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("AccountCreatedSuccessfully"), statusCode: 201);
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "An error occurred during registration");
+				_logger.LogError(ex, "An error occurred: Register");
 				return ApiResponseBuilder.Error<object>("An unexpected error occurred", statusCode: 500);
 			}
+		}
+		private static byte CaculatorAge(DateOnly birthOfDate)
+		{
+			var currentDate = DateOnly.FromDateTime(DateTime.Today);
+			int age = currentDate.Year - birthOfDate.Year;
+
+			if (currentDate < birthOfDate.AddYears(age))
+			{
+				--age;
+			}
+			return (byte)age;
 		}
 	}
 }
