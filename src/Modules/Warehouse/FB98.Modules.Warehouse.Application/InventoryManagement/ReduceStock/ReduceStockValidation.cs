@@ -1,6 +1,6 @@
 ﻿namespace FB98.Modules.Warehouse.Application.InventoryManagement.ReduceStock
 {
-	public class ReduceStockValidation : AbstractValidator<ReduceStockDto>
+	internal sealed class ReduceStockValidation : AbstractValidator<ReduceStockDto>
 	{
 		public ReduceStockValidation(ILocalizedMessageService message)
 		{

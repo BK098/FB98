@@ -19,6 +19,11 @@ namespace FB98.Shared.Infrastructure.Repositpries
 			var entity = await _dbSet.FirstOrDefaultAsync(x => x.Id.Equals(id));
 			return entity;
 		}
+		public virtual async Task<TEntity?> GetByIdNoTrackingAsync(Guid? id)
+		{
+			var entity = await _dbSet.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(id));
+			return entity;
+		}
 		public virtual async Task<TEntity?> FindByIdAsync(Guid? id)
 		{
 			var entity = await _dbSet.FindAsync(id);

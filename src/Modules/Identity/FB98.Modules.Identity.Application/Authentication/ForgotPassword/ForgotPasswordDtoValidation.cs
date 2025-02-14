@@ -1,6 +1,6 @@
 ﻿namespace FB98.Modules.Identity.Application.Authentication.ForgotPassword
 {
-	public class ForgotPasswordDtoValidation : AbstractValidator<ForgotPasswordDto>
+	internal sealed class ForgotPasswordDtoValidation : AbstractValidator<ForgotPasswordDto>
 	{
 		public ForgotPasswordDtoValidation(ILocalizedMessageService message)
 		{

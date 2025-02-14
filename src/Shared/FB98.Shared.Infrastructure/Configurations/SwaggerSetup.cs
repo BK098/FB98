@@ -8,11 +8,14 @@ namespace FB98.Shared.Infrastructure.Configurations
 	{
 		public static void AddCustomSwagger(this IServiceCollection services)
 		{
+			services.AddEndpointsApiExplorer();
 			services.AddSwaggerGen(opt =>
 			{
+				opt.EnableAnnotations();
+				opt.UseInlineDefinitionsForEnums();
 				opt.SwaggerDoc("v1", new OpenApiInfo
 				{
-					Title = "WebAPI",
+					Title = "Bootrapper",
 					Version = "v1",
 					Description = "API Documentation của hệ thống quản lý phòng vé"
 				});

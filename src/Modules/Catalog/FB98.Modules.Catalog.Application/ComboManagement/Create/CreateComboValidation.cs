@@ -1,17 +1,11 @@
-﻿namespace FB98.Modules.Catalog.Application.ProductManagement.Update
+﻿namespace FB98.Modules.Catalog.Application.ComboManagement.Create
 {
-	internal sealed class UpdateProductValidation : AbstractValidator<UpdateProductDto>
+	internal sealed class CreateComboValidation : AbstractValidator<CreateComboDto>
 	{
-		public UpdateProductValidation(ILocalizedMessageService message)
+		public CreateComboValidation(ILocalizedMessageService message)
 		{
 			RuleFor(x => x.Name)
 				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
-				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
-
-			RuleFor(x => x.Description)
-				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
-
-			RuleFor(x => x.ProductImage)
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
 
 			RuleFor(x => x.IsEnabled)
@@ -20,6 +14,17 @@
 
 			RuleFor(x => x.Price)
 				.GreaterThanOrEqualTo(0).WithMessage(message.GetLocalizedMessage("GreaterThanOrEqualTo0"))
+				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
+				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
+
+			RuleForEach(x => x.Products).SetValidator(new CreateComboProductValidation(message));
+		}
+	}
+	internal sealed class CreateComboProductValidation : AbstractValidator<CreateComboProductDto>
+	{
+		public CreateComboProductValidation(ILocalizedMessageService message)
+		{
+			RuleFor(x => x.ProductId)
 				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
 

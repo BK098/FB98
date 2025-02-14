@@ -1,6 +1,6 @@
 ﻿namespace FB98.Modules.Identity.Application.Authentication.ResetPassword
 {
-	public class ResetPasswordDtoValidation : AbstractValidator<ResetPasswordDto>
+	internal sealed class ResetPasswordDtoValidation : AbstractValidator<ResetPasswordDto>
 	{
 		public ResetPasswordDtoValidation(ILocalizedMessageService message)
 		{

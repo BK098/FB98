@@ -1,6 +1,6 @@
 ﻿namespace FB98.Modules.Identity.Application.Authentication.Login
 {
-	public class LoginValidation : AbstractValidator<LoginDto>
+	internal sealed class LoginValidation : AbstractValidator<LoginDto>
 	{
 		public LoginValidation(ILocalizedMessageService message)
 		{

@@ -1,6 +1,6 @@
 ﻿namespace FB98.Modules.Warehouse.Application.InventoryManagement.AddStock
 {
-	public class AddStockValidation : AbstractValidator<AddStockDto>
+	internal sealed class AddStockValidation : AbstractValidator<AddStockDto>
 	{
 		public AddStockValidation(ILocalizedMessageService message)
 		{

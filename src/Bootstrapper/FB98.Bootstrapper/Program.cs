@@ -6,10 +6,22 @@ using FB98.Modules.Identity.Api;
 using FB98.Modules.Warehouse.Api;
 using FB98.Shared.Infrastructure;
 using FB98.Shared.Infrastructure.Configurations;
+using System.Text.Json.Serialization;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+	.AddJsonOptions(options =>
+	{
+		//options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+		options.JsonSerializerOptions.WriteIndented = true;
+	})
+	.AddNewtonsoftJson(options =>
+	{
+		options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+	});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddEndpointsApiExplorer();

@@ -1,6 +1,6 @@
 ﻿namespace FB98.Modules.Catalog.Application.CategoryManagement.Update
 {
-	public class UpdateCategoryValidation : AbstractValidator<UpdateCategoryDto>
+	internal sealed class UpdateCategoryValidation : AbstractValidator<UpdateCategoryDto>
 	{
 		public UpdateCategoryValidation(ILocalizedMessageService message)
 		{

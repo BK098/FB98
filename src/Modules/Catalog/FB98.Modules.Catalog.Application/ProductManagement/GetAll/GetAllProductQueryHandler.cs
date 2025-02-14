@@ -9,13 +9,13 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.GetAll
 	internal sealed class GetAllProductQueryHandler : IQueryHandler<GetAllProductQuery, ApiResponse<PaginatedResult<GetAllProductResponse>>>
 	{
 		private readonly List<string> allowedProperties = ["Name", "Price"];
-		private readonly ILogger<GetAllProductResponse> _logger;
+		private readonly ILogger<GetAllProductQueryHandler> _logger;
 		private readonly IProductRepository _productRepository;
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly IMapper _mapper;
 
 		public GetAllProductQueryHandler(
-			ILogger<GetAllProductResponse> logger,
+			ILogger<GetAllProductQueryHandler> logger,
 			IProductRepository productRepository,
 			ILocalizedMessageService localizedMessageService,
 			IMapper mapper)

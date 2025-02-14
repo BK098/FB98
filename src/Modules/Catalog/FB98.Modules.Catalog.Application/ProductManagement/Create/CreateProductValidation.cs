@@ -1,6 +1,6 @@
 ﻿namespace FB98.Modules.Catalog.Application.ProductManagement.Create
 {
-	public class CreateProductValidation : AbstractValidator<CreateProductDto>
+	internal sealed class CreateProductValidation : AbstractValidator<CreateProductDto>
 	{
 		public CreateProductValidation(ILocalizedMessageService message)
 		{

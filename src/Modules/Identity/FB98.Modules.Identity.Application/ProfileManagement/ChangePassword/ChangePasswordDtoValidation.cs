@@ -1,6 +1,6 @@
 ﻿namespace FB98.Modules.Identity.Application.ProfileManagement.ChangePassword
 {
-	public class ChangePasswordDtoValidation : AbstractValidator<ChangePasswordDto>
+	internal sealed class ChangePasswordDtoValidation : AbstractValidator<ChangePasswordDto>
 	{
 		public ChangePasswordDtoValidation(ILocalizedMessageService message)
 		{

@@ -1,6 +1,6 @@
 ﻿namespace FB98.Modules.Warehouse.Application.InventoryManagement.CreateInventory
 {
-	public class CreateInventoryValidation : AbstractValidator<CreateInventoryDto>
+	internal sealed class CreateInventoryValidation : AbstractValidator<CreateInventoryDto>
 	{
 		public CreateInventoryValidation(ILocalizedMessageService message)
 		{

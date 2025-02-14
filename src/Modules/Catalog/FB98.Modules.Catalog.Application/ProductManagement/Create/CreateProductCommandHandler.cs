@@ -15,6 +15,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Create
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly ICloudinaryService _cloudinaryService;
+		private readonly ILocalizedMessageService _localizedMessageService;
 		public CreateProductCommandHandler(
 			ILogger<CreateProductCommandHandler> logger,
 			IValidator<CreateProductDto> validator,
@@ -22,7 +23,8 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Create
 			IModuleClient moduleClient,
 			IMapper mapper,
 			IUnitOfWork unitOfWork,
-			ICloudinaryService cloudinaryService)
+			ICloudinaryService cloudinaryService,
+			ILocalizedMessageService localizedMessageService)
 		{
 			_logger = logger;
 			_validator = validator;
@@ -31,6 +33,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Create
 			_mapper = mapper;
 			_unitOfWork = unitOfWork;
 			_cloudinaryService = cloudinaryService;
+			_localizedMessageService = localizedMessageService;
 		}
 		public async Task<ApiResponse<object>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
 		{
@@ -52,7 +55,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Create
 				await _unitOfWork.SaveChangesAsync();
 				await _moduleClient.PublishAsync(new ProductCreatedEvent(product.Id, model.Quantity!.Value));
 
-				return ApiResponseBuilder.Success<object>(product, statusCode: 201);
+				return ApiResponseBuilder.Success<object>(product, _localizedMessageService.GetLocalizedMessage("Created"), statusCode: 201);
 
 			}
 			catch (Exception ex)

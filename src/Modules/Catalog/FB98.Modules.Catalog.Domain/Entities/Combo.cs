@@ -1,12 +1,12 @@
 ﻿using FB98.Shared.Abstractions.Entities;
 using System.Collections.Generic;
 
-
 namespace FB98.Modules.Catalog.Domain.Entities
 {
 	public class Combo : BaseEntity
 	{
 		public string Name { get; set; } = default!;
+		public string? Image { get; set; }
 		public string? Description { get; set; }
 		public decimal Price { get; set; }
 		public bool IsEnabled { get; set; }

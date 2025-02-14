@@ -2,6 +2,7 @@
 using FB98.Modules.Catalog.DataAccess.Data;
 using FB98.Modules.Catalog.Domain.Entities;
 using FB98.Shared.Infrastructure.Repositpries;
+using Microsoft.EntityFrameworkCore;
 
 namespace FB98.Modules.Catalog.DataAccess.Repositories
 {
@@ -11,5 +12,12 @@ namespace FB98.Modules.Catalog.DataAccess.Repositories
 		{
 		}
 
+		public override async Task<Combo?> GetByIdAsync(Guid? id)
+		{
+			return await _context.Combos
+				.Include(x => x.ComboProducts)
+					.ThenInclude(x => x.Product)
+				.FirstOrDefaultAsync(x => x.Id == id);
+		}
 	}
 }

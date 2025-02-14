@@ -243,4 +243,7 @@
   <data name="Created" xml:space="preserve">
     <value>Đã tạo thành công</value>
   </data>
+  <data name="ProductNotFound" xml:space="preserve">
+    <value>Không tìm thấy sản phẩm</value>
+  </data>
 </root>
