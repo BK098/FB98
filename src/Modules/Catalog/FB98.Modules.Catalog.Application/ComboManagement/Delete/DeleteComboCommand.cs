@@ -1,4 +1,4 @@
 ﻿namespace FB98.Modules.Catalog.Application.ComboManagement.Delete
 {
-	public record DeleteComboCommand(Guid ComboId): ICommand<ApiResponse<object>>;
+	public record DeleteComboCommand(Guid ComboId): ICommand<ApiResult<object>>;
 }

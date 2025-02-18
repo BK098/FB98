@@ -2,7 +2,7 @@
 
 namespace FB98.Modules.Catalog.Application.ComboManagement.GetDetail
 {
-	internal sealed class GetDetailComboQueryHandler : IQueryHandler<GetDetailComboQuery, ApiResponse<GetDetailComboResponse>>
+	internal sealed class GetDetailComboQueryHandler : IQueryHandler<GetDetailComboQuery, ApiResult<GetDetailComboResponse>>
 	{
 		private readonly ILogger<GetDetailComboQueryHandler> _logger;
 		private readonly IComboRepository _comboRepository;
@@ -18,7 +18,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.GetDetail
 			_mapper = mapper;
 			_localizedMessageService = localizedMessageService;
 		}
-		public async Task<ApiResponse<GetDetailComboResponse>> Handle(GetDetailComboQuery request, CancellationToken cancellationToken)
+		public async Task<ApiResult<GetDetailComboResponse>> Handle(GetDetailComboQuery request, CancellationToken cancellationToken)
 		{
 			var comboId = request.ComboId;
 			try

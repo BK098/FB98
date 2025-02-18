@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FB98.Modules.Identity.Application.Authentication.RevokeToken
 {
-	internal sealed class RevokeTokenCommandHandler : ICommandHandler<RevokeTokenCommand, ApiResponse<object>>
+	internal sealed class RevokeTokenCommandHandler : ICommandHandler<RevokeTokenCommand, ApiResult<object>>
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly ITokenStoreRepository _tokenStoreRepository;
@@ -18,7 +18,7 @@ namespace FB98.Modules.Identity.Application.Authentication.RevokeToken
 			_tokenStoreRepository = tokenStoreRepository;
 			_logger = logger;
 		}
-		public async Task<ApiResponse<object>> Handle(RevokeTokenCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<object>> Handle(RevokeTokenCommand request, CancellationToken cancellationToken)
 		{
 			try
 			{

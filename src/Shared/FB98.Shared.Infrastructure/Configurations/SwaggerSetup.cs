@@ -8,7 +8,6 @@ namespace FB98.Shared.Infrastructure.Configurations
 	{
 		public static void AddCustomSwagger(this IServiceCollection services)
 		{
-			services.AddEndpointsApiExplorer();
 			services.AddSwaggerGen(opt =>
 			{
 				opt.EnableAnnotations();
@@ -50,7 +49,10 @@ namespace FB98.Shared.Infrastructure.Configurations
 		public static void UseCustomSwagger(this IApplicationBuilder app)
 		{
 			app.UseSwagger();
-			app.UseSwaggerUI();
+			app.UseSwaggerUI(opt =>
+			{
+				opt.EnableFilter();
+			});
 		}
 	}
 }

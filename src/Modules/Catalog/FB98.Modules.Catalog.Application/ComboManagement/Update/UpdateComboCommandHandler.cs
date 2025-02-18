@@ -4,7 +4,7 @@ using FB98.Shared.Infrastructure.Cloudinaries;
 
 namespace FB98.Modules.Catalog.Application.ComboManagement.Update
 {
-	internal sealed class UpdateComboCommandHandler : ICommandHandler<UpdateComboCommand, ApiResponse<object>>
+	internal sealed class UpdateComboCommandHandler : ICommandHandler<UpdateComboCommand, ApiResult<object>>
 	{
 		private readonly IMapper _mapper;
 		private readonly ILogger<UpdateComboCommandHandler> _logger;
@@ -31,7 +31,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Update
 			_cloudinaryService = cloudinaryService;
 			_localizedMessageService = localizedMessageService;
 		}
-		public async Task<ApiResponse<object>> Handle(UpdateComboCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<object>> Handle(UpdateComboCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			var comboId = request.ComboId;

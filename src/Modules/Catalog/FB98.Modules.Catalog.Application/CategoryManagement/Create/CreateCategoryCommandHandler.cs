@@ -3,7 +3,7 @@ using FB98.Modules.Catalog.Domain.Entities;
 
 namespace FB98.Modules.Catalog.Application.CategoryManagement.Create
 {
-	internal sealed class CreateCategoryCommandHandler : ICommandHandler<CreateCategoryCommand, ApiResponse<object>>
+	internal sealed class CreateCategoryCommandHandler : ICommandHandler<CreateCategoryCommand, ApiResult<object>>
 	{
 		private readonly ILogger<CreateCategoryCommandHandler> _logger;
 		private readonly ICategoryRepository _categoryRepository;
@@ -27,7 +27,7 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.Create
 			_mapper = mapper;
 			_localizedMessageService = localizedMessageService;
 		}
-		public async Task<ApiResponse<object>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<object>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			try

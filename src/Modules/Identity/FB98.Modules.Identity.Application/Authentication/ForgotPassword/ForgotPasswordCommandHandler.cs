@@ -6,7 +6,7 @@ using System.Web;
 
 namespace FB98.Modules.Identity.Application.Authentication.ForgotPassword
 {
-	internal sealed class ForgotPasswordCommandHandler : ICommandHandler<ForgotPasswordCommand, ApiResponse<object>>
+	internal sealed class ForgotPasswordCommandHandler : ICommandHandler<ForgotPasswordCommand, ApiResult<object>>
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly ILogger<ForgotPasswordCommandHandler> _logger;
@@ -28,7 +28,7 @@ namespace FB98.Modules.Identity.Application.Authentication.ForgotPassword
 			_configuration = configuration;
 			_emailSender = emailSender;
 		}
-		public async Task<ApiResponse<object>> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<object>> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			try

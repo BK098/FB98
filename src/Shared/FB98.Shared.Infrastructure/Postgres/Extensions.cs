@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace FB98.Shared.Infrastructure.Postgres
 {
@@ -34,13 +33,15 @@ namespace FB98.Shared.Infrastructure.Postgres
 					maxRetryDelay: TimeSpan.FromSeconds(30),
 					errorCodesToAdd: null
 				))
-				.EnableSensitiveDataLogging()
-				.LogTo(Console.WriteLine, LogLevel.Information)
+#if DEBUG
+			//.EnableSensitiveDataLogging()
+			//.LogTo(Console.WriteLine, LogLevel.Information)
+#endif
 			);
 			using var scope = services.BuildServiceProvider().CreateScope();
 			var dbContext = scope.ServiceProvider.GetRequiredService<T>();
-			dbContext.Database.ExecuteSqlRaw("CREATE EXTENSION IF NOT EXISTS unaccent;");
-			dbContext.Database.Migrate();
+			//dbContext.Database.Migrate();
+			//dbContext.Database.ExecuteSqlRaw("CREATE EXTENSION IF NOT EXISTS unaccent;");
 
 			return services;
 		}

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FB98.Modules.Catalog.Application.ComboManagement.GetAll
 {
-	internal sealed class GetAllComboQueryHandler : IQueryHandler<GetAllComboQuery, ApiResponse<PaginatedResult<GetAllComboResponse>>>
+	internal sealed class GetAllComboQueryHandler : IQueryHandler<GetAllComboQuery, ApiResult<PaginatedResult<GetAllComboResponse>>>
 	{
 		private readonly List<string> allowedProperties = ["Name", "Price"];
 		private readonly ILogger<GetAllComboQueryHandler> _logger;
@@ -25,7 +25,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.GetAll
 			_localizedMessageService = localizedMessageService;
 			_mapper = mapper;
 		}
-		public async Task<ApiResponse<PaginatedResult<GetAllComboResponse>>> Handle(GetAllComboQuery request, CancellationToken cancellationToken)
+		public async Task<ApiResult<PaginatedResult<GetAllComboResponse>>> Handle(GetAllComboQuery request, CancellationToken cancellationToken)
 		{
 			var filter = request.Filter;
 			try

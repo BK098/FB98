@@ -4,9 +4,9 @@ namespace FB98.Shared.Abstractions.Responses
 {
 	public static class ApiResponseBuilder
 	{
-		public static ApiResponse<T> Success<T>(T data, string? message = null, int statusCode = 200)
+		public static ApiResult<T> Success<T>(T data, string? message = null, int statusCode = 200)
 		{
-			return new ApiResponse<T>
+			return new ApiResult<T>
 			{
 				IsSuccess = true,
 				Message = message,
@@ -15,9 +15,9 @@ namespace FB98.Shared.Abstractions.Responses
 				Errors = null
 			};
 		}
-		public static ApiResponse<T> Error<T>(string message, int statusCode = 400)
+		public static ApiResult<T> Error<T>(string message, int statusCode = 400)
 		{
-			return new ApiResponse<T>
+			return new ApiResult<T>
 			{
 				IsSuccess = false,
 				Message = message,
@@ -25,7 +25,7 @@ namespace FB98.Shared.Abstractions.Responses
 				StatusCode = statusCode
 			};
 		}
-		public static ApiResponse<T> ValidationError<T>(List<ValidationFailure> validationErrors, string message = "Validation failed")
+		public static ApiResult<T> ValidationError<T>(List<ValidationFailure> validationErrors, string message = "Validation failed")
 		{
 			var errors = new Dictionary<string, List<object>>();
 			foreach (var error in validationErrors)
@@ -38,7 +38,7 @@ namespace FB98.Shared.Abstractions.Responses
 				value.Add(error.ErrorMessage);
 			}
 
-			return new ApiResponse<T>
+			return new ApiResult<T>
 			{
 				IsSuccess = false,
 				Message = message,

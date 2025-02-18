@@ -3,7 +3,7 @@ using FB98.Shared.Infrastructure.Cloudinaries;
 
 namespace FB98.Modules.Catalog.Application.ComboManagement.Delete
 {
-	internal sealed class DeleteComboCommandHandler : ICommandHandler<DeleteComboCommand, ApiResponse<object>>
+	internal sealed class DeleteComboCommandHandler : ICommandHandler<DeleteComboCommand, ApiResult<object>>
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly ILogger<DeleteComboCommandHandler> _logger;
@@ -24,7 +24,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Delete
 			_cloudinaryService = cloudinaryService;
 		}
 
-		public async Task<ApiResponse<object>> Handle(DeleteComboCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<object>> Handle(DeleteComboCommand request, CancellationToken cancellationToken)
 		{
 			var comboId = request.ComboId;
 			try

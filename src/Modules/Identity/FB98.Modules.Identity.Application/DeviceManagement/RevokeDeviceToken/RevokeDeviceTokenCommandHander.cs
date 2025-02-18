@@ -2,7 +2,7 @@
 
 namespace FB98.Modules.Identity.Application.DeviceManagement.RevokeDeviceToken
 {
-	internal class RevokeDeviceTokenCommandHander : ICommandHandler<RevokeDeviceTokenCommand, ApiResponse<object>>
+	internal class RevokeDeviceTokenCommandHander : ICommandHandler<RevokeDeviceTokenCommand, ApiResult<object>>
 	{
 		private readonly ITokenStoreRepository _tokenStoreRepository;
 		private readonly ILogger<RevokeDeviceTokenCommandHander> _logger;
@@ -15,7 +15,7 @@ namespace FB98.Modules.Identity.Application.DeviceManagement.RevokeDeviceToken
 			_logger = logger;
 			_localizedMessageService = localizedMessageService;
 		}
-		public async Task<ApiResponse<object>> Handle(RevokeDeviceTokenCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<object>> Handle(RevokeDeviceTokenCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			try

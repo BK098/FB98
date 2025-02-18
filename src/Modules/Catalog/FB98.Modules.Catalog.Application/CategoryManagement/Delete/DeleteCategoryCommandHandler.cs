@@ -3,7 +3,7 @@ using FB98.Modules.Catalog.Application.Abstractions;
 
 namespace FB98.Modules.Catalog.Application.CategoryManagement.Delete
 {
-	internal sealed class DeleteCategoryCommandHandler : ICommandHandler<DeleteCategoryCommand, ApiResponse<object>>
+	internal sealed class DeleteCategoryCommandHandler : ICommandHandler<DeleteCategoryCommand, ApiResult<object>>
 	{
 		private readonly ILogger<DeleteCategoryCommandHandler> _logger;
 		private readonly ICategoryRepository _categoryRepository;
@@ -20,7 +20,7 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.Delete
 			_unitOfWork = unitOfWork;
 			_localizedMessageService = localizedMessageService;
 		}
-		public async Task<ApiResponse<object>> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<object>> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
 		{
 			var categoryId = request.CategoryId;
 			try

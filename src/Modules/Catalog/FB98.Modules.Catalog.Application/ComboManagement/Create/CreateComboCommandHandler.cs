@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FB98.Modules.Catalog.Application.ComboManagement.Create
 {
-	internal sealed class CreateComboCommandHandler : ICommandHandler<CreateComboCommand, ApiResponse<object>>
+	internal sealed class CreateComboCommandHandler : ICommandHandler<CreateComboCommand, ApiResult<object>>
 	{
 		private readonly IMapper _mapper;
 		private readonly ILogger<CreateComboCommandHandler> _logger;
@@ -36,7 +36,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Create
 			_localizedMessageService = localizedMessageService;
 		}
 
-		public async Task<ApiResponse<object>> Handle(CreateComboCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<object>> Handle(CreateComboCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			string? imageUrl = null;

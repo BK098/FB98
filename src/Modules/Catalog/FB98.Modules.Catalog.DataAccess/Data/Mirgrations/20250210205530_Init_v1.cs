@@ -113,7 +113,7 @@ namespace FB98.Modules.Catalog.DataAccess.Data.Mirgrations
 				name: "IX_ComboProducts_ProductId",
 				schema: "CatalogModule",
 				table: "ComboProducts",
-				column: "ProductId");
+				column: "Id");
 
 			migrationBuilder.CreateIndex(
 				name: "IX_Products_CategoryId",

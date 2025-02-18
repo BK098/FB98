@@ -3,5 +3,5 @@ using FB98.Shared.Infrastructure.Paging;
 
 namespace FB98.Modules.Catalog.Application.CategoryManagement.GetAll
 {
-	public record GetAllCategoryQuery(Filter Filter) : IQuery<ApiResponse<PaginatedResult<GetAllCategoryResponse>>>;
+	public record GetAllCategoryQuery(Filter Filter) : IQuery<ApiResult<PaginatedResult<GetAllCategoryResponse>>>;
 }
