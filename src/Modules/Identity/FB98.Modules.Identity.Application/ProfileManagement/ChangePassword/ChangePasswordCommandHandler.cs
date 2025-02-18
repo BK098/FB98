@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FB98.Modules.Identity.Application.ProfileManagement.ChangePassword
 {
-	internal sealed class ChangePasswordCommandHandler : ICommandHandler<ChangePasswordCommand, ApiResponse<object>>
+	internal sealed class ChangePasswordCommandHandler : ICommandHandler<ChangePasswordCommand, ApiResult<object>>
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly ILogger<ChangePasswordCommandHandler> _logger;
@@ -20,7 +20,7 @@ namespace FB98.Modules.Identity.Application.ProfileManagement.ChangePassword
 			_localizedMessageService = localizedMessageService;
 			_validator = validator;
 		}
-		public async Task<ApiResponse<object>> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<object>> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			try

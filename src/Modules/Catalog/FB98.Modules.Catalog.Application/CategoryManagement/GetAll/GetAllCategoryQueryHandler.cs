@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FB98.Modules.Catalog.Application.CategoryManagement.GetAll
 {
-	internal sealed class GetAllCategoryQueryHandler : IQueryHandler<GetAllCategoryQuery, ApiResponse<PaginatedResult<GetAllCategoryResponse>>>
+	internal sealed class GetAllCategoryQueryHandler : IQueryHandler<GetAllCategoryQuery, ApiResult<PaginatedResult<GetAllCategoryResponse>>>
 	{
 		private readonly List<string> allowedProperties = ["Name"];
 		private readonly ILogger<GetAllCategoryResponse> _logger;
@@ -24,7 +24,7 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.GetAll
 			_localizedMessageService = localizedMessageService;
 			_mapper = mapper;
 		}
-		public async Task<ApiResponse<PaginatedResult<GetAllCategoryResponse>>> Handle(GetAllCategoryQuery request, CancellationToken cancellationToken)
+		public async Task<ApiResult<PaginatedResult<GetAllCategoryResponse>>> Handle(GetAllCategoryQuery request, CancellationToken cancellationToken)
 		{
 
 			var filter = request.Filter;

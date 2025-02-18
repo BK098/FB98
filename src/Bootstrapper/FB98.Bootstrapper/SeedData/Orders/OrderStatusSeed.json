@@ -1,0 +1,22 @@
+[
+	{
+		"Id": "fc617b82-a90d-4d01-b9b9-2d4d59bcc9fd",
+		"Name": "Requested"
+	},
+	{
+		"Id": "fe9ddc54-0343-44d6-9a85-3068f7aaa267",
+		"Name": "Processing"
+	},
+	{
+		"Id": "0432df1a-e2e3-4b01-86a0-d15c4f54e85f",
+		"Name": "Confirmed"
+	},
+	{
+		"Id": "a0c35adf-4c01-463e-a11b-98388254bbb5",
+		"Name": "CheckedIn"
+	},
+	{
+		"Id": "0177dc59-0f43-453d-9870-7ab8bcb539d3",
+		"Name": "Canceled"
+	}
+]

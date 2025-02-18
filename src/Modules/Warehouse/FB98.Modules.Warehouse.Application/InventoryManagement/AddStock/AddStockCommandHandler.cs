@@ -3,7 +3,7 @@ using MediatR;
 
 namespace FB98.Modules.Warehouse.Application.InventoryManagement.AddStock
 {
-	internal sealed class AddStockCommandHandler : ICommandHandler<AddStockCommand, ApiResponse<Unit>>
+	internal sealed class AddStockCommandHandler : ICommandHandler<AddStockCommand, ApiResult<Unit>>
 	{
 		private readonly ILogger<AddStockCommandHandler> _logger;
 		private readonly IInventoryRepository _inventoryRepository;
@@ -17,7 +17,7 @@ namespace FB98.Modules.Warehouse.Application.InventoryManagement.AddStock
 			_logger = logger;
 			_validator = validator;
 		}
-		public async Task<ApiResponse<Unit>> Handle(AddStockCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<Unit>> Handle(AddStockCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			try
@@ -28,12 +28,12 @@ namespace FB98.Modules.Warehouse.Application.InventoryManagement.AddStock
 					return ApiResponseBuilder.ValidationError<Unit>(validationResult.Errors);
 				}
 
-				await _inventoryRepository.AddStockAsync(model.ProductId!.Value, model.Quantity!.Value);
+				await _inventoryRepository.AddStockAsync(model.ProductId!.Value, model.Quantity!.Value, model.IsLimited!.Value);
 				return ApiResponseBuilder.Success(Unit.Value, statusCode: 201);
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Error occurred while forgot password");
+				_logger.LogError(ex, "Error occurred while add stock");
 				return ApiResponseBuilder.Error<Unit>("An unexpected error occurred", statusCode: 500);
 			}
 		}

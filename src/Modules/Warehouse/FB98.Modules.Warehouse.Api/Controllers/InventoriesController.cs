@@ -12,6 +12,14 @@ namespace FB98.Modules.Warehouse.Api.Controllers
 		{
 		}
 
+		[HttpGet("get-stock/{productId}")]
+		public async Task<IActionResult> ReduceStock(Guid productId)
+		{
+			var request = new GetStockQuery(productId);
+			var result = await _mediator.Send(request);
+			return StatusCode(result.StatusCode, result);
+		}
+
 		[HttpPost("add-stock")]
 		public async Task<IActionResult> AddStock(AddStockDto model)
 		{
@@ -32,14 +40,6 @@ namespace FB98.Modules.Warehouse.Api.Controllers
 		public async Task<IActionResult> ReduceStock(ReduceStockDto model)
 		{
 			var request = new ReduceStockCommand(model);
-			var result = await _mediator.Send(request);
-			return StatusCode(result.StatusCode, result);
-		}
-
-		[HttpGet("get-stock/{productId}")]
-		public async Task<IActionResult> ReduceStock(Guid productId)
-		{
-			var request = new GetStockQuery(productId);
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);
 		}

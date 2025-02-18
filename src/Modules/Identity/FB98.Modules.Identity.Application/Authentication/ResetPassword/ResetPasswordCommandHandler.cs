@@ -4,7 +4,7 @@ using System.Web;
 
 namespace FB98.Modules.Identity.Application.Authentication.ResetPassword
 {
-	internal sealed class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordCommand, ApiResponse<object>>
+	internal sealed class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordCommand, ApiResult<object>>
 	{
 		private readonly IValidator<ResetPasswordDto> _validator;
 		private readonly ILocalizedMessageService _localizedMessageService;
@@ -21,7 +21,7 @@ namespace FB98.Modules.Identity.Application.Authentication.ResetPassword
 			_userManager = userManager;
 			_logger = logger;
 		}
-		public async Task<ApiResponse<object>> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<object>> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			try

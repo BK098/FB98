@@ -10,11 +10,9 @@ namespace FB98.Modules.Warehouse.DataAccess.Repositories
 	{
 		private const string IMPORT = "import";
 		private const string EXPORT = "export";
-		public InventoryRepository(WarehouseModuleDbContext context) : base(context)
-		{
-		}
+		public InventoryRepository(WarehouseModuleDbContext context) : base(context) { }
 
-		public async Task AddStockAsync(Guid productId, int quantity)
+		public async Task AddStockAsync(Guid productId, int quantity, bool isLimited)
 		{
 			var inventory = await _context.Inventories.FirstOrDefaultAsync(x => x.ProductId == productId);
 
@@ -23,30 +21,48 @@ namespace FB98.Modules.Warehouse.DataAccess.Repositories
 				inventory = new Inventory
 				{
 					ProductId = productId,
-					Quantity = quantity
+					Quantity = quantity,
+					IsLimited = isLimited
 				};
+				inventory.SetCreatedAt();
 				Create(inventory);
 			}
-			inventory.Quantity += quantity;
-			await RecordTransaction(productId, inventory.Id, quantity, IMPORT);
+			else
+			{
+				if (inventory.IsLimited)
+				{
+					inventory.Quantity += quantity;
+				}
+				inventory.SetUpdatedAt();
+			}
+
+			await RecordTransaction(productId, inventory.Id, quantity, IMPORT, inventory.IsLimited);
 			await _context.SaveChangesAsync();
 		}
 
-		public async Task<int> GetStock(Guid productId)
+		public async Task<Inventory?> GetStock(Guid? productId)
 		{
 			var inventory = await _context.Inventories.FirstOrDefaultAsync(x => x.ProductId == productId);
-			return inventory?.Quantity ?? 0;
+			return inventory;
 		}
 
-		private async Task RecordTransaction(Guid productId, Guid inventoryId, int quantityChange, string transactionType)
+		private async Task RecordTransaction(Guid productId, Guid inventoryId, int quantityChange, string transactionType, bool isLimited)
 		{
 			var transaction = new InventoryTransaction
 			{
 				InventoryId = inventoryId,
 				ProductId = productId,
 				QuantityChange = quantityChange,
-				TransactionType = transactionType
+				TransactionType = transactionType,
+				IsLimited = isLimited
 			};
+			var isAdded = _context.InventoryTransactions.Any(x => x.ProductId == productId);
+			if (isAdded)
+			{
+				transaction.SetCreatedAt();
+			}
+			transaction.SetUpdatedAt();
+
 			_context.InventoryTransactions.Add(transaction);
 			await _context.SaveChangesAsync();
 		}
@@ -59,8 +75,17 @@ namespace FB98.Modules.Warehouse.DataAccess.Repositories
 				throw new InvalidOperationException("Not enough stock available.");
 			}
 
-			inventory.Quantity -= quantity;
-			await RecordTransaction(productId, inventory.Id, -quantity, EXPORT);
+			if (inventory.IsLimited)
+			{
+				if (inventory.Quantity < quantity)
+				{
+					throw new InvalidOperationException("Not enough stock available.");
+				}
+				inventory.Quantity -= quantity;
+			}
+			inventory.SetUpdatedAt();
+
+			await RecordTransaction(productId, inventory.Id, -quantity, EXPORT, inventory.IsLimited);
 			await _context.SaveChangesAsync();
 		}
 

@@ -2,17 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>disable</ImplicitUsings>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Shared\FB98.Shared.Abstractions\FB98.Shared.Abstractions.csproj" />
-    <ProjectReference Include="..\..\..\Shared\FB98.Shared.Infrastructure\FB98.Shared.Infrastructure.csproj" />
+    <Compile Remove="Events\**" />
+    <EmbeddedResource Remove="Events\**" />
+    <None Remove="Events\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Events\" />
+    <ProjectReference Include="..\..\..\Shared\FB98.Shared.Abstractions\FB98.Shared.Abstractions.csproj" />
+    <ProjectReference Include="..\..\..\Shared\FB98.Shared.Infrastructure\FB98.Shared.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

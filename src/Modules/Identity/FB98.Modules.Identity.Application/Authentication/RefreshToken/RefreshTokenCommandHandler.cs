@@ -10,7 +10,7 @@ using System.Text;
 
 namespace FB98.Modules.Identity.Application.Authentication.RefreshToken
 {
-	internal sealed class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, ApiResponse<TokenResponseDto>>
+	internal sealed class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, ApiResult<TokenResponseDto>>
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly IConfiguration _configuration;
@@ -33,7 +33,7 @@ namespace FB98.Modules.Identity.Application.Authentication.RefreshToken
 			_tokenService = tokenService;
 			_tokenStoreRepository = tokenStoreRepository;
 		}
-		public async Task<ApiResponse<TokenResponseDto>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<TokenResponseDto>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			try

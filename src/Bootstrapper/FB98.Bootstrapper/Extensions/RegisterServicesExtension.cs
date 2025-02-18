@@ -1,5 +1,7 @@
 ﻿using FB98.Shared.Infrastructure.Repositpries;
 using FluentValidation;
+using Refit;
+using System.Reflection;
 
 namespace FB98.Bootstrapper.Extensions
 {
@@ -57,9 +59,36 @@ namespace FB98.Bootstrapper.Extensions
 				services.AddScoped(repositoryInterface, repositoryType);
 			}
 			#endregion
+			#region Refit
+			var refitInterfaceType = typeof(IHttpClientFactory);
+			var refitInterfaces = assemblies.SelectMany(a => a.GetTypes())
+				.Where(t => t.IsInterface && t.GetMethods()
+				.Any(m => m.GetCustomAttributes(typeof(GetAttribute), false).Any()))
+				.ToList();
+			Console.WriteLine($"Đăng ký {refitInterfaces.Count} Refit API clients:");
+			foreach (var refitInterface in refitInterfaces)
+			{
+				Console.WriteLine($" - {refitInterface.FullName}");
+				var method = typeof(RegisterServicesExtension)
+					.GetMethod(nameof(AddRefitClient), BindingFlags.NonPublic | BindingFlags.Static)?
+					.MakeGenericMethod(refitInterface);
 
+				method?.Invoke(null, new object[] { services }); // Chỉ truyền `services`, không truyền baseUrl nữa
+			}
+
+			#endregion
 			return services;
 		}
+		private const string baseUrl = "https://localhost:7082";
+		private static void AddRefitClient<T>(IServiceCollection services) where T : class
+		{
 
+			services.AddRefitClient<T>()
+				.ConfigureHttpClient(c =>
+				{
+					c.BaseAddress = new Uri(baseUrl);
+					Console.WriteLine($"✔ {typeof(T).Name} đăng ký thành công với URL: {baseUrl}");
+				});
+		}
 	}
 }

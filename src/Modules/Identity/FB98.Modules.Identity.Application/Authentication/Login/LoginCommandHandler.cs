@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FB98.Modules.Identity.Application.Authentication.Login
 {
-	internal sealed class LoginCommandHandler : ICommandHandler<LoginCommand, ApiResponse<LoginResponseDto>>
+	internal sealed class LoginCommandHandler : ICommandHandler<LoginCommand, ApiResult<LoginResponseDto>>
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly ILogger<LoginCommandHandler> _logger;
@@ -33,7 +33,7 @@ namespace FB98.Modules.Identity.Application.Authentication.Login
 			_tokenStoreRepository = tokenStoreRepository;
 			_httpContextAccessor = httpContextAccessor;
 		}
-		public async Task<ApiResponse<LoginResponseDto>> Handle(LoginCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<LoginResponseDto>> Handle(LoginCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			try

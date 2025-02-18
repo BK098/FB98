@@ -1,10 +1,10 @@
 ﻿using FB98.Modules.Warehouse.Application.Abstractions;
-using FB98.Shared.Abstractions.Events.Base;
-using FB98.Shared.Abstractions.Events.Products;
+using FB98.Shared.Abstractions.Events;
+using MassTransit;
 
 namespace FB98.Modules.Warehouse.Application.InventoryManagement.Events
 {
-	public class ProductCreatedEventHandler : IEventHandler<ProductCreatedEvent>
+	public class ProductCreatedEventHandler : IConsumer<ProductCreatedEvent>
 	{
 		private readonly IInventoryRepository _inventoryRepository;
 
@@ -13,12 +13,13 @@ namespace FB98.Modules.Warehouse.Application.InventoryManagement.Events
 			_inventoryRepository = inventoryRepository;
 		}
 
-		public async Task HandleAsync(ProductCreatedEvent notification)
+		public async Task Consume(ConsumeContext<ProductCreatedEvent> context)
 		{
-			var stockExists = await _inventoryRepository.Exists(notification.ProductId);
+			var model = context.Message;
+			var stockExists = await _inventoryRepository.Exists(model.ProductId);
 			if (!stockExists)
 			{
-				await _inventoryRepository.AddStockAsync(notification.ProductId, notification.Quantity);
+				await _inventoryRepository.AddStockAsync(model.ProductId, model.Quantity, model.IsLimited);
 			}
 		}
 	}

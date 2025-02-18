@@ -6,7 +6,7 @@ using System.Web;
 
 namespace FB98.Modules.Identity.Application.Authentication.ForgotPassword
 {
-	internal sealed class ForgotPasswordCommandHandler : ICommandHandler<ForgotPasswordCommand, ApiResponse<object>>
+	internal sealed class ForgotPasswordCommandHandler : ICommandHandler<ForgotPasswordCommand, ApiResult<object>>
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly ILogger<ForgotPasswordCommandHandler> _logger;
@@ -28,7 +28,7 @@ namespace FB98.Modules.Identity.Application.Authentication.ForgotPassword
 			_configuration = configuration;
 			_emailSender = emailSender;
 		}
-		public async Task<ApiResponse<object>> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<object>> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			try
@@ -50,7 +50,7 @@ namespace FB98.Modules.Identity.Application.Authentication.ForgotPassword
 #if DEBUG
 				_logger.LogInformation("Encoded token: {EncodedToken}", HttpUtility.HtmlDecode(encodedToken));
 #endif
-				await _emailSender.SendEmailAsync(user.Email!, "Reset Password", resetLink);
+				await _emailSender.SendEmailAsync(user.Email!, "Reset Password", $"Ấn vào đây để khôi phục mật khẩu: <a href='{resetLink}'>Tại đây</a>");
 
 				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("PasswordResetLinkSent"));
 			}

@@ -1,0 +1,54 @@
+[
+	{
+		"Id": "c74ed1a2-9b70-46e8-b0fe-0df27ad2a778",
+		"Name": "Combo 1",
+		"Description": "Combo 2 bắp và 2 coca",
+		"Price": 79000,
+		"IsEnabled": "true",
+		"ComboProducts": [
+			{
+				"ProductId": "1aabda88-8c26-4dbd-99d2-dbb67bc2d4f4", // coca 15
+				"Quantity": 2
+			},
+			{
+				"ProductId": "04a64846-9f62-4cbc-8837-41160603483c", // bắp rang bơ 30
+				"Quantity": 2
+			}
+		]
+	},
+	{
+		"Id": "500caf8f-91f0-471e-b0c4-2bc3b891c393",
+		"Name": "Combo 2",
+		"Description": "Combo snack + bắp + nước",
+		"Price": 1000,
+		"IsEnabled": "true"
+	},
+	{
+		"Id": "4cc68c5c-6398-469a-9166-9dcd2cbd73d2",
+		"Name": "Combo 3",
+		"Description": "",
+		"Price": 1000,
+		"IsEnabled": "true"
+	},
+	{
+		"Id": "1aa43d2f-4e3f-438c-a0d1-49a21691480e",
+		"Name": "Combo 4",
+		"Description": "",
+		"Price": 1000,
+		"IsEnabled": "true"
+	},
+	{
+		"Id": "a7ee0431-b4a3-408d-9ce5-acbeda6aa566",
+		"Name": "Combo 5",
+		"Description": "",
+		"Price": 1000,
+		"IsEnabled": "true"
+	},
+	{
+		"Id": "a8b10e3d-34a8-4e95-beca-ac9a5a1b9781",
+		"Name": "Combo 6",
+		"Description": "",
+		"Price": 1000,
+		"IsEnabled": "true"
+	}
+]

@@ -3,7 +3,7 @@ using FB98.Shared.Infrastructure.Cloudinaries;
 
 namespace FB98.Modules.Catalog.Application.ProductManagement.Update
 {
-	internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProductCommand, ApiResponse<object>>
+	internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProductCommand, ApiResult<object>>
 	{
 		private readonly IProductRepository _productRepository;
 		private readonly ILogger<UpdateProductCommandHandler> _logger;
@@ -29,7 +29,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Update
 			_cloudinaryService = cloudinaryService;
 			_validator = validator;
 		}
-		public async Task<ApiResponse<object>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<object>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			var productId = request.ProductId;

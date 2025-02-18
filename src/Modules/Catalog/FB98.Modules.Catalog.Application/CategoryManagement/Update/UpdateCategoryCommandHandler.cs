@@ -2,7 +2,7 @@
 
 namespace FB98.Modules.Catalog.Application.CategoryManagement.Update
 {
-	internal sealed class UpdateCategoryCommandHandler : ICommandHandler<UpdateCategoryCommand, ApiResponse<object>>
+	internal sealed class UpdateCategoryCommandHandler : ICommandHandler<UpdateCategoryCommand, ApiResult<object>>
 	{
 		private readonly ILogger<UpdateCategoryCommandHandler> _logger;
 		private readonly ICategoryRepository _categoryRepository;
@@ -26,7 +26,7 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.Update
 			_validator = validator;
 			_localizedMessageService = localizedMessage;
 		}
-		public async Task<ApiResponse<object>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<object>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			var categoryId = request.CategoryId;

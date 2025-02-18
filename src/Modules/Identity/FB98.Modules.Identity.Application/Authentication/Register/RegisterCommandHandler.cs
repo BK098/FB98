@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FB98.Modules.Identity.Application.Authentication.Register
 {
-	internal sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand, ApiResponse<object>>
+	internal sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand, ApiResult<object>>
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly ILogger<RegisterCommandHandler> _logger;
@@ -19,7 +19,7 @@ namespace FB98.Modules.Identity.Application.Authentication.Register
 			_validator = validator;
 			_localizedMessageService = localizedMessageService;
 		}
-		public async Task<ApiResponse<object>> Handle(RegisterCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<object>> Handle(RegisterCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			try

@@ -92,10 +92,10 @@ namespace FB98.Modules.Catalog.DataAccess.Data.Mirgrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int>("StockQuantity")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdateAt")
@@ -105,7 +105,7 @@ namespace FB98.Modules.Catalog.DataAccess.Data.Mirgrations
 
                     b.HasIndex("ComboId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("Id");
 
                     b.ToTable("ComboProducts", "CatalogModule");
                 });
@@ -158,7 +158,7 @@ namespace FB98.Modules.Catalog.DataAccess.Data.Mirgrations
 
                     b.HasOne("FB98.Modules.Catalog.Domain.Entities.Product", "Product")
                         .WithMany("ComboProducts")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

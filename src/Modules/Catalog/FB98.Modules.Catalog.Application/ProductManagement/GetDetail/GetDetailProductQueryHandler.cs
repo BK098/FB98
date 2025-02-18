@@ -1,32 +1,31 @@
 ﻿using FB98.Modules.Catalog.Application.Abstractions;
-using FB98.Modules.Catalog.Application.ProductManagement.Events;
-using FB98.Shared.Abstractions.Events.Base;
-using FB98.Shared.Abstractions.Events.Products;
+using FB98.Shared.Abstractions.Refits;
+using Refit;
 
 namespace FB98.Modules.Catalog.Application.ProductManagement.GetDetail
 {
-	internal sealed class GetDetailProductQueryHandler : IQueryHandler<GetDetailProductQuery, ApiResponse<GetDetailProductResponse>>
+	internal sealed class GetDetailProductQueryHandler : IQueryHandler<GetDetailProductQuery, ApiResult<GetDetailProductResponse>>
 	{
 		private readonly ILogger<GetDetailProductQueryHandler> _logger;
 		private readonly IProductRepository _productRepository;
 		private readonly IMapper _mapper;
 		private readonly ILocalizedMessageService _localizedMessageService;
-		private readonly IEventDispatcher _eventDispatcher;
+		private readonly IWarehouseApi _warehouseApi;
 
 		public GetDetailProductQueryHandler(ILogger<GetDetailProductQueryHandler> logger,
 			IProductRepository productRepository,
 			IMapper mapper,
 			ILocalizedMessageService localizedMessageService,
-			IEventDispatcher eventDispatcher)
+			IWarehouseApi warehouseApi)
 		{
 			_logger = logger;
 			_productRepository = productRepository;
 			_mapper = mapper;
 			_localizedMessageService = localizedMessageService;
-			_eventDispatcher = eventDispatcher;
+			_warehouseApi = warehouseApi;
 		}
 
-		public async Task<ApiResponse<GetDetailProductResponse>> Handle(GetDetailProductQuery request, CancellationToken cancellationToken)
+		public async Task<ApiResult<GetDetailProductResponse>> Handle(GetDetailProductQuery request, CancellationToken cancellationToken)
 		{
 			var productId = request.ProductId;
 			try
@@ -37,22 +36,16 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.GetDetail
 					return ApiResponseBuilder.Error<GetDetailProductResponse>(_localizedMessageService.GetLocalizedMessage("NotFound"), statusCode: 404);
 				}
 
-#if DEBUG
-				Console.WriteLine($"[Catalog] GetDetailProductQueryHandler - Sending GetStockEvent for ProductId: {productId}");
-				await _eventDispatcher.PublishAsync(new GetStockEvent(productId));
-				Console.WriteLine($"[Catalog] GetDetailProductQueryHandler - Waiting for StockResponseEvent for ProductId: {productId}");
-				int remainingQuantity = await StockResponseEventHandler.WaitForStockResponse(productId);
-				Console.WriteLine($"[Catalog] GetDetailProductQueryHandler - Received Stock Quantity: {remainingQuantity} for ProductId: {productId}");
-#else
-				await _eventDispatcher.PublishAsync(new GetStockEvent(productId));
-				int remainingQuantity = await StockResponseEventHandler.WaitForStockResponse(productId);
-#endif
-				var response = _mapper.Map<GetDetailProductResponse>(product);
 
-				response.RemainingQuantity = remainingQuantity;
+				var response = _mapper.Map<GetDetailProductResponse>(product);
 
 				return ApiResponseBuilder.Success(response, statusCode: 200);
 
+			}
+			catch (ApiException ex)
+			{
+				_logger.LogError($"API error: {ex.StatusCode} - {ex.Content}");
+				return ApiResponseBuilder.Error<GetDetailProductResponse>("Internal Server Error", 500);
 			}
 			catch (Exception ex)
 			{
