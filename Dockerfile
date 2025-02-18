@@ -11,6 +11,10 @@ WORKDIR /src
 COPY ["src/Bootstrapper/FB98.Bootstrapper/FB98.Bootstrapper.csproj", "src/Bootstrapper/FB98.Bootstrapper/"]
 COPY ["src/Shared/FB98.Shared.Abstractions/FB98.Shared.Abstractions.csproj", "src/Shared/FB98.Shared.Abstractions/"]
 COPY ["src/Shared/FB98.Shared.Infrastructure/FB98.Shared.Infrastructure.csproj", "src/Shared/FB98.Shared.Infrastructure/"]
+COPY ["src/Shared/FB98.Shared.Utils/FB98.Shared.Utils.csproj", "src/Shared/FB98.Shared.Utils/"]
+
+#SystemsModule
+COPY ["src/Modules/Systems/FB98.Module.Systems.Api/FB98.Module.Systems.Api.csproj", "src/Modules/Systems/FB98.Module.Systems.Api/"]
 
 #IdentityModule
 COPY ["src/Modules/Identity/FB98.Modules.Identity.Api/FB98.Modules.Identity.Api.csproj", "src/Modules/Identity/FB98.Modules.Identity.Api/"]
@@ -35,6 +39,12 @@ COPY ["src/Modules/Customers/FB98.Modules.Customers.Api/FB98.Modules.Customers.A
 COPY ["src/Modules/Customers/FB98.Modules.Customers.Application/FB98.Modules.Customers.Application.csproj", "src/Modules/Customers/FB98.Modules.Customers.Application/"]
 COPY ["src/Modules/Customers/FB98.Modules.Customers.DataAccess/FB98.Modules.Customers.DataAccess.csproj", "src/Modules/Customers/FB98.Modules.Customers.DataAccess/"]
 COPY ["src/Modules/Customers/FB98.Modules.Customers.Domain/FB98.Modules.Customers.Domain.csproj", "src/Modules/Customers/FB98.Modules.Customers.Domain/"]
+
+#OrdersModule
+COPY ["src/Modules/Orders/FB98.Modules.Orders.Api/FB98.Modules.Orders.Api.csproj", "src/Modules/Orders/FB98.Modules.Orders.Api/"]
+COPY ["src/Modules/Orders/FB98.Modules.Orders.Application/FB98.Modules.Orders.Application.csproj", "src/Modules/Orders/FB98.Modules.Orders.Application/"]
+COPY ["src/Modules/Orders/FB98.Modules.Orders.DataAccess/FB98.Modules.Orders.DataAccess.csproj", "src/Modules/Orders/FB98.Modules.Orders.DataAccess/"]
+COPY ["src/Modules/Orders/FB98.Modules.Orders.Domain/FB98.Modules.Orders.Domain.csproj", "src/Modules/Orders/FB98.Modules.Orders.Domain/"]
 
 RUN dotnet restore "src/Bootstrapper/FB98.Bootstrapper/FB98.Bootstrapper.csproj"
 
