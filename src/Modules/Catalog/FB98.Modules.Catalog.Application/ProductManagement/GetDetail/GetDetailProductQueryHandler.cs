@@ -16,13 +16,13 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.GetDetail
 			IProductRepository productRepository,
 			IMapper mapper,
 			ILocalizedMessageService localizedMessageService,
-			IWarehouseApi warehouseApi)
+			IEventDispatcher eventDispatcher)
 		{
 			_logger = logger;
 			_productRepository = productRepository;
 			_mapper = mapper;
 			_localizedMessageService = localizedMessageService;
-			_warehouseApi = warehouseApi;
+			_eventDispatcher = eventDispatcher;
 		}
 
 		public async Task<ApiResult<GetDetailProductResponse>> Handle(GetDetailProductQuery request, CancellationToken cancellationToken)
@@ -36,16 +36,20 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.GetDetail
 					return ApiResponseBuilder.Error<GetDetailProductResponse>(_localizedMessageService.GetLocalizedMessage("NotFound"), statusCode: 404);
 				}
 
-
+#if DEBUG
+				Console.WriteLine($"[Catalog] GetDetailProductQueryHandler - Sending GetStockEvent for ProductId: {productId}");
+				await _eventDispatcher.PublishAsync(new GetStockEvent(productId));
+				Console.WriteLine($"[Catalog] GetDetailProductQueryHandler - Waiting for StockResponseEvent for ProductId: {productId}");
+				int remainingQuantity = await StockResponseEventHandler.WaitForStockResponse(productId);
+				Console.WriteLine($"[Catalog] GetDetailProductQueryHandler - Received Stock Quantity: {remainingQuantity} for ProductId: {productId}");
+#else
+				await _eventDispatcher.PublishAsync(new GetStockEvent(productId));
+				int remainingQuantity = await StockResponseEventHandler.WaitForStockResponse(productId);
+#endif
 				var response = _mapper.Map<GetDetailProductResponse>(product);
 
 				return ApiResponseBuilder.Success(response, statusCode: 200);
 
-			}
-			catch (ApiException ex)
-			{
-				_logger.LogError($"API error: {ex.StatusCode} - {ex.Content}");
-				return ApiResponseBuilder.Error<GetDetailProductResponse>("Internal Server Error", 500);
 			}
 			catch (Exception ex)
 			{
