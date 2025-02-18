@@ -3,7 +3,7 @@ using FB98.Shared.Infrastructure.Cloudinaries;
 
 namespace FB98.Modules.Catalog.Application.ProductManagement.Update
 {
-	internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProductCommand, ApiResponse<object>>
+	internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProductCommand, ApiResult<object>>
 	{
 		private readonly IProductRepository _productRepository;
 		private readonly ILogger<UpdateProductCommandHandler> _logger;
@@ -11,13 +11,15 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Update
 		private readonly IMapper _mapper;
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ICloudinaryService _cloudinaryService;
+		private readonly IValidator<UpdateProductDto> _validator;
 		public UpdateProductCommandHandler(
 			IProductRepository productRepository,
 			ILogger<UpdateProductCommandHandler> logger,
 			IUnitOfWork unitOfWork,
 			IMapper mapper,
 			ILocalizedMessageService localizedMessageService,
-			ICloudinaryService cloudinaryService)
+			ICloudinaryService cloudinaryService,
+			IValidator<UpdateProductDto> validator)
 		{
 			_productRepository = productRepository;
 			_logger = logger;
@@ -25,13 +27,19 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Update
 			_mapper = mapper;
 			_localizedMessageService = localizedMessageService;
 			_cloudinaryService = cloudinaryService;
+			_validator = validator;
 		}
-		public async Task<ApiResponse<object>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<object>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			var productId = request.ProductId;
 			try
 			{
+				var validationResult = await _validator.ValidateAsync(model, cancellationToken);
+				if (!validationResult.IsValid)
+				{
+					return ApiResponseBuilder.ValidationError<object>(validationResult.Errors);
+				}
 				var product = await _productRepository.GetByIdAsync(productId);
 				if (product == null)
 				{
@@ -46,7 +54,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Update
 				_productRepository.Update(product);
 				await _unitOfWork.SaveChangesAsync();
 
-				return ApiResponseBuilder.Success<object>(product, _localizedMessageService.GetLocalizedMessage("Updated"), statusCode: 200);
+				return ApiResponseBuilder.Success<object>(model, _localizedMessageService.GetLocalizedMessage("Updated"), statusCode: 200);
 			}
 			catch (Exception ex)
 			{

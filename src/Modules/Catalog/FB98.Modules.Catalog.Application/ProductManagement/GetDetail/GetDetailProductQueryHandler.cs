@@ -1,17 +1,16 @@
 ﻿using FB98.Modules.Catalog.Application.Abstractions;
-using FB98.Modules.Catalog.Application.ProductManagement.Events;
-using FB98.Shared.Abstractions.Events.Base;
-using FB98.Shared.Abstractions.Events.Products;
+using FB98.Shared.Abstractions.Refits;
+using Refit;
 
 namespace FB98.Modules.Catalog.Application.ProductManagement.GetDetail
 {
-	internal sealed class GetDetailProductQueryHandler : IQueryHandler<GetDetailProductQuery, ApiResponse<GetDetailProductResponse>>
+	internal sealed class GetDetailProductQueryHandler : IQueryHandler<GetDetailProductQuery, ApiResult<GetDetailProductResponse>>
 	{
 		private readonly ILogger<GetDetailProductQueryHandler> _logger;
 		private readonly IProductRepository _productRepository;
 		private readonly IMapper _mapper;
 		private readonly ILocalizedMessageService _localizedMessageService;
-		private readonly IEventDispatcher _eventDispatcher;
+		private readonly IWarehouseApi _warehouseApi;
 
 		public GetDetailProductQueryHandler(ILogger<GetDetailProductQueryHandler> logger,
 			IProductRepository productRepository,
@@ -26,7 +25,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.GetDetail
 			_eventDispatcher = eventDispatcher;
 		}
 
-		public async Task<ApiResponse<GetDetailProductResponse>> Handle(GetDetailProductQuery request, CancellationToken cancellationToken)
+		public async Task<ApiResult<GetDetailProductResponse>> Handle(GetDetailProductQuery request, CancellationToken cancellationToken)
 		{
 			var productId = request.ProductId;
 			try
@@ -48,8 +47,6 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.GetDetail
 				int remainingQuantity = await StockResponseEventHandler.WaitForStockResponse(productId);
 #endif
 				var response = _mapper.Map<GetDetailProductResponse>(product);
-
-				response.RemainingQuantity = remainingQuantity;
 
 				return ApiResponseBuilder.Success(response, statusCode: 200);
 

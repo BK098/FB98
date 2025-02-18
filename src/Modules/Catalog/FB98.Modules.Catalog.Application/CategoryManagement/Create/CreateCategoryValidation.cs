@@ -1,6 +1,6 @@
 ﻿namespace FB98.Modules.Catalog.Application.CategoryManagement.Create
 {
-	public class CreateCategoryValidation : AbstractValidator<CreateCategoryDto>
+	internal sealed class CreateCategoryValidation : AbstractValidator<CreateCategoryDto>
 	{
 		public CreateCategoryValidation(ILocalizedMessageService message)
 		{

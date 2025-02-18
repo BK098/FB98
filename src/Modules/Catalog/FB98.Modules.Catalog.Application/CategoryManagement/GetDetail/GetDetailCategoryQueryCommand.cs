@@ -2,7 +2,7 @@
 
 namespace FB98.Modules.Catalog.Application.CategoryManagement.GetDetail
 {
-	internal sealed class GetDetailCategoryQueryCommand : IQueryHandler<GetDetailCategoryQuery, ApiResponse<GetDetailCategoryResponse>>
+	internal sealed class GetDetailCategoryQueryCommand : IQueryHandler<GetDetailCategoryQuery, ApiResult<GetDetailCategoryResponse>>
 	{
 		private readonly ICategoryRepository _categoryRepository;
 		private readonly IMapper _mapper;
@@ -21,7 +21,7 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.GetDetail
 			_localizedMessageService = localizedMessageService;
 		}
 
-		public async Task<ApiResponse<GetDetailCategoryResponse>> Handle(GetDetailCategoryQuery request, CancellationToken cancellationToken)
+		public async Task<ApiResult<GetDetailCategoryResponse>> Handle(GetDetailCategoryQuery request, CancellationToken cancellationToken)
 		{
 			var categoryId = request.CategoryId;
 			try

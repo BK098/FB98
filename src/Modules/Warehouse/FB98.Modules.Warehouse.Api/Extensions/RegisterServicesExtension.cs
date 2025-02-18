@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FB98.Modules.Warehouse.Application.InventoryManagement.Events;
+using MassTransit;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FB98.Modules.Warehouse.Api.Extensions
 {
@@ -6,6 +8,13 @@ namespace FB98.Modules.Warehouse.Api.Extensions
 	{
 		public static IServiceCollection AddRegisterServices(this IServiceCollection services)
 		{
+			services.AddMassTransit(config =>
+			{
+				// Đăng ký Consumer
+				config.AddConsumer<ProductDeletedEventHandler>();
+				config.AddConsumer<ProductCreatedEventHandler>();
+			});
+
 			return services;
 		}
 	}

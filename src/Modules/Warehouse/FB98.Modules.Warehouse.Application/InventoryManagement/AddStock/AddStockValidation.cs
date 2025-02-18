@@ -1,10 +1,13 @@
 ﻿namespace FB98.Modules.Warehouse.Application.InventoryManagement.AddStock
 {
-	public class AddStockValidation : AbstractValidator<AddStockDto>
+	internal sealed class AddStockValidation : AbstractValidator<AddStockDto>
 	{
 		public AddStockValidation(ILocalizedMessageService message)
 		{
 			RuleFor(x => x.ProductId)
+				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
+				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
+			RuleFor(x => x.IsLimited)
 				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
 

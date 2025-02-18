@@ -1,6 +1,6 @@
 ﻿namespace FB98.Modules.Identity.Application.Authentication.Register
 {
-	public class RegisterDtoValidation : AbstractValidator<RegisterDto>
+	internal sealed class RegisterDtoValidation : AbstractValidator<RegisterDto>
 	{
 		public RegisterDtoValidation(ILocalizedMessageService message)
 		{

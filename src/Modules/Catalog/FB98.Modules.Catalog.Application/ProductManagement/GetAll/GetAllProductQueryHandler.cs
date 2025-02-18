@@ -6,16 +6,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FB98.Modules.Catalog.Application.ProductManagement.GetAll
 {
-	internal sealed class GetAllProductQueryHandler : IQueryHandler<GetAllProductQuery, ApiResponse<PaginatedResult<GetAllProductResponse>>>
+	internal sealed class GetAllProductQueryHandler : IQueryHandler<GetAllProductQuery, ApiResult<PaginatedResult<GetAllProductResponse>>>
 	{
 		private readonly List<string> allowedProperties = ["Name", "Price"];
-		private readonly ILogger<GetAllProductResponse> _logger;
+		private readonly ILogger<GetAllProductQueryHandler> _logger;
 		private readonly IProductRepository _productRepository;
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly IMapper _mapper;
 
 		public GetAllProductQueryHandler(
-			ILogger<GetAllProductResponse> logger,
+			ILogger<GetAllProductQueryHandler> logger,
 			IProductRepository productRepository,
 			ILocalizedMessageService localizedMessageService,
 			IMapper mapper)
@@ -25,7 +25,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.GetAll
 			_localizedMessageService = localizedMessageService;
 			_mapper = mapper;
 		}
-		public async Task<ApiResponse<PaginatedResult<GetAllProductResponse>>> Handle(GetAllProductQuery request, CancellationToken cancellationToken)
+		public async Task<ApiResult<PaginatedResult<GetAllProductResponse>>> Handle(GetAllProductQuery request, CancellationToken cancellationToken)
 		{
 			var filter = request.Filter;
 			try

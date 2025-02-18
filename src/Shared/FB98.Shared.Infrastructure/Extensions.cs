@@ -1,12 +1,10 @@
 using FB98.Shared.Infrastructure.Api;
 using FB98.Shared.Infrastructure.Cloudinaries;
 using FB98.Shared.Infrastructure.Email;
-using FB98.Shared.Infrastructure.Events;
 using FB98.Shared.Infrastructure.Exceptions;
 using FB98.Shared.Infrastructure.Localization;
-using FB98.Shared.Infrastructure.Messaging;
-using FB98.Shared.Infrastructure.Modules;
 using FB98.Shared.Infrastructure.Postgres;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
@@ -22,27 +20,49 @@ namespace FB98.Shared.Infrastructure
 		public static IServiceCollection AddInfrastructure(this IServiceCollection services)
 		{
 			AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-			services.AddTransient<IEmailSender, EmailSender>();
-			services.AddLocalization(options => options.ResourcesPath = "Shared/Resources");
 			services.AddControllers()
+			.AddNewtonsoftJson(options =>
+			{
+				options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+			})
 			.ConfigureApplicationPartManager(manager =>
 			{
 				manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
 			});
+			services.AddDistributedMemoryCache();
+			services.AddEndpointsApiExplorer();
+			services.AddLocalization(options => options.ResourcesPath = "Shared/Resources");
 
+			services.AddTransient<IEmailSender, EmailSender>();
 			services.AddSingleton<ILocalizedMessageService, LocalizedMessageService>();
 			services.AddSingleton<ErrorHandlerMiddleware>();
 			services.AddPostgres();
-			services.AddEvents();
-			services.AddMessaging();
-			services.AddModuleRequests();
 			services.AddCloudinary();
+
+			services.Configure<MassTransitHostOptions>(options =>
+			{
+				options.WaitUntilStarted = true; // Đảm bảo MassTransit khởi động cùng hệ thống
+			});
+
+			services.AddMassTransit(options =>
+			{
+				options.SetKebabCaseEndpointNameFormatter();
+				options.UsingRabbitMq((context, cfg) =>
+				{
+					cfg.Host("localhost", "/", h =>
+					{
+						h.Username("guest");
+						h.Password("guest");
+					});
+
+					cfg.ConfigureEndpoints(context);
+				});
+			});
 
 			return services;
 		}
 
 		//Language for localization
-		private static readonly string[] optionsAction = { "en", "vi" };
 		public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
 		{
 			app.UseMiddleware<ErrorHandlerMiddleware>();
@@ -55,7 +75,7 @@ namespace FB98.Shared.Infrastructure
 
 			var localizationOptions = new RequestLocalizationOptions
 			{
-				DefaultRequestCulture = new RequestCulture("en"),
+				DefaultRequestCulture = new RequestCulture("vi"),
 				SupportedCultures = supportedCultures,
 				SupportedUICultures = supportedCultures,
 				RequestCultureProviders = new List<IRequestCultureProvider>

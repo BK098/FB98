@@ -3,7 +3,7 @@ using MediatR;
 
 namespace FB98.Modules.Warehouse.Application.InventoryManagement.CreateInventory
 {
-	internal sealed class CreateInventoryCommandHandler : ICommandHandler<CreateInventoryCommand, ApiResponse<Unit>>
+	internal sealed class CreateInventoryCommandHandler : ICommandHandler<CreateInventoryCommand, ApiResult<Unit>>
 	{
 		private readonly ILogger<CreateInventoryCommandHandler> _logger;
 		private readonly IInventoryRepository _inventoryRepository;
@@ -17,7 +17,7 @@ namespace FB98.Modules.Warehouse.Application.InventoryManagement.CreateInventory
 			_inventoryRepository = inventoryRepository;
 			_validator = validator;
 		}
-		public async Task<ApiResponse<Unit>> Handle(CreateInventoryCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<Unit>> Handle(CreateInventoryCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			try

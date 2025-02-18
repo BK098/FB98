@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FB98.Modules.Identity.Application.DeviceManagement.RevokeAllDeviceToken
 {
-	internal sealed class RevokeAllDeviceTokenCommandHandler : ICommandHandler<RevokeAllDeviceTokenCommand, ApiResponse<object>>
+	internal sealed class RevokeAllDeviceTokenCommandHandler : ICommandHandler<RevokeAllDeviceTokenCommand, ApiResult<object>>
 	{
 		private readonly ILogger<RevokeAllDeviceTokenCommandHandler> _logger;
 		private readonly UserManager<AppUser> _userManager;
@@ -21,7 +21,7 @@ namespace FB98.Modules.Identity.Application.DeviceManagement.RevokeAllDeviceToke
 			_tokenStoreRepository = tokenStoreRepository;
 			_localizedMessageService = localizedMessageService;
 		}
-		public async Task<ApiResponse<object>> Handle(RevokeAllDeviceTokenCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<object>> Handle(RevokeAllDeviceTokenCommand request, CancellationToken cancellationToken)
 		{
 			try
 			{

@@ -25,11 +25,4 @@
         <Using Include="FB98.Shared.Infrastructure.Repositpries" />
         <Using Include="AutoMapper" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="ComboManagement\Create\" />
-      <Folder Include="ComboManagement\Delete\" />
-      <Folder Include="ComboManagement\GetAll\" />
-      <Folder Include="ComboManagement\GetDetail\" />
-      <Folder Include="ComboManagement\Update\" />
-    </ItemGroup>
 </Project>

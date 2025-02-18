@@ -11,6 +11,6 @@
 		public Guid CategoryId { get; set; }
 		public string CategoryName { get; set; } = default!;
 
-		public int RemainingQuantity { get; set; }
+		//public int RemainingQuantity { get; set; }
 	}
 }

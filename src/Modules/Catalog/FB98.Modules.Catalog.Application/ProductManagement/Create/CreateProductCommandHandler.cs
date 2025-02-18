@@ -1,38 +1,41 @@
 ﻿using FB98.Modules.Catalog.Application.Abstractions;
 using FB98.Modules.Catalog.Domain.Entities;
-using FB98.Shared.Abstractions.Events.Products;
-using FB98.Shared.Abstractions.Modules;
+using FB98.Shared.Abstractions.Events;
 using FB98.Shared.Infrastructure.Cloudinaries;
+using MassTransit;
 
 namespace FB98.Modules.Catalog.Application.ProductManagement.Create
 {
-	internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProductCommand, ApiResponse<object>>
+	internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProductCommand, ApiResult<object>>
 	{
 		private readonly ILogger<CreateProductCommandHandler> _logger;
 		private readonly IValidator<CreateProductDto> _validator;
 		private readonly IProductRepository _productRepository;
-		private readonly IModuleClient _moduleClient;
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly ICloudinaryService _cloudinaryService;
+		private readonly ILocalizedMessageService _localizedMessageService;
+		private readonly IBus _bus;
 		public CreateProductCommandHandler(
 			ILogger<CreateProductCommandHandler> logger,
 			IValidator<CreateProductDto> validator,
 			IProductRepository productRepository,
-			IModuleClient moduleClient,
 			IMapper mapper,
 			IUnitOfWork unitOfWork,
-			ICloudinaryService cloudinaryService)
+			ICloudinaryService cloudinaryService,
+			ILocalizedMessageService localizedMessageService,
+			IBus bus)
 		{
 			_logger = logger;
 			_validator = validator;
 			_productRepository = productRepository;
-			_moduleClient = moduleClient;
 			_mapper = mapper;
 			_unitOfWork = unitOfWork;
 			_cloudinaryService = cloudinaryService;
+			_localizedMessageService = localizedMessageService;
+			_bus = bus;
 		}
-		public async Task<ApiResponse<object>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<object>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			try
@@ -50,9 +53,9 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Create
 				}
 				await _productRepository.CreateAsync(product);
 				await _unitOfWork.SaveChangesAsync();
-				await _moduleClient.PublishAsync(new ProductCreatedEvent(product.Id, model.Quantity!.Value));
+				await _bus.Publish(new ProductCreatedEvent(product.Id, model.StockQuantity!.Value, model.StockIsLimited!.Value), cancellationToken);
 
-				return ApiResponseBuilder.Success<object>(product, statusCode: 201);
+				return ApiResponseBuilder.Success<object>(product, _localizedMessageService.GetLocalizedMessage("Created"), statusCode: 201);
 
 			}
 			catch (Exception ex)

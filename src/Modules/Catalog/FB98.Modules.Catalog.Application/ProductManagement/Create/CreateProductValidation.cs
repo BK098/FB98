@@ -1,6 +1,6 @@
 ﻿namespace FB98.Modules.Catalog.Application.ProductManagement.Create
 {
-	public class CreateProductValidation : AbstractValidator<CreateProductDto>
+	internal sealed class CreateProductValidation : AbstractValidator<CreateProductDto>
 	{
 		public CreateProductValidation(ILocalizedMessageService message)
 		{
@@ -17,8 +17,12 @@
 				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
 
-			RuleFor(x => x.Quantity)
+			RuleFor(x => x.StockQuantity)
 				.GreaterThanOrEqualTo(0).WithMessage(message.GetLocalizedMessage("GreaterThanOrEqualTo0"))
+				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
+				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
+
+			RuleFor(x => x.StockIsLimited)
 				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
 		}

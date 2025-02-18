@@ -13,5 +13,6 @@ namespace FB98.Modules.Warehouse.Domain.Entities
 		public Guid ProductId { get; set; }
 		public int QuantityChange { get; set; }
 		public string TransactionType { get; set; } = default!;
+		public bool IsLimited { get; set; } = true;
 	}
 }

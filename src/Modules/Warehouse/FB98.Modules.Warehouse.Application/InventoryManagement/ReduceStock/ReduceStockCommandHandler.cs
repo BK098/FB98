@@ -3,7 +3,7 @@ using MediatR;
 
 namespace FB98.Modules.Warehouse.Application.InventoryManagement.ReduceStock
 {
-	internal sealed class ReduceStockCommandHandler : ICommandHandler<ReduceStockCommand, ApiResponse<Unit>>
+	internal sealed class ReduceStockCommandHandler : ICommandHandler<ReduceStockCommand, ApiResult<Unit>>
 	{
 		private readonly ILogger<ReduceStockCommandHandler> _logger;
 		private readonly IInventoryRepository _inventoryRepository;
@@ -17,7 +17,7 @@ namespace FB98.Modules.Warehouse.Application.InventoryManagement.ReduceStock
 			_inventoryRepository = inventoryRepository;
 			_validator = validator;
 		}
-		public async Task<ApiResponse<Unit>> Handle(ReduceStockCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<Unit>> Handle(ReduceStockCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			try

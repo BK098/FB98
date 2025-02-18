@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("FB98.Bootstrapper")]
-
 namespace FB98.Modules.Warehouse.Api
 {
 	internal static class WarehouseModule

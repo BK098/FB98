@@ -59,13 +59,6 @@ namespace FB98.Shared.Infrastructure.Cloudinaries
 			var fileName = segments[^1].Split('.')[0];
 			return fileName;
 		}
-		private static string GetPublicIdFromUrl2(string imageUrl)
-		{
-			var uri = new Uri(imageUrl);
-			var path = uri.AbsolutePath.Substring(1);
-			var publicId = path.Substring(0, path.LastIndexOf('.'));
-			return publicId;
-		}
 
 		public bool DeleteImage(string? imageUrl)
 		{
@@ -73,25 +66,14 @@ namespace FB98.Shared.Infrastructure.Cloudinaries
 
 			try
 			{
-				var publicId = GetPublicIdFromUrl2(imageUrl);
+				var publicId = GetPublicIdFromUrl(imageUrl);
 				if (string.IsNullOrWhiteSpace(publicId))
 				{
 					Console.WriteLine("[Cloudinary] Invalid public ID extracted. Skipping deletion.");
 					return false;
 				}
 
-				var deletionParams = new DeletionParams(publicId)
-				{
-					Invalidate = true,
-					Type = "upload",
-					ResourceType = ResourceType.Image
-				};
-				var resource = _cloudinary.GetResource(new GetResourceParams(publicId));
-				if (resource == null)
-				{
-					Console.WriteLine($"[Cloudinary] Image not found before deletion: {publicId}");
-					return false;
-				}
+				var deletionParams = new DeletionParams(publicId);
 
 				var result = _cloudinary.Destroy(deletionParams);
 				return result.Result == "ok";

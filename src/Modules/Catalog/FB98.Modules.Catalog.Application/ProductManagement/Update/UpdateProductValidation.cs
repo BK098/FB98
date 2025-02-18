@@ -1,6 +1,6 @@
 ﻿namespace FB98.Modules.Catalog.Application.ProductManagement.Update
 {
-	internal class UpdateProductValidation : AbstractValidator<UpdateProductDto>
+	internal sealed class UpdateProductValidation : AbstractValidator<UpdateProductDto>
 	{
 		public UpdateProductValidation(ILocalizedMessageService message)
 		{

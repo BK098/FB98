@@ -403,6 +403,15 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Product Not Found.
+        /// </summary>
+        internal static string ProductNotFound {
+            get {
+                return ResourceManager.GetString("ProductNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Token refreshed successfully.
         /// </summary>
         internal static string TokenRefreshed {
