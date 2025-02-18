@@ -27,7 +27,7 @@ var app = builder.Build();
 //default
 app.UseRouting();
 app.UseInfrastructure();
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.MapControllers();
 app.UseCustomCors();

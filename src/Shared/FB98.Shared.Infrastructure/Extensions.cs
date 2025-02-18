@@ -4,7 +4,7 @@ using FB98.Shared.Infrastructure.Email;
 using FB98.Shared.Infrastructure.Exceptions;
 using FB98.Shared.Infrastructure.Localization;
 using FB98.Shared.Infrastructure.Postgres;
-using MassTransit;
+using FB98.Shared.Infrastructure.RabbitMq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
@@ -32,32 +32,14 @@ namespace FB98.Shared.Infrastructure
 			services.AddDistributedMemoryCache();
 			services.AddEndpointsApiExplorer();
 			services.AddLocalization(options => options.ResourcesPath = "Shared/Resources");
-
+			services.AddRabbitMq();
 			services.AddTransient<IEmailSender, EmailSender>();
 			services.AddSingleton<ILocalizedMessageService, LocalizedMessageService>();
 			services.AddSingleton<ErrorHandlerMiddleware>();
 			services.AddPostgres();
 			services.AddCloudinary();
 
-			services.Configure<MassTransitHostOptions>(options =>
-			{
-				options.WaitUntilStarted = true; // Đảm bảo MassTransit khởi động cùng hệ thống
-			});
 
-			services.AddMassTransit(options =>
-			{
-				options.SetKebabCaseEndpointNameFormatter();
-				options.UsingRabbitMq((context, cfg) =>
-				{
-					cfg.Host("localhost", "/", h =>
-					{
-						h.Username("guest");
-						h.Password("guest");
-					});
-
-					cfg.ConfigureEndpoints(context);
-				});
-			});
 
 			return services;
 		}
