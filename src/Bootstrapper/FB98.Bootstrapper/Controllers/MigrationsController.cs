@@ -1,5 +1,6 @@
 ﻿using FB98.Modules.Catalog.DataAccess.Data;
 using FB98.Modules.Orders.DataAccess.Data;
+using FB98.Modules.Payments.DataAccess.Data;
 using FB98.Modules.Warehouse.DataAccess.Data;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,11 +13,18 @@ namespace FB98.Bootstrapper.Controllers
 		private readonly CatalogModuleDbContext _catalogContext;
 		private readonly OrdersModuleDbContext _ordersContext;
 		private readonly WarehouseModuleDbContext _warehouseContext;
-		public MigrationsController(CatalogModuleDbContext catalogContext, OrdersModuleDbContext ordersContext, WarehouseModuleDbContext warehouseContext)
+		private readonly PaymentModuleDbContext _paymentContext;
+
+		public MigrationsController(
+			CatalogModuleDbContext catalogContext,
+			OrdersModuleDbContext ordersContext,
+			WarehouseModuleDbContext warehouseContext,
+			PaymentModuleDbContext paymentContext)
 		{
 			_catalogContext = catalogContext;
 			_ordersContext = ordersContext;
 			_warehouseContext = warehouseContext;
+			_paymentContext = paymentContext;
 		}
 
 		[HttpPost("seed-data")]
@@ -27,6 +35,8 @@ namespace FB98.Bootstrapper.Controllers
 				await CatalogSeeder.SeedDataAsync(_catalogContext);
 				await OrdersSeeder.SeedDataAsync(_ordersContext);
 				await WarehouseSeeder.SeedDataAsync(_warehouseContext);
+				await PaymentSeeder.SeedDataAsync(_paymentContext);
+
 				return Ok(new { message = "Seed data inserted successfully!" });
 			}
 			catch (Exception ex)
@@ -34,6 +44,5 @@ namespace FB98.Bootstrapper.Controllers
 				return StatusCode(500, new { error = ex.Message });
 			}
 		}
-
 	}
 }

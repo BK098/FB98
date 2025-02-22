@@ -13,12 +13,12 @@ namespace FB98.Shared.Infrastructure.Postgres
 			{
 				using var connection = new Npgsql.NpgsqlConnection(options.ConnectionString);
 				connection.Open();
-				Console.WriteLine("Database connected successfully!");
+				Console.WriteLine(@"Database connected successfully!");
 				connection.Close();
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine($"Database connection failed: {ex.Message}");
+				Console.WriteLine($@"Database connection failed: {ex.Message}");
 			}
 			return services;
 		}

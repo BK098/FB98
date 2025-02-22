@@ -1,5 +1,4 @@
-﻿
-using FB98.Modules.Catalog.Application.Abstractions;
+﻿using FB98.Modules.Catalog.Application.Abstractions;
 
 namespace FB98.Modules.Catalog.Application.CategoryManagement.Delete
 {
@@ -9,6 +8,7 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.Delete
 		private readonly ICategoryRepository _categoryRepository;
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly ILocalizedMessageService _localizedMessageService;
+
 		public DeleteCategoryCommandHandler(
 			ILogger<DeleteCategoryCommandHandler> logger,
 			ICategoryRepository categoryRepository,
@@ -20,6 +20,7 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.Delete
 			_unitOfWork = unitOfWork;
 			_localizedMessageService = localizedMessageService;
 		}
+
 		public async Task<ApiResult<object>> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
 		{
 			var categoryId = request.CategoryId;
@@ -28,11 +29,14 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.Delete
 				var category = await _categoryRepository.GetByIdAsync(categoryId);
 				if (category is null)
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), statusCode: 404);
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"),
+						statusCode: 404);
 				}
+
 				_categoryRepository.Delete(category);
 				await _unitOfWork.SaveChangesAsync();
-				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("Deleted"), statusCode: 201);
+				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("Deleted"),
+					statusCode: 201);
 			}
 			catch (Exception ex)
 			{

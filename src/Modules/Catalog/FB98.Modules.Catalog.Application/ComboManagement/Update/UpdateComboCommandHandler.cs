@@ -1,5 +1,4 @@
-﻿
-using FB98.Modules.Catalog.Application.Abstractions;
+﻿using FB98.Modules.Catalog.Application.Abstractions;
 using FB98.Shared.Infrastructure.Cloudinaries;
 
 namespace FB98.Modules.Catalog.Application.ComboManagement.Update
@@ -13,6 +12,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Update
 		private readonly IValidator<UpdateComboDto> _validator;
 		private readonly ICloudinaryService _cloudinaryService;
 		private readonly ILocalizedMessageService _localizedMessageService;
+
 		public UpdateComboCommandHandler(
 			IMapper mapper,
 			ILogger<UpdateComboCommandHandler> logger,
@@ -31,6 +31,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Update
 			_cloudinaryService = cloudinaryService;
 			_localizedMessageService = localizedMessageService;
 		}
+
 		public async Task<ApiResult<object>> Handle(UpdateComboCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
@@ -42,11 +43,13 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Update
 				{
 					return ApiResponseBuilder.ValidationError<object>(validationResult.Errors);
 				}
+
 				var combo = await _comboRepository.GetByIdAsync(comboId);
 				if (combo is null)
 				{
 					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), statusCode: 404);
 				}
+
 				_mapper.Map(model, combo);
 				string? imageUrl;
 				if (model.ComboImage != null)
@@ -62,10 +65,10 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Update
 						combo.Image = imageUrl;
 					}
 				}
+
 				_comboRepository.Update(combo);
 				await _unitOfWork.SaveChangesAsync();
 				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("Updated"), statusCode: 200);
-
 			}
 			catch (Exception ex)
 			{

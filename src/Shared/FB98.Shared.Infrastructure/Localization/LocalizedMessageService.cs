@@ -1,19 +1,30 @@
-﻿using System.Globalization;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 namespace FB98.Shared.Infrastructure.Localization
 {
 	public class LocalizedMessageService : ILocalizedMessageService
 	{
-		public string GetLocalizedMessage(string key, string culture = "vi")
+		private readonly IHttpContextAccessor _httpContextAccessor;
+
+		public LocalizedMessageService(IHttpContextAccessor httpContextAccessor)
 		{
+			_httpContextAccessor = httpContextAccessor;
+		}
+
+		public string GetLocalizedMessage(string key, string? culture = null)
+		{
+			if (string.IsNullOrEmpty(culture))
+			{
+				var requestCulture = _httpContextAccessor.HttpContext?.Features.Get<IRequestCultureFeature>();
+				culture = requestCulture?.RequestCulture.Culture.Name ?? "vi";
+			}
+
 			var currentCulture = new CultureInfo(culture);
 			var message = Resources.Langauge.ResourceManager.GetString(key, currentCulture);
 
-			if (string.IsNullOrEmpty(message))
-			{
-				return $"[{key}] not found";
-			}
-			return message;
+			return string.IsNullOrEmpty(message) ? $"[{key}] not found" : message;
 		}
 	}
 }

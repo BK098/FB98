@@ -7,6 +7,7 @@ namespace FB98.Shared.Infrastructure.Configurations
 	internal static class CorsPolicySetup
 	{
 		private const string CorsPolicyName = "AllowSpecificOrigins";
+
 		public static void AddCustomCors(this IServiceCollection services, IConfiguration configuration)
 		{
 			// Đọc danh sách các origin từ appsettings.json
@@ -19,13 +20,14 @@ namespace FB98.Shared.Infrastructure.Configurations
 					if (allowedOrigins != null && allowedOrigins.Any())
 					{
 						policy.WithOrigins(allowedOrigins)
-							  .AllowCredentials()
-							  .AllowAnyHeader()
-							  .AllowAnyMethod();
+							.AllowCredentials()
+							.AllowAnyHeader()
+							.AllowAnyMethod();
 					}
 				});
 			});
 		}
+
 		public static void UseCustomCors(this IApplicationBuilder app)
 		{
 			app.UseCors(CorsPolicyName);

@@ -1,0 +1,14 @@
+[
+	{
+		"Id": "a86c5ba1-426a-46b6-a3a6-9b6d61520f2f",
+		"Name": "VnPayCard"
+	},
+	{
+		"Id": "16316f65-e37a-4210-8033-0aa39d19403e",
+		"Name": "Cash"
+	},
+	{
+		"Id": "d273a4e2-438f-4dc3-8bd6-81846882b2b9",
+		"Name": "VnPayQrCode"
+	}
+]

@@ -17,13 +17,9 @@ namespace FB98.Modules.Orders.Api
 			services.AddRegisterServices();
 			return services;
 		}
+
 		public static IApplicationBuilder UseOrdersModule(this IApplicationBuilder app)
 		{
-			using (var scope = app.ApplicationServices.CreateScope())
-			{
-				var services = scope.ServiceProvider;
-				//SeedData
-			}
 			return app;
 		}
 	}

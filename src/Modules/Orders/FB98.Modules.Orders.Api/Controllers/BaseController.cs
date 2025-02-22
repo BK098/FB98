@@ -8,6 +8,7 @@ namespace FB98.Modules.Orders.Api.Controllers
 	{
 		protected const string BasePath = "orders-module";
 		protected readonly IMediator _mediator;
+
 		protected BaseController(IMediator mediator)
 		{
 			_mediator = mediator;

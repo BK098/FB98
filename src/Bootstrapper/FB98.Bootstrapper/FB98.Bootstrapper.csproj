@@ -30,12 +30,12 @@
         <ProjectReference Include="..\..\Modules\Customers\FB98.Modules.Customers.Api\FB98.Modules.Customers.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Identity\FB98.Modules.Identity.Api\FB98.Modules.Identity.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Orders\FB98.Modules.Orders.Api\FB98.Modules.Orders.Api.csproj" />
+        <ProjectReference Include="..\..\Modules\Payments\FB98.Modules.Payments.Api\FB98.Modules.Payments.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Systems\FB98.Module.Systems.Api\FB98.Module.Systems.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Warehouse\FB98.Modules.Warehouse.Api\FB98.Modules.Warehouse.Api.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Certificates\" />
         <Folder Include="SeedData\Orders\" />
         <Folder Include="SeedData\Warehouse\" />
     </ItemGroup>
@@ -44,5 +44,7 @@
       <None Include="SeedData\Catalog\CategorySeed.json" />
       <None Include="SeedData\Catalog\ProductSeed.json" />
     </ItemGroup>
+
+    <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 </Project>

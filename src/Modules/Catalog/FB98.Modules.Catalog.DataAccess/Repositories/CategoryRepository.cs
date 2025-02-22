@@ -8,7 +8,9 @@ namespace FB98.Modules.Catalog.DataAccess.Repositories
 {
 	public class CategoryRepository : BaseRepository<Category, CatalogModuleDbContext>, ICategoryRepository
 	{
-		public CategoryRepository(CatalogModuleDbContext context) : base(context) { }
+		public CategoryRepository(CatalogModuleDbContext context) : base(context)
+		{
+		}
 
 		public async Task<bool> IsCategoryExistsAsync(string categoryName, CancellationToken cancellationToken)
 		{
@@ -19,6 +21,5 @@ namespace FB98.Modules.Catalog.DataAccess.Repositories
 		{
 			return _context.Categories.Include(x => x.Products).FirstOrDefaultAsync(x => x.Id == id);
 		}
-
 	}
 }

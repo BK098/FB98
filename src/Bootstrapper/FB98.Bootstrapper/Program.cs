@@ -4,6 +4,7 @@ using FB98.Modules.Catalog.Api;
 using FB98.Modules.Customers.Api;
 using FB98.Modules.Identity.Api;
 using FB98.Modules.Orders.Api;
+using FB98.Modules.Payments.Api;
 using FB98.Modules.Warehouse.Api;
 using FB98.Shared.Infrastructure;
 using FB98.Shared.Infrastructure.Configurations;
@@ -19,6 +20,7 @@ builder.Services.AddCatalogModule(builder.Configuration);
 builder.Services.AddSystemModule(builder.Configuration);
 builder.Services.AddWarehouseModule(builder.Configuration);
 builder.Services.AddOrdersModule(builder.Configuration);
+builder.Services.AddPaymentsModule(builder.Configuration);
 builder.Services.AddInfrastructure();
 builder.Services.AddRegisterServices();
 
@@ -39,5 +41,6 @@ app.UseCustomersModule();
 app.UseCatalogModule();
 app.UseWarehouseModule();
 app.UseOrdersModule();
+app.UsePaymentsModule();
 //default
 app.Run();

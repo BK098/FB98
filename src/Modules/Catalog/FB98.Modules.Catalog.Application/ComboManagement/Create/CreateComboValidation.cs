@@ -20,6 +20,7 @@
 			RuleForEach(x => x.Products).SetValidator(new CreateComboProductValidation(message));
 		}
 	}
+
 	internal sealed class CreateComboProductValidation : AbstractValidator<CreateComboProductDto>
 	{
 		public CreateComboProductValidation(ILocalizedMessageService message)

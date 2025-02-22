@@ -25,7 +25,9 @@ namespace FB98.Shared.Utils.Extensions
 
 			return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
 		}
+
 		static Regex? ConvertToUnsign_rg;
+
 		public static string ConvertToUnsign(this string strInput)
 		{
 			if (string.IsNullOrEmpty(strInput))
@@ -40,9 +42,9 @@ namespace FB98.Shared.Utils.Extensions
 
 			// Loại bỏ dấu và thay thế "đ" với "d"
 			return ConvertToUnsign_rg.Replace(temp, string.Empty)
-.Replace("đ", "d")
-.Replace("Đ", "D")
-.ToLower(); // Nếu bạn cần chữ thường
+				.Replace("đ", "d")
+				.Replace("Đ", "D")
+				.ToLower(); // Nếu bạn cần chữ thường
 		}
 	}
 }

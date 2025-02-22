@@ -19,7 +19,9 @@ namespace FB98.Modules.Catalog.Application.ProductManagement
 			CreateMap<UpdateProductDto, Product>();
 			CreateMap<Product, GetAllProductResponse>();
 			CreateMap<Product, GetDetailProductResponse>()
-			.ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
+				.ForMember(dest => dest.CategoryName,
+					opt =>
+						opt.MapFrom(src => src.Category.Name));
 		}
 	}
 }

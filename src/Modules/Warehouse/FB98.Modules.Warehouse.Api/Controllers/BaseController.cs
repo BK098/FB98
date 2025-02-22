@@ -8,6 +8,7 @@ namespace FB98.Modules.Warehouse.Api.Controllers
 	{
 		protected const string BasePath = "warehouse-module";
 		protected readonly IMediator _mediator;
+
 		protected BaseController(IMediator mediator)
 		{
 			_mediator = mediator;

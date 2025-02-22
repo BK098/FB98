@@ -35,7 +35,7 @@ namespace FB98.Shared.Infrastructure.Cloudinaries
 		{
 			if (newImage is null || newImage.Length <= 0)
 			{
-				Console.WriteLine("[Cloudinary] No new image provided. Keeping existing image.");
+				Console.WriteLine(@"[Cloudinary] No new image provided. Keeping existing image.");
 				return existingImageUrl; // Không có ảnh mới, giữ nguyên ảnh cũ
 			}
 
@@ -69,7 +69,7 @@ namespace FB98.Shared.Infrastructure.Cloudinaries
 				var publicId = GetPublicIdFromUrl(imageUrl);
 				if (string.IsNullOrWhiteSpace(publicId))
 				{
-					Console.WriteLine("[Cloudinary] Invalid public ID extracted. Skipping deletion.");
+					Console.WriteLine(@"[Cloudinary] Invalid public ID extracted. Skipping deletion.");
 					return false;
 				}
 
@@ -80,7 +80,7 @@ namespace FB98.Shared.Infrastructure.Cloudinaries
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine($"[Cloudinary] Error deleting image: {ex.Message}");
+				Console.WriteLine($@"[Cloudinary] Error deleting image: {ex.Message}");
 				return false;
 			}
 		}

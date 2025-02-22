@@ -27,6 +27,7 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.Create
 			_mapper = mapper;
 			_localizedMessageService = localizedMessageService;
 		}
+
 		public async Task<ApiResult<object>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
@@ -47,7 +48,8 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.Create
 				var categoryDto = _mapper.Map<Category>(model);
 				_categoryRepository.Create(categoryDto);
 				await _unitOfWork.SaveChangesAsync();
-				return ApiResponseBuilder.Success<object>(categoryDto, _localizedMessageService.GetLocalizedMessage("Created"), 201);
+				return ApiResponseBuilder.Success<object>(categoryDto,
+					_localizedMessageService.GetLocalizedMessage("Created"), 201);
 			}
 			catch (Exception ex)
 			{

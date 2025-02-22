@@ -7,7 +7,6 @@ namespace FB98.Shared.Infrastructure.RabbitMq
 	{
 		public static IServiceCollection AddRabbitMq(this IServiceCollection services)
 		{
-
 			var options = services.GetOptions<RabbitMqOptions>("rabbitMq");
 			services.AddSingleton(options);
 

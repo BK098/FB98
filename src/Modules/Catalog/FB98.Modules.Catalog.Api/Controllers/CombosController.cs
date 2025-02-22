@@ -3,15 +3,36 @@ using FB98.Modules.Catalog.Application.ComboManagement.Delete;
 using FB98.Modules.Catalog.Application.ComboManagement.GetAll;
 using FB98.Modules.Catalog.Application.ComboManagement.GetDetail;
 using FB98.Modules.Catalog.Application.ComboManagement.Update;
+using FB98.Modules.Catalog.Application.DiscountManagement.CreateDiscountRule;
 using FB98.Shared.Abstractions.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FB98.Modules.Catalog.Api.Controllers
 {
 	internal class CombosController : BaseController
 	{
-		public CombosController(IMediator mediator) : base(mediator) { }
+		public CombosController(IMediator mediator) : base(mediator)
+		{
+		}
 
+		[HttpGet]
+		public async Task<IActionResult> GetCombos([FromQuery] Filter filter)
+		{
+			var request = new GetAllComboQuery(filter);
+			var result = await _mediator.Send(request);
+			return StatusCode(result.StatusCode, result);
+		}
+
+		[HttpGet("{comboId}")]
+		public async Task<IActionResult> GetCombo(Guid comboId)
+		{
+			var request = new GetDetailComboQuery(comboId);
+			var result = await _mediator.Send(request);
+			return StatusCode(result.StatusCode, result);
+		}
+
+		[Authorize(Roles = "adminstrator")]
 		[HttpPost]
 		public async Task<IActionResult> CreateCombo([FromForm] CreateComboDto model)
 		{
@@ -20,20 +41,18 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);
 		}
-		[HttpGet("{comboId}")]
-		public async Task<IActionResult> GetCombo(Guid comboId)
+
+		[Authorize(Roles = "adminstrator")]
+		[HttpPost("{comboId}/discount-rule")]
+		public async Task<IActionResult> CreatecomboDiscountRule(Guid comboId, [FromBody] CreateDiscountRuleDto model)
 		{
-			var request = new GetDetailComboQuery(comboId);
+			model.SetAtCombo();
+			var request = new CreateDiscountRuleCommand(comboId, model);
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);
 		}
-		[HttpGet]
-		public async Task<IActionResult> GetCombos([FromQuery] Filter filter)
-		{
-			var request = new GetAllComboQuery(filter);
-			var result = await _mediator.Send(request);
-			return StatusCode(result.StatusCode, result);
-		}
+
+		[Authorize(Roles = "adminstrator")]
 		[HttpPut("{comboId}")]
 		public async Task<IActionResult> UpdateCombo(Guid comboId, [FromForm] UpdateComboDto model)
 		{
@@ -42,6 +61,8 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);
 		}
+
+		[Authorize(Roles = "adminstrator")]
 		[HttpDelete("{comboId}")]
 		public async Task<IActionResult> DeleteCombo(Guid comboId)
 		{

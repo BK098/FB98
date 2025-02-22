@@ -1,6 +1,8 @@
-﻿namespace FB98.Modules.Catalog.Application.ComboManagement.GetAll
+﻿using FB98.Shared.Abstractions.Entities;
+
+namespace FB98.Modules.Catalog.Application.ComboManagement.GetAll
 {
-	public class GetAllComboResponse
+	public class GetAllComboResponse : IResponse
 	{
 		public string? Name { get; set; }
 		public string? Description { get; set; }

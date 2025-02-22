@@ -5,6 +5,7 @@ namespace FB98.Shared.Infrastructure.Repositpries
 	public interface IRepository<TEntity> where TEntity : class, IEntity
 	{
 		Task<TEntity?> GetByIdAsync(Guid? id);
+		Task<List<TEntity>> GetByIdsAsync(List<Guid> ids);
 		Task<TEntity?> GetByIdNoTrackingAsync(Guid? id);
 		Task<TEntity?> FindByIdAsync(Guid? id);
 		Task<IEnumerable<TEntity>> GetAllAsync();

@@ -31,7 +31,7 @@ namespace FB98.Shared.Infrastructure.Email
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine($"Error sending email: {ex.Message}");
+				Console.WriteLine($@"Error sending email: {ex.Message}");
 				throw;
 			}
 		}

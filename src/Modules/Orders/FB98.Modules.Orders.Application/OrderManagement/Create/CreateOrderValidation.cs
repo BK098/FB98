@@ -4,7 +4,6 @@
 	{
 		public CreateOrderValidation(ILocalizedMessageService message)
 		{
-			
 		}
 	}
 }

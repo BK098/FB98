@@ -14,5 +14,4 @@ namespace FB98.Shared.Utils.Extensions
 			return string.Format(description, args);
 		}
 	}
-
 }

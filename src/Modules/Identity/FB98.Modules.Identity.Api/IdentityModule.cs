@@ -58,7 +58,7 @@ namespace FB98.Modules.Identity.Api
 				{
 					OnAuthenticationFailed = context =>
 					{
-						Console.WriteLine($"Authentication failed: {context.Exception.Message}");
+						Console.WriteLine($@"Authentication failed: {context.Exception.Message}");
 						return Task.CompletedTask;
 					}
 				};
@@ -75,11 +75,6 @@ namespace FB98.Modules.Identity.Api
 		}
 		public static IApplicationBuilder UseIdentityModule(this IApplicationBuilder app)
 		{
-			using (var scope = app.ApplicationServices.CreateScope())
-			{
-				var services = scope.ServiceProvider;
-				//SeedData.Initialize(services);
-			}
 			//app.UseMiddleware<TokenCookieMiddleware>();
 			app.UseSession();
 			app.UseAuthentication();

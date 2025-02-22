@@ -16,8 +16,17 @@ namespace FB98.Modules.Catalog.DataAccess.Repositories
 		{
 			return await _context.Combos
 				.Include(x => x.ComboProducts)
-					.ThenInclude(x => x.Product)
+				.ThenInclude(x => x.Product)
+				.Include(x => x.DiscountRules)
 				.FirstOrDefaultAsync(x => x.Id == id);
+		}
+
+		public override async Task<List<Combo>> GetByIdsAsync(List<Guid> ids)
+		{
+			return await _context.Combos
+				.Where(x => ids.Contains(x.Id))
+				.Include(x => x.DiscountRules)
+				.ToListAsync();
 		}
 	}
 }

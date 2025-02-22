@@ -29,27 +29,28 @@ namespace FB98.Modules.Orders.DataAccess.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<decimal?>("Amount")
+                    b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
                     b.Property<DateTime>("CreateAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("CustomerId")
                         .HasColumnType("uuid");
 
+                    b.Property<decimal>("DiscountPercentage")
+                        .HasColumnType("numeric");
+
                     b.Property<Guid>("OrderStatusId")
                         .HasColumnType("uuid");
 
-                    b.Property<decimal?>("SubAmount")
+                    b.Property<decimal>("SubAmount")
                         .HasColumnType("numeric");
 
                     b.Property<DateTime>("UpdateAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderStatusId");
 
                     b.ToTable("Orders", "OrdersModule");
                 });
@@ -61,16 +62,16 @@ namespace FB98.Modules.Orders.DataAccess.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreateAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("FinalPrice")
+                        .HasColumnType("numeric");
 
                     b.Property<bool>("IsCombo")
                         .HasColumnType("boolean");
 
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
@@ -82,11 +83,17 @@ namespace FB98.Modules.Orders.DataAccess.Data.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
+                    b.Property<decimal>("SubTotalPrice")
+                        .HasColumnType("numeric");
+
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("numeric");
 
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("numeric");
+
                     b.Property<DateTime>("UpdateAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -102,29 +109,49 @@ namespace FB98.Modules.Orders.DataAccess.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreateAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("UpdateAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
                     b.ToTable("OrderStatuses", "OrdersModule");
                 });
 
-            modelBuilder.Entity("FB98.Modules.Orders.Domain.Entities.Order", b =>
+            modelBuilder.Entity("FB98.Modules.Orders.Domain.Entities.OrderStatusHistory", b =>
                 {
-                    b.HasOne("FB98.Modules.Orders.Domain.Entities.OrderStatus", "OrderStatus")
-                        .WithMany()
-                        .HasForeignKey("OrderStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
-                    b.Navigation("OrderStatus");
+                    b.Property<string>("ChangedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("NewStatusId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("OldStatusId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderStatusHistories", "OrdersModule");
                 });
 
             modelBuilder.Entity("FB98.Modules.Orders.Domain.Entities.OrderItem", b =>
@@ -138,9 +165,22 @@ namespace FB98.Modules.Orders.DataAccess.Data.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("FB98.Modules.Orders.Domain.Entities.OrderStatusHistory", b =>
+                {
+                    b.HasOne("FB98.Modules.Orders.Domain.Entities.Order", "Order")
+                        .WithMany("StatusHistories")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
             modelBuilder.Entity("FB98.Modules.Orders.Domain.Entities.Order", b =>
                 {
                     b.Navigation("OrderItems");
+
+                    b.Navigation("StatusHistories");
                 });
 #pragma warning restore 612, 618
         }

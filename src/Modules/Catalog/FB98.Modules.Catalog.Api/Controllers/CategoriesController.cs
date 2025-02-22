@@ -4,6 +4,7 @@ using FB98.Modules.Catalog.Application.CategoryManagement.GetAll;
 using FB98.Modules.Catalog.Application.CategoryManagement.GetDetail;
 using FB98.Modules.Catalog.Application.CategoryManagement.Update;
 using FB98.Shared.Abstractions.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FB98.Modules.Catalog.Api.Controllers
@@ -29,6 +30,8 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);
 		}
+
+		[Authorize(Roles = "adminstrator")]
 		[HttpPost]
 		public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto model)
 		{
@@ -36,6 +39,8 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);
 		}
+
+		[Authorize(Roles = "adminstrator")]
 		[HttpPut]
 		public async Task<IActionResult> UpdateCategory(Guid categoryId, [FromBody] UpdateCategoryDto model)
 		{
@@ -43,6 +48,8 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);
 		}
+
+		[Authorize(Roles = "adminstrator")]
 		[HttpDelete]
 		public async Task<IActionResult> DeleteCategory(Guid categoryId)
 		{

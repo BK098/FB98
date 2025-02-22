@@ -6,7 +6,7 @@ using FB98.Modules.Catalog.Domain.Entities;
 
 namespace FB98.Modules.Catalog.Application.ComboManagement
 {
-	public class ComboProfile : Profile
+	internal class ComboProfile : Profile
 	{
 		public ComboProfile()
 		{
@@ -24,13 +24,12 @@ namespace FB98.Modules.Catalog.Application.ComboManagement
 				.ForMember(dest => dest.ComboId, opt => opt.Ignore());
 
 			CreateMap<UpdateComboDto, Combo>()
-			.ForMember(dest => dest.ComboProducts, opt => opt.MapFrom(src => src.Products));
+				.ForMember(dest => dest.ComboProducts, opt => opt.MapFrom(src => src.Products));
 
 			CreateMap<UpdateComboProductDto, ComboProduct>()
 				//.ForMember(src => src.Id, opt => opt.MapFrom(src => src.Id))
 				.ForMember(src => src.Combo, opt => opt.Ignore())
 				.ForMember(dest => dest.ComboId, opt => opt.Ignore());
-
 
 
 			CreateMap<Combo, GetAllComboResponse>();

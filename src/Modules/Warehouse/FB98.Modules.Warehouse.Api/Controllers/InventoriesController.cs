@@ -1,7 +1,7 @@
 ﻿using FB98.Modules.Warehouse.Application.InventoryManagement.AddStock;
-using FB98.Modules.Warehouse.Application.InventoryManagement.CreateInventory;
 using FB98.Modules.Warehouse.Application.InventoryManagement.GetStock;
 using FB98.Modules.Warehouse.Application.InventoryManagement.ReduceStock;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FB98.Modules.Warehouse.Api.Controllers
@@ -20,6 +20,7 @@ namespace FB98.Modules.Warehouse.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
+		[Authorize(Roles = "adminstrator")]
 		[HttpPost("add-stock")]
 		public async Task<IActionResult> AddStock(AddStockDto model)
 		{
@@ -28,14 +29,7 @@ namespace FB98.Modules.Warehouse.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[HttpPost("create")]
-		public async Task<IActionResult> CreateInventory(CreateInventoryDto model)
-		{
-			var request = new CreateInventoryCommand(model);
-			var result = await _mediator.Send(request);
-			return StatusCode(result.StatusCode, result);
-		}
-
+		[Authorize(Roles = "adminstrator")]
 		[HttpPost("reduce-stock")]
 		public async Task<IActionResult> ReduceStock(ReduceStockDto model)
 		{

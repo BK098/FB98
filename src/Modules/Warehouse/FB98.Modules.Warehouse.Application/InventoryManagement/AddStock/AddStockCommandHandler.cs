@@ -8,6 +8,7 @@ namespace FB98.Modules.Warehouse.Application.InventoryManagement.AddStock
 		private readonly ILogger<AddStockCommandHandler> _logger;
 		private readonly IInventoryRepository _inventoryRepository;
 		private readonly IValidator<AddStockDto> _validator;
+
 		public AddStockCommandHandler(
 			IInventoryRepository inventoryRepository,
 			ILogger<AddStockCommandHandler> logger,
@@ -17,6 +18,7 @@ namespace FB98.Modules.Warehouse.Application.InventoryManagement.AddStock
 			_logger = logger;
 			_validator = validator;
 		}
+
 		public async Task<ApiResult<Unit>> Handle(AddStockCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;

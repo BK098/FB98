@@ -12,6 +12,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Update
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ICloudinaryService _cloudinaryService;
 		private readonly IValidator<UpdateProductDto> _validator;
+
 		public UpdateProductCommandHandler(
 			IProductRepository productRepository,
 			ILogger<UpdateProductCommandHandler> logger,
@@ -29,6 +30,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Update
 			_cloudinaryService = cloudinaryService;
 			_validator = validator;
 		}
+
 		public async Task<ApiResult<object>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
@@ -40,17 +42,20 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Update
 				{
 					return ApiResponseBuilder.ValidationError<object>(validationResult.Errors);
 				}
+
 				var product = await _productRepository.GetByIdAsync(productId);
 				if (product == null)
 				{
 					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), statusCode: 404);
 				}
+
 				_mapper.Map(model, product);
 				if (model.ProductImage is not null)
 				{
 					string? imageUrl = await _cloudinaryService.ReplaceImageAsync(model.ProductImage!, "catalog/product", product.Image);
 					product.Image = imageUrl;
 				}
+
 				_productRepository.Update(product);
 				await _unitOfWork.SaveChangesAsync();
 

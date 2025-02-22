@@ -40,6 +40,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Delete
 				{
 					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), statusCode: 404);
 				}
+
 				_productRepository.Delete(product);
 				_cloudinaryService.DeleteImage(product.Image);
 				await _unitOfWork.SaveChangesAsync();

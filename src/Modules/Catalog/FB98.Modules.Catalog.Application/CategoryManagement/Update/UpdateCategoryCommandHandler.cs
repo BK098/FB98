@@ -26,6 +26,7 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.Update
 			_validator = validator;
 			_localizedMessageService = localizedMessage;
 		}
+
 		public async Task<ApiResult<object>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
@@ -37,11 +38,13 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.Update
 				{
 					return ApiResponseBuilder.ValidationError<object>(valiationResult.Errors);
 				}
+
 				var category = await _categoryRepository.GetByIdAsync(categoryId);
 				if (category is null)
 				{
 					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), statusCode: 404);
 				}
+
 				if (category.Name != model.Name)
 				{
 					var categoryExisted = await _categoryRepository.IsCategoryExistsAsync(model.Name!, cancellationToken);

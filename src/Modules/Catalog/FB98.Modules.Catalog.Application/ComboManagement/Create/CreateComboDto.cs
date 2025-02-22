@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace FB98.Modules.Catalog.Application.ComboManagement.Create
 {
@@ -23,6 +21,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Create
 			get => _products;
 			set => _products = value;
 		}
+
 		public void DeserializeProducts()
 		{
 			if (!string.IsNullOrEmpty(ProductsJson))
@@ -33,7 +32,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Create
 				}
 				catch (Exception ex)
 				{
-					Console.WriteLine($"JSON Parsing Error: {ex.Message}");
+					Console.WriteLine($@"JSON Parsing Error: {ex.Message}");
 					_products = new List<CreateComboProductDto>();
 				}
 			}

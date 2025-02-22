@@ -15,11 +15,8 @@ namespace FB98.Modules.Identity.Api.Controllers
 {
 	internal class IdentityController : BaseController
 	{
-		private readonly IMediator _mediator;
-
-		public IdentityController(IMediator mediator)
+		public IdentityController(IMediator mediator) : base(mediator)
 		{
-			_mediator = mediator;
 		}
 
 		[HttpPost("login")]
@@ -36,7 +33,7 @@ namespace FB98.Modules.Identity.Api.Controllers
 					SameSite = SameSiteMode.Strict,
 					Expires = DateTimeOffset.UtcNow.AddMinutes(30)
 				});
-				Response.Cookies.Append("refresh_token", result.Data!.Token, new CookieOptions
+				Response.Cookies.Append("refresh_token", result.Data!.RefreshToken, new CookieOptions
 				{
 					HttpOnly = true,
 					Secure = true,
@@ -44,6 +41,7 @@ namespace FB98.Modules.Identity.Api.Controllers
 					Expires = DateTimeOffset.UtcNow.AddDays(7)
 				});
 			}
+
 			return StatusCode(result.StatusCode, result);
 		}
 
@@ -64,6 +62,7 @@ namespace FB98.Modules.Identity.Api.Controllers
 			{
 				return Unauthorized(new { message = "User is not authorized" });
 			}
+
 			var request = new LogoutCommand(userId);
 			var result = await _mediator.Send(request);
 			if (result.IsSuccess)
@@ -71,6 +70,7 @@ namespace FB98.Modules.Identity.Api.Controllers
 				Response.Cookies.Delete("access_token");
 				Response.Cookies.Delete("refresh_token");
 			}
+
 			return StatusCode(result.StatusCode, result);
 		}
 
@@ -105,10 +105,11 @@ namespace FB98.Modules.Identity.Api.Controllers
 					Expires = DateTimeOffset.UtcNow.AddMinutes(30)
 				});
 			}
+
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "Admin")]
+		[Authorize(Roles = "adminstrator")]
 		[HttpPost("revoke-token")]
 		public async Task<IActionResult> RevokeToken(Guid userId)
 		{

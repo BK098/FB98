@@ -10,7 +10,7 @@ using System.Text;
 
 namespace FB98.Modules.Identity.Application.Authentication.RefreshToken
 {
-	internal sealed class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, ApiResult<TokenResponseDto>>
+	internal sealed class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, ApiResult<TokenResponse>>
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly IConfiguration _configuration;
@@ -33,7 +33,7 @@ namespace FB98.Modules.Identity.Application.Authentication.RefreshToken
 			_tokenService = tokenService;
 			_tokenStoreRepository = tokenStoreRepository;
 		}
-		public async Task<ApiResult<TokenResponseDto>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<TokenResponse>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			try
@@ -41,7 +41,7 @@ namespace FB98.Modules.Identity.Application.Authentication.RefreshToken
 				var principal = GetPrincipalFromExpiredToken(model.Token);
 				if (principal == null)
 				{
-					return ApiResponseBuilder.Error<TokenResponseDto>(
+					return ApiResponseBuilder.Error<TokenResponse>(
 						_localizedMessageService.GetLocalizedMessage("InvalidToken"),
 						statusCode: 400);
 				}
@@ -52,19 +52,19 @@ namespace FB98.Modules.Identity.Application.Authentication.RefreshToken
 
 				if (user == null || refreshToken?.Token != model.RefreshToken)
 				{
-					return ApiResponseBuilder.Error<TokenResponseDto>(
+					return ApiResponseBuilder.Error<TokenResponse>(
 						_localizedMessageService.GetLocalizedMessage("InvalidRefreshToken"),
 						statusCode: 400);
 				}
 				if (refreshToken.IsRevoked)
 				{
-					return ApiResponseBuilder.Error<TokenResponseDto>(
+					return ApiResponseBuilder.Error<TokenResponse>(
 						_localizedMessageService.GetLocalizedMessage("RevokedToken"),
 						statusCode: 403);
 				}
 				if (refreshToken.ExpiresAt <= DateTime.UtcNow)
 				{
-					return ApiResponseBuilder.Error<TokenResponseDto>(
+					return ApiResponseBuilder.Error<TokenResponse>(
 						_localizedMessageService.GetLocalizedMessage("ExpiredRefreshToken"),
 						statusCode: 400);
 				}
@@ -77,7 +77,7 @@ namespace FB98.Modules.Identity.Application.Authentication.RefreshToken
 				await _tokenStoreRepository.UpdateAsync(refreshToken);
 				await _userManager.UpdateAsync(user);
 
-				var tokenResponse = new TokenResponseDto
+				var tokenResponse = new TokenResponse
 				{
 					Token = newToken,
 					RefreshToken = newRefreshToken
@@ -90,7 +90,7 @@ namespace FB98.Modules.Identity.Application.Authentication.RefreshToken
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "An error occurred: refresh token");
-				return ApiResponseBuilder.Error<TokenResponseDto>("An unexpected error occurred", statusCode: 500);
+				return ApiResponseBuilder.Error<TokenResponse>("An unexpected error occurred", statusCode: 500);
 			}
 		}
 		private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)

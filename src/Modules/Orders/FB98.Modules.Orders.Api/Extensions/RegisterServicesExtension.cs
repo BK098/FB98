@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FB98.Modules.Orders.Application.OrderManagement.BackgroundJobs;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace FB98.Modules.Orders.Api.Extensions
 {
@@ -6,6 +8,7 @@ namespace FB98.Modules.Orders.Api.Extensions
 	{
 		public static IServiceCollection AddRegisterServices(this IServiceCollection services)
 		{
+			services.AddSingleton<IHostedService, OrderStatusJob>();
 
 			return services;
 		}

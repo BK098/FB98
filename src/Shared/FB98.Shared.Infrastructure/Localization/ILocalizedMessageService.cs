@@ -2,6 +2,6 @@
 {
 	public interface ILocalizedMessageService
 	{
-		string GetLocalizedMessage(string key, string culture = "vi");
+		string GetLocalizedMessage(string key, string? culture = null);
 	}
 }

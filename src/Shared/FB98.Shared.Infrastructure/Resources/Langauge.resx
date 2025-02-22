@@ -246,4 +246,13 @@
   <data name="ProductNotFound" xml:space="preserve">
     <value>Product Not Found</value>
   </data>
+  <data name="ValidationFailed" xml:space="preserve">
+    <value>Validation Failed</value>
+  </data>
+  <data name="Updated" xml:space="preserve">
+    <value>Updated</value>
+  </data>
+  <data name="InvalidState" xml:space="preserve">
+    <value>Invalid state transition</value>
+  </data>
 </root>

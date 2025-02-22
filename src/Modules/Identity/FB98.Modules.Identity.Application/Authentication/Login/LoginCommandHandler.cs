@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FB98.Modules.Identity.Application.Authentication.Login
 {
-	internal sealed class LoginCommandHandler : ICommandHandler<LoginCommand, ApiResult<LoginResponseDto>>
+	internal sealed class LoginCommandHandler : ICommandHandler<LoginCommand, ApiResult<LoginResponse>>
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly ILogger<LoginCommandHandler> _logger;
@@ -33,7 +33,7 @@ namespace FB98.Modules.Identity.Application.Authentication.Login
 			_tokenStoreRepository = tokenStoreRepository;
 			_httpContextAccessor = httpContextAccessor;
 		}
-		public async Task<ApiResult<LoginResponseDto>> Handle(LoginCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			try
@@ -41,13 +41,13 @@ namespace FB98.Modules.Identity.Application.Authentication.Login
 				var validationResult = await _validator.ValidateAsync(model, cancellationToken);
 				if (!validationResult.IsValid)
 				{
-					return ApiResponseBuilder.ValidationError<LoginResponseDto>(validationResult.Errors, _localizedMessageService.GetLocalizedMessage("ValidationFailed"));
+					return ApiResponseBuilder.ValidationError<LoginResponse>(validationResult.Errors, _localizedMessageService.GetLocalizedMessage("ValidationFailed"));
 				}
 
 				var user = await _userManager.FindByEmailAsync(model.Email!);
 				if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password!))
 				{
-					return ApiResponseBuilder.Error<LoginResponseDto>(_localizedMessageService.GetLocalizedMessage("InvalidLogin"), statusCode: 401);
+					return ApiResponseBuilder.Error<LoginResponse>(_localizedMessageService.GetLocalizedMessage("InvalidLogin"), statusCode: 401);
 				}
 
 				var accessToken = _tokenService.GenerateAccessToken(user);
@@ -62,7 +62,7 @@ namespace FB98.Modules.Identity.Application.Authentication.Login
 					{
 						if (!existingToken.IsRevoked)
 						{
-							return ApiResponseBuilder.Error<LoginResponseDto>(
+							return ApiResponseBuilder.Error<LoginResponse>(
 								_localizedMessageService.GetLocalizedMessage("DeviceAlreadyLoggedIn"),
 								statusCode: 403
 							);
@@ -76,7 +76,7 @@ namespace FB98.Modules.Identity.Application.Authentication.Login
 						existingToken.IsRevoked = false;
 						await _tokenStoreRepository.UpdateAsync(existingToken);
 
-						var loginResponse = new LoginResponseDto
+						var loginResponse = new LoginResponse
 						{
 							Token = accessToken,
 							Expiration = DateTime.UtcNow.AddMinutes(30)
@@ -103,16 +103,17 @@ namespace FB98.Modules.Identity.Application.Authentication.Login
 				await _tokenStoreRepository.AddAsync(tokenStore);
 				await _userManager.UpdateAsync(user);
 
-				return ApiResponseBuilder.Success(new LoginResponseDto
+				return ApiResponseBuilder.Success(new LoginResponse
 				{
 					Token = accessToken,
+					RefreshToken = refreshToken,
 					Expiration = DateTime.UtcNow.AddMinutes(30)
 				}, _localizedMessageService.GetLocalizedMessage("LoginSuccess"));
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "An error occurred: login");
-				return ApiResponseBuilder.Error<LoginResponseDto>("An unexpected error occurred", statusCode: 500);
+				return ApiResponseBuilder.Error<LoginResponse>("An unexpected error occurred", statusCode: 500);
 			}
 		}
 	}

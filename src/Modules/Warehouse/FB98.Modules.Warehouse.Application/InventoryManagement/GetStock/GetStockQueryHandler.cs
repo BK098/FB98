@@ -1,5 +1,4 @@
-﻿
-using FB98.Modules.Warehouse.Application.Abstractions;
+﻿using FB98.Modules.Warehouse.Application.Abstractions;
 
 namespace FB98.Modules.Warehouse.Application.InventoryManagement.GetStock
 {
@@ -7,6 +6,7 @@ namespace FB98.Modules.Warehouse.Application.InventoryManagement.GetStock
 	{
 		private readonly ILogger<GetStockQueryHandler> _logger;
 		private readonly IInventoryRepository _inventoryRepository;
+
 		public GetStockQueryHandler(
 			ILogger<GetStockQueryHandler> logger,
 			IInventoryRepository inventoryRepository)
@@ -14,6 +14,7 @@ namespace FB98.Modules.Warehouse.Application.InventoryManagement.GetStock
 			_logger = logger;
 			_inventoryRepository = inventoryRepository;
 		}
+
 		public async Task<ApiResult<GetStockResponse>> Handle(GetStockQuery request, CancellationToken cancellationToken)
 		{
 			var productId = request.ProductId;

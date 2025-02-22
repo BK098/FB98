@@ -6,6 +6,8 @@ namespace FB98.Modules.Catalog.DataAccess.Repositories
 {
 	public class UnitOfWork : BaseUnitOfWork<CatalogModuleDbContext>, IUnitOfWork
 	{
-		public UnitOfWork(CatalogModuleDbContext context) : base(context) { }
+		public UnitOfWork(CatalogModuleDbContext context) : base(context)
+		{
+		}
 	}
 }

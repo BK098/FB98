@@ -1,6 +1,8 @@
-﻿namespace FB98.Shared.Abstractions.Responses
+﻿using FB98.Shared.Abstractions.Entities;
+
+namespace FB98.Shared.Abstractions.Responses
 {
-	public class ApiResult<T>
+	public class ApiResult<T> : IResponse
 	{
 		public bool IsSuccess { get; set; }
 		public string? Message { get; set; }

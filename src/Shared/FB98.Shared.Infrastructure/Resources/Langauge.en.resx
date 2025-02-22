@@ -241,9 +241,18 @@
     <value>Existed</value>
   </data>
   <data name="Created" xml:space="preserve">
-    <value>Created</value>
+    <value>Created  successfully</value>
   </data>
   <data name="ProductNotFound" xml:space="preserve">
     <value>Product Not Found</value>
+  </data>
+  <data name="ValidationFailed" xml:space="preserve">
+    <value>Validation failed</value>
+  </data>
+  <data name="Updated" xml:space="preserve">
+    <value>Updated  successfully</value>
+  </data>
+  <data name="InvalidState" xml:space="preserve">
+    <value>Invalid state transition</value>
   </data>
 </root>

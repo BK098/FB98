@@ -1,0 +1,1 @@
+﻿[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("FB98.Test.Modules.Orders.Application.Tests")]

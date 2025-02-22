@@ -1,5 +1,4 @@
 ﻿using FB98.Shared.Abstractions.Entities;
-using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FB98.Modules.Warehouse.Domain.Entities
@@ -10,6 +9,7 @@ namespace FB98.Modules.Warehouse.Domain.Entities
 		public Guid InventoryId { get; set; }
 		public Inventory Inventory { get; set; } = default!;
 
+		public Guid? OrderId { get; set; }
 		public Guid ProductId { get; set; }
 		public int QuantityChange { get; set; }
 		public string TransactionType { get; set; } = default!;

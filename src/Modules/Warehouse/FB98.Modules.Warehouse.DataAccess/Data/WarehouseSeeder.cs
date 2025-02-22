@@ -11,7 +11,7 @@ namespace FB98.Modules.Warehouse.DataAccess.Data
 		{
 			if (!context.Inventories.Any())
 			{
-				var jsonData = File.ReadAllText("SeedData/Warehouse/InventorySeed.json");
+				var jsonData = await File.ReadAllTextAsync("SeedData/Warehouse/InventorySeed.json");
 				var entities = JsonConvert.DeserializeObject<List<Inventory>>(jsonData, new JsonSerializerSettings());
 				if (entities != null)
 				{

@@ -8,6 +8,7 @@ namespace FB98.Modules.Warehouse.Application.InventoryManagement.ReduceStock
 		private readonly ILogger<ReduceStockCommandHandler> _logger;
 		private readonly IInventoryRepository _inventoryRepository;
 		private readonly IValidator<ReduceStockDto> _validator;
+
 		public ReduceStockCommandHandler(
 			ILogger<ReduceStockCommandHandler> logger,
 			IInventoryRepository inventoryRepository,
@@ -17,6 +18,7 @@ namespace FB98.Modules.Warehouse.Application.InventoryManagement.ReduceStock
 			_inventoryRepository = inventoryRepository;
 			_validator = validator;
 		}
+
 		public async Task<ApiResult<Unit>> Handle(ReduceStockCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;

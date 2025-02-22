@@ -21,6 +21,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Update
 			get => _products;
 			set => _products = value;
 		}
+
 		public void DeserializeProducts()
 		{
 			if (!string.IsNullOrEmpty(ProductsJson))
@@ -31,12 +32,13 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Update
 				}
 				catch (Exception ex)
 				{
-					Console.WriteLine($"JSON Parsing Error: {ex.Message}");
+					Console.WriteLine($@"JSON Parsing Error: {ex.Message}");
 					_products = new List<UpdateComboProductDto>();
 				}
 			}
 		}
 	}
+
 	public class UpdateComboProductDto
 	{
 		public Guid? ProductId { get; set; }

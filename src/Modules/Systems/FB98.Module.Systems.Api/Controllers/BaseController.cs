@@ -8,6 +8,8 @@ namespace FB98.Module.Systems.Api.Controllers
 	{
 		protected const string BasePath = "system-module";
 		protected readonly IMediator _mediator;
+
+		/// <inheritdoc />
 		protected BaseController(IMediator mediator)
 		{
 			_mediator = mediator;

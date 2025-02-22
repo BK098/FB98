@@ -8,7 +8,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.GetAll
 {
 	internal sealed class GetAllProductQueryHandler : IQueryHandler<GetAllProductQuery, ApiResult<PaginatedResult<GetAllProductResponse>>>
 	{
-		private readonly List<string> allowedProperties = ["Name", "Price"];
+		private readonly List<string> _allowedProperties = ["Name", "Price"];
 		private readonly ILogger<GetAllProductQueryHandler> _logger;
 		private readonly IProductRepository _productRepository;
 		private readonly ILocalizedMessageService _localizedMessageService;
@@ -25,6 +25,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.GetAll
 			_localizedMessageService = localizedMessageService;
 			_mapper = mapper;
 		}
+
 		public async Task<ApiResult<PaginatedResult<GetAllProductResponse>>> Handle(GetAllProductQuery request, CancellationToken cancellationToken)
 		{
 			var filter = request.Filter;
@@ -37,11 +38,13 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.GetAll
 					products = products.Where(x => EF.Functions.Unaccent(x.Name).ToLower().Trim()
 						.Contains(search));
 				}
-				products = products.SortBy(filter.SortColumn, allowedProperties, filter.IsDescending);
+
+				products = products.SortBy(filter.SortColumn, _allowedProperties, filter.IsDescending);
 				if (!await products.AnyAsync(cancellationToken))
 				{
 					return ApiResponseBuilder.Error<PaginatedResult<GetAllProductResponse>>(_localizedMessageService.GetLocalizedMessage("NotFound"), statusCode: 404);
 				}
+
 				var paginatedResult = await PaginatedResult<Product>.CreateAsync(
 					products,
 					filter.PageIndex,

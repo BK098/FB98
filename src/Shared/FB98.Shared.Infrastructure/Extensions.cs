@@ -3,9 +3,11 @@ using FB98.Shared.Infrastructure.Cloudinaries;
 using FB98.Shared.Infrastructure.Email;
 using FB98.Shared.Infrastructure.Exceptions;
 using FB98.Shared.Infrastructure.Localization;
+using FB98.Shared.Infrastructure.Payments.VnPay;
 using FB98.Shared.Infrastructure.Postgres;
 using FB98.Shared.Infrastructure.RabbitMq;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,25 +23,25 @@ namespace FB98.Shared.Infrastructure
 		{
 			AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 			services.AddControllers()
-			.AddNewtonsoftJson(options =>
-			{
-				options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-			})
-			.ConfigureApplicationPartManager(manager =>
-			{
-				manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
-			});
+				.AddNewtonsoftJson(options =>
+				{
+					options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+				})
+				.ConfigureApplicationPartManager(manager =>
+				{
+					manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
+				});
 			services.AddDistributedMemoryCache();
 			services.AddEndpointsApiExplorer();
 			services.AddLocalization(options => options.ResourcesPath = "Shared/Resources");
 			services.AddRabbitMq();
 			services.AddTransient<IEmailSender, EmailSender>();
+			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddSingleton<ILocalizedMessageService, LocalizedMessageService>();
 			services.AddSingleton<ErrorHandlerMiddleware>();
 			services.AddPostgres();
 			services.AddCloudinary();
-
-
+			services.AddVnPay();
 
 			return services;
 		}
@@ -57,13 +59,13 @@ namespace FB98.Shared.Infrastructure
 
 			var localizationOptions = new RequestLocalizationOptions
 			{
-				DefaultRequestCulture = new RequestCulture("vi"),
+				DefaultRequestCulture = new RequestCulture("en"),
 				SupportedCultures = supportedCultures,
 				SupportedUICultures = supportedCultures,
 				RequestCultureProviders = new List<IRequestCultureProvider>
 				{
-					new QueryStringRequestCultureProvider(),  // Hỗ trợ đổi qua query string: ?culture=vi
-					new CookieRequestCultureProvider(),       // Lưu ngôn ngữ vào cookie
+					new QueryStringRequestCultureProvider(), // Hỗ trợ đổi qua query string: ?culture=vi
+					new CookieRequestCultureProvider(), // Lưu ngôn ngữ vào cookie
 					new AcceptLanguageHeaderRequestCultureProvider() // Nếu không có query hoặc cookie, lấy từ header
 				}
 			};

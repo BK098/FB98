@@ -246,4 +246,13 @@
   <data name="ProductNotFound" xml:space="preserve">
     <value>Không tìm thấy sản phẩm</value>
   </data>
+  <data name="ValidationFailed" xml:space="preserve">
+    <value>Xác thực thất bại</value>
+  </data>
+  <data name="Updated" xml:space="preserve">
+    <value>Cập nhật thành công</value>
+  </data>
+  <data name="InvalidState" xml:space="preserve">
+    <value>Trạng thái không hợp lệ</value>
+  </data>
 </root>

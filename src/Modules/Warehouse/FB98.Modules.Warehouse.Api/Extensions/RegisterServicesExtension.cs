@@ -13,6 +13,9 @@ namespace FB98.Modules.Warehouse.Api.Extensions
 				// Đăng ký Consumer
 				config.AddConsumer<ProductDeletedEventHandler>();
 				config.AddConsumer<ProductCreatedEventHandler>();
+				config.AddConsumer<PaymentSuccessEventHandler>();
+				config.AddConsumer<PaymentFailedEventHandler>();
+				config.AddConsumer<OrderCreatedEventHandler>();
 			});
 
 			return services;

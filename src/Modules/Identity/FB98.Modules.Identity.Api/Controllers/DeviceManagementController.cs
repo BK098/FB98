@@ -9,10 +9,8 @@ namespace FB98.Modules.Identity.Api.Controllers
 {
 	internal class DeviceManagementController : BaseController
 	{
-		private readonly IMediator _mediator;
-		public DeviceManagementController(IMediator mediator)
+		public DeviceManagementController(IMediator mediator) : base(mediator)
 		{
-			_mediator = mediator;
 		}
 
 		[Authorize]
@@ -43,6 +41,7 @@ namespace FB98.Modules.Identity.Api.Controllers
 			{
 				return Unauthorized(new { message = "User is not authorized" });
 			}
+
 			var UserId = Guid.Parse(userId);
 			var request = new RevokeAllDeviceTokenCommand(UserId);
 			var result = await _mediator.Send(request);

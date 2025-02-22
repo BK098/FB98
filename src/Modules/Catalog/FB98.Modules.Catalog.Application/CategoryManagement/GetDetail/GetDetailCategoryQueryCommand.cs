@@ -33,7 +33,7 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.GetDetail
 				}
 
 				var categoryDto = _mapper.Map<GetDetailCategoryResponse>(category);
-				categoryDto.ProductCount = category.Products.Count;
+				categoryDto.ProductCount = category.GetTotalProducts();
 				return ApiResponseBuilder.Success(categoryDto);
 			}
 			catch (Exception ex)

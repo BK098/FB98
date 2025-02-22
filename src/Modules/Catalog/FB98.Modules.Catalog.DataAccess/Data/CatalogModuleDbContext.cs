@@ -9,10 +9,12 @@ namespace FB98.Modules.Catalog.DataAccess.Data
 		{
 		}
 
-		public virtual DbSet<Category> Categories { get; set; }
-		public virtual DbSet<Product> Products { get; set; }
-		public virtual DbSet<Combo> Combos { get; set; }
-		public virtual DbSet<ComboProduct> ComboProducts { get; set; }
+		public DbSet<Category> Categories { get; set; }
+		public DbSet<Product> Products { get; set; }
+		public DbSet<Combo> Combos { get; set; }
+		public DbSet<ComboProduct> ComboProducts { get; set; }
+		public DbSet<ProductDiscountRule> ProductDiscountRules { get; set; }
+		public DbSet<ProductDiscountApplication> ProductDiscountApplications { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

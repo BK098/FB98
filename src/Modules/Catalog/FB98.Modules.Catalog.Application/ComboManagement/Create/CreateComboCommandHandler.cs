@@ -62,6 +62,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Create
 				{
 					imageUrl = await _cloudinaryService.UploadImageAsync(model.ComboImage!, "catalog/combo");
 				}
+
 				combo.Image = imageUrl;
 				await _comboRepository.CreateAsync(combo);
 				await _unitOfWork.SaveChangesAsync();

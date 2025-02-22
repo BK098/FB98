@@ -10,6 +10,7 @@ namespace FB98.Shared.Abstractions.Refits
 		[Get("/warehouse-module/Inventories/get-stock/{productId}")]
 		Task<Responses.ApiResult<StockResponse>> GetStock(Guid productId);
 	}
+
 	public class StockResponse
 	{
 		public Guid ProductId { get; set; }

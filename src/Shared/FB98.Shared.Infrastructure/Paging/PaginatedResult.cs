@@ -11,6 +11,7 @@ namespace FB98.Shared.Infrastructure.Paging
 		public int PageSize { get; set; }
 		public bool HasPreviousPage => PageIndex > 1;
 		public bool HasNextPage => PageIndex < TotalPages;
+
 		public PaginatedResult(List<T> items, int pageIndex, int pageSize, int count)
 		{
 			Items = items;
@@ -19,6 +20,7 @@ namespace FB98.Shared.Infrastructure.Paging
 			PageSize = pageSize;
 			TotalPages = (int)Math.Ceiling(count / (double)pageSize);
 		}
+
 		public static async Task<PaginatedResult<T>> CreateAsync(
 			IQueryable<T> source,
 			int pageIndex,
@@ -27,7 +29,7 @@ namespace FB98.Shared.Infrastructure.Paging
 		{
 			var count = await source.CountAsync(cancellation);
 			var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync(cancellation);
-			return new(items, pageIndex, pageSize, count);
+			return new PaginatedResult<T>(items, pageIndex, pageSize, count);
 		}
 	}
 }

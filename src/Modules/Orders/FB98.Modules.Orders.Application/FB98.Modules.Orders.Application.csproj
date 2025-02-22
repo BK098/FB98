@@ -16,4 +16,7 @@
     <ItemGroup>
       <ProjectReference Include="..\FB98.Modules.Orders.Domain\FB98.Modules.Orders.Domain.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Properties\" />
+    </ItemGroup>
 </Project>

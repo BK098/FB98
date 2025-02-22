@@ -5,6 +5,7 @@ namespace FB98.Modules.Warehouse.DataAccess.Data
 {
 	public class WarehouseModuleDbContext : DbContext
 	{
+		/// <inheritdoc />
 		public WarehouseModuleDbContext(DbContextOptions<WarehouseModuleDbContext> options) : base(options)
 		{
 		}

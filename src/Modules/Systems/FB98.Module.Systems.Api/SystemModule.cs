@@ -12,6 +12,7 @@ namespace FB98.Module.Systems.Api
 		{
 			return services;
 		}
+
 		public static IApplicationBuilder UseSystemModule(this IApplicationBuilder app)
 		{
 			using (var scope = app.ApplicationServices.CreateScope())
@@ -19,6 +20,7 @@ namespace FB98.Module.Systems.Api
 				var services = scope.ServiceProvider;
 				//SeedData
 			}
+
 			return app;
 		}
 	}

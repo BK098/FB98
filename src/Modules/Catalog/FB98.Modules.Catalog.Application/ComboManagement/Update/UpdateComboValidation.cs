@@ -1,6 +1,6 @@
 ﻿namespace FB98.Modules.Catalog.Application.ComboManagement.Update
 {
-	internal sealed class UpdateComboValidation: AbstractValidator<UpdateComboDto>
+	internal sealed class UpdateComboValidation : AbstractValidator<UpdateComboDto>
 	{
 		public UpdateComboValidation(ILocalizedMessageService message)
 		{

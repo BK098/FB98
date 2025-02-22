@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FB98.Modules.Orders.Application.Abstractions;
 using FB98.Modules.Orders.Domain.Entities;
+using FB98.Shared.Abstractions.Events;
 using FB98.Shared.Abstractions.Refits;
 using MassTransit;
 using Refit;
@@ -9,14 +10,14 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 {
 	internal sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, ApiResult<object>>
 	{
-		private readonly IOrderRepository _orderRepository;
+		private readonly IBus _bus;
+		private readonly ICatalogApi _catalogApi;
 		private readonly ILocalizedMessageService _localizedMessageService;
-		private readonly IMapper _mapper;
 		private readonly ILogger<CreateOrderCommandHandler> _logger;
+		private readonly IMapper _mapper;
+		private readonly IOrderRepository _orderRepository;
 		private readonly IValidator<CreateOrderDto> _validator;
 		private readonly IWarehouseApi _warehouseApi;
-		private readonly ICatalogApi _catalogApi;
-		private readonly IBus _bus;
 
 		public CreateOrderCommandHandler(
 			IOrderRepository orderRepository,
@@ -37,6 +38,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 			_catalogApi = catalogApi;
 			_bus = bus;
 		}
+
 		public async Task<ApiResult<object>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
@@ -49,7 +51,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 				}
 
 				var order = _mapper.Map<Order>(model);
-				order.OrderStatusId = OrderStatusConstants.Requested;
+				order.OrderStatusId = OrderStatusConstants.Created;
 				order.Amount = 0;
 				order.SetCreatedAt();
 
@@ -75,29 +77,35 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 				// Duyệt lại order để cập nhật thông tin sản phẩm được lấy từ catalog và warehouse
 				foreach (var item in order.OrderItems)
 				{
-					if (item.IsCombo)
+					if (!item.IsCombo)
 					{
-						var comboResponse = comboResponses.FirstOrDefault(x => x.Data!.Id == item.ProductId);
-						if (comboResponse is null || !comboResponse.IsSuccess)
-						{
-							return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound") + $"combo{item.ProductId}", statusCode: 404);
-						}
+						continue;
+					}
 
-						item.ProductName = comboResponse.Data!.Name;
-						item.Price = comboResponse.Data!.Price;
-						item.TotalPrice = comboResponse.Data!.Price * item.Quantity;
-						order.Amount += item.TotalPrice;
+					var combo = comboResponses.FirstOrDefault(x => x.Data!.Id == item.ProductId);
+					if (combo is null || !combo.IsSuccess)
+					{
+						return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound") + $"combo{item.ProductId}", 404);
+					}
 
-						foreach (var product in comboResponse.Data.Products)
-						{
-							if (!stockTasks.ContainsKey(product.Id))
-							{
-								stockTasks[product.Id] = _warehouseApi.GetStock(product.Id);
-							}
-						}
+					item.ProductName = combo.Data!.Name;
+					item.FinalPrice = 0;
+					item.FinalPrice = combo.Data!.DiscountPrice > 0 ? combo.Data!.DiscountPrice : item.UnitPrice;
+					item.UnitPrice = combo.Data!.Price;
+					item.SubTotalPrice = item.UnitPrice * item.Quantity;
+					item.TotalPrice = item.FinalPrice * item.Quantity;
+					order.SubAmount += item.SubTotalPrice;
+					order.Amount += item.TotalPrice;
+
+					foreach (var product in combo.Data.Products.Where(product => !stockTasks.ContainsKey(product.Id)))
+					{
+						stockTasks[product.Id] = _warehouseApi.GetStock(product.Id);
 					}
 				}
+
 				await Task.WhenAll(stockTasks.Values);
+
+				var stockItems = new List<StockItem>();
 
 				foreach (var item in order.OrderItems)
 				{
@@ -106,19 +114,23 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 						var combo = comboResponses.FirstOrDefault(x => x.Data!.Id == item.ProductId);
 						if (combo is null || !combo.IsSuccess)
 						{
-							return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound") + $"combo{item.ProductId}", statusCode: 404);
+							return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound") + $"combo{item.ProductId}", 404);
 						}
+
 						foreach (var product in combo.Data!.Products)
 						{
 							var stockResponse = await stockTasks[product.Id];
 							if (!stockResponse.IsSuccess)
 							{
-								return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("WarehouseError"), statusCode: 500);
+								return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("WarehouseError"), 500);
 							}
+
 							if (stockResponse.Data!.IsLimited && stockResponse.Data.Quantity < product.Quantity)
 							{
-								return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotEnoughStock"), statusCode: 400);
+								return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotEnoughStock"));
 							}
+
+							stockItems.Add(new StockItem(product.Id, product.Quantity));
 						}
 					}
 					else
@@ -126,29 +138,41 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 						var product = productResponses.FirstOrDefault(x => x.Data!.Id == item.ProductId);
 						if (product is null || !product.IsSuccess)
 						{
-							return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound") + $"{item.ProductId}", statusCode: 404);
+							return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound") + $"{item.ProductId}", 404);
 						}
+
 						var stockResponse = await stockTasks[item.ProductId];
 						if (!stockResponse.IsSuccess)
 						{
-							return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("WarehouseError"), statusCode: 500);
+							return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("WarehouseError"), 500);
 						}
+
 						if (stockResponse.Data!.IsLimited && stockResponse.Data.Quantity < item.Quantity)
 						{
-							return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotEnoughStock"), statusCode: 400);
+							return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotEnoughStock"));
 						}
+
+						stockItems.Add(new StockItem(item.ProductId, item.Quantity));
+
 						item.ProductName = product.Data!.Name;
-						item.Price = product.Data!.Price;
-						item.TotalPrice = product.Data!.Price * item.Quantity;
+						item.UnitPrice = product.Data!.Price;
+						item.FinalPrice = product.Data!.DiscountPrice > 0 ? product.Data!.DiscountPrice : item.UnitPrice;
+						item.SubTotalPrice = product.Data!.Price * item.Quantity;
+						item.TotalPrice = item.FinalPrice * item.Quantity;
+						order.SubAmount += item.SubTotalPrice;
 						order.Amount += item.TotalPrice;
 					}
+
 					item.SetCreatedAt();
 				}
 
+				order.SetDiscountPercentage();
 				await _orderRepository.CreateAsync(order);
 				await _orderRepository.SaveChangesAsync();
 
-				return ApiResponseBuilder.Success<object>(_localizedMessageService.GetLocalizedMessage("Created"), statusCode: 201);
+				var discountItems = order.OrderItems.Select(x => new DiscountItem(x.ProductId, x.IsCombo)).ToList();
+				await _bus.Publish(new OrderCreatedEvent(order.Id, stockItems, discountItems), cancellationToken);
+				return ApiResponseBuilder.Success<object>(order.Id, _localizedMessageService.GetLocalizedMessage("Created"), 201);
 			}
 			catch (ApiException ex)
 			{
@@ -158,7 +182,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Error occurred while get create order");
-				return ApiResponseBuilder.Error<object>("An unexpected error occurred", statusCode: 500);
+				return ApiResponseBuilder.Error<object>("An unexpected error occurred", 500);
 			}
 		}
 	}

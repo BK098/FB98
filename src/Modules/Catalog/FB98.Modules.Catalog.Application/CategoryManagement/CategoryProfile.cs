@@ -10,6 +10,11 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement
 	{
 		public CategoryProfile()
 		{
+			Init();
+		}
+
+		private void Init()
+		{
 			CreateMap<CreateCategoryDto, Category>();
 			CreateMap<UpdateCategoryDto, Category>();
 			CreateMap<Category, GetDetailCategoryResponse>();

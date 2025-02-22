@@ -8,6 +8,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.GetDetail
 		private readonly IComboRepository _comboRepository;
 		private readonly IMapper _mapper;
 		private readonly ILocalizedMessageService _localizedMessageService;
+
 		public GetDetailComboQueryHandler(ILogger<GetDetailComboQueryHandler> logger,
 			IComboRepository comboRepository,
 			IMapper mapper,
@@ -18,6 +19,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.GetDetail
 			_mapper = mapper;
 			_localizedMessageService = localizedMessageService;
 		}
+
 		public async Task<ApiResult<GetDetailComboResponse>> Handle(GetDetailComboQuery request, CancellationToken cancellationToken)
 		{
 			var comboId = request.ComboId;
@@ -30,6 +32,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.GetDetail
 				}
 
 				var response = _mapper.Map<GetDetailComboResponse>(combo);
+				response.DiscountPrice = combo.GetDiscountedPrice();
 
 				return ApiResponseBuilder.Success(response, "");
 			}

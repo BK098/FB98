@@ -15,16 +15,13 @@ namespace FB98.Shared.Infrastructure.Cloudinaries
 				var account = new Account(options.CloudName, options.ApiKey, options.ApiSecret);
 				var cloudinary = new Cloudinary(account);
 				services.AddSingleton(cloudinary);
-#if DEBUG
-				var testResult = cloudinary.Api.UrlImgUp.BuildUrl("test_image.jpg");
-				Console.WriteLine($"Cloudinary connected successfully: {testResult}");
-#endif
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine($"Cloudinary connection failed: {ex.Message}");
+				Console.WriteLine($@"Cloudinary connection failed: {ex.Message}");
 				throw;
 			}
+
 			return services;
 		}
 	}

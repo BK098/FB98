@@ -8,10 +8,8 @@ namespace FB98.Modules.Identity.Api.Controllers
 {
 	internal class ProfileController : BaseController
 	{
-		private readonly IMediator _mediator;
-		public ProfileController(IMediator mediator)
+		public ProfileController(IMediator mediator) : base(mediator)
 		{
-			_mediator = mediator;
 		}
 
 		[Authorize]

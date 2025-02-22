@@ -214,6 +214,15 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid state transition.
+        /// </summary>
+        internal static string InvalidState {
+            get {
+                return ResourceManager.GetString("InvalidState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid Token.
         /// </summary>
         internal static string InvalidToken {
@@ -439,11 +448,29 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Updated.
+        /// </summary>
+        internal static string Updated {
+            get {
+                return ResourceManager.GetString("Updated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User not found.
         /// </summary>
         internal static string UserNotFound {
             get {
                 return ResourceManager.GetString("UserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Validation Failed.
+        /// </summary>
+        internal static string ValidationFailed {
+            get {
+                return ResourceManager.GetString("ValidationFailed", resourceCulture);
             }
         }
     }

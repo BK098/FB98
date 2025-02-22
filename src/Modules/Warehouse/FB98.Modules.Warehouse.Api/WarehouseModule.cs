@@ -17,6 +17,7 @@ namespace FB98.Modules.Warehouse.Api
 			services.AddRegisterServices();
 			return services;
 		}
+
 		public static IApplicationBuilder UseWarehouseModule(this IApplicationBuilder app)
 		{
 			using (var scope = app.ApplicationServices.CreateScope())
@@ -24,6 +25,7 @@ namespace FB98.Modules.Warehouse.Api
 				var services = scope.ServiceProvider;
 				//SeedData
 			}
+
 			return app;
 		}
 	}

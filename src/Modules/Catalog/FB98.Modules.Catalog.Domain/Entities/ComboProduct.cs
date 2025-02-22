@@ -1,5 +1,4 @@
 ﻿using FB98.Shared.Abstractions.Entities;
-using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FB98.Modules.Catalog.Domain.Entities
@@ -10,7 +9,8 @@ namespace FB98.Modules.Catalog.Domain.Entities
 
 		[ForeignKey("Product")]
 		public Guid ProductId { get; set; }
-		public Product Product { get; set; } = default!;
+
+		public Product Product { get; set; } = null!;
 
 		[ForeignKey("Combo")]
 		public Guid ComboId { get; set; }

@@ -35,10 +35,13 @@ namespace FB98.Modules.Warehouse.DataAccess.Data.Migrations
                     b.Property<bool>("IsLimited")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ReservedQuantity")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("UpdateAt")
@@ -64,7 +67,10 @@ namespace FB98.Modules.Warehouse.DataAccess.Data.Migrations
                     b.Property<bool>("IsLimited")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid>("Id")
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("QuantityChange")
@@ -87,12 +93,17 @@ namespace FB98.Modules.Warehouse.DataAccess.Data.Migrations
             modelBuilder.Entity("FB98.Modules.Warehouse.Domain.Entities.InventoryTransaction", b =>
                 {
                     b.HasOne("FB98.Modules.Warehouse.Domain.Entities.Inventory", "Inventory")
-                        .WithMany()
+                        .WithMany("Transactions")
                         .HasForeignKey("InventoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Inventory");
+                });
+
+            modelBuilder.Entity("FB98.Modules.Warehouse.Domain.Entities.Inventory", b =>
+                {
+                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }

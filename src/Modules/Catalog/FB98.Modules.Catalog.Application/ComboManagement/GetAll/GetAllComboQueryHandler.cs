@@ -8,7 +8,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.GetAll
 {
 	internal sealed class GetAllComboQueryHandler : IQueryHandler<GetAllComboQuery, ApiResult<PaginatedResult<GetAllComboResponse>>>
 	{
-		private readonly List<string> allowedProperties = ["Name", "Price"];
+		private readonly List<string> _allowedProperties = ["Name", "Price"];
 		private readonly ILogger<GetAllComboQueryHandler> _logger;
 		private readonly IComboRepository _comboRepository;
 		private readonly ILocalizedMessageService _localizedMessageService;
@@ -25,6 +25,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.GetAll
 			_localizedMessageService = localizedMessageService;
 			_mapper = mapper;
 		}
+
 		public async Task<ApiResult<PaginatedResult<GetAllComboResponse>>> Handle(GetAllComboQuery request, CancellationToken cancellationToken)
 		{
 			var filter = request.Filter;
@@ -37,11 +38,13 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.GetAll
 					combos = combos.Where(x => EF.Functions.Unaccent(x.Name).ToLower().Trim()
 						.Contains(search));
 				}
-				combos = combos.SortBy(filter.SortColumn, allowedProperties, filter.IsDescending);
+
+				combos = combos.SortBy(filter.SortColumn, _allowedProperties, filter.IsDescending);
 				if (!await combos.AnyAsync(cancellationToken))
 				{
 					return ApiResponseBuilder.Error<PaginatedResult<GetAllComboResponse>>(_localizedMessageService.GetLocalizedMessage("NotFound"), statusCode: 404);
 				}
+
 				var paginatedResult = await PaginatedResult<Combo>.CreateAsync(
 					combos,
 					filter.PageIndex,

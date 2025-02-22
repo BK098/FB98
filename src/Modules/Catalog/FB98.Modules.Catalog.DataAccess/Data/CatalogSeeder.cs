@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("FB98.Bootstrapper")]
+
 namespace FB98.Modules.Catalog.DataAccess.Data
 {
 	internal static class CatalogSeeder
@@ -20,6 +21,7 @@ namespace FB98.Modules.Catalog.DataAccess.Data
 					await Task.CompletedTask;
 				}
 			}
+
 			if (!context.Products.Any())
 			{
 				var jsonData = File.ReadAllText("SeedData/Catalog/ProductSeed.json");
@@ -31,6 +33,7 @@ namespace FB98.Modules.Catalog.DataAccess.Data
 					await Task.CompletedTask;
 				}
 			}
+
 			if (!context.Combos.Any())
 			{
 				var jsonData = File.ReadAllText("SeedData/Catalog/ComboSeed.json");

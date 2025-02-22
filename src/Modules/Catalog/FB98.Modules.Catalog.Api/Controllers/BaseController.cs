@@ -8,6 +8,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 	{
 		protected const string BasePath = "catalog-module";
 		protected readonly IMediator _mediator;
+
 		protected BaseController(IMediator mediator)
 		{
 			_mediator = mediator;
