@@ -15,25 +15,6 @@ namespace FB98.Modules.Orders.DataAccess.Data.Migrations
                 name: "OrdersModule");
 
             migrationBuilder.CreateTable(
-                name: "Orders",
-                schema: "OrdersModule",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uuid", nullable: true),
-                    DiscountPercentage = table.Column<decimal>(type: "numeric", nullable: false),
-                    Amount = table.Column<decimal>(type: "numeric", nullable: false),
-                    SubAmount = table.Column<decimal>(type: "numeric", nullable: false),
-                    OrderStatusId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "OrderStatuses",
                 schema: "OrdersModule",
                 columns: table => new
@@ -46,6 +27,33 @@ namespace FB98.Modules.Orders.DataAccess.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderStatuses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                schema: "OrdersModule",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uuid", nullable: true),
+                    DiscountPercentage = table.Column<decimal>(type: "numeric", nullable: false),
+                    Amount = table.Column<decimal>(type: "numeric", nullable: false),
+                    SubAmount = table.Column<decimal>(type: "numeric", nullable: false),
+                    OrderStatusId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RowVersion = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: false),
+                    CreateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_OrderStatuses_OrderStatusId",
+                        column: x => x.OrderStatusId,
+                        principalSchema: "OrdersModule",
+                        principalTable: "OrderStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -88,6 +96,7 @@ namespace FB98.Modules.Orders.DataAccess.Data.Migrations
                     OldStatusId = table.Column<Guid>(type: "uuid", nullable: false),
                     NewStatusId = table.Column<Guid>(type: "uuid", nullable: false),
                     ChangedBy = table.Column<string>(type: "text", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: false),
                     CreateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -110,6 +119,12 @@ namespace FB98.Modules.Orders.DataAccess.Data.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Orders_OrderStatusId",
+                schema: "OrdersModule",
+                table: "Orders",
+                column: "OrderStatusId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OrderStatusHistories_OrderId",
                 schema: "OrdersModule",
                 table: "OrderStatusHistories",
@@ -124,15 +139,15 @@ namespace FB98.Modules.Orders.DataAccess.Data.Migrations
                 schema: "OrdersModule");
 
             migrationBuilder.DropTable(
-                name: "OrderStatuses",
-                schema: "OrdersModule");
-
-            migrationBuilder.DropTable(
                 name: "OrderStatusHistories",
                 schema: "OrdersModule");
 
             migrationBuilder.DropTable(
                 name: "Orders",
+                schema: "OrdersModule");
+
+            migrationBuilder.DropTable(
+                name: "OrderStatuses",
                 schema: "OrdersModule");
         }
     }

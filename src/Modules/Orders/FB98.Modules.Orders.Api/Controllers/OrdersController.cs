@@ -21,8 +21,8 @@ namespace FB98.Modules.Orders.Api.Controllers
 		}
 
 		[Authorize]
-		[HttpGet("{orderId}/history")]
-		public async Task<IActionResult> GetOrderStatusHistory([FromQuery] Guid orderId)
+		[HttpGet("{orderId:guid}/history")]
+		public async Task<IActionResult> GetOrderStatusHistory(Guid orderId)
 		{
 			var request = new GetOrderStatusHistoryQuery(orderId);
 			var result = await _mediator.Send(request);

@@ -23,7 +23,8 @@ namespace FB98.Shared.Infrastructure.Payments.VnPay
 			var vnpayData = new SortedDictionary<string, string>
 			{
 				{ "vnp_Version", _options.Vnp_Version },
-				{ "vnp_Command", _options.Vnp_Command },
+				//{ "vnp_Command", _options.Vnp_Command },
+				{ "vnp_Command", "querydr" },
 				{ "vnp_TmnCode", _options.Vnp_TmnCode },
 				{ "vnp_Amount", ((int)(amount * 100)).ToString() }, // VNPay yêu cầu nhân 100
 				{ "vnp_CreateDate", DateTime.UtcNow.AddHours(7).ToString("yyyyMMddHHmmss") },

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FB98.Modules.Orders.DataAccess.Data.Migrations
 {
     [DbContext(typeof(OrdersModuleDbContext))]
-    [Migration("20250222100607_Init_v1")]
+    [Migration("20250222125353_Init_v1")]
     partial class Init_v1
     {
         /// <inheritdoc />
@@ -47,6 +47,12 @@ namespace FB98.Modules.Orders.DataAccess.Data.Migrations
                     b.Property<Guid>("OrderStatusId")
                         .HasColumnType("uuid");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("bytea");
+
                     b.Property<decimal>("SubAmount")
                         .HasColumnType("numeric");
 
@@ -54,6 +60,8 @@ namespace FB98.Modules.Orders.DataAccess.Data.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderStatusId");
 
                     b.ToTable("Orders", "OrdersModule");
                 });
@@ -147,6 +155,12 @@ namespace FB98.Modules.Orders.DataAccess.Data.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
 
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("bytea");
+
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -155,6 +169,17 @@ namespace FB98.Modules.Orders.DataAccess.Data.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderStatusHistories", "OrdersModule");
+                });
+
+            modelBuilder.Entity("FB98.Modules.Orders.Domain.Entities.Order", b =>
+                {
+                    b.HasOne("FB98.Modules.Orders.Domain.Entities.OrderStatus", "OrderStatus")
+                        .WithMany()
+                        .HasForeignKey("OrderStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OrderStatus");
                 });
 
             modelBuilder.Entity("FB98.Modules.Orders.Domain.Entities.OrderItem", b =>

@@ -32,7 +32,6 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-
 		[Authorize(Roles = "adminstrator")]
 		[HttpPost]
 		public async Task<IActionResult> CreateProduct([FromForm] CreateProductDto model)
@@ -61,7 +60,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 		}
 
 		[Authorize(Roles = "adminstrator")]
-		[HttpDelete("{productId}")]
+		[HttpDelete("{productId:guid}")]
 		public async Task<IActionResult> DeleteProduct(Guid productId)
 		{
 			var request = new DeleteProductCommand(productId);

@@ -1,21 +1,21 @@
-#version: '3.8'
-
 networks:
   fb98_network:
     driver: bridge
 
 services:
   fb98.bootstrapper:
+    image: bkhang1227/fb98:bootstrapper
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "5000:5000"
-      - "5001:5001"
+      - "5000:5000" #http 
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__RabbitMq=amqp://myuser:mypassword@rabbitmq:5672/
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=fb98db;Username=postgres;Password=yourpassword
     depends_on:
+      - rabbitmq
       - db
     networks:
       - fb98_network
@@ -23,7 +23,8 @@ services:
       - app_data:/app/data
 
   db:
-    image: postgres:15
+    image: bkhang1227/fb98:database
+    #image: postgres:15
     container_name: postgres-db
     ports:
       - "5432:5432"
@@ -36,7 +37,8 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
   pgadmin:
-    image: dpage/pgadmin4
+    image: bkhang1227/fb98:pgadmin
+    #image: dpage/pgadmin4
     container_name: pgadmin
     ports:
       - "8080:80"
@@ -48,14 +50,24 @@ services:
     networks:
       - fb98_network
   rabbitmq:
-    image: rabbitmq:3-management
+    hostname: rabbitmq
+    healthcheck:
+        test: ["CMD", "rabbitmqctl", "status"]
+        interval: 10s
+        timeout: 5s
+        retries: 3
+    image: bkhang1227/fb98:rabbitmq
+    # image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: myuser # can change
-      RABBITMQ_DEFAULT_PASS: mypassword # can change
+      RABBITMQ_DEFAULT_USER: myuser
+      RABBITMQ_DEFAULT_PASS: mypassword
+      RABBITMQ_DEFAULT_VHOST: vhost
+    networks:
+      - fb98_network
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
       - rabbitmq_logs:/var/log/rabbitmq
