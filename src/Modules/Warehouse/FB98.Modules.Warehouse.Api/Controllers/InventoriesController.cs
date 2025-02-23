@@ -12,7 +12,7 @@ namespace FB98.Modules.Warehouse.Api.Controllers
 		{
 		}
 
-		[HttpGet("get-stock/{productId}")]
+		[HttpGet("get-stock/{productId:guid}")]
 		public async Task<IActionResult> ReduceStock(Guid productId)
 		{
 			var request = new GetStockQuery(productId);

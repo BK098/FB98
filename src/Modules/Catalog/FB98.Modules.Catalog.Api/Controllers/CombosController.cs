@@ -24,7 +24,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[HttpGet("{comboId}")]
+		[HttpGet("{comboId:guid}")]
 		public async Task<IActionResult> GetCombo(Guid comboId)
 		{
 			var request = new GetDetailComboQuery(comboId);
@@ -43,7 +43,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 		}
 
 		[Authorize(Roles = "adminstrator")]
-		[HttpPost("{comboId}/discount-rule")]
+		[HttpPost("{comboId:guid}/discount-rule")]
 		public async Task<IActionResult> CreatecomboDiscountRule(Guid comboId, [FromBody] CreateDiscountRuleDto model)
 		{
 			model.SetAtCombo();
@@ -53,7 +53,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 		}
 
 		[Authorize(Roles = "adminstrator")]
-		[HttpPut("{comboId}")]
+		[HttpPut("{comboId:guid}")]
 		public async Task<IActionResult> UpdateCombo(Guid comboId, [FromForm] UpdateComboDto model)
 		{
 			model.DeserializeProducts();
@@ -63,7 +63,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 		}
 
 		[Authorize(Roles = "adminstrator")]
-		[HttpDelete("{comboId}")]
+		[HttpDelete("{comboId:guid}")]
 		public async Task<IActionResult> DeleteCombo(Guid comboId)
 		{
 			var request = new DeleteComboCommand(comboId);

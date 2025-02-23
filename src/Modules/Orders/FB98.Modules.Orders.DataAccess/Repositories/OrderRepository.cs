@@ -22,11 +22,6 @@ namespace FB98.Modules.Orders.DataAccess.Repositories
 				.FirstOrDefaultAsync(x => x.Id == id);
 		}
 
-		public async Task<int> SaveChangesAsync()
-		{
-			return await _context.SaveChangesAsync();
-		}
-
 		public async Task<IEnumerable<Order>> GetOrdersByStatusAndTimeAsync(Guid orderStatusId, DateTime date)
 		{
 			return await _context.Orders

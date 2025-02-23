@@ -18,6 +18,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 		private readonly IOrderRepository _orderRepository;
 		private readonly IValidator<CreateOrderDto> _validator;
 		private readonly IWarehouseApi _warehouseApi;
+		private readonly IUnitOfWork _unitOfWork;
 
 		public CreateOrderCommandHandler(
 			IOrderRepository orderRepository,
@@ -27,7 +28,8 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 			IValidator<CreateOrderDto> validator,
 			IWarehouseApi warehouseApi,
 			ICatalogApi catalogApi,
-			IBus bus)
+			IBus bus,
+			IUnitOfWork unitOfWork)
 		{
 			_orderRepository = orderRepository;
 			_localizedMessageService = localizedMessageService;
@@ -37,6 +39,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 			_warehouseApi = warehouseApi;
 			_catalogApi = catalogApi;
 			_bus = bus;
+			_unitOfWork = unitOfWork;
 		}
 
 		public async Task<ApiResult<object>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
@@ -168,7 +171,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 
 				order.SetDiscountPercentage();
 				await _orderRepository.CreateAsync(order);
-				await _orderRepository.SaveChangesAsync();
+				await _unitOfWork.SaveChangesAsync();
 
 				var discountItems = order.OrderItems.Select(x => new DiscountItem(x.ProductId, x.IsCombo)).ToList();
 				await _bus.Publish(new OrderCreatedEvent(order.Id, stockItems, discountItems), cancellationToken);

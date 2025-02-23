@@ -23,7 +23,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[HttpGet("{categoryId}")]
+		[HttpGet("{categoryId:guid}")]
 		public async Task<IActionResult> GetCategory(Guid categoryId)
 		{
 			var request = new GetDetailCategoryQuery(categoryId);
@@ -41,7 +41,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 		}
 
 		[Authorize(Roles = "adminstrator")]
-		[HttpPut]
+		[HttpPut("{categoryId:guid}")]
 		public async Task<IActionResult> UpdateCategory(Guid categoryId, [FromBody] UpdateCategoryDto model)
 		{
 			var request = new UpdateCategoryCommand(categoryId, model);
@@ -50,7 +50,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 		}
 
 		[Authorize(Roles = "adminstrator")]
-		[HttpDelete]
+		[HttpDelete("{categoryId:guid}")]
 		public async Task<IActionResult> DeleteCategory(Guid categoryId)
 		{
 			var request = new DeleteCategoryCommand(categoryId);
