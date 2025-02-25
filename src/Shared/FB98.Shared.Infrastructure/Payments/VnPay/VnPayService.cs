@@ -23,19 +23,18 @@ namespace FB98.Shared.Infrastructure.Payments.VnPay
 			var vnpayData = new SortedDictionary<string, string>
 			{
 				{ "vnp_Version", _options.Vnp_Version },
-				//{ "vnp_Command", _options.Vnp_Command },
-				{ "vnp_Command", "querydr" },
+				{ "vnp_Command", _options.Vnp_Command },
 				{ "vnp_TmnCode", _options.Vnp_TmnCode },
 				{ "vnp_Amount", ((int)(amount * 100)).ToString() }, // VNPay yêu cầu nhân 100
+				{ "vnp_BankCode", "VNBANK" },
 				{ "vnp_CreateDate", DateTime.UtcNow.AddHours(7).ToString("yyyyMMddHHmmss") },
 				{ "vnp_CurrCode", "VND" },
 				{ "vnp_IpAddr", ipAddress },
 				{ "vnp_Locale", "vn" },
 				{ "vnp_OrderInfo", $"Thanh toan don hang {orderId}" },
 				{ "vnp_OrderType", "other" },
-				{ "vnp_BankCode", "VNBANK" },
-				{ "vnp_ReturnUrl", _options.Vnp_ReturnUrl },
 				{ "vnp_ExpireDate", DateTime.UtcNow.AddHours(7).AddMinutes(15).ToString("yyyyMMddHHmmss") },
+				{ "vnp_ReturnUrl", _options.Vnp_ReturnUrl },
 				{ "vnp_TxnRef", orderId.ToString() }
 			};
 

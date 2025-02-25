@@ -157,7 +157,7 @@
     <value>Invalid email or password</value>
   </data>
   <data name="InvalidToken" xml:space="preserve">
-    <value>Invalid Token</value>
+    <value>Invalid token</value>
   </data>
   <data name="EmailNotFound" xml:space="preserve">
     <value>Email not found</value>
@@ -226,7 +226,7 @@
     <value>Not found</value>
   </data>
   <data name="GreaterThanOrEqualTo0" xml:space="preserve">
-    <value>Greater Than Or Equal To Zero</value>
+    <value>Greater than or equal to 0</value>
   </data>
   <data name="NotNull" xml:space="preserve">
     <value>Not null</value>
@@ -243,9 +243,6 @@
   <data name="Created" xml:space="preserve">
     <value>Created</value>
   </data>
-  <data name="ProductNotFound" xml:space="preserve">
-    <value>Product Not Found</value>
-  </data>
   <data name="ValidationFailed" xml:space="preserve">
     <value>Validation Failed</value>
   </data>
@@ -254,5 +251,14 @@
   </data>
   <data name="InvalidState" xml:space="preserve">
     <value>Invalid state transition</value>
+  </data>
+  <data name="LessThanOrEqualTo15" xml:space="preserve">
+    <value>Less than or equal to 15</value>
+  </data>
+  <data name="GreaterThanOrEqualTo1" xml:space="preserve">
+    <value>Greater than or equal to 1</value>
+  </data>
+  <data name="DataRetrieved" xml:space="preserve">
+    <value>Data retrieved successfully</value>
   </data>
 </root>

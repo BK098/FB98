@@ -1,0 +1,22 @@
+[
+	{
+		"Id": "5d8de278-0cf4-466d-8f40-96dffa7a2ddf",
+		"Name": "Rạp 1",
+		"CinemaId": "98f885cd-2842-4374-b1df-78f037925253"
+	},
+	{
+		"Id": "90cb116d-6a69-4189-b20f-77dec8225097",
+		"Name": "Rạp 2",
+		"CinemaId": "98f885cd-2842-4374-b1df-78f037925253"
+	},
+	{
+		"Id": "89a85e8b-b848-4ecc-b0fb-15bfba20b401",
+		"Name": "Rạp 3",
+		"CinemaId": "98f885cd-2842-4374-b1df-78f037925253"
+	},
+	{
+		"Id": "7be6796e-33dd-4907-bc8b-bd68be96c9bf",
+		"Name": "Rạp 4",
+		"CinemaId": "98f885cd-2842-4374-b1df-78f037925253"
+	}
+]
