@@ -1,4 +1,5 @@
 ﻿using FB98.Modules.Catalog.DataAccess.Data;
+using FB98.Modules.Cinemas.DataAccess.Data;
 using FB98.Modules.Orders.DataAccess.Data;
 using FB98.Modules.Payments.DataAccess.Data;
 using FB98.Modules.Warehouse.DataAccess.Data;
@@ -14,17 +15,20 @@ namespace FB98.Bootstrapper.Controllers
 		private readonly OrdersModuleDbContext _ordersContext;
 		private readonly WarehouseModuleDbContext _warehouseContext;
 		private readonly PaymentModuleDbContext _paymentContext;
+		private readonly CinemaModuleDbContext _cinemaContext;
 
 		public MigrationsController(
 			CatalogModuleDbContext catalogContext,
 			OrdersModuleDbContext ordersContext,
 			WarehouseModuleDbContext warehouseContext,
-			PaymentModuleDbContext paymentContext)
+			PaymentModuleDbContext paymentContext,
+			CinemaModuleDbContext cinemaContext)
 		{
 			_catalogContext = catalogContext;
 			_ordersContext = ordersContext;
 			_warehouseContext = warehouseContext;
 			_paymentContext = paymentContext;
+			_cinemaContext = cinemaContext;
 		}
 
 		[HttpPost("seed-data")]
@@ -36,6 +40,7 @@ namespace FB98.Bootstrapper.Controllers
 				await OrdersSeeder.SeedDataAsync(_ordersContext);
 				await WarehouseSeeder.SeedDataAsync(_warehouseContext);
 				await PaymentSeeder.SeedDataAsync(_paymentContext);
+				await CinemaSeeder.SeedDataAsync(_cinemaContext);
 
 				return Ok(new { message = "Seed data inserted successfully!" });
 			}

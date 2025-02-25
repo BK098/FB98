@@ -97,6 +97,15 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data retrieved successfully.
+        /// </summary>
+        internal static string DataRetrieved {
+            get {
+                return ResourceManager.GetString("DataRetrieved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deleted.
         /// </summary>
         internal static string Deleted {
@@ -178,11 +187,20 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Greater Than Or Equal To Zero.
+        ///   Looks up a localized string similar to Greater than or equal to 0.
         /// </summary>
         internal static string GreaterThanOrEqualTo0 {
             get {
                 return ResourceManager.GetString("GreaterThanOrEqualTo0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Greater than or equal to 1.
+        /// </summary>
+        internal static string GreaterThanOrEqualTo1 {
+            get {
+                return ResourceManager.GetString("GreaterThanOrEqualTo1", resourceCulture);
             }
         }
         
@@ -223,7 +241,7 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid Token.
+        ///   Looks up a localized string similar to Invalid token.
         /// </summary>
         internal static string InvalidToken {
             get {
@@ -237,6 +255,15 @@ namespace FB98.Shared.Infrastructure.Resources {
         internal static string LastnameRequired {
             get {
                 return ResourceManager.GetString("LastnameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Less than or equal to 15.
+        /// </summary>
+        internal static string LessThanOrEqualTo15 {
+            get {
+                return ResourceManager.GetString("LessThanOrEqualTo15", resourceCulture);
             }
         }
         
@@ -408,15 +435,6 @@ namespace FB98.Shared.Infrastructure.Resources {
         internal static string PhoneNumberRequired {
             get {
                 return ResourceManager.GetString("PhoneNumberRequired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Product Not Found.
-        /// </summary>
-        internal static string ProductNotFound {
-            get {
-                return ResourceManager.GetString("ProductNotFound", resourceCulture);
             }
         }
         
