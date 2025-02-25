@@ -12,7 +12,7 @@ namespace FB98.Modules.Catalog.DataAccess.Data
 		{
 			if (!context.Categories.Any())
 			{
-				var jsonData = File.ReadAllText("SeedData/Catalog/CategorySeed.json");
+				var jsonData = await File.ReadAllTextAsync("SeedData/Catalog/CategorySeed.json");
 				var entities = JsonConvert.DeserializeObject<List<Category>>(jsonData, new JsonSerializerSettings());
 				if (entities != null)
 				{
@@ -24,7 +24,7 @@ namespace FB98.Modules.Catalog.DataAccess.Data
 
 			if (!context.Products.Any())
 			{
-				var jsonData = File.ReadAllText("SeedData/Catalog/ProductSeed.json");
+				var jsonData = await File.ReadAllTextAsync("SeedData/Catalog/ProductSeed.json");
 				var entities = JsonConvert.DeserializeObject<List<Product>>(jsonData, new JsonSerializerSettings());
 				if (entities != null)
 				{
@@ -36,7 +36,7 @@ namespace FB98.Modules.Catalog.DataAccess.Data
 
 			if (!context.Combos.Any())
 			{
-				var jsonData = File.ReadAllText("SeedData/Catalog/ComboSeed.json");
+				var jsonData = await File.ReadAllTextAsync("SeedData/Catalog/ComboSeed.json");
 				var entities = JsonConvert.DeserializeObject<List<Combo>>(jsonData, new JsonSerializerSettings());
 				if (entities != null)
 				{

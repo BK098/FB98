@@ -1,0 +1,43 @@
+[
+	{
+		"Id": "98f885cd-2842-4374-b1df-78f037925253",
+		"Name": "Rạp phim công viên phần mềm Quang Trung",
+		"Address": "Công viên phần mềm Quang Trung, Quận 12, Thành phố Hồ Chí Minh"
+	},
+	{
+		"Name": "Rạp phim Cà Mau",
+		"Address": "Trần Hưng Đạo, Phường 5, Thành phố Cà Mau"
+	},
+	{
+		"Name": "Rạp phim Huỳnh Tấn Phát",
+		"Address": "Huỳnh Tấn Phát, Quận 7, Thành phố Hồ Chí Minh"
+	},
+	{
+		"Name": "Rạp phim Tân Bình",
+		"Address": "Nguyễn Hồng Đào, Quận Tân Bình, Thành phố Hồ Chí Minh"
+	},
+	{
+		"Name": "Rạp phim Đà Nẵng",
+		"Address": "Điện Biên Phủ, Quận Thanh Khê, Đà Nẵng"
+	},
+	{
+		"Name": "Rạp phim Buôn Ma Thuột",
+		"Address": "Nguyễn Tất Thành, phường Tân An, Thành phố Buôn Ma Thuột, Đắk Lắk"
+	},
+	{
+		"Name": "Rạp phim Long Xuyên",
+		"Address": "Trần Hưng Đạo, Phường Mỹ Đình, Thành phố Long Xuyên, An Giang"
+	},
+	{
+		"Name": "Rạp phim Long Biên",
+		"Address": "Long Biên, Phường Ngọc Lâm, Quận Long Biên, Thành phố Hà Nội"
+	},
+	{
+		"Name": "Rạp phim Vinh",
+		"Address": "Lê Hồng Phong, Quận Hưng Bình, Thành phố Vinh, Nghệ An"
+	},
+	{
+		"Name": "Rạp phim Aeon Huế",
+		"Address": "Võ Nguyên Giáp, Phường An Đông, Thành phố Huế, Thừa Thiên - Huế"
+	}
+]

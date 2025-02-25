@@ -27,6 +27,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Modules\Catalog\FB98.Modules.Catalog.Api\FB98.Modules.Catalog.Api.csproj" />
+        <ProjectReference Include="..\..\Modules\Cinemas\FB98.Modules.Cinemas.Api\FB98.Modules.Cinemas.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Customers\FB98.Modules.Customers.Api\FB98.Modules.Customers.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Identity\FB98.Modules.Identity.Api\FB98.Modules.Identity.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Orders\FB98.Modules.Orders.Api\FB98.Modules.Orders.Api.csproj" />

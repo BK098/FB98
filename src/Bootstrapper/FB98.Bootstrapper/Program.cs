@@ -1,6 +1,7 @@
 using FB98.Bootstrapper.Extensions;
 using FB98.Module.Systems.Api;
 using FB98.Modules.Catalog.Api;
+using FB98.Modules.Cinemas.Api;
 using FB98.Modules.Customers.Api;
 using FB98.Modules.Identity.Api;
 using FB98.Modules.Orders.Api;
@@ -21,6 +22,7 @@ builder.Services.AddSystemModule(builder.Configuration);
 builder.Services.AddWarehouseModule(builder.Configuration);
 builder.Services.AddOrdersModule(builder.Configuration);
 builder.Services.AddPaymentsModule(builder.Configuration);
+builder.Services.AddCinemaModule(builder.Configuration);
 builder.Services.AddInfrastructure();
 builder.Services.AddRegisterServices();
 
@@ -42,5 +44,6 @@ app.UseCatalogModule();
 app.UseWarehouseModule();
 app.UseOrdersModule();
 app.UsePaymentsModule();
+app.UseCinemaModule();
 //default
 app.Run();
