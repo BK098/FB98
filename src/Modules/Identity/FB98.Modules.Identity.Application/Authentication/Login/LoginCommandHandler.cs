@@ -50,7 +50,7 @@ namespace FB98.Modules.Identity.Application.Authentication.Login
 					return ApiResponseBuilder.Error<LoginResponse>(_localizedMessageService.GetLocalizedMessage("InvalidLogin"), statusCode: 401);
 				}
 
-				var accessToken = _tokenService.GenerateAccessToken(user);
+				var accessToken = await _tokenService.GenerateAccessToken(user);
 				var refreshToken = _tokenService.GenerateRefreshToken();
 				var ipAddress = _httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
 				var userAgent = _httpContextAccessor.HttpContext?.Request.Headers.UserAgent.ToString() ?? "Unknown";

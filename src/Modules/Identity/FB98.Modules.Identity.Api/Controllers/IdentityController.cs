@@ -109,7 +109,7 @@ namespace FB98.Modules.Identity.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "adminstrator")]
+		[Authorize(Roles = "Administrator")]
 		[HttpPost("revoke-token")]
 		public async Task<IActionResult> RevokeToken(Guid userId)
 		{

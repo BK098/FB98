@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("FB98.Bootstrapper")]
-
 namespace FB98.Modules.Catalog.DataAccess.Data
 {
 	internal static class CatalogSeeder

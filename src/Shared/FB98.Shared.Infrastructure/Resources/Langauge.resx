@@ -255,8 +255,14 @@
   <data name="LessThanOrEqualTo15" xml:space="preserve">
     <value>Less than or equal to 15</value>
   </data>
+  <data name="LessThanOrEqualTo250" xml:space="preserve">
+    <value>Less than or equal to 250</value>
+  </data>
   <data name="GreaterThanOrEqualTo1" xml:space="preserve">
     <value>Greater than or equal to 1</value>
+  </data>
+  <data name="GreaterThanOrEqualTo30" xml:space="preserve">
+    <value>Greater than or equal to 30</value>
   </data>
   <data name="DataRetrieved" xml:space="preserve">
     <value>Data retrieved successfully</value>

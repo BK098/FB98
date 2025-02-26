@@ -205,6 +205,15 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Greater than or equal to 30.
+        /// </summary>
+        internal static string GreaterThanOrEqualTo30 {
+            get {
+                return ResourceManager.GetString("GreaterThanOrEqualTo30", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid email or password.
         /// </summary>
         internal static string InvalidLogin {
@@ -264,6 +273,15 @@ namespace FB98.Shared.Infrastructure.Resources {
         internal static string LessThanOrEqualTo15 {
             get {
                 return ResourceManager.GetString("LessThanOrEqualTo15", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Less than or equal to 250.
+        /// </summary>
+        internal static string LessThanOrEqualTo250 {
+            get {
+                return ResourceManager.GetString("LessThanOrEqualTo250", resourceCulture);
             }
         }
         

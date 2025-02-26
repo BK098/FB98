@@ -69,10 +69,11 @@ namespace FB98.Modules.Identity.Application.Authentication.RefreshToken
 						statusCode: 400);
 				}
 
-				var newToken = _tokenService.GenerateAccessToken(user);
+				var newToken = await _tokenService.GenerateAccessToken(user);
 				var newRefreshToken = _tokenService.GenerateRefreshToken();
 
 				refreshToken.Token = newRefreshToken;
+				refreshToken.CreatedAt = DateTime.UtcNow;
 				refreshToken.ExpiresAt = DateTime.UtcNow.AddDays(7);
 				await _tokenStoreRepository.UpdateAsync(refreshToken);
 				await _userManager.UpdateAsync(user);
