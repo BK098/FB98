@@ -30,6 +30,7 @@
         <ProjectReference Include="..\..\Modules\Cinemas\FB98.Modules.Cinemas.Api\FB98.Modules.Cinemas.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Customers\FB98.Modules.Customers.Api\FB98.Modules.Customers.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Identity\FB98.Modules.Identity.Api\FB98.Modules.Identity.Api.csproj" />
+        <ProjectReference Include="..\..\Modules\Movies\FB98.Modules.Movies.Api\FB98.Modules.Movies.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Orders\FB98.Modules.Orders.Api\FB98.Modules.Orders.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Payments\FB98.Modules.Payments.Api\FB98.Modules.Payments.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Systems\FB98.Module.Systems.Api\FB98.Module.Systems.Api.csproj" />

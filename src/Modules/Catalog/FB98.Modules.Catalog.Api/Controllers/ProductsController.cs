@@ -32,7 +32,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "adminstrator")]
+		[Authorize(Roles = "Administrator")]
 		[HttpPost]
 		public async Task<IActionResult> CreateProduct([FromForm] CreateProductDto model)
 		{
@@ -41,7 +41,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "adminstrator")]
+		[Authorize(Roles = "Administrator")]
 		[HttpPost("{productId:guid}/discount-rule")]
 		public async Task<IActionResult> CreateProductDiscountRule(Guid productId, [FromBody] CreateDiscountRuleDto model)
 		{
@@ -50,7 +50,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "adminstrator")]
+		[Authorize(Roles = "Administrator")]
 		[HttpPut("{productId:guid}")]
 		public async Task<IActionResult> UpdateProduct(Guid productId, [FromForm] UpdateProductDto model)
 		{

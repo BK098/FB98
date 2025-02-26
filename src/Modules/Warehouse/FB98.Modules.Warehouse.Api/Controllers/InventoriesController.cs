@@ -20,7 +20,7 @@ namespace FB98.Modules.Warehouse.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "adminstrator")]
+		[Authorize(Roles = "Administrator")]
 		[HttpPost("add-stock")]
 		public async Task<IActionResult> AddStock(AddStockDto model)
 		{
@@ -29,7 +29,7 @@ namespace FB98.Modules.Warehouse.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "adminstrator")]
+		[Authorize(Roles = "Administrator")]
 		[HttpPost("reduce-stock")]
 		public async Task<IActionResult> ReduceStock(ReduceStockDto model)
 		{

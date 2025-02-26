@@ -52,6 +52,11 @@ COPY ["src/Modules/Payments/FB98.Modules.Payments.Application/FB98.Modules.Payme
 COPY ["src/Modules/Payments/FB98.Modules.Payments.DataAccess/FB98.Modules.Payments.DataAccess.csproj", "src/Modules/Payments/FB98.Modules.Payments.DataAccess/"]
 COPY ["src/Modules/Payments/FB98.Modules.Payments.Domain/FB98.Modules.Payments.Domain.csproj", "src/Modules/Payments/FB98.Modules.Payments.Domain/"]
 
+#MoviesModule
+COPY ["src/Modules/Movies/FB98.Modules.Movies.Api/FB98.Modules.Movies.Api.csproj", "src/Modules/Movies/FB98.Modules.Movies.Api/"]
+COPY ["src/Modules/Movies/FB98.Modules.Movies.Application/FB98.Modules.Movies.Application.csproj", "src/Modules/Movies/FB98.Modules.Movies.Application/"]
+COPY ["src/Modules/Movies/FB98.Modules.Movies.DataAccess/FB98.Modules.Movies.DataAccess.csproj", "src/Modules/Movies/FB98.Modules.Movies.DataAccess/"]
+COPY ["src/Modules/Movies/FB98.Modules.Movies.Domain/FB98.Modules.Movies.Domain.csproj", "src/Modules/Movies/FB98.Modules.Movies.Domain/"]
 RUN dotnet restore "src/Bootstrapper/FB98.Bootstrapper/FB98.Bootstrapper.csproj"
 
 COPY . .
