@@ -31,7 +31,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "adminstrator")]
+		[Authorize(Roles = "Administrator")]
 		[HttpPost]
 		public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto model)
 		{
@@ -40,7 +40,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "adminstrator")]
+		[Authorize(Roles = "Administrator")]
 		[HttpPut("{categoryId:guid}")]
 		public async Task<IActionResult> UpdateCategory(Guid categoryId, [FromBody] UpdateCategoryDto model)
 		{
@@ -49,7 +49,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "adminstrator")]
+		[Authorize(Roles = "Administrator")]
 		[HttpDelete("{categoryId:guid}")]
 		public async Task<IActionResult> DeleteCategory(Guid categoryId)
 		{

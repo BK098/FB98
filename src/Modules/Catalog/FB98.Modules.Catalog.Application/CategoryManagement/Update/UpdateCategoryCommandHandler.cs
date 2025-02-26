@@ -50,7 +50,7 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.Update
 					var categoryExisted = await _categoryRepository.IsCategoryExistsAsync(model.Name!, cancellationToken);
 					if (!categoryExisted)
 					{
-						return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("Exsited"));
+						return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("Existed"));
 					}
 				}
 

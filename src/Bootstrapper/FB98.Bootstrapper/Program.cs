@@ -4,12 +4,12 @@ using FB98.Modules.Catalog.Api;
 using FB98.Modules.Cinemas.Api;
 using FB98.Modules.Customers.Api;
 using FB98.Modules.Identity.Api;
+using FB98.Modules.Movies.Api;
 using FB98.Modules.Orders.Api;
 using FB98.Modules.Payments.Api;
 using FB98.Modules.Warehouse.Api;
 using FB98.Shared.Infrastructure;
 using FB98.Shared.Infrastructure.Configurations;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +23,7 @@ builder.Services.AddWarehouseModule(builder.Configuration);
 builder.Services.AddOrdersModule(builder.Configuration);
 builder.Services.AddPaymentsModule(builder.Configuration);
 builder.Services.AddCinemaModule(builder.Configuration);
+builder.Services.AddMovieModule(builder.Configuration);
 builder.Services.AddInfrastructure();
 builder.Services.AddRegisterServices();
 
@@ -45,5 +46,6 @@ app.UseWarehouseModule();
 app.UseOrdersModule();
 app.UsePaymentsModule();
 app.UseCinemaModule();
+app.UseMovieModule();
 //default
 app.Run();

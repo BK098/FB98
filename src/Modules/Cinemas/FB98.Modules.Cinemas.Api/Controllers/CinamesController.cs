@@ -29,7 +29,7 @@ namespace FB98.Modules.Cinemas.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		//[Authorize(Roles = "adminstrator")]
+		//[Authorize(Roles = "Administrator")]
 		[HttpPost]
 		public async Task<IActionResult> CreateCinema([FromBody] CreateCinemaDto model)
 		{
