@@ -4,7 +4,7 @@ namespace FB98.Modules.Identity.Application.Services
 {
 	public interface ITokenService
 	{
-		string GenerateAccessToken(AppUser user);
+		Task<string> GenerateAccessToken(AppUser user);
 		string GenerateRefreshToken();
 	}
 }

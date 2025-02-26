@@ -32,7 +32,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "adminstrator")]
+		[Authorize(Roles = "Administrator")]
 		[HttpPost]
 		public async Task<IActionResult> CreateCombo([FromForm] CreateComboDto model)
 		{
@@ -42,7 +42,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "adminstrator")]
+		[Authorize(Roles = "Administrator")]
 		[HttpPost("{comboId:guid}/discount-rule")]
 		public async Task<IActionResult> CreatecomboDiscountRule(Guid comboId, [FromBody] CreateDiscountRuleDto model)
 		{
@@ -52,7 +52,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "adminstrator")]
+		[Authorize(Roles = "Administrator")]
 		[HttpPut("{comboId:guid}")]
 		public async Task<IActionResult> UpdateCombo(Guid comboId, [FromForm] UpdateComboDto model)
 		{
@@ -62,7 +62,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "adminstrator")]
+		[Authorize(Roles = "Administrator")]
 		[HttpDelete("{comboId:guid}")]
 		public async Task<IActionResult> DeleteCombo(Guid comboId)
 		{

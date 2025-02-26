@@ -1,0 +1,54 @@
+[
+	{
+		"Id": "83be4965-298f-4037-b1dc-4d9f13176a80",
+		"Name": "Action"
+	},
+	{
+		"Id": "83be4965-298f-4037-b1dc-4d9f13176a81",
+		"Name": "Animated"
+	},
+	{
+		"Id": "83be4965-298f-4037-b1dc-4d9f13176a82",
+		"Name": "Comedy"
+	},
+	{
+		"Id": "83be4965-298f-4037-b1dc-4d9f13176a83",
+		"Name": "ComicBook"
+	},
+	{
+		"Id": "83be4965-298f-4037-b1dc-4d9f13176a84",
+		"Name": "Documentary"
+	},
+	{
+		"Id": "83be4965-298f-4037-b1dc-4d9f13176a85",
+		"Name": "Drama"
+	},
+	{
+		"Id": "83be4965-298f-4037-b1dc-4d9f13176a86",
+		"Name": "Horror"
+	},
+	{
+		"Id": "83be4965-298f-4037-b1dc-4d9f13176a87",
+		"Name": "KidnFamily"
+	},
+	{
+		"Id": "83be4965-298f-4037-b1dc-4d9f13176a88",
+		"Name": "Musical"
+	},
+	{
+		"Id": "83be4965-298f-4037-b1dc-4d9f13176a89",
+		"Name": "Romance"
+	},
+	{
+		"Id": "83be4965-298f-4037-b1dc-4d9f13176a90",
+		"Name": "Fantasy"
+	},
+	{
+		"Id": "83be4965-298f-4037-b1dc-4d9f13176a91",
+		"Name": "Scifi"
+	},
+	{
+		"Id": "83be4965-298f-4037-b1dc-4d9f13176a92",
+		"Name": "Thriller"
+	}
+]
