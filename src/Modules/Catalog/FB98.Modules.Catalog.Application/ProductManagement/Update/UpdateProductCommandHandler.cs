@@ -48,7 +48,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Update
 
 				if (await _categoryRepository.GetByIdAsync(model.CategoryId) == null)
 				{
-					return ApiResponseBuilder.Error<object>("CategoryId: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404)
+					return ApiResponseBuilder.Error<object>("CategoryId: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
 				var product = await _productRepository.GetByIdAsync(productId);

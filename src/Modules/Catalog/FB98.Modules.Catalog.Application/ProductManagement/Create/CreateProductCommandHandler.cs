@@ -53,7 +53,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Create
 
 				if (await _categoryRepository.GetByIdAsync(model.CategoryId) == null)
 				{
-					return ApiResponseBuilder.Error<object>("CategoryId: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404)
+					return ApiResponseBuilder.Error<object>("CategoryId: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 				var product = _mapper.Map<Product>(model);
 				if (model.ProductImage is not null)
