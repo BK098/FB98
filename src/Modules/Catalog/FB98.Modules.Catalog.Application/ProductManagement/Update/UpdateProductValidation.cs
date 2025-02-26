@@ -11,9 +11,6 @@
 			RuleFor(x => x.Description)
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
 
-			RuleFor(x => x.ProductImage)
-				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
-
 			RuleFor(x => x.IsEnabled)
 				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
