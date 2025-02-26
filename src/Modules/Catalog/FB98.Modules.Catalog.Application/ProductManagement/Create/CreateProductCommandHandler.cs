@@ -11,6 +11,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Create
 		private readonly ILogger<CreateProductCommandHandler> _logger;
 		private readonly IValidator<CreateProductDto> _validator;
 		private readonly IProductRepository _productRepository;
+		private readonly ICategoryRepository _categoryRepository;
 		private readonly IMapper _mapper;
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly ICloudinaryService _cloudinaryService;
@@ -25,7 +26,8 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Create
 			IUnitOfWork unitOfWork,
 			ICloudinaryService cloudinaryService,
 			ILocalizedMessageService localizedMessageService,
-			IBus bus)
+			IBus bus,
+			ICategoryRepository categoryRepository)
 		{
 			_logger = logger;
 			_validator = validator;
@@ -35,6 +37,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Create
 			_cloudinaryService = cloudinaryService;
 			_localizedMessageService = localizedMessageService;
 			_bus = bus;
+			_categoryRepository = categoryRepository;
 		}
 
 		public async Task<ApiResult<object>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
@@ -48,6 +51,10 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Create
 					return ApiResponseBuilder.ValidationError<object>(validationResult.Errors);
 				}
 
+				if (await _categoryRepository.GetByIdAsync(model.CategoryId) == null)
+				{
+					return ApiResponseBuilder.Error<object>("CategoryId: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404)
+				}
 				var product = _mapper.Map<Product>(model);
 				if (model.ProductImage is not null)
 				{
@@ -59,7 +66,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Create
 				await _unitOfWork.SaveChangesAsync();
 				await _bus.Publish(new ProductCreatedEvent(product.Id, model.StockQuantity!.Value, model.StockIsLimited!.Value), cancellationToken);
 
-				return ApiResponseBuilder.Success<object>(product, _localizedMessageService.GetLocalizedMessage("Created"), statusCode: 201);
+				return ApiResponseBuilder.Success<object>(product.Id, _localizedMessageService.GetLocalizedMessage("Created"), statusCode: 201);
 			}
 			catch (Exception ex)
 			{
