@@ -83,11 +83,12 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Create
 				var movie = _mapper.Map<Movie>(model);
 				if (model.PosterImage != null)
 				{
-					//postermageUrl = await _cloudinaryService.UploadImageAsync(model.PosterImage!, $"movie/{model.Title}");
+					postermageUrl = await _cloudinaryService.UploadImageAsync(model.PosterImage!, $"movie/{model.Title}");
 				}
+
 				if (model.HeaderImage != null)
 				{
-					//headerImageUrl = await _cloudinaryService.UploadImageAsync(model.HeaderImage!, $"movie/{model.Title}");
+					headerImageUrl = await _cloudinaryService.UploadImageAsync(model.HeaderImage!, $"movie/{model.Title}");
 				}
 
 				movie.PosterImage = postermageUrl;
