@@ -44,6 +44,8 @@ namespace FB98.Modules.Identity.Api
 			})
 			.AddJwtBearer(options =>
 			{
+				options.RequireHttpsMetadata = false;
+				options.SaveToken = true;
 				options.TokenValidationParameters = new TokenValidationParameters
 				{
 					ValidateIssuer = true,
@@ -67,7 +69,7 @@ namespace FB98.Modules.Identity.Api
 			services.AddSession(options =>
 			{
 				options.IdleTimeout = TimeSpan.FromMinutes(30);
-				options.Cookie.HttpOnly = true;
+				options.Cookie.HttpOnly = false;
 				options.Cookie.IsEssential = true;
 			});
 
