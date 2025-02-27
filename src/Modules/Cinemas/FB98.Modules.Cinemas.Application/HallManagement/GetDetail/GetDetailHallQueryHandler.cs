@@ -35,6 +35,7 @@ namespace FB98.Modules.Cinemas.Application.HallManagement.GetDetail
 				}
 
 				var response = _mapper.Map<GetDetailHallResponse>(hall);
+				//response.SeatColumn = hall.Seats.Where
 				return ApiResponseBuilder.Success(response, _localizedMessageService.GetLocalizedMessage("DataRetrieved"));
 			}
 			catch (Exception ex)

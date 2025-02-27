@@ -1,8 +1,8 @@
-﻿namespace FB98.Modules.Movies.Application.MovieManagement.Create
+﻿namespace FB98.Modules.Movies.Application.MovieManagement.Update
 {
-	internal sealed class CreateMovieValidation : AbstractValidator<CreateMovieDto>
+	internal sealed class UpdateMovieValidation : AbstractValidator<UpdateMovieDto>
 	{
-		public CreateMovieValidation(ILocalizedMessageService message)
+		public UpdateMovieValidation(ILocalizedMessageService message)
 		{
 			RuleFor(x => x.Title)
 				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))

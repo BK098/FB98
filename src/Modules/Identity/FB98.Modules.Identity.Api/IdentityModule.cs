@@ -62,6 +62,16 @@ namespace FB98.Modules.Identity.Api
 					{
 						Console.WriteLine($@"Authentication failed: {context.Exception.Message}");
 						return Task.CompletedTask;
+					},
+					OnMessageReceived = context =>
+					{
+						// Thử lấy token trong Cookie "access_token"
+						var accessToken = context.Request.Cookies["access_token"];
+						if (!string.IsNullOrEmpty(accessToken))
+						{
+							context.Token = accessToken;
+						}
+						return Task.CompletedTask;
 					}
 				};
 				options.SaveToken = true;

@@ -20,8 +20,5 @@
       <Folder Include="CastManagement\Delete\" />
       <Folder Include="DirectorManagement\Delete\" />
       <Folder Include="MovieManagement\Delete\" />
-      <Folder Include="MovieManagement\GetAll\" />
-      <Folder Include="MovieManagement\GetDetail\" />
-      <Folder Include="MovieManagement\Update\" />
     </ItemGroup>
 </Project>

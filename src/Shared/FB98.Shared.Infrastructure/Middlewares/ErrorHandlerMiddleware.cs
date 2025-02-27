@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
 
-namespace FB98.Shared.Infrastructure.Exceptions
+namespace FB98.Shared.Infrastructure.Middlewares
 {
 	internal class ErrorHandlerMiddleware : IMiddleware
 	{
