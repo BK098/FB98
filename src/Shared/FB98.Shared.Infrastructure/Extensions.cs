@@ -1,16 +1,18 @@
 using FB98.Shared.Infrastructure.Api;
 using FB98.Shared.Infrastructure.Cloudinaries;
 using FB98.Shared.Infrastructure.Email;
-using FB98.Shared.Infrastructure.Exceptions;
 using FB98.Shared.Infrastructure.Localization;
+using FB98.Shared.Infrastructure.Middlewares;
 using FB98.Shared.Infrastructure.Payments.VnPay;
 using FB98.Shared.Infrastructure.Postgres;
 using FB98.Shared.Infrastructure.RabbitMq;
+using FB98.Shared.Infrastructure.Redis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 
@@ -25,7 +27,7 @@ namespace FB98.Shared.Infrastructure
 			services.AddControllers()
 				.AddNewtonsoftJson(options =>
 				{
-					options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+					options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 				})
 				.ConfigureApplicationPartManager(manager =>
 				{
@@ -39,9 +41,11 @@ namespace FB98.Shared.Infrastructure
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddSingleton<ILocalizedMessageService, LocalizedMessageService>();
 			services.AddSingleton<ErrorHandlerMiddleware>();
+			services.AddSingleton<RequestTimingMiddleware>();
 			services.AddPostgres();
 			services.AddCloudinary();
 			services.AddVnPay();
+			services.AddRedis();
 
 			return services;
 		}
@@ -50,6 +54,7 @@ namespace FB98.Shared.Infrastructure
 		public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
 		{
 			app.UseMiddleware<ErrorHandlerMiddleware>();
+			app.UseMiddleware<RequestTimingMiddleware>();
 
 			var supportedCultures = new[]
 			{
