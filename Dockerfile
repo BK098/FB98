@@ -11,9 +11,52 @@ WORKDIR /src
 COPY ["src/Bootstrapper/FB98.Bootstrapper/FB98.Bootstrapper.csproj", "src/Bootstrapper/FB98.Bootstrapper/"]
 COPY ["src/Shared/FB98.Shared.Abstractions/FB98.Shared.Abstractions.csproj", "src/Shared/FB98.Shared.Abstractions/"]
 COPY ["src/Shared/FB98.Shared.Infrastructure/FB98.Shared.Infrastructure.csproj", "src/Shared/FB98.Shared.Infrastructure/"]
+COPY ["src/Shared/FB98.Shared.Utils/FB98.Shared.Utils.csproj", "src/Shared/FB98.Shared.Utils/"]
+
+#SystemsModule
+COPY ["src/Modules/Systems/FB98.Module.Systems.Api/FB98.Module.Systems.Api.csproj", "src/Modules/Systems/FB98.Module.Systems.Api/"]
+
+#IdentityModule
 COPY ["src/Modules/Identity/FB98.Modules.Identity.Api/FB98.Modules.Identity.Api.csproj", "src/Modules/Identity/FB98.Modules.Identity.Api/"]
 COPY ["src/Modules/Identity/FB98.Modules.Identity.Application/FB98.Modules.Identity.Application.csproj", "src/Modules/Identity/FB98.Modules.Identity.Application/"]
+COPY ["src/Modules/Identity/FB98.Modules.Identity.DataAccess/FB98.Modules.Identity.DataAccess.csproj", "src/Modules/Identity/FB98.Modules.Identity.DataAccess/"]
+COPY ["src/Modules/Identity/FB98.Modules.Identity.Domain/FB98.Modules.Identity.Domain.csproj", "src/Modules/Identity/FB98.Modules.Identity.Domain/"]
 
+# CatalogModule
+COPY ["src/Modules/Catalog/FB98.Modules.Catalog.Api/FB98.Modules.Catalog.Api.csproj", "src/Modules/Catalog/FB98.Modules.Catalog.Api/"]
+COPY ["src/Modules/Catalog/FB98.Modules.Catalog.Application/FB98.Modules.Catalog.Application.csproj", "src/Modules/Catalog/FB98.Modules.Catalog.Application/"]
+COPY ["src/Modules/Catalog/FB98.Modules.Catalog.DataAccess/FB98.Modules.Catalog.DataAccess.csproj", "src/Modules/Catalog/FB98.Modules.Catalog.DataAccess/"]
+COPY ["src/Modules/Catalog/FB98.Modules.Catalog.Domain/FB98.Modules.Catalog.Domain.csproj", "src/Modules/Catalog/FB98.Modules.Catalog.Domain/"]
+
+#WarehouseModule
+COPY ["src/Modules/Warehouse/FB98.Modules.Warehouse.Api/FB98.Modules.Warehouse.Api.csproj", "src/Modules/Warehouse/FB98.Modules.Warehouse.Api/"]
+COPY ["src/Modules/Warehouse/FB98.Modules.Warehouse.Application/FB98.Modules.Warehouse.Application.csproj", "src/Modules/Warehouse/FB98.Modules.Warehouse.Application/"]
+COPY ["src/Modules/Warehouse/FB98.Modules.Warehouse.DataAccess/FB98.Modules.Warehouse.DataAccess.csproj", "src/Modules/Warehouse/FB98.Modules.Warehouse.DataAccess/"]
+COPY ["src/Modules/Warehouse/FB98.Modules.Warehouse.Domain/FB98.Modules.Warehouse.Domain.csproj", "src/Modules/Warehouse/FB98.Modules.Warehouse.Domain/"]
+
+#CustomersModule
+COPY ["src/Modules/Customers/FB98.Modules.Customers.Api/FB98.Modules.Customers.Api.csproj", "src/Modules/Customers/FB98.Modules.Customers.Api/"]
+COPY ["src/Modules/Customers/FB98.Modules.Customers.Application/FB98.Modules.Customers.Application.csproj", "src/Modules/Customers/FB98.Modules.Customers.Application/"]
+COPY ["src/Modules/Customers/FB98.Modules.Customers.DataAccess/FB98.Modules.Customers.DataAccess.csproj", "src/Modules/Customers/FB98.Modules.Customers.DataAccess/"]
+COPY ["src/Modules/Customers/FB98.Modules.Customers.Domain/FB98.Modules.Customers.Domain.csproj", "src/Modules/Customers/FB98.Modules.Customers.Domain/"]
+
+#OrdersModule
+COPY ["src/Modules/Orders/FB98.Modules.Orders.Api/FB98.Modules.Orders.Api.csproj", "src/Modules/Orders/FB98.Modules.Orders.Api/"]
+COPY ["src/Modules/Orders/FB98.Modules.Orders.Application/FB98.Modules.Orders.Application.csproj", "src/Modules/Orders/FB98.Modules.Orders.Application/"]
+COPY ["src/Modules/Orders/FB98.Modules.Orders.DataAccess/FB98.Modules.Orders.DataAccess.csproj", "src/Modules/Orders/FB98.Modules.Orders.DataAccess/"]
+COPY ["src/Modules/Orders/FB98.Modules.Orders.Domain/FB98.Modules.Orders.Domain.csproj", "src/Modules/Orders/FB98.Modules.Orders.Domain/"]
+
+#PaymentsModule
+COPY ["src/Modules/Payments/FB98.Modules.Payments.Api/FB98.Modules.Payments.Api.csproj", "src/Modules/Payments/FB98.Modules.Payments.Api/"]
+COPY ["src/Modules/Payments/FB98.Modules.Payments.Application/FB98.Modules.Payments.Application.csproj", "src/Modules/Payments/FB98.Modules.Payments.Application/"]
+COPY ["src/Modules/Payments/FB98.Modules.Payments.DataAccess/FB98.Modules.Payments.DataAccess.csproj", "src/Modules/Payments/FB98.Modules.Payments.DataAccess/"]
+COPY ["src/Modules/Payments/FB98.Modules.Payments.Domain/FB98.Modules.Payments.Domain.csproj", "src/Modules/Payments/FB98.Modules.Payments.Domain/"]
+
+#MoviesModule
+COPY ["src/Modules/Movies/FB98.Modules.Movies.Api/FB98.Modules.Movies.Api.csproj", "src/Modules/Movies/FB98.Modules.Movies.Api/"]
+COPY ["src/Modules/Movies/FB98.Modules.Movies.Application/FB98.Modules.Movies.Application.csproj", "src/Modules/Movies/FB98.Modules.Movies.Application/"]
+COPY ["src/Modules/Movies/FB98.Modules.Movies.DataAccess/FB98.Modules.Movies.DataAccess.csproj", "src/Modules/Movies/FB98.Modules.Movies.DataAccess/"]
+COPY ["src/Modules/Movies/FB98.Modules.Movies.Domain/FB98.Modules.Movies.Domain.csproj", "src/Modules/Movies/FB98.Modules.Movies.Domain/"]
 RUN dotnet restore "src/Bootstrapper/FB98.Bootstrapper/FB98.Bootstrapper.csproj"
 
 COPY . .
@@ -28,17 +71,17 @@ FROM base AS final
 WORKDIR /app
 
 USER root
-
 COPY --from=publish /app/publish .
 
-RUN mkdir -p /app/Certificates
-COPY ["src/Bootstrapper/FB98.Bootstrapper/Certificates/aspnetapp.pfx", "/app/Certificates/aspnetapp.pfx"]
-RUN chmod 644 /app/Certificates/aspnetapp.pfx
+#RUN mkdir -p /app/Certificates
+#COPY ["src/Bootstrapper/FB98.Bootstrapper/Certificates/aspnetapp.crt", "/app/Certificates/aspnetapp.crt"]
+#RUN chmod 644 /app/Certificates/aspnetapp.crt
 
 USER app
 
 ENV ASPNETCORE_ENVIRONMENT=Development
-ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/app/Certificates/aspnetapp.pfx
+ENV ASPNETCORE_URLS="http://+:5000"
+#ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/app/Certificates/aspnetapp.crt
 
 #ENV ASPNETCORE_Kestrel__Certificates__Default__Password=YourPassword
 

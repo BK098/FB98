@@ -5,12 +5,13 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Update
 {
 	internal sealed class UpdateProductCommandHandler : ICommandHandler<UpdateProductCommand, ApiResult<object>>
 	{
-		private readonly IProductRepository _productRepository;
-		private readonly ILogger<UpdateProductCommandHandler> _logger;
-		private readonly IUnitOfWork _unitOfWork;
-		private readonly IMapper _mapper;
-		private readonly ILocalizedMessageService _localizedMessageService;
+		private readonly ICategoryRepository _categoryRepository;
 		private readonly ICloudinaryService _cloudinaryService;
+		private readonly ILocalizedMessageService _localizedMessageService;
+		private readonly ILogger<UpdateProductCommandHandler> _logger;
+		private readonly IMapper _mapper;
+		private readonly IProductRepository _productRepository;
+		private readonly IUnitOfWork _unitOfWork;
 		private readonly IValidator<UpdateProductDto> _validator;
 
 		public UpdateProductCommandHandler(
@@ -20,7 +21,8 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Update
 			IMapper mapper,
 			ILocalizedMessageService localizedMessageService,
 			ICloudinaryService cloudinaryService,
-			IValidator<UpdateProductDto> validator)
+			IValidator<UpdateProductDto> validator,
+			ICategoryRepository categoryRepository)
 		{
 			_productRepository = productRepository;
 			_logger = logger;
@@ -29,6 +31,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Update
 			_localizedMessageService = localizedMessageService;
 			_cloudinaryService = cloudinaryService;
 			_validator = validator;
+			_categoryRepository = categoryRepository;
 		}
 
 		public async Task<ApiResult<object>> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
@@ -43,28 +46,39 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Update
 					return ApiResponseBuilder.ValidationError<object>(validationResult.Errors);
 				}
 
+				if (await _categoryRepository.GetByIdAsync(model.CategoryId) == null)
+				{
+					return ApiResponseBuilder.Error<object>("CategoryId: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
+				}
+
 				var product = await _productRepository.GetByIdAsync(productId);
 				if (product == null)
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), statusCode: 404);
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
 				_mapper.Map(model, product);
-				if (model.ProductImage is not null)
+				string? imageUrl = null;
+				if (product.Image == null)
 				{
-					string? imageUrl = await _cloudinaryService.ReplaceImageAsync(model.ProductImage!, "catalog/product", product.Image);
-					product.Image = imageUrl;
+					imageUrl = await _cloudinaryService.UploadImageAsync(model.ProductImage!, "catalog/product");
 				}
 
+				if (model.ProductImage != null && product.Image != null)
+				{
+					imageUrl = await _cloudinaryService.ReplaceImageAsync(model.ProductImage!, "catalog/product", product.Image);
+				}
+
+				product.Image = imageUrl;
 				_productRepository.Update(product);
 				await _unitOfWork.SaveChangesAsync();
 
-				return ApiResponseBuilder.Success<object>(model, _localizedMessageService.GetLocalizedMessage("Updated"), statusCode: 200);
+				return ApiResponseBuilder.Success<object>(model, _localizedMessageService.GetLocalizedMessage("Updated"));
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Error occurred while update product");
-				return ApiResponseBuilder.Error<object>("An unexpected error occurred", statusCode: 500);
+				return ApiResponseBuilder.Error<object>("An unexpected error occurred", 500);
 			}
 		}
 	}
