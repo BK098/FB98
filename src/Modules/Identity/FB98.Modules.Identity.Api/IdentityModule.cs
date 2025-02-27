@@ -44,6 +44,8 @@ namespace FB98.Modules.Identity.Api
 			})
 			.AddJwtBearer(options =>
 			{
+				options.RequireHttpsMetadata = false;
+				options.SaveToken = true;
 				options.TokenValidationParameters = new TokenValidationParameters
 				{
 					ValidateIssuer = true,
