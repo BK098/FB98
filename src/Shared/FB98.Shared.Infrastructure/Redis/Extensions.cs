@@ -9,12 +9,12 @@ namespace FB98.Shared.Infrastructure.Redis
 		{
 			var options = services.GetOptions<RedisOptions>("redis");
 			services.AddSingleton(options);
+			Console.WriteLine($"Redis Connection: {options.ConnectionString}");
 
-
-			var multiplexer = ConnectionMultiplexer.Connect(options.ConnectionString);
-			services.AddSingleton<IConnectionMultiplexer>(multiplexer);
 			try
 			{
+				var multiplexer = ConnectionMultiplexer.Connect(options.ConnectionString);
+				services.AddSingleton<IConnectionMultiplexer>(multiplexer);
 				var redis = multiplexer.GetDatabase();
 				redis.StringSet("test_key", "Hello Redis!");
 				var value = redis.StringGet("test_key");

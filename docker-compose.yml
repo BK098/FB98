@@ -12,13 +12,13 @@ services:
       - "5000:5000" #http 
     environment:
       - ASPNETCORE_ENVIRONMENT=Development  
-      - Redis__ConnectionString=redis://:your_secure_password@redis:6379
-      - ASPNETCORE_ENVIRONMENT=Development
+      - Redis__ConnectionString=redis:6379,password=your_secure_password,abortConnect=false,connectTimeout=1000
       - ConnectionStrings__RabbitMq=amqp://myuser:mypassword@rabbitmq:5672/
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=fb98db;Username=postgres;Password=yourpassword
     depends_on:
       - rabbitmq
       - db
+      - redis
     networks:
       - fb98_network
     volumes:
@@ -74,7 +74,7 @@ services:
       - rabbitmq_data:/var/lib/rabbitmq
       - rabbitmq_logs:/var/log/rabbitmq
   redis:
-    image: redis:latest
+    image: bkhang1227/fb98:redis
     container_name: redis
     restart: always
     ports:
@@ -86,6 +86,11 @@ services:
     environment:
       - REDIS_PASSWORD=your_secure_password
     command: ["redis-server", "--requirepass", "your_secure_password", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 volumes:
   rabbitmq_data:
   rabbitmq_logs:
