@@ -30,7 +30,7 @@ namespace FB98.Modules.Identity.Application.Authentication.RevokeToken
 				await _tokenStoreRepository.RevokeAllByUserIdAsync(user!.Id);
 				await _userManager.UpdateAsync(user);
 
-				return ApiResponseBuilder.Success<object>("", "Token revoked successfully", statusCode: 204);
+				return ApiResponseBuilder.Success<object>("", "Token revoked successfully", statusCode: 200);
 			}
 			catch (Exception ex)
 			{
