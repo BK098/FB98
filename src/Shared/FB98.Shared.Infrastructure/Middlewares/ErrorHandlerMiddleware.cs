@@ -1,8 +1,10 @@
 using FB98.Shared.Abstractions.Exceptions;
-using Humanizer;
+using FB98.Shared.Abstractions.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
+using System.Net;
+using System.Text.Json;
 
 namespace FB98.Shared.Infrastructure.Middlewares
 {
@@ -24,31 +26,82 @@ namespace FB98.Shared.Infrastructure.Middlewares
 			}
 			catch (Exception exception)
 			{
-				var statusCode = 500;
-				var code = "error";
-				var message = "There was an error.";
-
 				_logger.LogError(exception, exception.Message);
-				if (exception is CustomException customException)
-				{
-					statusCode = 400;
-					var exceptionType = customException.GetType();
-					if (!_codes.TryGetValue(exceptionType, out var errorCode))
-					{
-						code = customException.GetType().Name.Underscore().Replace("_exception", string.Empty);
-						_codes.TryAdd(exceptionType, code);
-					}
-					else
-					{
-						code = errorCode;
-					}
-
-					message = customException.Message;
-				}
-
-				context.Response.StatusCode = statusCode;
-				await context.Response.WriteAsJsonAsync(new { code, message });
+				await HandleExceptionAsync(context, exception);
+				return;
 			}
+
+			if (context.Response.StatusCode == (int)HttpStatusCode.Unauthorized)
+			{
+				_logger.LogWarning("Unauthorized access detected.");
+				await HandleUnauthorizedAsync(context);
+			}
+			else if (context.Response.StatusCode == (int)HttpStatusCode.Forbidden)
+			{
+				_logger.LogWarning("Forbidden request detected.");
+				await HandleForbiddenAsync(context);
+			}
+		}
+
+		private static async Task HandleUnauthorizedAsync(HttpContext context)
+		{
+			var response = new ApiResult<string>
+			{
+				IsSuccess = false,
+				StatusCode = (int)HttpStatusCode.Unauthorized,
+				Message = "You are not authorized to access this resource.",
+				Data = null,
+				Errors = new Dictionary<string, List<object>>
+				{
+					{ "Authorization", new List<object> { "Invalid or missing token." } }
+				},
+				Timestamp = DateTime.UtcNow
+			};
+
+			context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+			context.Response.ContentType = "application/json";
+			await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+		}
+
+		private static async Task HandleForbiddenAsync(HttpContext context)
+		{
+			var response = new ApiResult<string>
+			{
+				IsSuccess = false,
+				StatusCode = (int)HttpStatusCode.Forbidden,
+				Message = "You do not have permission to access this resource.",
+				Data = null,
+				Errors = new Dictionary<string, List<object>>
+				{
+					{ "Authorization", new List<object> { "Access to this resource is forbidden." } }
+				},
+				Timestamp = DateTime.UtcNow
+			};
+
+			context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+			context.Response.ContentType = "application/json";
+			await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+		}
+
+		private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
+		{
+			var statusCode = exception is CustomException ? 400 : 500;
+			var response = new ApiResult<string>
+			{
+				IsSuccess = false,
+				StatusCode = statusCode,
+				Message = exception is CustomException customException ? customException.Message : "An unexpected error occurred.",
+				Data = null,
+				Errors = new Dictionary<string, List<object>>
+				{
+					{ "Exception", new List<object> { exception.Message } }
+				},
+				Timestamp = DateTime.UtcNow
+			};
+
+			context.Response.StatusCode = statusCode;
+			context.Response.ContentType = "application/json";
+			await context.Response.WriteAsync(JsonSerializer.Serialize(response));
 		}
 	}
 }

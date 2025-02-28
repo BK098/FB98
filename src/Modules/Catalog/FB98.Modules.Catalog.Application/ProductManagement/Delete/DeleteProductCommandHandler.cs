@@ -45,7 +45,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Delete
 				_cloudinaryService.DeleteImage(product.Image);
 				await _unitOfWork.SaveChangesAsync();
 				await _bus.Publish(new ProductDeletedEvent(productId), cancellationToken);
-				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("Deleted"), statusCode: 204);
+				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("Deleted"), statusCode: 200);
 			}
 			catch (Exception ex)
 			{
