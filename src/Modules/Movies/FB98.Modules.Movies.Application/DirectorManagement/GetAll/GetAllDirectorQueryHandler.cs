@@ -40,12 +40,13 @@ namespace FB98.Modules.Movies.Application.DirectorManagement.GetAll
 						.Contains(search));
 				}
 
-				directors = directors.SortBy(filter.SortColumn, _allowedProperties, filter.IsDescending);
 				if (!await directors.AnyAsync(cancellationToken))
 				{
 					return ApiResponseBuilder.Error<PaginatedResult<GetAllDirectorResponse>>(
 						_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
+
+				directors = directors.SortBy(filter.SortColumn, _allowedProperties, filter.IsDescending);
 
 				var paginatedResult = await PaginatedResult<Director>.CreateAsync(
 					directors,

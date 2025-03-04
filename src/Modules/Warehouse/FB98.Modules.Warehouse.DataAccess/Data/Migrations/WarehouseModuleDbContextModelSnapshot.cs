@@ -95,7 +95,7 @@ namespace FB98.Modules.Warehouse.DataAccess.Data.Migrations
                     b.HasOne("FB98.Modules.Warehouse.Domain.Entities.Inventory", "Inventory")
                         .WithMany("Transactions")
                         .HasForeignKey("InventoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Inventory");

@@ -11,6 +11,7 @@ namespace FB98.Modules.Movies.DataAccess.Repositories
 		public CastRepository(MovieModuleDbContext context) : base(context)
 		{
 		}
+
 		public async Task<bool> IsCastExistsAsync(string castName)
 		{
 			return await GetAll().AnyAsync(c => c.Name == castName);

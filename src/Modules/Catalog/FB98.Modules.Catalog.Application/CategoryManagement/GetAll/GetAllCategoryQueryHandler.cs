@@ -9,13 +9,13 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.GetAll
 	internal sealed class GetAllCategoryQueryHandler : IQueryHandler<GetAllCategoryQuery, ApiResult<PaginatedResult<GetAllCategoryResponse>>>
 	{
 		private readonly List<string> _allowedProperties = ["Name"];
-		private readonly ILogger<GetAllCategoryResponse> _logger;
 		private readonly ICategoryRepository _categoryRepository;
 		private readonly ILocalizedMessageService _localizedMessageService;
+		private readonly ILogger<GetAllCategoryQueryHandler> _logger;
 		private readonly IMapper _mapper;
 
 		public GetAllCategoryQueryHandler(
-			ILogger<GetAllCategoryResponse> logger,
+			ILogger<GetAllCategoryQueryHandler> logger,
 			ICategoryRepository categoryRepository,
 			ILocalizedMessageService localizedMessageService,
 			IMapper mapper)
@@ -31,41 +31,39 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.GetAll
 			var filter = request.Filter;
 			try
 			{
-				var categories = _categoryRepository.GetAll();
+				var entities = _categoryRepository.GetAll();
 				var search = filter.SearchTerm?.ConvertToUnsign().Trim();
 				if (!string.IsNullOrEmpty(search))
 				{
-					categories = categories.Where(x => EF.Functions.Unaccent(x.Name).ToLower().Trim()
-						.Contains(search));
+					entities = entities.Where(x => EF.Functions.Unaccent(x.Name).ToLower().Trim().Contains(search));
 				}
 
-				categories = categories.SortBy(filter.SortColumn, _allowedProperties, filter.IsDescending);
-				if (!await categories.AnyAsync(cancellationToken))
+				if (!await entities.AnyAsync(cancellationToken))
 				{
-					return ApiResponseBuilder.Error<PaginatedResult<GetAllCategoryResponse>>(
-						_localizedMessageService.GetLocalizedMessage("NotFound"), statusCode: 404);
+					return ApiResponseBuilder.Error<PaginatedResult<GetAllCategoryResponse>>(_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
+
+				entities = entities.SortBy(filter.SortColumn, _allowedProperties, filter.IsDescending);
 
 				var paginatedResult = await PaginatedResult<Category>.CreateAsync(
-					categories,
+					entities,
 					filter.PageIndex,
 					filter.PageSize,
 					cancellationToken);
-				var categoryForView = _mapper.Map<List<GetAllCategoryResponse>>(paginatedResult.Items);
 
-				var paginatedCategoryForView = new PaginatedResult<GetAllCategoryResponse>(
-					categoryForView,
+				var response = new PaginatedResult<GetAllCategoryResponse>(
+					_mapper.Map<List<GetAllCategoryResponse>>(paginatedResult.Items),
 					paginatedResult.PageIndex,
 					paginatedResult.PageSize,
 					paginatedResult.TotalCount);
 
-				return ApiResponseBuilder.Success(paginatedCategoryForView);
+				return ApiResponseBuilder.Success(response, _localizedMessageService.GetLocalizedMessage("DataRetrieved"));
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Error occurred while get all categories");
+				_logger.LogError(ex, "Error occurred while get all category");
 				return ApiResponseBuilder.Error<PaginatedResult<GetAllCategoryResponse>>("An unexpected error occurred",
-					statusCode: 500);
+					500);
 			}
 		}
 	}

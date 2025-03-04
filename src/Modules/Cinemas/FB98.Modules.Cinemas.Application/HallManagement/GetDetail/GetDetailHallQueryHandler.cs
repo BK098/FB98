@@ -26,6 +26,7 @@ namespace FB98.Modules.Cinemas.Application.HallManagement.GetDetail
 		public async Task<ApiResult<GetDetailHallResponse>> Handle(GetDetailHallQuery request, CancellationToken cancellationToken)
 		{
 			var hallId = request.HallId;
+			var isSeatRange = request.IsSeatRange;
 			try
 			{
 				var hall = await _cinemaHallRepository.GetByIdAsync(hallId);
@@ -35,7 +36,16 @@ namespace FB98.Modules.Cinemas.Application.HallManagement.GetDetail
 				}
 
 				var response = _mapper.Map<GetDetailHallResponse>(hall);
-				//response.SeatColumn = hall.Seats.Where
+				if (isSeatRange)
+				{
+					// Lấy danh sách ghế
+					response.Seats = hall.Seats.Select(seat => _mapper.Map<GetDetailSeatDto>(seat)).ToList();
+				}
+				else
+				{
+					// Không lấy danh sách ghế
+					response.Seats = new List<GetDetailSeatDto>();
+				}
 				return ApiResponseBuilder.Success(response, _localizedMessageService.GetLocalizedMessage("DataRetrieved"));
 			}
 			catch (Exception ex)

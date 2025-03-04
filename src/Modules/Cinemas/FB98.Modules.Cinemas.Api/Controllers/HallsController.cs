@@ -14,7 +14,15 @@ namespace FB98.Modules.Cinemas.Api.Controllers
 		[HttpGet("{hallId:guid}/seats")]
 		public async Task<IActionResult> GetDetailHallWithSeats(Guid hallId)
 		{
-			var request = new GetDetailHallQuery(hallId);
+			var request = new GetDetailHallQuery(hallId, true);
+			var result = await _mediator.Send(request);
+			return StatusCode(result.StatusCode, result);
+		}
+
+		[HttpGet("{hallId:guid}")]
+		public async Task<IActionResult> GetDetailHall(Guid hallId)
+		{
+			var request = new GetDetailHallQuery(hallId, false);
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);
 		}

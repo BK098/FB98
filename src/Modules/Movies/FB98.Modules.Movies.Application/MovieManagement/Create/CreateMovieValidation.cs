@@ -8,6 +8,12 @@
 				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
 
+			RuleFor(x => x.Country)
+				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
+				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
+
+			RuleFor(x => x.AgeRating).IsInEnum().WithMessage("test cái enum");
+
 			RuleFor(x => x.ReleaseDate)
 				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
@@ -26,7 +32,7 @@
 				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
 
-			RuleFor(x => x.AgeRating).IsInEnum().WithMessage("test cái enum");
+
 		}
 	}
 }

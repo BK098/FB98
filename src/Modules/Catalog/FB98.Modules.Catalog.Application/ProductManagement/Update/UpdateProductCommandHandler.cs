@@ -58,18 +58,28 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Update
 				}
 
 				_mapper.Map(model, product);
-				string? imageUrl = null;
-				if (product.Image == null)
+				if (model.ProductImage != null)
 				{
-					imageUrl = await _cloudinaryService.UploadImageAsync(model.ProductImage!, "catalog/product");
+					string? imageUrl = null;
+					if (product.Image != null)
+					{
+						imageUrl = await _cloudinaryService.ReplaceImageAsync(model.ProductImage!, "catalog/product", product.Image);
+						product.Image = imageUrl;
+					}
+					else
+					{
+						imageUrl = await _cloudinaryService.UploadImageAsync(model.ProductImage!, "catalog/product");
+						product.Image = imageUrl;
+					}
 				}
-
-				if (model.ProductImage != null && product.Image != null)
+				else
 				{
-					imageUrl = await _cloudinaryService.ReplaceImageAsync(model.ProductImage!, "catalog/product", product.Image);
+					if (product.Image != null)
+					{
+						_cloudinaryService.DeleteImage(product.Image);
+						product.Image = null;
+					}
 				}
-
-				product.Image = imageUrl;
 				_productRepository.Update(product);
 				await _unitOfWork.SaveChangesAsync();
 

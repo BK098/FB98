@@ -17,7 +17,21 @@
 				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
 
+			RuleFor(x => x.Products)
+				.Must(BeUniqueProductIds).WithMessage(message.GetLocalizedMessage("DuplicateData"));
+
 			RuleForEach(x => x.Products).SetValidator(new CreateComboProductValidation(message));
+		}
+
+		private bool BeUniqueProductIds(ICollection<CreateComboProductDto>? products)
+		{
+			if (products == null)
+			{
+				return true;
+			}
+
+			var productIds = products.Where(s => s.ProductId.HasValue).Select(s => s.ProductId.Value).ToList();
+			return productIds.Distinct().Count() == productIds.Count();
 		}
 	}
 

@@ -1,0 +1,46 @@
+[
+	//Loa
+	{
+		"Id": "ec67d1da-a647-48b8-87d4-2ceaebef8e2a",
+		"FeatureTypeId": "6531b6a3-8505-4aad-9fe4-43c142dd5bd4",
+		"Name": "Dolby Atmos",
+		"Description": "Dolby Atmos là công nghệ âm thanh vòm tiên tiến nhất, mang lại trải nghiệm âm thanh ba chiều (3D) sống động bằng cách sử dụng âm thanh theo đối tượng (Object-Based Audio) thay vì kênh cố định. Hệ thống này bổ sung các loa trên trần, giúp âm thanh có thể di chuyển tự do trong không gian, tạo cảm giác chân thực như trong thế giới thực. Với khả năng hỗ trợ lên đến 128 luồng âm thanh độc lập và tối đa 64 kênh loa, Dolby Atmos cho phép tái tạo chính xác vị trí, khoảng cách và hướng di chuyển của từng âm thanh trong rạp chiếu phim. Công nghệ này được áp dụng rộng rãi trong IMAX, Dolby Cinema và các hệ thống giải trí cao cấp, mang đến trải nghiệm điện ảnh đắm chìm hơn bao giờ hết."
+	},
+	{
+		"Id": "d911b7fb-79e3-44aa-8896-56e5ad5d4f00",
+		"FeatureTypeId": "6531b6a3-8505-4aad-9fe4-43c142dd5bd4",
+		"Name": "Dolby Digital 5.1",
+		"Description": "Dolby Digital 5.1 là hệ thống âm thanh vòm tiêu chuẩn trong rạp chiếu phim và giải trí tại nhà, cung cấp trải nghiệm âm thanh đa kênh chất lượng cao. Cấu trúc 5.1 bao gồm 5 kênh âm thanh chính (Trái, Phải, Trung tâm, Surround Trái, Surround Phải) và 1 kênh siêu trầm (LFE - Low Frequency Effects) để xử lý âm thanh tần số thấp như tiếng nổ hoặc hiệu ứng đặc biệt. Nhờ khả năng tái tạo âm thanh vòm chân thực, Dolby Digital 5.1 trở thành định dạng âm thanh phổ biến nhất trong các rạp chiếu phim tiêu chuẩn, Blu-ray, TV kỹ thuật số và dịch vụ phát trực tuyến."
+	},
+	{
+		"Id": "d9845575-71a9-48be-bb08-8c676cd2a460",
+		"FeatureTypeId": "6531b6a3-8505-4aad-9fe4-43c142dd5bd4",
+		"Name": "Dolby Digital 7.1",
+		"Description": "Dolby Digital 7.1 là phiên bản nâng cấp từ Dolby Digital 5.1, mở rộng trải nghiệm âm thanh vòm bằng cách thêm 2 kênh Surround Back (SBL, SBR) phía sau, giúp cải thiện độ sâu không gian và tạo hiệu ứng âm thanh chính xác hơn. Với tổng cộng 8 kênh âm thanh, Dolby Digital 7.1 mang lại trải nghiệm sống động hơn, đặc biệt trong các rạp chiếu phim cao cấp và hệ thống giải trí gia đình. Công nghệ này được ứng dụng rộng rãi trên Blu-ray, IMAX, rạp Dolby Cinema và các nền tảng phát trực tuyến hỗ trợ chất lượng âm thanh cao."
+	},
+	//Định dạng chiếu
+	{
+		"Id": "63c02407-21d7-4f8b-a12f-cbd28e26d0cb",
+		"FeatureTypeId": "d35214bc-c843-4499-b623-25c7cb48a9b0",
+		"Name": "Tiêu chuẩn (2D)",
+		"Description": "Sử dụng công nghệ Digital Cinema Package( DCP) để trình chiếu phim, việc này đã giúp thay thế cho các cuộn phim 35 mm truyền thống. Và đây cũng là tiêu chuẩn cho việc lưu trữ và truyền tải nội dụng phim kỹ thuật số đến các rạp chiếu. DCP giúp đảm bảo về chất lượng hình ảnh, khả năng bảo mật và khả năng tương thích rộng rãi giữa các hệ thống chiếu phim kỹ thuật số hiện nay"
+	},
+	{
+		"Id": "437bff4a-22d7-4c90-a6c8-48159c6c09e7",
+		"FeatureTypeId": "d35214bc-c843-4499-b623-25c7cb48a9b0",
+		"Name": "3D",
+		"Description": "Sử dụng công nghệ điện ảnh tạo ra hiệu ứng chiều sâu cho hình ảnh, làm cho người xem có cảm giác rằng các vật thể trong phim không chỉ có chiều rộng, chiều cao và còn có thêm chiều sâu để cho phim chở nên sống động và thực tế hơn. Nhờ vào những kỹ thuật đặc biệt, người xem có thể cảm nhận hình ảnh như đang xuất hiện từ màn hình và 'nhô ra' về phía họ, tạo nên một trải nghiệm nhìn rất ấn tượng."
+	},
+	{
+		"Id": "9862158b-cabb-46f7-8dcd-521dc427c6f5",
+		"FeatureTypeId": "d35214bc-c843-4499-b623-25c7cb48a9b0",
+		"Name": "IMAX",
+		"Description": "Sủ dụng phim 70 mm chạy qua máy chiếu theo chiều ngang để đem đến một thước phim có độ phân giải cực cao, sắc nét trên một màn hình cực lớn với góc nhìn rộng. Không chỉ đơn giản chỉ là chiếu phim trên màn hình lớn đơn thuần, IMAX là một hệ thống tổng thể gồm máy ảnh độ phân giải cao, máy chiếu phim chuyên biệt, màn hình rất lớn ( từ 20 - 30m ngang và 11 - 20m cao) với rạp chiếu phim được thiết kế chỗ ngồi dốc từ trên xuống như sân vận động."
+	},
+	{
+		"Id": "1570462c-f1a2-4ffe-89fa-a583bf2d6d62",
+		"FeatureTypeId": "d35214bc-c843-4499-b623-25c7cb48a9b0",
+		"Name": "Dolby Digital Cinemas",
+		"Description": "Sử dụng máy chiếu laser với độ phân giải 4K, cao gấp bốn lần so với máy chiếu thông thường. Máy chiếu 4K cho ra hình ảnh siêu nét với màu đen sâu và vùng sáng cao, độ tương phản cao gấp 500 lần và độ sáng cao gấp đôi so với máy chiếu thông thường. Dolby là định dạng có HDR tốt nhất tại phòng chiếu. Hình ảnh của Dolby Cinema có màu sắc ít bị đục hay xám hơn so với máy chiếu thông thường. Có thể nói nó cho hình ảnh trung thực hơn."
+	}
+]

@@ -21,6 +21,25 @@ namespace FB98.Modules.Movies.DataAccess.Data
 		{
 			modelBuilder.HasDefaultSchema("MovieModule");
 			modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+
+			modelBuilder.Entity<MovieCast>()
+				.HasOne(mc => mc.Cast)
+				.WithMany(c => c.MovieCasts)
+				.HasForeignKey(mc => mc.CastId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<MovieDirector>()
+				.HasOne(md => md.Director)
+				.WithMany()
+				.HasForeignKey(md => md.DirectorId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<MovieGenre>()
+				.HasOne(mg => mg.Genre)
+				.WithMany()
+				.HasForeignKey(mg => mg.GenreId)
+				.OnDelete(DeleteBehavior.Restrict);
+
 		}
 	}
 }

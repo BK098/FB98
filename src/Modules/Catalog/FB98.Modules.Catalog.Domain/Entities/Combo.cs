@@ -2,6 +2,5 @@
 {
 	public class Combo : BaseProduct
 	{
-		public ICollection<ComboProduct> ComboProducts { get; set; } = new List<ComboProduct>();
 	}
 }

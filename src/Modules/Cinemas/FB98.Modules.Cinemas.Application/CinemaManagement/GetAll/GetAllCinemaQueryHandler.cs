@@ -41,27 +41,26 @@ namespace FB98.Modules.Cinemas.Application.CinemaManagement.GetAll
 						EF.Functions.Unaccent(x.Address).ToLower().Trim().Contains(search));
 				}
 
-				cinemas = cinemas.SortBy(filter.SortColumn, _allowedProperties, filter.IsDescending);
 				if (!await cinemas.AnyAsync(cancellationToken))
 				{
-					return ApiResponseBuilder.Error<PaginatedResult<GetAllCinemaResponse>>(
-						_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
+					return ApiResponseBuilder.Error<PaginatedResult<GetAllCinemaResponse>>(_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
+
+				cinemas = cinemas.SortBy(filter.SortColumn, _allowedProperties, filter.IsDescending);
 
 				var paginatedResult = await PaginatedResult<Cinema>.CreateAsync(
 					cinemas,
 					filter.PageIndex,
 					filter.PageSize,
 					cancellationToken);
-				var cinemaForView = _mapper.Map<List<GetAllCinemaResponse>>(paginatedResult.Items);
 
-				var paginatedCinemaForView = new PaginatedResult<GetAllCinemaResponse>(
-					cinemaForView,
+				var response = new PaginatedResult<GetAllCinemaResponse>(
+					_mapper.Map<List<GetAllCinemaResponse>>(paginatedResult.Items),
 					paginatedResult.PageIndex,
 					paginatedResult.PageSize,
 					paginatedResult.TotalCount);
 
-				return ApiResponseBuilder.Success(paginatedCinemaForView);
+				return ApiResponseBuilder.Success(response, _localizedMessageService.GetLocalizedMessage("DataRetrieved"));
 			}
 			catch (Exception ex)
 			{

@@ -3,11 +3,11 @@
 	public class UpdateHallDto
 	{
 		public string? Name { get; set; }
-		public ICollection<UpdateSeatDto> Seats { get; set; } = new List<UpdateSeatDto>();
+		public ICollection<UpdateSeatDto>? Seats { get; set; } = new List<UpdateSeatDto>();
 	}
 	public class UpdateSeatDto
 	{
-		public Guid SeatId { get; set; }
-		public Guid SeatTypeId { get; set; }
+		public Guid? SeatId { get; set; }
+		public Guid? SeatTypeId { get; set; }
 	}
 }

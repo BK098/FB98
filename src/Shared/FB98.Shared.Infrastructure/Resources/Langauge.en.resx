@@ -264,7 +264,16 @@
   <data name="GreaterThanOrEqualTo30" xml:space="preserve">
     <value>Greater than or equal to 30</value>
   </data>
+  <data name="GreaterThanOrEqualTo1000" xml:space="preserve">
+    <value>Greater than or equal to 1000</value>
+  </data>
   <data name="DataRetrieved" xml:space="preserve">
     <value>Data retrieved successfully</value>
+  </data>
+  <data name="DeleteFailedLinked" xml:space="preserve">
+    <value>Deletion failed due to existing links</value>
+  </data>
+  <data name="DiscountPercentageRange" xml:space="preserve">
+    <value>Discount percentage must be between 0 and 100</value>
   </data>
 </root>

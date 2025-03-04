@@ -14,5 +14,6 @@ namespace FB98.Shared.Infrastructure.Repositpries
 		bool Update(TEntity entity);
 		bool Create(TEntity entity);
 		bool Delete(TEntity entity);
+		Task<bool> CreateRangeAsync(List<TEntity> entites);
 	}
 }

@@ -51,7 +51,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Update
 				var combo = await _comboRepository.GetByIdAsync(comboId);
 				if (combo is null)
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
+					return ApiResponseBuilder.Error<object>("Combo: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
 				var productIds = model.Products.Select(p => p.ProductId).ToList();
@@ -59,13 +59,15 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Update
 					.Where(p => productIds.Contains(p.Id)).ToListAsync(cancellationToken);
 				if (existingProducts.Count != productIds.Count)
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
+					return ApiResponseBuilder.Error<object>("Product: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
 				_mapper.Map(model, combo);
-				string? imageUrl;
+				await UpdateProducts(combo, model.Products);
+
 				if (model.ComboImage != null)
 				{
+					string? imageUrl;
 					if (combo.Image != null)
 					{
 						imageUrl = await _cloudinaryService.ReplaceImageAsync(model.ComboImage!, "catalog/combo", combo.Image);
@@ -77,11 +79,18 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Update
 						combo.Image = imageUrl;
 					}
 				}
+				else
+				{
+					if (combo.Image != null)
+					{
+						_cloudinaryService.DeleteImage(combo.Image);
+						combo.Image = null;
+					}
+				}
 
-				await UpdateProducts(combo, model.Products);
 				_unitOfWork.Entry(combo, EntityState.Modified);
 				await _unitOfWork.SaveChangesAsync();
-				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("Updated"), 200);
+				return ApiResponseBuilder.Success<object>(comboId, _localizedMessageService.GetLocalizedMessage("Updated"));
 			}
 			catch (DbUpdateConcurrencyException ex)
 			{
@@ -116,6 +125,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Update
 				{
 					var newMovieProductMember = new ComboProduct
 					{
+						Quantity = productDtos.First(x => x.ProductId == productId).Quantity!.Value,
 						ProductId = productMember.Id,
 						ComboId = combo.Id
 					};

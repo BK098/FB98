@@ -1,5 +1,4 @@
 ﻿using FB98.Modules.Movies.Domain.Enums;
-using Microsoft.AspNetCore.Http;
 
 namespace FB98.Modules.Movies.Application.MovieManagement.GetDetail
 {
@@ -12,8 +11,8 @@ namespace FB98.Modules.Movies.Application.MovieManagement.GetDetail
 		public bool IsPublished { get; set; }
 		public string TrailerLink { get; set; }
 		public bool? IsVietSub { get; set; }
-		public IFormFile? HeaderImage { get; set; }
-		public IFormFile? PosterImage { get; set; }
+		public string? HeaderImage { get; set; }
+		public string? PosterImage { get; set; }
 		public string? Description { get; set; }
 		public string? Language { get; set; }
 		public IEnumerable<GetDetailMovieDirectorResponse> Directors { get; set; } = new List<GetDetailMovieDirectorResponse>();
