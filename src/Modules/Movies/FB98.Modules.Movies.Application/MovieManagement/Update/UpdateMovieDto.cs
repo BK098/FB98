@@ -12,6 +12,7 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Update
 		public DateTime ReleaseDate { get; set; }
 		public int RuntimeMinutes { get; set; }
 		public bool IsPublished { get; set; }
+		public string? Country { get; set; }
 		public string TrailerLink { get; set; }
 		public bool? IsVietSub { get; set; }
 		public IFormFile? HeaderImage { get; set; }

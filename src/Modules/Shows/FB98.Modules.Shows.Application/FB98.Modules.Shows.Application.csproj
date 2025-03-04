@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FB98.Modules.Shows.Domain\FB98.Modules.Shows.Domain.csproj" />
+  </ItemGroup>
+    <ItemGroup>
+        <Using Include="FB98.Shared.Abstractions.CQRS"></Using>
+        <Using Include="FB98.Shared.Abstractions.Responses"></Using>
+        <Using Include="FB98.Shared.Infrastructure.Localization"></Using>
+        <Using Include="FluentValidation"></Using>
+        <Using Include="Microsoft.Extensions.Logging"></Using>
+        <Using Include="FB98.Shared.Infrastructure.Repositpries"></Using>
+    </ItemGroup>
+</Project>

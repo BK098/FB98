@@ -95,6 +95,9 @@ namespace FB98.Modules.Movies.DataAccess.Data.Migrations
                     b.Property<int>("AgeRating")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Country")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -220,9 +223,9 @@ namespace FB98.Modules.Movies.DataAccess.Data.Migrations
             modelBuilder.Entity("FB98.Modules.Movies.Domain.Entities.MovieCast", b =>
                 {
                     b.HasOne("FB98.Modules.Movies.Domain.Entities.Cast", "Cast")
-                        .WithMany()
+                        .WithMany("MovieCasts")
                         .HasForeignKey("CastId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FB98.Modules.Movies.Domain.Entities.Movie", "Movie")
@@ -241,7 +244,7 @@ namespace FB98.Modules.Movies.DataAccess.Data.Migrations
                     b.HasOne("FB98.Modules.Movies.Domain.Entities.Director", "Director")
                         .WithMany()
                         .HasForeignKey("DirectorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FB98.Modules.Movies.Domain.Entities.Movie", "Movie")
@@ -260,7 +263,7 @@ namespace FB98.Modules.Movies.DataAccess.Data.Migrations
                     b.HasOne("FB98.Modules.Movies.Domain.Entities.Genre", "Genre")
                         .WithMany()
                         .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FB98.Modules.Movies.Domain.Entities.Movie", "Movie")
@@ -272,6 +275,11 @@ namespace FB98.Modules.Movies.DataAccess.Data.Migrations
                     b.Navigation("Genre");
 
                     b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("FB98.Modules.Movies.Domain.Entities.Cast", b =>
+                {
+                    b.Navigation("MovieCasts");
                 });
 
             modelBuilder.Entity("FB98.Modules.Movies.Domain.Entities.Movie", b =>

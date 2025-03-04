@@ -28,15 +28,15 @@ namespace FB98.Modules.Identity.Api.Controllers
 			{
 				Response.Cookies.Append("access_token", result.Data!.Token, new CookieOptions
 				{
-					HttpOnly = true,
-					Secure = true,
+					HttpOnly = false,
+					Secure = false,
 					SameSite = SameSiteMode.Strict,
 					Expires = DateTimeOffset.UtcNow.AddMinutes(30)
 				});
 				Response.Cookies.Append("refresh_token", result.Data!.RefreshToken, new CookieOptions
 				{
-					HttpOnly = true,
-					Secure = true,
+					HttpOnly = false,
+					Secure = false,
 					SameSite = SameSiteMode.Strict,
 					Expires = DateTimeOffset.UtcNow.AddDays(7)
 				});
@@ -99,8 +99,8 @@ namespace FB98.Modules.Identity.Api.Controllers
 			{
 				Response.Cookies.Append("access_token", result.Data!.Token, new CookieOptions
 				{
-					HttpOnly = true,
-					Secure = true,
+					HttpOnly = false,
+					Secure = false,
 					SameSite = SameSiteMode.Strict,
 					Expires = DateTimeOffset.UtcNow.AddMinutes(30)
 				});

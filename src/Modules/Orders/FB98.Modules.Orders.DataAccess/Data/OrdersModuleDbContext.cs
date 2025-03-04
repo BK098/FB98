@@ -18,6 +18,18 @@ namespace FB98.Modules.Orders.DataAccess.Data
 		{
 			modelBuilder.HasDefaultSchema("OrdersModule");
 			modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+
+			modelBuilder.Entity<OrderItem>()
+				.HasOne(mc => mc.Order)
+				.WithMany(c => c.OrderItems)
+				.HasForeignKey(mc => mc.OrderId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<OrderStatusHistory>()
+				.HasOne(mc => mc.Order)
+				.WithMany(c => c.StatusHistories)
+				.HasForeignKey(mc => mc.OrderId)
+				.OnDelete(DeleteBehavior.Restrict);
 		}
 	}
 }

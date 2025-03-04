@@ -73,7 +73,7 @@ namespace FB98.Modules.Cinemas.Application.HallManagement.Update
 							return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 						}
 
-						seat.SeatTypeId = updateSeat.SeatTypeId;
+						seat.SeatTypeId = updateSeat.SeatTypeId!.Value;
 					}
 				}
 

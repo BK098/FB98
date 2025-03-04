@@ -234,13 +234,13 @@ namespace FB98.Modules.Catalog.DataAccess.Data.Migrations
                     b.HasOne("FB98.Modules.Catalog.Domain.Entities.Combo", "Combo")
                         .WithMany("ComboProducts")
                         .HasForeignKey("ComboId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FB98.Modules.Catalog.Domain.Entities.Product", "Product")
                         .WithMany("ComboProducts")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Combo");
@@ -253,7 +253,7 @@ namespace FB98.Modules.Catalog.DataAccess.Data.Migrations
                     b.HasOne("FB98.Modules.Catalog.Domain.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Category");
@@ -264,7 +264,7 @@ namespace FB98.Modules.Catalog.DataAccess.Data.Migrations
                     b.HasOne("FB98.Modules.Catalog.Domain.Entities.ProductDiscountRule", "DiscountRule")
                         .WithMany()
                         .HasForeignKey("RuleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DiscountRule");
@@ -274,11 +274,13 @@ namespace FB98.Modules.Catalog.DataAccess.Data.Migrations
                 {
                     b.HasOne("FB98.Modules.Catalog.Domain.Entities.Combo", "Combo")
                         .WithMany("DiscountRules")
-                        .HasForeignKey("ComboId");
+                        .HasForeignKey("ComboId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("FB98.Modules.Catalog.Domain.Entities.Product", "Product")
                         .WithMany("DiscountRules")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Combo");
 

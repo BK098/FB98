@@ -71,7 +71,7 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Update
 				var movie = await _movieRepository.GetByIdAsync(movieId);
 				if (movie == null)
 				{
-					return ApiResponseBuilder.Error<object>("movie: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
+					return ApiResponseBuilder.Error<object>("Movie: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
 				var validationResult = await _validator.ValidateAsync(model, cancellationToken);
@@ -86,7 +86,7 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Update
 					.ToListAsync(cancellationToken)).ToDictionary(g => g.Id);
 				if (existingCasts.Count != castIds.Count)
 				{
-					return ApiResponseBuilder.Error<object>("castIds: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
+					return ApiResponseBuilder.Error<object>("CastIds: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
 				var directorIds = model.Directors.Select(d => d.Id).ToHashSet();
@@ -95,7 +95,7 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Update
 					.ToListAsync(cancellationToken)).ToDictionary(g => g.Id);
 				if (existingDirectors.Count != directorIds.Count)
 				{
-					return ApiResponseBuilder.Error<object>("directorIds: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
+					return ApiResponseBuilder.Error<object>("DirectorIds: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
 				var genreIds = model.Genres.Select(d => d.Id).ToHashSet();
@@ -104,7 +104,7 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Update
 					.ToListAsync(cancellationToken)).ToDictionary(g => g.Id);
 				if (existinggenres.Count != genreIds.Count)
 				{
-					return ApiResponseBuilder.Error<object>("genreIds: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
+					return ApiResponseBuilder.Error<object>("GenreIds: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
 				_mapper.Map(model, movie);
@@ -126,6 +126,14 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Update
 						movie.PosterImage = posterImageUrl;
 					}
 				}
+				else
+				{
+					if (movie.PosterImage != null)
+					{
+						_cloudinaryService.DeleteImage(movie.PosterImage);
+						movie.PosterImage = null;
+					}
+				}
 
 				if (movie.HeaderImage != null)
 				{
@@ -139,6 +147,14 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Update
 					{
 						headerImageUrl = await _cloudinaryService.UploadImageAsync(model.HeaderImage!, "movie/{model.Title}");
 						movie.HeaderImage = headerImageUrl;
+					}
+				}
+				else
+				{
+					if (movie.HeaderImage != null)
+					{
+						_cloudinaryService.DeleteImage(movie.HeaderImage);
+						movie.HeaderImage = null;
 					}
 				}
 

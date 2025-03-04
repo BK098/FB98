@@ -10,7 +10,11 @@ namespace FB98.Modules.Movies.Application.DirectorManagement.GetDetail
 		private readonly ILogger<GetDetailDirectorQueryHandler> _logger;
 		private readonly IMapper _mapper;
 
-		public GetDetailDirectorQueryHandler(IDirectorRepository directorRepository, ILocalizedMessageService localizedMessageService, ILogger<GetDetailDirectorQueryHandler> logger, IMapper mapper)
+		public GetDetailDirectorQueryHandler(
+			IDirectorRepository directorRepository,
+			ILocalizedMessageService localizedMessageService,
+			ILogger<GetDetailDirectorQueryHandler> logger,
+			IMapper mapper)
 		{
 			_directorRepository = directorRepository;
 			_localizedMessageService = localizedMessageService;

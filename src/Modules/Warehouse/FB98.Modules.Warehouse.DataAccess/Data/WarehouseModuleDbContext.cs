@@ -17,6 +17,12 @@ namespace FB98.Modules.Warehouse.DataAccess.Data
 		{
 			modelBuilder.HasDefaultSchema("WarehouseModule");
 			modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+
+			modelBuilder.Entity<InventoryTransaction>()
+				.HasOne(it => it.Inventory)
+				.WithMany(i => i.Transactions)
+				.HasForeignKey(it => it.InventoryId)
+				.OnDelete(DeleteBehavior.Restrict);
 		}
 	}
 }
