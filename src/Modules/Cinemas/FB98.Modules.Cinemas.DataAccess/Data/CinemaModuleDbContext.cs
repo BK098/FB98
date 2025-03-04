@@ -18,6 +18,24 @@ namespace FB98.Modules.Cinemas.DataAccess.Data
 		{
 			modelBuilder.HasDefaultSchema("CinemaModule");
 			modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+
+			modelBuilder.Entity<CinemaHall>()
+				.HasOne(ch => ch.Cinema)
+				.WithMany(c => c.CinemaHalls)
+				.HasForeignKey(ch => ch.CinemaId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<CinemaHallSeat>()
+				.HasOne(chs => chs.CinemaHall)
+				.WithMany(ch => ch.Seats)
+				.HasForeignKey(chs => chs.HallId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<CinemaHallSeat>()
+				.HasOne(chs => chs.SeatType)
+				.WithMany()
+				.HasForeignKey(chs => chs.SeatTypeId)
+				.OnDelete(DeleteBehavior.Restrict);
 		}
 	}
 }

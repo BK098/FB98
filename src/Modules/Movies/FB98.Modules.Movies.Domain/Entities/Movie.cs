@@ -16,6 +16,7 @@ namespace FB98.Modules.Movies.Domain.Entities
 		public string? Description { get; set; }
 		public string? Language { get; set; }
 		public bool IsVietSub { get; set; }
+		public string Country { get; set; }
 
 		public ICollection<MovieGenre> Genres { get; set; } = new List<MovieGenre>();
 		public ICollection<MovieCast> Casts { get; set; } = new List<MovieCast>();

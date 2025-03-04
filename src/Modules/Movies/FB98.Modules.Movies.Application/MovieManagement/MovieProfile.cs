@@ -7,7 +7,7 @@ using FB98.Modules.Movies.Domain.Entities;
 
 namespace FB98.Modules.Movies.Application.MovieManagement
 {
-	internal class MovieProfile : Profile
+	internal sealed class MovieProfile : Profile
 	{
 		public MovieProfile()
 		{

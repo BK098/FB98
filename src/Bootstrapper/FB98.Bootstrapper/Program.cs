@@ -7,6 +7,7 @@ using FB98.Modules.Identity.Api;
 using FB98.Modules.Movies.Api;
 using FB98.Modules.Orders.Api;
 using FB98.Modules.Payments.Api;
+using FB98.Modules.Shows.Api;
 using FB98.Modules.Warehouse.Api;
 using FB98.Shared.Infrastructure;
 using FB98.Shared.Infrastructure.Configurations;
@@ -24,9 +25,10 @@ builder.Services.AddOrdersModule(builder.Configuration);
 builder.Services.AddPaymentsModule(builder.Configuration);
 builder.Services.AddCinemaModule(builder.Configuration);
 builder.Services.AddMovieModule(builder.Configuration);
+builder.Services.AddShowModule(builder.Configuration);
 builder.Services.AddInfrastructure();
 builder.Services.AddRegisterServices();
-
+builder.Services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
 var app = builder.Build();
 
 //default
@@ -47,5 +49,6 @@ app.UseOrdersModule();
 app.UsePaymentsModule();
 app.UseCinemaModule();
 app.UseMovieModule();
+app.UseShowModule();
 //default
 app.Run();

@@ -1,0 +1,192 @@
+[
+	{
+		"Id": "a2f4075c-e907-4fe5-99a7-f34c29a68c94",
+		"Title": "Captain America: Thế Giới Mới",
+		"RuntimeMinutes": "118",
+		"Description": "Sau khi gặp Tổng thống Hoa Kỳ mới đắc cử Thaddeus Ross, Sam phải đối mặt với một sự cố quy mô quốc tế. Anh phải tìm ra ra mục đích đằng sau trước khi kẻ chủ mưu thực sự khiến cả thế giới phải khiếp sợ.",
+		"Language": "Tiếng Anh, Tiếng Việt",
+		"ReleaseDate": "2025-04-14T00:00:00Z",
+		"Country": "Mỹ",
+		"IsVietSub": true,
+		"CastMembers": [
+			{
+				"CastId": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+			},
+			{
+				"CastId": "36dfe57b-9db0-472b-b2d0-3aebfaddf879"
+			},
+			{
+				"CastId": "8a7bd0f5-026c-4b9a-a6fb-5c3c4a6fd8a9"
+			},
+			{
+				"CastId": "1e457c94-2993-42fa-b263-bfcb1cb68bcf"
+			}
+		],
+		"Directors": [
+			{
+				"DirectorId": "2f90aa86-fb7c-476f-aa9c-acbcb279bd22"
+			}
+		],
+		"Genres": [
+			{
+				"GenreId": "83be4965-298f-4037-b1dc-4d9f13176a80"
+			},
+			{
+				"GenreId": "83be4965-298f-4037-b1dc-4d9f13176a80"
+			},
+			{
+				"GenreId": "83be4965-298f-4037-b1dc-4d9f13176a80"
+			},
+			{
+				"GenreId": "83be4965-298f-4037-b1dc-4d9f13176a91"
+			}
+		],
+		"AgeRating": 2
+	},
+	{
+		"Id": "33cac756-c4be-497c-a5ef-0f8c56cb377b",
+		"Title": "Đèn Âm Hồn",
+		"RuntimeMinutes": "101",
+		"Description": "Lấy cảm các từ Chuyện Người Con Gái Nam Xương, Đèn Âm Hồn xảy tại một ngôi làng miền Bắc vào thời phong kiến. Thương một mình nuôi con trai chờ chồng đi lính trở về. Lĩnh (con Thương) vô tình nhặt được một cây đèn, từ đó cậu gọi chiếc bóng hiện trên tường là cha. Theo lời của cô đồng trong làng, đây là cây đèn âm hồn, có thể đã triệu hồn một ác linh quay lại báo thù. Từ đây, những sự kiện bất thường ma quái xảy ra với Thương và cả dân làng. Liệu chiếc bóng đó có phải là chồng của Thương, cha của Lĩnh hay không?",
+		"Language": "Tiếng Việt",
+		"ReleaseDate": "2025-02-07T00:00:00Z",
+		"Country": "Việt Nam",
+		"IsVietSub": true,
+		"CastMembers": [
+			{
+				"CastId": "3b62048d-6e63-4261-9e5d-88fa63d6e31b"
+			},
+			{
+				"CastId": "8cf3c0e4-1c1e-40a7-a6f3-28b7f1d799b4"
+			},
+			{
+				"CastId": "6ab3b45d-1e04-47a6-88f9-83b6c7ad9843"
+			}
+		],
+		"Directors": [
+			{
+				"DirectorId": "d4f49437-d3f0-4dcf-899b-7fa208d4ad6d"
+			}
+		],
+		"Genres": [
+			{
+				"GenreId": "83be4965-298f-4037-b1dc-4d9f13176a86"
+			},
+			{
+				"GenreId": "83be4965-298f-4037-b1dc-4d9f13176a92"
+			}
+		],
+		"AgeRating": 4
+	},
+	{
+		"Id": "bd3a8756-1529-45f8-a558-a79675433f7b",
+		"Title": "Đại Chiến Người Khổng Lồ: Lần Tấn Công Cuối Cùng",
+		"RuntimeMinutes": "144",
+		"Description": "Attack on Titan the Movie: The Last Attack sẽ đưa trận chiến dữ dội nhất của Eren Yeager lên màn ảnh rộng. Một trong những manga xuất sắc nhất thời gian gần đây, Attack On Titan/ Shingeki no Kyojin sắp có kết thúc hoành tráng nhất. Trong cuộc chiến cuối cùng định đoạt số phận thế giới, Eren Yeager đã giải phóng sức mạnh tối thượng của các Titan. Dẫn đầu đội quân Titan Đại hình khổng lồ, Eren quyết tâm hủy diệt mọi kẻ thù đe dọa đến quê hương Eldia. Thế nhưng, cuộc chiến này không chỉ là về sự sống còn, mà còn là cuộc đối đầu giữa lòng thù hận và hy vọng. Kết thúc khúc hùng ca đầy bi tráng, di sản của chiến tranh và những ám ảnh về tự do vẫn tiếp tục đeo bám nhân loại, để lại câu hỏi về giá trị của sự hy sinh và tự do thật sự.",
+		"Language": "Tiếng Nhật, Tiếng Anh, Tiếng Việt",
+		"ReleaseDate": "2025-02-07T00:00:00Z",
+		"Country": "Nhật Bản",
+		"IsVietSub": true,
+		"CastMembers": [
+			{
+				"CastId": "5e91b87a-833c-4bdf-bf64-2d7ff67b16d3"
+			},
+			{
+				"CastId": "22f83d87-5a47-4f4a-859d-0dbd32f8d99a"
+			},
+			{
+				"CastId": "c4d882f1-5b28-4ae2-8ddc-5898c3a93f2f"
+			}
+		],
+		"Directors": [
+			{
+				"DirectorId": "ad8d9531-acc8-42e8-9a79-d5746c07185b"
+			}
+		],
+		"Genres": [
+			{
+				"GenreId": "83be4965-298f-4037-b1dc-4d9f13176a80"
+			},
+			{
+				"GenreId": "83be4965-298f-4037-b1dc-4d9f13176a81"
+			},
+			{
+				"GenreId": "83be4965-298f-4037-b1dc-4d9f13176a85"
+			}
+		],
+		"AgeRating": 4
+	},
+	{
+		"Id": "b0dc41eb-2c58-41b7-8f88-c5e8699b7040",
+		"Title": "Kẻ Đồng Hành",
+		"RuntimeMinutes": "97",
+		"Description": "Companion / Kẻ Đồng Hành diễn ra khi cái chết của một tỷ phú đã khơi mào chuỗi sự kiện kinh hoàng cho Iris và bạn bè của cô trong kỳ nghỉ cuối tuần tại khu biệt thự ven hồ. Kéo theo đó, những bí mật đen tối nhất trong chuyện tình của 'cặp đôi hoàn hảo' Iris - Josh cũng dần bại lộ.",
+		"Language": "Tiếng Anh",
+		"ReleaseDate": "2025-02-28T00:00:00Z",
+		"Country": "Mỹ",
+		"IsVietSub": true,
+		"CastMembers": [
+			{
+				"CastId": "15b92c45-8094-4b44-96fc-3b0ff849a1fc"
+			},
+			{
+				"CastId": "7e1fa8be-6c7d-4b98-94df-1d6fc5dbd1b1"
+			},
+			{
+				"CastId": "8f6b7c37-24f6-4c17-bc3c-b0e7e47930bd"
+			}
+		],
+		"Directors": [
+			{
+				"DirectorId": "36447929-084e-4129-80ec-afacc6b1ff78"
+			}
+		],
+		"Genres": [
+			{
+				"GenreId": "83be4965-298f-4037-b1dc-4d9f13176a82"
+			},
+			{
+				"GenreId": "83be4965-298f-4037-b1dc-4d9f13176a91"
+			},
+			{
+				"GenreId": "83be4965-298f-4037-b1dc-4d9f13176a92"
+			}
+		],
+		"AgeRating": 4
+	},
+	{
+		"Id": "6ba738a3-00d3-4dc8-b6ff-0176dbf5866f",
+		"Title": "Paddington: Gấu Thủ Chu Du",
+		"RuntimeMinutes": "106",
+		"Description": "Paddington: Gấu Thủ Chu Du đưa khán giả theo chân chú gấu được nhiều người yêu mến, thích ăn mứt cam đang trong một chuyến phiêu lưu đầy mạo hiểm. Khi Paddington phát hiện ra dì Lucy yêu quý của mình đã biến mất khỏi Ngôi Nhà Dành Cho Các Chú Gấu Nghỉ Hưu, Paddington và gia đình Brown lên đường đến vùng hoang dã Peru để tìm kiếm, với manh mối duy nhất về nơi dì ấy ở là một điểm đánh dấu trên một bản đồ bí ẩn. Quyết tâm giải mã những bí mật đằng sau, Paddington bắt đầu một cuộc hành trình qua rừng nhiệt đới Amazon để tìm dì của mình... và có thể chú sẽ phát hiện ra một trong những kho báu huyền thoại nhất thế giới.",
+		"Language": "Tiếng Anh, Tiếng Việt, Tiếng Pháp,....",
+		"ReleaseDate": "2025-01-01T00:00:00Z",
+		"Country": "Anh, Pháp, Mỹ",
+		"IsVietSub": true,
+		"CastMembers": [
+			{
+				"CastId": "bb7146e9-431f-4e9c-b5f4-32e5c0b28de2"
+			},
+			{
+				"CastId": "e297a81d-2497-4024-b5df-3ea47de5403d"
+			},
+			{
+				"CastId": "2fc5081c-8e32-4a7b-a10a-9ccaf60307c9"
+			}
+		],
+		"Directors": [
+			{
+				"DirectorId": "b707c058-3013-41ee-bc75-7a9e879ac66d"
+			}
+		],
+		"Genres": [
+			{
+				"GenreId": "83be4965-298f-4037-b1dc-4d9f13176a87"
+			},
+			{
+				"GenreId": "83be4965-298f-4037-b1dc-4d9f13176a90"
+			}
+		],
+		"AgeRating": 2
+	}
+]

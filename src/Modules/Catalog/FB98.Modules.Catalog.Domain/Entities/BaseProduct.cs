@@ -11,6 +11,7 @@ namespace FB98.Modules.Catalog.Domain.Entities
 		public string? Image { get; set; }
 		public bool IsEnabled { get; set; }
 
+		public ICollection<ComboProduct> ComboProducts { get; set; } = new List<ComboProduct>();
 		public ICollection<ProductDiscountRule> DiscountRules { get; set; } = new List<ProductDiscountRule>();
 
 		[NotMapped]

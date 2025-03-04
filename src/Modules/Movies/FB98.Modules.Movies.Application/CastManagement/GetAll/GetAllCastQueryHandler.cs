@@ -40,12 +40,12 @@ namespace FB98.Modules.Movies.Application.CastManagement.GetAll
 						.Contains(search));
 				}
 
-				casts = casts.SortBy(filter.SortColumn, _allowedProperties, filter.IsDescending);
 				if (!await casts.AnyAsync(cancellationToken))
 				{
-					return ApiResponseBuilder.Error<PaginatedResult<GetAllCastReponse>>(
-						_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
+					return ApiResponseBuilder.Error<PaginatedResult<GetAllCastReponse>>(_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
+
+				casts = casts.SortBy(filter.SortColumn, _allowedProperties, filter.IsDescending);
 
 				var paginatedResult = await PaginatedResult<Cast>.CreateAsync(
 					casts,

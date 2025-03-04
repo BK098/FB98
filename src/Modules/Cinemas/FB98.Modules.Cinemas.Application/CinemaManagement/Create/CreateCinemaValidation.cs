@@ -4,7 +4,13 @@
 	{
 		public CreateCinemaValidation(ILocalizedMessageService message)
 		{
+			RuleFor(x => x.Name)
+				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
+				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
 
+			RuleFor(x => x.Address)
+				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
+				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
 		}
 	}
 }

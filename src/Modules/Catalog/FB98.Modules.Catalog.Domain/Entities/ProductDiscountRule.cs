@@ -5,8 +5,8 @@ namespace FB98.Modules.Catalog.Domain.Entities
 {
 	public class ProductDiscountRule : BaseEntity
 	{
-		public string Name { get; set; } = default!;
-		public string Description { get; set; } = default!;
+		public string Name { get; set; }
+		public string Description { get; set; }
 		public decimal Value { get; set; }
 		public bool IsCombo { get; set; }
 		public bool IsDiscountPercentage { get; set; }

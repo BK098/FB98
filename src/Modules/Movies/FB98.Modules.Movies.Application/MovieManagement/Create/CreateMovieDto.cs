@@ -14,6 +14,7 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Create
 		public bool IsPublished { get; set; }
 		public string TrailerLink { get; set; }
 		public bool? IsVietSub { get; set; }
+		public string? Country { get; set; }
 		public IFormFile? HeaderImage { get; set; }
 		public IFormFile? PosterImage { get; set; }
 		public string? Description { get; set; }
@@ -23,29 +24,55 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Create
 		public string MovieDirectorsJson { get; set; }
 		public string MovieCastsJson { get; set; }
 
-		private List<CreateMovieCastDto> _casts = new();
-		private List<CreateMovieGenreDto> _genres = new();
-		private List<CreateMovieDirectorDto> _directors = new();
+		[SwaggerSchema(ReadOnly = true, WriteOnly = true)]
+		public List<CreateMovieGenreDto> Genres { get; set; } = new();
 
 		[SwaggerSchema(ReadOnly = true, WriteOnly = true)]
-		public List<CreateMovieGenreDto> Genres
-		{
-			get => _genres;
-			set => _genres = value;
-		}
+		public List<CreateMovieCastDto> Casts { get; set; } = new();
 
 		[SwaggerSchema(ReadOnly = true, WriteOnly = true)]
-		public List<CreateMovieCastDto> Casts
-		{
-			get => _casts;
-			set => _casts = value;
-		}
+		public List<CreateMovieDirectorDto> Directors { get; set; } = new();
 
-		[SwaggerSchema(ReadOnly = true, WriteOnly = true)]
-		public List<CreateMovieDirectorDto> Directors
+		public void Deserialize()
 		{
-			get => _directors;
-			set => _directors = value;
+			if (!string.IsNullOrEmpty(MovieCastsJson))
+			{
+				try
+				{
+					Casts = JsonSerializer.Deserialize<List<CreateMovieCastDto>>(MovieCastsJson) ?? new List<CreateMovieCastDto>();
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine($@"JSON Parsing Error: {ex.Message}");
+					Casts = new List<CreateMovieCastDto>();
+				}
+			}
+
+			if (!string.IsNullOrEmpty(MovieDirectorsJson))
+			{
+				try
+				{
+					Directors = JsonSerializer.Deserialize<List<CreateMovieDirectorDto>>(MovieDirectorsJson) ?? new List<CreateMovieDirectorDto>();
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine($@"JSON Parsing Error: {ex.Message}");
+					Directors = new List<CreateMovieDirectorDto>();
+				}
+			}
+
+			if (!string.IsNullOrEmpty(MovieGenresJson))
+			{
+				try
+				{
+					Genres = JsonSerializer.Deserialize<List<CreateMovieGenreDto>>(MovieGenresJson) ?? new List<CreateMovieGenreDto>();
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine($@"JSON Parsing Error: {ex.Message}");
+					Genres = new List<CreateMovieGenreDto>();
+				}
+			}
 		}
 
 		public class CreateMovieGenreDto
@@ -63,45 +90,6 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Create
 		{
 			public Guid? Id { get; set; }
 			public string? Name { get; set; }
-		}
-		public void Deserialize()
-		{
-			if (!string.IsNullOrEmpty(MovieCastsJson))
-			{
-				try
-				{
-					_casts = JsonSerializer.Deserialize<List<CreateMovieCastDto>>(MovieCastsJson) ?? new List<CreateMovieCastDto>();
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine($@"JSON Parsing Error: {ex.Message}");
-					_casts = new List<CreateMovieCastDto>();
-				}
-			}
-			if (!string.IsNullOrEmpty(MovieDirectorsJson))
-			{
-				try
-				{
-					_directors = JsonSerializer.Deserialize<List<CreateMovieDirectorDto>>(MovieDirectorsJson) ?? new List<CreateMovieDirectorDto>();
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine($@"JSON Parsing Error: {ex.Message}");
-					_directors = new List<CreateMovieDirectorDto>();
-				}
-			}
-			if (!string.IsNullOrEmpty(MovieGenresJson))
-			{
-				try
-				{
-					_genres = JsonSerializer.Deserialize<List<CreateMovieGenreDto>>(MovieGenresJson) ?? new List<CreateMovieGenreDto>();
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine($@"JSON Parsing Error: {ex.Message}");
-					_genres = new List<CreateMovieGenreDto>();
-				}
-			}
 		}
 	}
 }

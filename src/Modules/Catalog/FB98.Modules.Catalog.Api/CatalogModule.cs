@@ -17,13 +17,9 @@ namespace FB98.Modules.Catalog.Api
 			services.AddRegisterServices();
 			return services;
 		}
+
 		public static IApplicationBuilder UseCatalogModule(this IApplicationBuilder app)
 		{
-			using (var scope = app.ApplicationServices.CreateScope())
-			{
-				var services = scope.ServiceProvider;
-				//SeedData
-			}
 			return app;
 		}
 	}

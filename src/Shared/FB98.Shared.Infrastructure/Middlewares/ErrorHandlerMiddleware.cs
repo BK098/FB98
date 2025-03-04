@@ -20,6 +20,18 @@ namespace FB98.Shared.Infrastructure.Middlewares
 
 		public async Task InvokeAsync(HttpContext context, RequestDelegate next)
 		{
+			switch (context.Response.StatusCode)
+			{
+				case (int)HttpStatusCode.Unauthorized:
+					_logger.LogWarning("Unauthorized access detected.");
+					await HandleUnauthorizedAsync(context);
+					break;
+				case (int)HttpStatusCode.Forbidden:
+					_logger.LogWarning("Forbidden request detected.");
+					await HandleForbiddenAsync(context);
+					break;
+			}
+
 			try
 			{
 				await next(context);
@@ -28,23 +40,17 @@ namespace FB98.Shared.Infrastructure.Middlewares
 			{
 				_logger.LogError(exception, exception.Message);
 				await HandleExceptionAsync(context, exception);
-				return;
-			}
-
-			if (context.Response.StatusCode == (int)HttpStatusCode.Unauthorized)
-			{
-				_logger.LogWarning("Unauthorized access detected.");
-				await HandleUnauthorizedAsync(context);
-			}
-			else if (context.Response.StatusCode == (int)HttpStatusCode.Forbidden)
-			{
-				_logger.LogWarning("Forbidden request detected.");
-				await HandleForbiddenAsync(context);
 			}
 		}
 
-		private static async Task HandleUnauthorizedAsync(HttpContext context)
+		private async Task HandleUnauthorizedAsync(HttpContext context)
 		{
+			if (context.Response.HasStarted)
+			{
+				_logger.LogWarning("Response has already started, skipping setting StatusCode.");
+				return;
+			}
+
 			var response = new ApiResult<string>
 			{
 				IsSuccess = false,
@@ -63,7 +69,7 @@ namespace FB98.Shared.Infrastructure.Middlewares
 			await context.Response.WriteAsync(JsonSerializer.Serialize(response));
 		}
 
-		private static async Task HandleForbiddenAsync(HttpContext context)
+		private async Task HandleForbiddenAsync(HttpContext context)
 		{
 			var response = new ApiResult<string>
 			{
