@@ -115,6 +115,15 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deletion failed due to existing links.
+        /// </summary>
+        internal static string DeleteFailedLinked {
+            get {
+                return ResourceManager.GetString("DeleteFailedLinked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Device Already Logged In.
         /// </summary>
         internal static string DeviceAlreadyLoggedIn {
@@ -129,6 +138,15 @@ namespace FB98.Shared.Infrastructure.Resources {
         internal static string DeviceTokenRevoked {
             get {
                 return ResourceManager.GetString("DeviceTokenRevoked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discount percentage must be between 0 and 100.
+        /// </summary>
+        internal static string DiscountPercentageRange {
+            get {
+                return ResourceManager.GetString("DiscountPercentageRange", resourceCulture);
             }
         }
         
@@ -201,6 +219,15 @@ namespace FB98.Shared.Infrastructure.Resources {
         internal static string GreaterThanOrEqualTo1 {
             get {
                 return ResourceManager.GetString("GreaterThanOrEqualTo1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Greater than or equal to 1000.
+        /// </summary>
+        internal static string GreaterThanOrEqualTo1000 {
+            get {
+                return ResourceManager.GetString("GreaterThanOrEqualTo1000", resourceCulture);
             }
         }
         

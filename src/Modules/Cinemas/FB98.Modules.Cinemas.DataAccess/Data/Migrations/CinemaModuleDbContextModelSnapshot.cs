@@ -135,9 +135,9 @@ namespace FB98.Modules.Cinemas.DataAccess.Data.Migrations
             modelBuilder.Entity("FB98.Modules.Cinemas.Domain.Entities.CinemaHall", b =>
                 {
                     b.HasOne("FB98.Modules.Cinemas.Domain.Entities.Cinema", "Cinema")
-                        .WithMany()
+                        .WithMany("CinemaHalls")
                         .HasForeignKey("CinemaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Cinema");
@@ -146,20 +146,30 @@ namespace FB98.Modules.Cinemas.DataAccess.Data.Migrations
             modelBuilder.Entity("FB98.Modules.Cinemas.Domain.Entities.CinemaHallSeat", b =>
                 {
                     b.HasOne("FB98.Modules.Cinemas.Domain.Entities.CinemaHall", "CinemaHall")
-                        .WithMany()
+                        .WithMany("Seats")
                         .HasForeignKey("HallId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FB98.Modules.Cinemas.Domain.Entities.SeatType", "SeatType")
                         .WithMany()
                         .HasForeignKey("SeatTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("CinemaHall");
 
                     b.Navigation("SeatType");
+                });
+
+            modelBuilder.Entity("FB98.Modules.Cinemas.Domain.Entities.Cinema", b =>
+                {
+                    b.Navigation("CinemaHalls");
+                });
+
+            modelBuilder.Entity("FB98.Modules.Cinemas.Domain.Entities.CinemaHall", b =>
+                {
+                    b.Navigation("Seats");
                 });
 #pragma warning restore 612, 618
         }

@@ -39,12 +39,12 @@ namespace FB98.Modules.Movies.Application.MovieManagement.GetAll
 						.Contains(search));
 				}
 
-				movies = movies.SortBy(filter.SortColumn, _allowedProperties, filter.IsDescending);
 				if (!await movies.AnyAsync(cancellationToken))
 				{
-					return ApiResponseBuilder.Error<PaginatedResult<GetAllMovieResponse>>(
-						_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
+					return ApiResponseBuilder.Error<PaginatedResult<GetAllMovieResponse>>(_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
+
+				movies = movies.SortBy(filter.SortColumn, _allowedProperties, filter.IsDescending);
 
 				var paginatedResult = await PaginatedResult<Movie>.CreateAsync(
 					movies.Include(x => x.Genres).ThenInclude(x => x.Genre),

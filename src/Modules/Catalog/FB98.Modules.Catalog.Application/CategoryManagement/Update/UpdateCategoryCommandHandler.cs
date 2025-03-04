@@ -4,12 +4,12 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.Update
 {
 	internal sealed class UpdateCategoryCommandHandler : ICommandHandler<UpdateCategoryCommand, ApiResult<object>>
 	{
-		private readonly ILogger<UpdateCategoryCommandHandler> _logger;
 		private readonly ICategoryRepository _categoryRepository;
-		private readonly IUnitOfWork _unitOfWork;
-		private readonly IMapper _mapper;
-		private readonly IValidator<UpdateCategoryDto> _validator;
 		private readonly ILocalizedMessageService _localizedMessageService;
+		private readonly ILogger<UpdateCategoryCommandHandler> _logger;
+		private readonly IMapper _mapper;
+		private readonly IUnitOfWork _unitOfWork;
+		private readonly IValidator<UpdateCategoryDto> _validator;
 
 		public UpdateCategoryCommandHandler(
 			ILogger<UpdateCategoryCommandHandler> logger,
@@ -42,7 +42,7 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.Update
 				var category = await _categoryRepository.GetByIdAsync(categoryId);
 				if (category is null)
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), statusCode: 404);
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
 				if (category.Name != model.Name)
@@ -58,12 +58,12 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.Update
 				_categoryRepository.Update(category);
 				await _unitOfWork.SaveChangesAsync();
 
-				return ApiResponseBuilder.Success<object>(model, _localizedMessageService.GetLocalizedMessage("Updated"));
+				return ApiResponseBuilder.Success<object>(categoryId, _localizedMessageService.GetLocalizedMessage("Updated"));
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Error occurred while update category");
-				return ApiResponseBuilder.Error<object>("An unexpected error occurred", statusCode: 500);
+				return ApiResponseBuilder.Error<object>("An unexpected error occurred", 500);
 			}
 		}
 	}

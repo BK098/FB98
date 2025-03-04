@@ -44,12 +44,6 @@ namespace FB98.Modules.Orders.DataAccess.Data.Migrations
                     b.Property<Guid>("OrderStatusId")
                         .HasColumnType("uuid");
 
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("bytea");
-
                     b.Property<decimal>("SubAmount")
                         .HasColumnType("numeric");
 
@@ -152,12 +146,6 @@ namespace FB98.Modules.Orders.DataAccess.Data.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uuid");
 
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("bytea");
-
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -184,7 +172,7 @@ namespace FB98.Modules.Orders.DataAccess.Data.Migrations
                     b.HasOne("FB98.Modules.Orders.Domain.Entities.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Order");
@@ -195,7 +183,7 @@ namespace FB98.Modules.Orders.DataAccess.Data.Migrations
                     b.HasOne("FB98.Modules.Orders.Domain.Entities.Order", "Order")
                         .WithMany("StatusHistories")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Order");

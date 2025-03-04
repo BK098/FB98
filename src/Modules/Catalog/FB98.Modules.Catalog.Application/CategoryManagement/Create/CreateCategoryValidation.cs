@@ -5,8 +5,8 @@
 		public CreateCategoryValidation(ILocalizedMessageService message)
 		{
 			RuleFor(x => x.Name)
-				.NotEmpty().WithMessage(message.GetLocalizedMessage("NameRequired"))
-				.NotEmpty().WithMessage(message.GetLocalizedMessage("NameEmpty"));
+				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"))
+				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"));
 		}
 	}
 }

@@ -5,14 +5,14 @@ namespace FB98.Modules.Catalog.Application.DiscountManagement.CreateDiscountRule
 {
 	internal class CreateDiscountRuleCommandHandler : ICommandHandler<CreateDiscountRuleCommand, ApiResult<object>>
 	{
-		private readonly IProductRepository _productRepository;
 		private readonly IComboRepository _comboRepository;
+		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ILogger<CreateDiscountRuleCommandHandler> _logger;
 		private readonly IMapper _mapper;
-		private readonly ILocalizedMessageService _localizedMessageService;
-		private readonly IValidator<CreateDiscountRuleDto> _validator;
 		private readonly IProductDiscountRuleRepository _productDiscountRuleRepository;
+		private readonly IProductRepository _productRepository;
 		private readonly IUnitOfWork _unitOfWork;
+		private readonly IValidator<CreateDiscountRuleDto> _validator;
 
 		public CreateDiscountRuleCommandHandler(
 			IProductRepository productRepository,
@@ -46,31 +46,29 @@ namespace FB98.Modules.Catalog.Application.DiscountManagement.CreateDiscountRule
 					return ApiResponseBuilder.ValidationError<object>(validationResult.Errors);
 				}
 
-				BaseProduct? product = model.IsCombo
+				BaseProduct? product = model.IsCombo!.Value
 					? await _comboRepository.GetByIdAsync(productId)
 					: await _productRepository.GetByIdAsync(productId);
 
 				if (product == null)
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"),
-						statusCode: 404);
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
 				var discountRule = _mapper.Map<ProductDiscountRule>(model);
-				discountRule.ProductId = model.IsCombo ? null : productId;
-				discountRule.ComboId = model.IsCombo ? productId : null;
-				discountRule.IsCombo = model.IsCombo;
+				discountRule.ProductId = model.IsCombo!.Value ? null : productId;
+				discountRule.ComboId = model.IsCombo!.Value ? productId : null;
+				discountRule.IsCombo = model.IsCombo!.Value;
 
 				await _productDiscountRuleRepository.CreateAsync(discountRule);
 				await _unitOfWork.SaveChangesAsync();
 
-				return ApiResponseBuilder.Success<object>(discountRule.Id,
-					_localizedMessageService.GetLocalizedMessage("Created"), statusCode: 201);
+				return ApiResponseBuilder.Success<object>(discountRule.Id, _localizedMessageService.GetLocalizedMessage("Created"), 201);
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Error occurred while create new discount rule");
-				return ApiResponseBuilder.Error<object>("An unexpected error occurred", statusCode: 500);
+				return ApiResponseBuilder.Error<object>("An unexpected error occurred", 500);
 			}
 		}
 	}

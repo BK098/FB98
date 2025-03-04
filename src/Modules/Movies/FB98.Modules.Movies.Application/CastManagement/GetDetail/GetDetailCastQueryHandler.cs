@@ -34,7 +34,7 @@ namespace FB98.Modules.Movies.Application.CastManagement.GetDetail
 				}
 
 				var response = _mapper.Map<GetDetailCastResponse>(cast);
-				return ApiResponseBuilder.Success<GetDetailCastResponse>(response, _localizedMessageService.GetLocalizedMessage("DataRetrieved"));
+				return ApiResponseBuilder.Success(response, _localizedMessageService.GetLocalizedMessage("DataRetrieved"));
 			}
 			catch (Exception ex)
 			{

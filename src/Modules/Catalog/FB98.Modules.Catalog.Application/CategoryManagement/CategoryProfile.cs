@@ -6,7 +6,7 @@ using FB98.Modules.Catalog.Domain.Entities;
 
 namespace FB98.Modules.Catalog.Application.CategoryManagement
 {
-	internal class CategoryProfile : Profile
+	internal sealed class CategoryProfile : Profile
 	{
 		public CategoryProfile()
 		{

@@ -53,7 +53,7 @@ namespace FB98.Modules.Cinemas.Application.CinemaManagement.Create
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Error occurred while create cinema");
+				_logger.LogError(ex, "Error occurred while creating cinema");
 				return ApiResponseBuilder.Error<object>("An unexpected error occurred", 500);
 			}
 		}

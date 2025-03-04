@@ -7,12 +7,12 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Delete
 {
 	internal sealed class DeleteProductCommandHandler : ICommandHandler<DeleteProductCommand, ApiResult<object>>
 	{
-		private readonly IProductRepository _productRepository;
-		private readonly ILogger<DeleteProductCommandHandler> _logger;
-		private readonly IUnitOfWork _unitOfWork;
-		private readonly ILocalizedMessageService _localizedMessageService;
-		private readonly ICloudinaryService _cloudinaryService;
 		private readonly IBus _bus;
+		private readonly ICloudinaryService _cloudinaryService;
+		private readonly ILocalizedMessageService _localizedMessageService;
+		private readonly ILogger<DeleteProductCommandHandler> _logger;
+		private readonly IProductRepository _productRepository;
+		private readonly IUnitOfWork _unitOfWork;
 
 		public DeleteProductCommandHandler(
 			IProductRepository productRepository,
@@ -38,19 +38,24 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Delete
 				var product = await _productRepository.GetByIdAsync(productId);
 				if (product is null)
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), statusCode: 404);
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
-				_productRepository.Delete(product);
 				_cloudinaryService.DeleteImage(product.Image);
+				_productRepository.Delete(product);
 				await _unitOfWork.SaveChangesAsync();
 				await _bus.Publish(new ProductDeletedEvent(productId), cancellationToken);
-				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("Deleted"), statusCode: 200);
+				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("Deleted"));
+			}
+			catch (InvalidOperationException ex)
+			{
+				_logger.LogWarning(ex, "Error occurred while deleting combo");
+				return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("DeleteFailedLinked"));
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Error occurred while forgot password");
-				return ApiResponseBuilder.Error<object>("An unexpected error occurred", statusCode: 500);
+				return ApiResponseBuilder.Error<object>("An unexpected error occurred", 500);
 			}
 		}
 	}

@@ -1,0 +1,58 @@
+﻿using AutoMapper;
+using FB98.Modules.Shows.Application.ShowManagement.Create;
+using FB98.Modules.Shows.Application.ShowManagement.CreateRange;
+using FB98.Modules.Shows.Application.ShowManagement.GetAll;
+using FB98.Modules.Shows.Application.ShowManagement.GetDetail;
+using FB98.Modules.Shows.Application.ShowManagement.Update;
+using FB98.Modules.Shows.Domain.Entities;
+
+namespace FB98.Modules.Shows.Application.ShowManagement
+{
+	internal sealed class ShowProfile : Profile
+	{
+		public ShowProfile()
+		{
+			Init();
+		}
+
+		private void Init()
+		{
+			CreateMap<CreateShowDto, Show>()
+				.ForMember(dest => dest.Features, opt => opt.MapFrom(src => src.Features));
+			CreateMap<CreateShowFeatureDto, ShowFeature>()
+				.ForMember(dest => dest.ShowId, opt => opt.Ignore())
+				.ForMember(dest => dest.Show, opt => opt.Ignore());
+
+			CreateMap<UpdateShowDto, Show>()
+				.ForMember(dest => dest.Features, opt => opt.Ignore());
+			CreateMap<UpdateShowFeatureDto, ShowFeature>()
+				.ForMember(dest => dest.Feature, opt => opt.MapFrom(src => src.FeatureId))
+				.ForMember(dest => dest.ShowId, opt => opt.Ignore())
+				.ForMember(dest => dest.Show, opt => opt.Ignore());
+
+			CreateMap<CreateRangeShowDto, Show>()
+				.ForMember(dest => dest.Features, opt => opt.MapFrom(src => src.Features));
+			CreateMap<CreateRangeShowFeatureDto, ShowFeature>()
+				.ForMember(dest => dest.ShowId, opt => opt.Ignore())
+				.ForMember(dest => dest.Show, opt => opt.Ignore());
+
+			CreateMap<Show, GetDetailShowResponse>()
+				.ForMember(dest => dest.Features, opt => opt.MapFrom(src => src.Features));
+			CreateMap<ShowFeature, GetDetailShowFeatureResponse>()
+				.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.FeatureId))
+				.ForMember(dest => dest.FeatureName, opt => opt.MapFrom(src => src.Feature.Name));
+
+			CreateMap<Show, GetAllShowResponse>()
+				.ForMember(dest => dest.MovieId, opt => opt.MapFrom(src => src.MovieId))
+				.ForMember(dest => dest.MovieTitle, opt => opt.MapFrom(src => src.MovieTitle))
+				.ForMember(dest => dest.MovieRuntimeMinutes, opt => opt.MapFrom(src => src.MovieRuntimeMinutes))
+				.ForMember(dest => dest.CinemaHallId, opt => opt.MapFrom(src => src.CinemaHallId))
+				.ForMember(dest => dest.CinemaHallName, opt => opt.MapFrom(src => src.CinemaHallName));
+
+			CreateMap<Show, GetAllShowDto>()
+				.ForMember(dest => dest.ShowId, opt => opt.MapFrom(src => src.Id))
+				.ForMember(dest => dest.ShowStatusId, opt => opt.MapFrom(src => src.ShowStatusId))
+				.ForMember(dest => dest.ShowStatusName, opt => opt.MapFrom(src => src.ShowStatus.Name));
+		}
+	}
+}

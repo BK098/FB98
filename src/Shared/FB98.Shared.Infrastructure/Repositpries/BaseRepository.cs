@@ -47,7 +47,7 @@ namespace FB98.Shared.Infrastructure.Repositpries
 
 		public virtual IQueryable<TEntity> GetAll()
 		{
-			return _dbSet;
+			return _dbSet.OrderBy(x => x.Id);
 		}
 
 		public virtual async Task<bool> CreateAsync(TEntity entity)
@@ -71,6 +71,12 @@ namespace FB98.Shared.Infrastructure.Repositpries
 		public virtual bool Delete(TEntity entity)
 		{
 			_dbSet.Remove(entity);
+			return true;
+		}
+
+		public virtual async Task<bool> CreateRangeAsync(List<TEntity> entites)
+		{
+			await _dbSet.AddRangeAsync(entites);
 			return true;
 		}
 	}

@@ -17,8 +17,6 @@
       <ProjectReference Include="..\FB98.Modules.Movies.Domain\FB98.Modules.Movies.Domain.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="CastManagement\Delete\" />
-      <Folder Include="DirectorManagement\Delete\" />
       <Folder Include="MovieManagement\Delete\" />
     </ItemGroup>
 </Project>
