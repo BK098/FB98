@@ -9,6 +9,7 @@
         <DockerfileContext>..\..\..</DockerfileContext>
         <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
         <Configurations>Debug;Release;IdentityModule;CatalogModule</Configurations>
+        <AWSProjectType>Lambda</AWSProjectType>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="1.7.4" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
@@ -33,6 +35,7 @@
         <ProjectReference Include="..\..\Modules\Movies\FB98.Modules.Movies.Api\FB98.Modules.Movies.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Orders\FB98.Modules.Orders.Api\FB98.Modules.Orders.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Payments\FB98.Modules.Payments.Api\FB98.Modules.Payments.Api.csproj" />
+        <ProjectReference Include="..\..\Modules\Shows\FB98.Modules.Shows.Api\FB98.Modules.Shows.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Systems\FB98.Module.Systems.Api\FB98.Module.Systems.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Warehouse\FB98.Modules.Warehouse.Api\FB98.Modules.Warehouse.Api.csproj" />
     </ItemGroup>

@@ -20,6 +20,42 @@ namespace FB98.Modules.Catalog.DataAccess.Data
 		{
 			modelBuilder.HasDefaultSchema("CatalogModule");
 			modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+
+			modelBuilder.Entity<Product>()
+				.HasOne(p => p.Category)
+				.WithMany(c => c.Products)
+				.HasForeignKey(p => p.CategoryId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<ComboProduct>()
+				.HasOne(p => p.Product)
+				.WithMany(c => c.ComboProducts)
+				.HasForeignKey(p => p.ProductId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<ComboProduct>()
+				.HasOne(p => p.Combo)
+				.WithMany(c => c.ComboProducts)
+				.HasForeignKey(p => p.ComboId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<ProductDiscountRule>()
+				.HasOne(p => p.Product)
+				.WithMany(c => c.DiscountRules)
+				.HasForeignKey(p => p.ProductId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<ProductDiscountRule>()
+				.HasOne(p => p.Combo)
+				.WithMany(c => c.DiscountRules)
+				.HasForeignKey(p => p.ComboId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<ProductDiscountApplication>()
+				.HasOne(pda => pda.DiscountRule)
+				.WithMany()
+				.HasForeignKey(pda => pda.RuleId)
+				.OnDelete(DeleteBehavior.Restrict);
 		}
 	}
 }

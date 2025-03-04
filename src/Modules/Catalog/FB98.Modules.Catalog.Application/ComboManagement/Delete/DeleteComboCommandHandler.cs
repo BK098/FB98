@@ -5,11 +5,11 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Delete
 {
 	internal sealed class DeleteComboCommandHandler : ICommandHandler<DeleteComboCommand, ApiResult<object>>
 	{
-		private readonly IUnitOfWork _unitOfWork;
-		private readonly ILogger<DeleteComboCommandHandler> _logger;
-		private readonly ILocalizedMessageService _localizedMessageService;
-		private readonly IComboRepository _comboRepository;
 		private readonly ICloudinaryService _cloudinaryService;
+		private readonly IComboRepository _comboRepository;
+		private readonly ILocalizedMessageService _localizedMessageService;
+		private readonly ILogger<DeleteComboCommandHandler> _logger;
+		private readonly IUnitOfWork _unitOfWork;
 
 		public DeleteComboCommandHandler(
 			IUnitOfWork unitOfWork,
@@ -33,20 +33,24 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Delete
 				var combo = await _comboRepository.GetByIdAsync(comboId);
 				if (combo is null)
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), statusCode: 404);
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
 				_cloudinaryService.DeleteImage(combo.Image);
 				_comboRepository.Delete(combo);
-
 				await _unitOfWork.SaveChangesAsync();
 
-				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("Deleted"), statusCode: 200);
+				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("Deleted"));
+			}
+			catch (InvalidOperationException ex)
+			{
+				_logger.LogWarning(ex, "Error occurred while deleting combo");
+				return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("DeleteFailedLinked"));
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Error occurred while delele combo");
-				return ApiResponseBuilder.Error<object>("An unexpected error occurred", statusCode: 500);
+				_logger.LogError(ex, "Error occurred while deleting combo");
+				return ApiResponseBuilder.Error<object>("An unexpected error occurred", 500);
 			}
 		}
 	}

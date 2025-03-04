@@ -9,10 +9,10 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.GetAll
 	internal sealed class GetAllProductQueryHandler : IQueryHandler<GetAllProductQuery, ApiResult<PaginatedResult<GetAllProductResponse>>>
 	{
 		private readonly List<string> _allowedProperties = ["Name", "Price"];
-		private readonly ILogger<GetAllProductQueryHandler> _logger;
-		private readonly IProductRepository _productRepository;
 		private readonly ILocalizedMessageService _localizedMessageService;
+		private readonly ILogger<GetAllProductQueryHandler> _logger;
 		private readonly IMapper _mapper;
+		private readonly IProductRepository _productRepository;
 
 		public GetAllProductQueryHandler(
 			ILogger<GetAllProductQueryHandler> logger,
@@ -39,31 +39,31 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.GetAll
 						.Contains(search));
 				}
 
-				products = products.SortBy(filter.SortColumn, _allowedProperties, filter.IsDescending);
 				if (!await products.AnyAsync(cancellationToken))
 				{
-					return ApiResponseBuilder.Error<PaginatedResult<GetAllProductResponse>>(_localizedMessageService.GetLocalizedMessage("NotFound"), statusCode: 404);
+					return ApiResponseBuilder.Error<PaginatedResult<GetAllProductResponse>>(_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
+
+				products = products.SortBy(filter.SortColumn, _allowedProperties, filter.IsDescending);
 
 				var paginatedResult = await PaginatedResult<Product>.CreateAsync(
 					products,
 					filter.PageIndex,
 					filter.PageSize,
 					cancellationToken);
-				var productForView = _mapper.Map<List<GetAllProductResponse>>(paginatedResult.Items);
 
 				var paginatedProductForView = new PaginatedResult<GetAllProductResponse>(
-					productForView,
+					_mapper.Map<List<GetAllProductResponse>>(paginatedResult.Items),
 					paginatedResult.PageIndex,
 					paginatedResult.PageSize,
 					paginatedResult.TotalCount);
 
-				return ApiResponseBuilder.Success(paginatedProductForView);
+				return ApiResponseBuilder.Success(paginatedProductForView, _localizedMessageService.GetLocalizedMessage("DataRetrieved"));
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Error occurred while get all products");
-				return ApiResponseBuilder.Error<PaginatedResult<GetAllProductResponse>>("An unexpected error occurred", statusCode: 500);
+				return ApiResponseBuilder.Error<PaginatedResult<GetAllProductResponse>>("An unexpected error occurred", 500);
 			}
 		}
 	}

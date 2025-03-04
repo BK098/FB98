@@ -34,7 +34,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.GetOrderStatusHistory
 
 				var response = _mapper.Map<IEnumerable<GetOrderStatusHistoryResponse>>(history);
 
-				return ApiResponseBuilder.Success(response, statusCode: 200);
+				return ApiResponseBuilder.Success(response, _localizedMessageService.GetLocalizedMessage("DataRetrieved"));
 			}
 			catch (Exception ex)
 			{

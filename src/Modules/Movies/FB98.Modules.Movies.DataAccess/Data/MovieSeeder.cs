@@ -42,6 +42,17 @@ namespace FB98.Modules.Movies.DataAccess.Data
 					await Task.CompletedTask;
 				}
 			}
+			if (!context.Movies.Any())
+			{
+				var jsonData = await File.ReadAllTextAsync("SeedData/Movies/MovieSeed.json");
+				var entities = JsonConvert.DeserializeObject<List<Movie>>(jsonData, new JsonSerializerSettings());
+				if (entities != null)
+				{
+					await context.Movies.AddRangeAsync(entities);
+					await context.SaveChangesAsync();
+					await Task.CompletedTask;
+				}
+			}
 		}
 	}
 }
