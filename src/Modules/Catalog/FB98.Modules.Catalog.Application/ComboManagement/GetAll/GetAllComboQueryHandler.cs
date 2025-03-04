@@ -9,9 +9,9 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.GetAll
 	internal sealed class GetAllComboQueryHandler : IQueryHandler<GetAllComboQuery, ApiResult<PaginatedResult<GetAllComboResponse>>>
 	{
 		private readonly List<string> _allowedProperties = ["Name", "Price"];
-		private readonly ILogger<GetAllComboQueryHandler> _logger;
 		private readonly IComboRepository _comboRepository;
 		private readonly ILocalizedMessageService _localizedMessageService;
+		private readonly ILogger<GetAllComboQueryHandler> _logger;
 		private readonly IMapper _mapper;
 
 		public GetAllComboQueryHandler(
@@ -35,35 +35,34 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.GetAll
 				var search = filter.SearchTerm?.ConvertToUnsign().Trim();
 				if (!string.IsNullOrEmpty(search))
 				{
-					combos = combos.Where(x => EF.Functions.Unaccent(x.Name).ToLower().Trim()
-						.Contains(search));
+					combos = combos.Where(x => EF.Functions.Unaccent(x.Name).ToLower().Trim().Contains(search));
+				}
+
+				if (!await combos.AnyAsync(cancellationToken))
+				{
+					return ApiResponseBuilder.Error<PaginatedResult<GetAllComboResponse>>(_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
 				combos = combos.SortBy(filter.SortColumn, _allowedProperties, filter.IsDescending);
-				if (!await combos.AnyAsync(cancellationToken))
-				{
-					return ApiResponseBuilder.Error<PaginatedResult<GetAllComboResponse>>(_localizedMessageService.GetLocalizedMessage("NotFound"), statusCode: 404);
-				}
 
 				var paginatedResult = await PaginatedResult<Combo>.CreateAsync(
 					combos,
 					filter.PageIndex,
 					filter.PageSize,
 					cancellationToken);
-				var comboForView = _mapper.Map<List<GetAllComboResponse>>(paginatedResult.Items);
 
-				var paginatedProductForView = new PaginatedResult<GetAllComboResponse>(
-					comboForView,
+				var response = new PaginatedResult<GetAllComboResponse>(
+					_mapper.Map<List<GetAllComboResponse>>(paginatedResult.Items),
 					paginatedResult.PageIndex,
 					paginatedResult.PageSize,
 					paginatedResult.TotalCount);
 
-				return ApiResponseBuilder.Success(paginatedProductForView);
+				return ApiResponseBuilder.Success(response, _localizedMessageService.GetLocalizedMessage("DataRetrieved"));
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Error occurred while get all combos");
-				return ApiResponseBuilder.Error<PaginatedResult<GetAllComboResponse>>("An unexpected error occurred", statusCode: 500);
+				return ApiResponseBuilder.Error<PaginatedResult<GetAllComboResponse>>("An unexpected error occurred", 500);
 			}
 		}
 	}

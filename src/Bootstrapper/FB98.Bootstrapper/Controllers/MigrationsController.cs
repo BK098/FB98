@@ -4,6 +4,7 @@ using FB98.Modules.Identity.DataAccess.Data;
 using FB98.Modules.Movies.DataAccess.Data;
 using FB98.Modules.Orders.DataAccess.Data;
 using FB98.Modules.Payments.DataAccess.Data;
+using FB98.Modules.Shows.DataAccess.Data;
 using FB98.Modules.Warehouse.DataAccess.Data;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,12 +15,13 @@ namespace FB98.Bootstrapper.Controllers
 	public class MigrationsController : ControllerBase
 	{
 		private readonly CatalogModuleDbContext _catalogContext;
-		private readonly OrdersModuleDbContext _ordersContext;
-		private readonly WarehouseModuleDbContext _warehouseContext;
-		private readonly PaymentModuleDbContext _paymentContext;
 		private readonly CinemaModuleDbContext _cinemaContext;
 		private readonly IdentityModuleDbContext _identityContext;
 		private readonly MovieModuleDbContext _movieContext;
+		private readonly OrdersModuleDbContext _ordersContext;
+		private readonly PaymentModuleDbContext _paymentContext;
+		private readonly ShowModuleDbContext _showContext;
+		private readonly WarehouseModuleDbContext _warehouseContext;
 
 		public MigrationsController(
 			CatalogModuleDbContext catalogContext,
@@ -27,7 +29,9 @@ namespace FB98.Bootstrapper.Controllers
 			WarehouseModuleDbContext warehouseContext,
 			PaymentModuleDbContext paymentContext,
 			CinemaModuleDbContext cinemaContext,
-			IdentityModuleDbContext identityContext, MovieModuleDbContext movieContext)
+			IdentityModuleDbContext identityContext,
+			MovieModuleDbContext movieContext,
+			ShowModuleDbContext showContext)
 		{
 			_catalogContext = catalogContext;
 			_ordersContext = ordersContext;
@@ -36,6 +40,7 @@ namespace FB98.Bootstrapper.Controllers
 			_cinemaContext = cinemaContext;
 			_identityContext = identityContext;
 			_movieContext = movieContext;
+			_showContext = showContext;
 		}
 
 		[HttpPost("seed-data")]
@@ -50,6 +55,7 @@ namespace FB98.Bootstrapper.Controllers
 				await CinemaSeeder.SeedDataAsync(_cinemaContext);
 				await IdentitySeeder.SeedDataAsync(_identityContext);
 				await MovieSeeder.SeedDataAsync(_movieContext);
+				await ShowSeeder.SeedDataAsync(_showContext);
 
 				return Ok(new { message = "Seed data inserted successfully!" });
 			}
