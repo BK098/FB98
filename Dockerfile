@@ -34,35 +34,42 @@ COPY ["src/Modules/Warehouse/FB98.Modules.Warehouse.Application/FB98.Modules.War
 COPY ["src/Modules/Warehouse/FB98.Modules.Warehouse.DataAccess/FB98.Modules.Warehouse.DataAccess.csproj", "src/Modules/Warehouse/FB98.Modules.Warehouse.DataAccess/"]
 COPY ["src/Modules/Warehouse/FB98.Modules.Warehouse.Domain/FB98.Modules.Warehouse.Domain.csproj", "src/Modules/Warehouse/FB98.Modules.Warehouse.Domain/"]
 
-#CustomersModule
+#CustomerModule
 COPY ["src/Modules/Customers/FB98.Modules.Customers.Api/FB98.Modules.Customers.Api.csproj", "src/Modules/Customers/FB98.Modules.Customers.Api/"]
 COPY ["src/Modules/Customers/FB98.Modules.Customers.Application/FB98.Modules.Customers.Application.csproj", "src/Modules/Customers/FB98.Modules.Customers.Application/"]
 COPY ["src/Modules/Customers/FB98.Modules.Customers.DataAccess/FB98.Modules.Customers.DataAccess.csproj", "src/Modules/Customers/FB98.Modules.Customers.DataAccess/"]
 COPY ["src/Modules/Customers/FB98.Modules.Customers.Domain/FB98.Modules.Customers.Domain.csproj", "src/Modules/Customers/FB98.Modules.Customers.Domain/"]
 
-#OrdersModule
+#OrderModule
 COPY ["src/Modules/Orders/FB98.Modules.Orders.Api/FB98.Modules.Orders.Api.csproj", "src/Modules/Orders/FB98.Modules.Orders.Api/"]
 COPY ["src/Modules/Orders/FB98.Modules.Orders.Application/FB98.Modules.Orders.Application.csproj", "src/Modules/Orders/FB98.Modules.Orders.Application/"]
 COPY ["src/Modules/Orders/FB98.Modules.Orders.DataAccess/FB98.Modules.Orders.DataAccess.csproj", "src/Modules/Orders/FB98.Modules.Orders.DataAccess/"]
 COPY ["src/Modules/Orders/FB98.Modules.Orders.Domain/FB98.Modules.Orders.Domain.csproj", "src/Modules/Orders/FB98.Modules.Orders.Domain/"]
 
-#PaymentsModule
+#PaymentModule
 COPY ["src/Modules/Payments/FB98.Modules.Payments.Api/FB98.Modules.Payments.Api.csproj", "src/Modules/Payments/FB98.Modules.Payments.Api/"]
 COPY ["src/Modules/Payments/FB98.Modules.Payments.Application/FB98.Modules.Payments.Application.csproj", "src/Modules/Payments/FB98.Modules.Payments.Application/"]
 COPY ["src/Modules/Payments/FB98.Modules.Payments.DataAccess/FB98.Modules.Payments.DataAccess.csproj", "src/Modules/Payments/FB98.Modules.Payments.DataAccess/"]
 COPY ["src/Modules/Payments/FB98.Modules.Payments.Domain/FB98.Modules.Payments.Domain.csproj", "src/Modules/Payments/FB98.Modules.Payments.Domain/"]
 
-#CinemasModule
+#CinemaModule
 COPY ["src/Modules/Cinemas/FB98.Modules.Cinemas.Api/FB98.Modules.Cinemas.Api.csproj", "src/Modules/Cinemas/FB98.Modules.Cinemas.Api/"]
 COPY ["src/Modules/Cinemas/FB98.Modules.Cinemas.Application/FB98.Modules.Cinemas.Application.csproj", "src/Modules/Cinemas/FB98.Modules.Cinemas.Application/"]
 COPY ["src/Modules/Cinemas/FB98.Modules.Cinemas.DataAccess/FB98.Modules.Cinemas.DataAccess.csproj", "src/Modules/Cinemas/FB98.Modules.Cinemas.DataAccess/"]
 COPY ["src/Modules/Cinemas/FB98.Modules.Cinemas.Domain/FB98.Modules.Cinemas.Domain.csproj", "src/Modules/Cinemas/FB98.Modules.Cinemas.Domain/"]
 
-#MoviesModule
+#MovieModule
 COPY ["src/Modules/Movies/FB98.Modules.Movies.Api/FB98.Modules.Movies.Api.csproj", "src/Modules/Movies/FB98.Modules.Movies.Api/"]
 COPY ["src/Modules/Movies/FB98.Modules.Movies.Application/FB98.Modules.Movies.Application.csproj", "src/Modules/Movies/FB98.Modules.Movies.Application/"]
 COPY ["src/Modules/Movies/FB98.Modules.Movies.DataAccess/FB98.Modules.Movies.DataAccess.csproj", "src/Modules/Movies/FB98.Modules.Movies.DataAccess/"]
 COPY ["src/Modules/Movies/FB98.Modules.Movies.Domain/FB98.Modules.Movies.Domain.csproj", "src/Modules/Movies/FB98.Modules.Movies.Domain/"]
+
+#ShowModule
+COPY ["src/Modules/Shows/FB98.Modules.Shows.Api/FB98.Modules.Shows.Api.csproj", "src/Modules/Shows/FB98.Modules.Shows.Api/"]
+COPY ["src/Modules/Shows/FB98.Modules.Shows.Application/FB98.Modules.Shows.Application.csproj", "src/Modules/Shows/FB98.Modules.Shows.Application/"]
+COPY ["src/Modules/Shows/FB98.Modules.Shows.DataAccess/FB98.Modules.Shows.DataAccess.csproj", "src/Modules/Shows/FB98.Modules.Shows.DataAccess/"]
+COPY ["src/Modules/Shows/FB98.Modules.Shows.Domain/FB98.Modules.Shows.Domain.csproj", "src/Modules/Shows/FB98.Modules.Shows.Domain/"]
+
 RUN dotnet restore "src/Bootstrapper/FB98.Bootstrapper/FB98.Bootstrapper.csproj"
 
 COPY . .

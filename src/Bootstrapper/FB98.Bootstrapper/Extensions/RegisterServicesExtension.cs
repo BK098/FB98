@@ -1,6 +1,8 @@
 ﻿using FB98.Shared.Infrastructure.Repositpries;
 using FluentValidation;
 using Refit;
+using System.Net;
+using System.Net.Sockets;
 using System.Reflection;
 
 namespace FB98.Bootstrapper.Extensions
@@ -52,7 +54,7 @@ namespace FB98.Bootstrapper.Extensions
 			{
 				var entityType = repositoryType.BaseType!.GetGenericArguments()[0];
 				var implementedInterfaces = repositoryType.GetInterfaces()
-					.Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRepository<>) ||
+					.Where(i => (i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRepository<>)) ||
 								i.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IRepository<>))).ToList();
 
 				foreach (var implementedInterface in implementedInterfaces)
@@ -68,6 +70,8 @@ namespace FB98.Bootstrapper.Extensions
 
 			#region Refit
 
+			var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
+
 			var refitInterfaceType = typeof(IHttpClientFactory);
 			var refitInterfaces = assemblies.SelectMany(a => a.GetTypes())
 				.Where(t => t.IsInterface && t.GetMethods()
@@ -79,7 +83,7 @@ namespace FB98.Bootstrapper.Extensions
 					.GetMethod(nameof(AddRefitClient), BindingFlags.NonPublic | BindingFlags.Static)?
 					.MakeGenericMethod(refitInterface);
 
-				method?.Invoke(null, new object[] { services }); // Chỉ truyền `services`, không truyền baseUrl nữa
+				method?.Invoke(null, [services, configuration]);
 			}
 
 			#endregion
@@ -87,14 +91,40 @@ namespace FB98.Bootstrapper.Extensions
 			return services;
 		}
 
-		private static void AddRefitClient<T>(IServiceCollection services) where T : class
+		private static void AddRefitClient<T>(IServiceCollection services, IConfiguration configuration) where T : class
 		{
-			const string baseUrl = "https://localhost:7082";
+			var baseUrl = Environment.GetEnvironmentVariable("API_BASE_URL");
+			if (string.IsNullOrEmpty(baseUrl))
+			{
+				baseUrl = configuration["ApiSettings:BaseUrl"];
+			}
+
 			services.AddRefitClient<T>()
 				.ConfigureHttpClient(c =>
 				{
 					c.BaseAddress = new Uri(baseUrl);
 				});
+		}
+
+		private static string GetServerIp()
+		{
+			try
+			{
+				var host = Dns.GetHostEntry(Dns.GetHostName());
+				foreach (var ip in host.AddressList)
+				{
+					if (ip.AddressFamily == AddressFamily.InterNetwork) // Lấy IPv4
+					{
+						return ip.ToString();
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Error getting server IP: {ex.Message}");
+			}
+
+			return "127.0.0.1"; // Mặc định trả về localhost nếu không lấy được IP
 		}
 	}
 }
