@@ -7,6 +7,12 @@
 		public int MovieRuntimeMinutes { get; set; }
 		public Guid CinemaHallId { get; set; }
 		public string CinemaHallName { get; set; }
+		public IEnumerable<GetAllShowByDateDto> Dates { get; set; } = new List<GetAllShowByDateDto>();
+	}
+
+	public class GetAllShowByDateDto
+	{
+		public string Date { get; set; }
 		public IEnumerable<GetAllShowDto> ShowTimes { get; set; } = new List<GetAllShowDto>();
 	}
 
@@ -17,5 +23,6 @@
 		public string EndTime { get; set; }
 		public Guid ShowStatusId { get; set; }
 		public string ShowStatusName { get; set; }
+		public bool IsActive { get; set; }
 	}
 }

@@ -45,9 +45,10 @@ namespace FB98.Modules.Movies.Application.MovieManagement.GetAll
 				}
 
 				movies = movies.SortBy(filter.SortColumn, _allowedProperties, filter.IsDescending);
-
+				movies = movies
+					.Include(x => x.Genres).ThenInclude(x => x.Genre);
 				var paginatedResult = await PaginatedResult<Movie>.CreateAsync(
-					movies.Include(x => x.Genres).ThenInclude(x => x.Genre),
+					movies,
 					filter.PageIndex,
 					filter.PageSize,
 					cancellationToken);
