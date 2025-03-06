@@ -8,7 +8,7 @@
 		"ReleaseDate": "2025-04-14T00:00:00Z",
 		"Country": "Mỹ",
 		"IsVietSub": true,
-		"CastMembers": [
+		"Casts": [
 			{
 				"CastId": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
 			},
@@ -52,7 +52,7 @@
 		"ReleaseDate": "2025-02-07T00:00:00Z",
 		"Country": "Việt Nam",
 		"IsVietSub": true,
-		"CastMembers": [
+		"Casts": [
 			{
 				"CastId": "3b62048d-6e63-4261-9e5d-88fa63d6e31b"
 			},
@@ -87,7 +87,7 @@
 		"ReleaseDate": "2025-02-07T00:00:00Z",
 		"Country": "Nhật Bản",
 		"IsVietSub": true,
-		"CastMembers": [
+		"Casts": [
 			{
 				"CastId": "5e91b87a-833c-4bdf-bf64-2d7ff67b16d3"
 			},
@@ -125,7 +125,7 @@
 		"ReleaseDate": "2025-02-28T00:00:00Z",
 		"Country": "Mỹ",
 		"IsVietSub": true,
-		"CastMembers": [
+		"Casts": [
 			{
 				"CastId": "15b92c45-8094-4b44-96fc-3b0ff849a1fc"
 			},
@@ -163,7 +163,7 @@
 		"ReleaseDate": "2025-01-01T00:00:00Z",
 		"Country": "Anh, Pháp, Mỹ",
 		"IsVietSub": true,
-		"CastMembers": [
+		"Casts": [
 			{
 				"CastId": "bb7146e9-431f-4e9c-b5f4-32e5c0b28de2"
 			},

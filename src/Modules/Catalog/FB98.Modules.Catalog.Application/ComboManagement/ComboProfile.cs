@@ -26,6 +26,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement
 				.ForMember(dest => dest.ComboProducts, opt => opt.Ignore());
 			CreateMap<UpdateComboProductDto, ComboProduct>()
 				.ForMember(src => src.Id, opt => opt.Ignore())
+				.ForMember(src => src.Quantity, opt => opt.MapFrom(src => src.Quantity))
 				.ForMember(src => src.ProductId, opt => opt.MapFrom(src => src.ProductId))
 				.ForMember(src => src.Combo, opt => opt.Ignore())
 				.ForMember(dest => dest.ComboId, opt => opt.Ignore());

@@ -109,6 +109,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Update
 			var existingProductIds = combo.ComboProducts.Select(c => c.ProductId).ToList();
 			var newProductIds = productDtos.Select(c => c.ProductId!.Value).ToList();
 
+			// Xóa sản phẩm không còn trong combo
 			var productToRemove = combo.ComboProducts.Where(c => !newProductIds.Contains(c.ProductId)).ToList();
 			foreach (var product in productToRemove)
 			{
@@ -116,20 +117,36 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Update
 			}
 
 			var productMembersToAdd = newProductIds.Except(existingProductIds).ToList();
-			var allProductMembers = await _productRepository.GetByIdsAsync(productMembersToAdd);
+			var allProductMembers = await _productRepository.GetByIdsAsync(newProductIds);
 
-			foreach (var productId in productMembersToAdd)
+			foreach (var productDto in productDtos)
 			{
-				var productMember = allProductMembers.FirstOrDefault(cm => cm.Id == productId);
-				if (productMember != null)
+				var productId = productDto.ProductId!.Value;
+				var existingComboProduct = combo.ComboProducts.FirstOrDefault(cp => cp.ProductId == productId);
+
+				if (existingComboProduct != null)
 				{
-					var newMovieProductMember = new ComboProduct
+					// Nếu sản phẩm đã có trong combo, cập nhật quantity
+					if (existingComboProduct.Quantity != productDto.Quantity)
 					{
-						Quantity = productDtos.First(x => x.ProductId == productId).Quantity!.Value,
-						ProductId = productMember.Id,
-						ComboId = combo.Id
-					};
-					_unitOfWork.Entry(newMovieProductMember, EntityState.Added);
+						existingComboProduct.Quantity = productDto.Quantity!.Value;
+						_unitOfWork.Entry(existingComboProduct, EntityState.Modified);
+					}
+				}
+				else
+				{
+					// Nếu sản phẩm chưa có trong combo, thêm mới
+					var productMember = allProductMembers.FirstOrDefault(p => p.Id == productId);
+					if (productMember != null)
+					{
+						var newComboProduct = new ComboProduct
+						{
+							Quantity = productDto.Quantity!.Value,
+							ProductId = productMember.Id,
+							ComboId = combo.Id
+						};
+						_unitOfWork.Entry(newComboProduct, EntityState.Added);
+					}
 				}
 			}
 		}

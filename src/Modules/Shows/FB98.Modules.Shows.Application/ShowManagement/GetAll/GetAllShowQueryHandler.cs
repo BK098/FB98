@@ -61,18 +61,22 @@ namespace FB98.Modules.Shows.Application.ShowManagement.GetAll
 						MovieRuntimeMinutes = group.First().MovieRuntimeMinutes,
 						CinemaHallId = group.Key.CinemaHallId,
 						CinemaHallName = group.First().CinemaHallName,
-						ShowTimes = group.Select(x => new GetAllShowDto
-						{
-							ShowId = x.Id,
-							StartTime = x.StartTime.ToString("hh:mm"),
-							EndTime = x.EndTime.ToString("hh:mm"),
-							ShowStatusId = x.ShowStatusId,
-							ShowStatusName = x.ShowStatus.Name // Đảm bảo `ShowStatus.Name` được load từ DB
-						})
-							.OrderBy(x => x.StartTime) // Sắp xếp theo thời gian chiếu
-							.ToList()
-					})
-					.ToList();
+						Dates = group
+							.GroupBy(x => x.StartTime.ToString("dd-MM"))
+							.Select(dateGroup => new GetAllShowByDateDto
+							{
+								Date = dateGroup.Key,
+								ShowTimes = dateGroup.Select(x => new GetAllShowDto
+								{
+									ShowId = x.Id,
+									StartTime = x.StartTime.ToString("hh:mm"),
+									EndTime = x.EndTime.ToString("hh:mm"),
+									ShowStatusId = x.ShowStatusId,
+									ShowStatusName = x.ShowStatus.Name,
+									IsActive = x.StartTime > DateTime.UtcNow
+								}).OrderBy(x => x.StartTime).ToList()
+							}).OrderBy(x => x.Date).ToList()
+					}).ToList();
 
 				var response = new PaginatedResult<GetAllShowResponse>(
 					groupedShows,
