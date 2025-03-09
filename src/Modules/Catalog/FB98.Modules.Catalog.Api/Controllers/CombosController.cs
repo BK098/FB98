@@ -34,9 +34,8 @@ namespace FB98.Modules.Catalog.Api.Controllers
 
 		[Authorize(Roles = "Administrator")]
 		[HttpPost]
-		public async Task<IActionResult> CreateCombo([FromForm] CreateComboDto model)
+		public async Task<IActionResult> CreateCombo([FromBody] CreateComboDto model)
 		{
-			model.DeserializeProducts();
 			var request = new CreateComboCommand(model);
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);
@@ -54,9 +53,8 @@ namespace FB98.Modules.Catalog.Api.Controllers
 
 		[Authorize(Roles = "Administrator")]
 		[HttpPut("{comboId:guid}")]
-		public async Task<IActionResult> UpdateCombo(Guid comboId, [FromForm] UpdateComboDto model)
+		public async Task<IActionResult> UpdateCombo(Guid comboId, [FromBody] UpdateComboDto model)
 		{
-			model.DeserializeProducts();
 			var request = new UpdateComboCommand(comboId, model);
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);

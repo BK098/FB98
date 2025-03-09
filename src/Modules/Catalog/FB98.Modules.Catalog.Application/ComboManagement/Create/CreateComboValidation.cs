@@ -17,10 +17,10 @@
 				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
 
+			RuleForEach(x => x.Products).SetValidator(new CreateComboProductValidation(message));
+
 			RuleFor(x => x.Products)
 				.Must(BeUniqueProductIds).WithMessage(message.GetLocalizedMessage("DuplicateData"));
-
-			RuleForEach(x => x.Products).SetValidator(new CreateComboProductValidation(message));
 		}
 
 		private bool BeUniqueProductIds(ICollection<CreateComboProductDto>? products)
@@ -30,7 +30,7 @@
 				return true;
 			}
 
-			var productIds = products.Where(s => s.ProductId.HasValue).Select(s => s.ProductId.Value).ToList();
+			var productIds = products.Where(s => s.ProductId.HasValue).Select(s => s.ProductId!.Value).ToList();
 			return productIds.Distinct().Count() == productIds.Count();
 		}
 	}

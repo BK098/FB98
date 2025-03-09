@@ -14,7 +14,7 @@ COPY ["src/Shared/FB98.Shared.Infrastructure/FB98.Shared.Infrastructure.csproj",
 COPY ["src/Shared/FB98.Shared.Utils/FB98.Shared.Utils.csproj", "src/Shared/FB98.Shared.Utils/"]
 
 #SystemsModule
-COPY ["src/Modules/Systems/FB98.Module.Systems.Api/FB98.Module.Systems.Api.csproj", "src/Modules/Systems/FB98.Module.Systems.Api/"]
+COPY ["src/Modules/Systems/FB98.Modules.Systems.Api/FB98.Modules.Systems.Api.csproj", "src/Modules/Systems/FB98.Module.Systems.Api/"]
 
 #IdentityModule
 COPY ["src/Modules/Identity/FB98.Modules.Identity.Api/FB98.Modules.Identity.Api.csproj", "src/Modules/Identity/FB98.Modules.Identity.Api/"]
@@ -69,6 +69,12 @@ COPY ["src/Modules/Shows/FB98.Modules.Shows.Api/FB98.Modules.Shows.Api.csproj", 
 COPY ["src/Modules/Shows/FB98.Modules.Shows.Application/FB98.Modules.Shows.Application.csproj", "src/Modules/Shows/FB98.Modules.Shows.Application/"]
 COPY ["src/Modules/Shows/FB98.Modules.Shows.DataAccess/FB98.Modules.Shows.DataAccess.csproj", "src/Modules/Shows/FB98.Modules.Shows.DataAccess/"]
 COPY ["src/Modules/Shows/FB98.Modules.Shows.Domain/FB98.Modules.Shows.Domain.csproj", "src/Modules/Shows/FB98.Modules.Shows.Domain/"]
+
+#TicketModule
+COPY ["src/Modules/Tickets/FB98.Modules.Tickets.Api/FB98.Modules.Tickets.Api.csproj", "src/Modules/Tickets/FB98.Modules.Tickets.Api/"]
+COPY ["src/Modules/Tickets/FB98.Modules.Tickets.Application/FB98.Modules.Tickets.Application.csproj", "src/Modules/Tickets/FB98.Modules.Tickets.Application/"]
+COPY ["src/Modules/Tickets/FB98.Modules.Tickets.DataAccess/FB98.Modules.Tickets.DataAccess.csproj", "src/Modules/Tickets/FB98.Modules.Tickets.DataAccess/"]
+COPY ["src/Modules/Tickets/FB98.Modules.Tickets.Domain/FB98.Modules.Tickets.Domain.csproj", "src/Modules/Tickets/FB98.Modules.Tickets.Domain/"]
 
 RUN dotnet restore "src/Bootstrapper/FB98.Bootstrapper/FB98.Bootstrapper.csproj"
 

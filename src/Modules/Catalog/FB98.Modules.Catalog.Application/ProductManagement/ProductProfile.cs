@@ -15,13 +15,16 @@ namespace FB98.Modules.Catalog.Application.ProductManagement
 
 		private void Init()
 		{
-			CreateMap<CreateProductDto, Product>();
-			CreateMap<UpdateProductDto, Product>();
+			CreateMap<CreateProductDto, Product>()
+				.ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.ImageUrl));
+
+			CreateMap<UpdateProductDto, Product>()
+				.ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.ImageUrl));
+
 			CreateMap<Product, GetAllProductResponse>();
+
 			CreateMap<Product, GetDetailProductResponse>()
-				.ForMember(dest => dest.CategoryName,
-					opt =>
-						opt.MapFrom(src => src.Category.Name));
+				.ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
 		}
 	}
 }

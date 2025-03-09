@@ -28,14 +28,14 @@ namespace FB98.Modules.Identity.Api.Controllers
 			{
 				Response.Cookies.Append("access_token", result.Data!.Token, new CookieOptions
 				{
-					HttpOnly = false,
+					HttpOnly = true,
 					Secure = false,
 					SameSite = SameSiteMode.Strict,
 					Expires = DateTimeOffset.UtcNow.AddMinutes(30)
 				});
 				Response.Cookies.Append("refresh_token", result.Data!.RefreshToken, new CookieOptions
 				{
-					HttpOnly = false,
+					HttpOnly = true,
 					Secure = false,
 					SameSite = SameSiteMode.Strict,
 					Expires = DateTimeOffset.UtcNow.AddDays(7)
@@ -91,21 +91,26 @@ namespace FB98.Modules.Identity.Api.Controllers
 		}
 
 		[HttpPost("refresh-token")]
-		public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto model)
+		public async Task<IActionResult> RefreshToken()
 		{
+			var model = new RefreshTokenDto
+			{
+				Token = Request.Cookies["access_token"],
+				RefreshToken = Request.Cookies["refresh_token"]
+			};
+
 			var request = new RefreshTokenCommand(model);
 			var result = await _mediator.Send(request);
 			if (result.IsSuccess)
 			{
 				Response.Cookies.Append("access_token", result.Data!.Token, new CookieOptions
 				{
-					HttpOnly = false,
+					HttpOnly = true,
 					Secure = false,
 					SameSite = SameSiteMode.Strict,
 					Expires = DateTimeOffset.UtcNow.AddMinutes(30)
 				});
 			}
-
 			return StatusCode(result.StatusCode, result);
 		}
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FB98.Modules.Cinemas.DataAccess.Repositories
 {
-	internal class CinemaRepository : BaseRepository<Cinema, CinemaModuleDbContext>, ICinemaRepository
+	public class CinemaRepository : BaseRepository<Cinema, CinemaModuleDbContext>, ICinemaRepository
 	{
 		public CinemaRepository(CinemaModuleDbContext context) : base(context)
 		{

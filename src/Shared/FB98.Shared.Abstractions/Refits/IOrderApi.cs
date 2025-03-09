@@ -11,9 +11,5 @@ namespace FB98.Shared.Abstractions.Refits
 		Task<ApiResult<OrderDto>> GetOrderById(Guid productId);
 	}
 
-	public class OrderDto
-	{
-		public decimal Amount { get; set; }
-		public string OrderStatus { get; set; }
-	}
+	public record OrderDto(decimal Amount, string OrderStatus);
 }

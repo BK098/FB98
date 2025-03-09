@@ -6,5 +6,6 @@ namespace FB98.Modules.Cinemas.Application.Abstractions
 	{
 		Task<bool> IsCinemaHallExisted(Guid cinemaId, string cinemaName);
 		Task<bool> AddRangeSeatsAsync(IEnumerable<CinemaHallSeat> seats);
+		Task<CinemaHall?> GetValidHallSeats(Guid? hallId, List<Guid> seatIds);
 	}
 }

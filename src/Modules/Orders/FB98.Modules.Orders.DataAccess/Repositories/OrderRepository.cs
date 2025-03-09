@@ -8,7 +8,6 @@ namespace FB98.Modules.Orders.DataAccess.Repositories
 {
 	public class OrderRepository : BaseRepository<Order, OrdersModuleDbContext>, IOrderRepository
 	{
-		/// <inheritdoc />
 		public OrderRepository(OrdersModuleDbContext context) : base(context)
 		{
 		}

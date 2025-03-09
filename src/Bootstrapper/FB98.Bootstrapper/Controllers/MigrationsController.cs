@@ -5,13 +5,15 @@ using FB98.Modules.Movies.DataAccess.Data;
 using FB98.Modules.Orders.DataAccess.Data;
 using FB98.Modules.Payments.DataAccess.Data;
 using FB98.Modules.Shows.DataAccess.Data;
+using FB98.Modules.Tickets.DataAccess.Data;
 using FB98.Modules.Warehouse.DataAccess.Data;
+using FB98.Shared.Abstractions.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FB98.Bootstrapper.Controllers
 {
 	[ApiController]
-	[Route("api/migrations")]
+	[Route("system-module/migrations")]
 	public class MigrationsController : ControllerBase
 	{
 		private readonly CatalogModuleDbContext _catalogContext;
@@ -21,6 +23,7 @@ namespace FB98.Bootstrapper.Controllers
 		private readonly OrdersModuleDbContext _ordersContext;
 		private readonly PaymentModuleDbContext _paymentContext;
 		private readonly ShowModuleDbContext _showContext;
+		private readonly TicketModuleDbContext _ticketContext;
 		private readonly WarehouseModuleDbContext _warehouseContext;
 
 		public MigrationsController(
@@ -31,7 +34,8 @@ namespace FB98.Bootstrapper.Controllers
 			CinemaModuleDbContext cinemaContext,
 			IdentityModuleDbContext identityContext,
 			MovieModuleDbContext movieContext,
-			ShowModuleDbContext showContext)
+			ShowModuleDbContext showContext,
+			TicketModuleDbContext ticketContext)
 		{
 			_catalogContext = catalogContext;
 			_ordersContext = ordersContext;
@@ -41,6 +45,7 @@ namespace FB98.Bootstrapper.Controllers
 			_identityContext = identityContext;
 			_movieContext = movieContext;
 			_showContext = showContext;
+			_ticketContext = ticketContext;
 		}
 
 		[HttpPost("seed-data")]
@@ -56,12 +61,24 @@ namespace FB98.Bootstrapper.Controllers
 				await IdentitySeeder.SeedDataAsync(_identityContext);
 				await MovieSeeder.SeedDataAsync(_movieContext);
 				await ShowSeeder.SeedDataAsync(_showContext);
-
-				return Ok(new { message = "Seed data inserted successfully!" });
+				await TicketSeeder.SeedDataAsync(_ticketContext);
+				var response = new ApiResult<object>
+				{
+					Message = "Seed data inserted successfully!",
+					StatusCode = 200,
+					IsSuccess = false
+				};
+				return StatusCode(response.StatusCode, response);
 			}
 			catch (Exception ex)
 			{
-				return StatusCode(500, new { error = ex.Message });
+				var response = new ApiResult<object>
+				{
+					Message = $"{ex}",
+					StatusCode = 500,
+					IsSuccess = false
+				};
+				return StatusCode(response.StatusCode, response);
 			}
 		}
 	}
