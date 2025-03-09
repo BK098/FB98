@@ -32,9 +32,8 @@ namespace FB98.Modules.Movies.Api.Controllers
 
 		[Authorize(Roles = "Administrator")]
 		[HttpPost]
-		public async Task<IActionResult> CreateMovie([FromForm] CreateMovieDto model)
+		public async Task<IActionResult> CreateMovie([FromBody] CreateMovieDto model)
 		{
-			model.Deserialize();
 			var request = new CreateMovieCommand(model);
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);
@@ -42,9 +41,8 @@ namespace FB98.Modules.Movies.Api.Controllers
 
 		[Authorize(Roles = "Administrator")]
 		[HttpPut("{movieId:guid}")]
-		public async Task<IActionResult> UpdateMovie(Guid movieId, [FromForm] UpdateMovieDto model)
+		public async Task<IActionResult> UpdateMovie(Guid movieId, [FromBody] UpdateMovieDto model)
 		{
-			model.Deserialize();
 			var request = new UpdateMovieCommand(movieId, model);
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);

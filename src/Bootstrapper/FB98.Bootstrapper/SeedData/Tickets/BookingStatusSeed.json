@@ -1,0 +1,22 @@
+[
+	{
+		"Id": "40a31c58-816e-4c6d-9bae-b0d250150f02",
+		"Name": "Pending"
+	},
+	{
+		"Id": "d8ac0411-54ce-41af-afa2-949a9e605720",
+		"Name": "Confirmed"
+	},
+	{
+		"Id": "10c6ca20-5e90-4c54-b62a-d56f1a433c39",
+		"Name": "CheckIn"
+	},
+	{
+		"Id": "913e283f-293c-4803-9997-0493df83d908",
+		"Name": "Abandoned"
+	},
+	{
+		"Id": "0492890c-b183-41cd-b318-592839ff50e0",
+		"Name": "Canceled"
+	}
+]

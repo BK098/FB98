@@ -15,6 +15,9 @@ namespace FB98.Modules.Cinemas.Application.HallManagement
 
 		private void Init()
 		{
+			//CreateMap<CinemaHall, CheckSeatsResponse>()
+			//	.ForMember(dest => dest.SeatIds, opt => opt.MapFrom(src => src.Seats.Select(s => s.Id).ToList()));
+
 			CreateMap<CreateHallDto, CinemaHall>();
 
 			CreateMap<CinemaHall, GetDetailHallResponse>()

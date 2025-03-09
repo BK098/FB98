@@ -4,8 +4,8 @@
 	{
 		public string Name { get; set; }
 		public int SeatsCount { get; set; }
-		public int SeatRow { get; set; }
-		public int SeatColumn { get; set; }
+		public int MaxSeatRow { get; set; }
+		public int MaxSeatColumn { get; set; }
 		public IEnumerable<GetDetailSeatDto> Seats { get; set; } = new List<GetDetailSeatDto>();
 	}
 

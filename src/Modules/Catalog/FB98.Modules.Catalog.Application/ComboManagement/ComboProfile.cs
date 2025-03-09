@@ -16,6 +16,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement
 		private void Init()
 		{
 			CreateMap<CreateComboDto, Combo>()
+				.ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.ImageUrl))
 				.ForMember(dest => dest.ComboProducts, opt => opt.MapFrom(src => src.Products));
 
 			CreateMap<CreateComboProductDto, ComboProduct>()
@@ -23,7 +24,9 @@ namespace FB98.Modules.Catalog.Application.ComboManagement
 				.ForMember(dest => dest.ComboId, opt => opt.Ignore());
 
 			CreateMap<UpdateComboDto, Combo>()
+				.ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.ImageUrl))
 				.ForMember(dest => dest.ComboProducts, opt => opt.Ignore());
+
 			CreateMap<UpdateComboProductDto, ComboProduct>()
 				.ForMember(src => src.Id, opt => opt.Ignore())
 				.ForMember(src => src.Quantity, opt => opt.MapFrom(src => src.Quantity))

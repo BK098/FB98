@@ -12,13 +12,19 @@ namespace FB98.Modules.Cinemas.DataAccess.Repositories
 		{
 		}
 
-		public override Task<CinemaHall?> GetByIdAsync(Guid? id)
+		public override async Task<CinemaHall?> GetByIdAsync(Guid? id)
 		{
-			return _context.CinemaHalls
-				.Include(x => x.Seats
-					.OrderBy(s => s.SeatPosition))
+			var hall = await _context.CinemaHalls
+				.Include(x => x.Seats)
 				.ThenInclude(x => x.SeatType)
 				.FirstOrDefaultAsync(x => x.Id == id);
+
+			if (hall != null)
+			{
+				hall.Seats = hall.Seats.OrderBy(s => s.SeatPosition).ToList();
+			}
+
+			return hall;
 		}
 
 		public async Task<bool> IsCinemaHallExisted(Guid cinemaId, string cinemaName)
@@ -30,6 +36,25 @@ namespace FB98.Modules.Cinemas.DataAccess.Repositories
 		{
 			await _context.CinemaHallSeats.AddRangeAsync(seats);
 			return true;
+		}
+
+		public async Task<CinemaHall?> GetValidHallSeats(Guid? hallId, List<Guid> seatIds)
+		{
+			return await _context.CinemaHalls
+				.Include(x => x.Seats.Where(s => seatIds.Contains(s.Id)))
+				.ThenInclude(x => x.SeatType)
+				.Select(x => new CinemaHall
+				{
+					Name = x.Name,
+					Seats = new List<CinemaHallSeat>
+					{
+						new CinemaHallSeat
+						{
+
+						}
+					}
+				})
+				.FirstOrDefaultAsync(x => x.Id == hallId);
 		}
 	}
 }

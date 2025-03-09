@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FB98.Modules.Shows.DataAccess.Repositories
 {
-	internal class FeatureTypeRepository : BaseRepository<FeatureType, ShowModuleDbContext>, IFeatureTypeRepository
+	public class FeatureTypeRepository : BaseRepository<FeatureType, ShowModuleDbContext>, IFeatureTypeRepository
 	{
 		public FeatureTypeRepository(ShowModuleDbContext context) : base(context)
 		{

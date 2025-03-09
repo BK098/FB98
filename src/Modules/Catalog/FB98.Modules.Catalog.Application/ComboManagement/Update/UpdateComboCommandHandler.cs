@@ -54,7 +54,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Update
 					return ApiResponseBuilder.Error<object>("Combo: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
-				var productIds = model.Products.Select(p => p.ProductId).ToList();
+				var productIds = model.Products!.Select(p => p.ProductId).ToList();
 				var existingProducts = await _productRepository.GetAll()
 					.Where(p => productIds.Contains(p.Id)).ToListAsync(cancellationToken);
 				if (existingProducts.Count != productIds.Count)
@@ -63,30 +63,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Update
 				}
 
 				_mapper.Map(model, combo);
-				await UpdateProducts(combo, model.Products);
-
-				if (model.ComboImage != null)
-				{
-					string? imageUrl;
-					if (combo.Image != null)
-					{
-						imageUrl = await _cloudinaryService.ReplaceImageAsync(model.ComboImage!, "catalog/combo", combo.Image);
-						combo.Image = imageUrl;
-					}
-					else
-					{
-						imageUrl = await _cloudinaryService.UploadImageAsync(model.ComboImage!, "catalog/combo");
-						combo.Image = imageUrl;
-					}
-				}
-				else
-				{
-					if (combo.Image != null)
-					{
-						_cloudinaryService.DeleteImage(combo.Image);
-						combo.Image = null;
-					}
-				}
+				await UpdateProducts(combo, model.Products!);
 
 				_unitOfWork.Entry(combo, EntityState.Modified);
 				await _unitOfWork.SaveChangesAsync();
@@ -104,9 +81,8 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Update
 			}
 		}
 
-		private async Task UpdateProducts(Combo combo, IList<UpdateComboProductDto> productDtos)
+		private async Task UpdateProducts(Combo combo, ICollection<UpdateComboProductDto> productDtos)
 		{
-			var existingProductIds = combo.ComboProducts.Select(c => c.ProductId).ToList();
 			var newProductIds = productDtos.Select(c => c.ProductId!.Value).ToList();
 
 			// Xóa sản phẩm không còn trong combo
@@ -116,7 +92,6 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Update
 				_unitOfWork.Entry(product, EntityState.Deleted);
 			}
 
-			var productMembersToAdd = newProductIds.Except(existingProductIds).ToList();
 			var allProductMembers = await _productRepository.GetByIdsAsync(newProductIds);
 
 			foreach (var productDto in productDtos)

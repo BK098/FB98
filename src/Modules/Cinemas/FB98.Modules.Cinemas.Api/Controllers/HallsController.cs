@@ -1,4 +1,5 @@
-﻿using FB98.Modules.Cinemas.Application.HallManagement.Create;
+﻿using FB98.Modules.Cinemas.Application.HallManagement.CheckSeats;
+using FB98.Modules.Cinemas.Application.HallManagement.Create;
 using FB98.Modules.Cinemas.Application.HallManagement.GetDetail;
 using FB98.Modules.Cinemas.Application.HallManagement.Update;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,14 @@ namespace FB98.Modules.Cinemas.Api.Controllers
 		public async Task<IActionResult> CreateHall([FromBody] CreateHallDto model)
 		{
 			var request = new CreateHallCommand(model);
+			var result = await _mediator.Send(request);
+			return StatusCode(result.StatusCode, result);
+		}
+
+		[HttpPost("{hallId:guid}/check-seats")]
+		public async Task<IActionResult> CreateHall(Guid hallId, [FromBody] CheckSeatsDto model)
+		{
+			var request = new CheckSeatsCommand(hallId, model);
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);
 		}

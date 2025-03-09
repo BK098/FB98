@@ -40,12 +40,15 @@ namespace FB98.Modules.Cinemas.Application.HallManagement.GetDetail
 				{
 					// Lấy danh sách ghế
 					response.Seats = hall.Seats.Select(seat => _mapper.Map<GetDetailSeatDto>(seat)).ToList();
+					response.MaxSeatColumn = hall.Seats.Max(x => x.SeatColumn);
+					response.MaxSeatRow = hall.Seats.Max(x => x.SeatRow);
 				}
 				else
 				{
 					// Không lấy danh sách ghế
 					response.Seats = new List<GetDetailSeatDto>();
 				}
+				response.SeatsCount = hall.Seats.Count;
 				return ApiResponseBuilder.Success(response, _localizedMessageService.GetLocalizedMessage("DataRetrieved"));
 			}
 			catch (Exception ex)

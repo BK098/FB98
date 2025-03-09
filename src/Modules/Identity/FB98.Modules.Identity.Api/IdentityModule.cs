@@ -25,7 +25,7 @@ namespace FB98.Modules.Identity.Api
 			services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
 			{
 				options.Password.RequireDigit = true;
-				options.Password.RequiredLength = 6;
+				options.Password.RequiredLength = 8;
 				options.Password.RequireUppercase = true;
 				options.Password.RequireNonAlphanumeric = true;
 			})
@@ -52,8 +52,8 @@ namespace FB98.Modules.Identity.Api
 					ValidateAudience = true,
 					ValidateLifetime = true,
 					ValidateIssuerSigningKey = true,
-					ValidIssuer = configuration["Jwt:Issuer"], // Giá trị phải khớp
-					ValidAudience = configuration["Jwt:Audience"], // Giá trị phải khớp
+					ValidIssuer = configuration["Jwt:Issuer"],
+					ValidAudience = configuration["Jwt:Audience"],
 					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
 				};
 				options.Events = new JwtBearerEvents
@@ -65,7 +65,6 @@ namespace FB98.Modules.Identity.Api
 					},
 					OnMessageReceived = context =>
 					{
-						// Thử lấy token trong Cookie "access_token"
 						var accessToken = context.Request.Cookies["access_token"];
 						if (!string.IsNullOrEmpty(accessToken))
 						{
@@ -79,7 +78,7 @@ namespace FB98.Modules.Identity.Api
 			services.AddSession(options =>
 			{
 				options.IdleTimeout = TimeSpan.FromMinutes(30);
-				options.Cookie.HttpOnly = false;
+				options.Cookie.HttpOnly = true;
 				options.Cookie.IsEssential = true;
 			});
 

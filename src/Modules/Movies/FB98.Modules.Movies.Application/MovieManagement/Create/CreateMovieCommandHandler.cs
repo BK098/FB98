@@ -81,25 +81,14 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Create
 				}
 
 				var movie = _mapper.Map<Movie>(model);
-				if (model.PosterImage != null)
-				{
-					postermageUrl = await _cloudinaryService.UploadImageAsync(model.PosterImage!, $"movie/{model.Title}");
-				}
 
-				if (model.HeaderImage != null)
-				{
-					headerImageUrl = await _cloudinaryService.UploadImageAsync(model.HeaderImage!, $"movie/{model.Title}");
-				}
-
-				movie.PosterImage = postermageUrl;
-				movie.HeaderImage = headerImageUrl;
 				await _movieRepository.CreateAsync(movie);
 				await _unitOfWork.SaveChangesAsync();
 				return ApiResponseBuilder.Success<object>(movie.Id, _localizedMessageService.GetLocalizedMessage("Created"), 201);
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Error occurred while create movie");
+				_logger.LogError(ex, "Error occurred while creating movie");
 				return ApiResponseBuilder.Error<object>("An unexpected error occurred", 500);
 			}
 		}
