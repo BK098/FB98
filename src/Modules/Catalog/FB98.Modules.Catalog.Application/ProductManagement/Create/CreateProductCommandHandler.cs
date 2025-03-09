@@ -8,15 +8,15 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Create
 {
 	internal sealed class CreateProductCommandHandler : ICommandHandler<CreateProductCommand, ApiResult<object>>
 	{
-		private readonly ILogger<CreateProductCommandHandler> _logger;
-		private readonly IValidator<CreateProductDto> _validator;
-		private readonly IProductRepository _productRepository;
+		private readonly IBus _bus;
 		private readonly ICategoryRepository _categoryRepository;
-		private readonly IMapper _mapper;
-		private readonly IUnitOfWork _unitOfWork;
 		private readonly ICloudinaryService _cloudinaryService;
 		private readonly ILocalizedMessageService _localizedMessageService;
-		private readonly IBus _bus;
+		private readonly ILogger<CreateProductCommandHandler> _logger;
+		private readonly IMapper _mapper;
+		private readonly IProductRepository _productRepository;
+		private readonly IUnitOfWork _unitOfWork;
+		private readonly IValidator<CreateProductDto> _validator;
 
 		public CreateProductCommandHandler(
 			ILogger<CreateProductCommandHandler> logger,
@@ -53,25 +53,21 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Create
 
 				if (await _categoryRepository.GetByIdAsync(model.CategoryId) == null)
 				{
-					return ApiResponseBuilder.Error<object>("CategoryId: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
+					return ApiResponseBuilder.Error<object>("Category: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
+
 				var product = _mapper.Map<Product>(model);
-				if (model.ProductImage is not null)
-				{
-					string? imageUrl = await _cloudinaryService.UploadImageAsync(model.ProductImage!, "catalog/product");
-					product.Image = imageUrl;
-				}
 
 				await _productRepository.CreateAsync(product);
 				await _unitOfWork.SaveChangesAsync();
 				await _bus.Publish(new ProductCreatedEvent(product.Id, model.StockQuantity!.Value, model.StockIsLimited!.Value), cancellationToken);
 
-				return ApiResponseBuilder.Success<object>(product.Id, _localizedMessageService.GetLocalizedMessage("Created"), statusCode: 201);
+				return ApiResponseBuilder.Success<object>(product.Id, _localizedMessageService.GetLocalizedMessage("Created"), 201);
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "Error occurred while create product");
-				return ApiResponseBuilder.Error<object>("An unexpected error occurred", statusCode: 500);
+				return ApiResponseBuilder.Error<object>("An unexpected error occurred", 500);
 			}
 		}
 	}

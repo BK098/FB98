@@ -9,12 +9,11 @@
         <DockerfileContext>..\..\..</DockerfileContext>
         <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
         <Configurations>Debug;Release;IdentityModule;CatalogModule</Configurations>
-        <AWSProjectType>Lambda</AWSProjectType>
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Remove="SeedData\CategorySeed.json" />
-      <Content Remove="SeedData\ProductSeed.json" />
+        <Content Remove="SeedData\CategorySeed.json" />
+        <Content Remove="SeedData\ProductSeed.json" />
     </ItemGroup>
 
     <ItemGroup>
@@ -36,7 +35,8 @@
         <ProjectReference Include="..\..\Modules\Orders\FB98.Modules.Orders.Api\FB98.Modules.Orders.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Payments\FB98.Modules.Payments.Api\FB98.Modules.Payments.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Shows\FB98.Modules.Shows.Api\FB98.Modules.Shows.Api.csproj" />
-        <ProjectReference Include="..\..\Modules\Systems\FB98.Module.Systems.Api\FB98.Module.Systems.Api.csproj" />
+        <ProjectReference Include="..\..\Modules\Systems\FB98.Modules.Systems.Api\FB98.Modules.Systems.Api.csproj" />
+        <ProjectReference Include="..\..\Modules\Tickets\FB98.Modules.Tickets.Api\FB98.Modules.Tickets.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Warehouse\FB98.Modules.Warehouse.Api\FB98.Modules.Warehouse.Api.csproj" />
     </ItemGroup>
 
@@ -46,10 +46,14 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="SeedData\Catalog\CategorySeed.json" />
-      <None Include="SeedData\Catalog\ProductSeed.json" />
+        <None Include="SeedData\Catalog\CategorySeed.json" />
+        <None Include="SeedData\Catalog\ProductSeed.json" />
     </ItemGroup>
 
-    <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+    <ProjectExtensions>
+        <VisualStudio>
+            <UserProperties />
+        </VisualStudio>
+    </ProjectExtensions>
 
 </Project>

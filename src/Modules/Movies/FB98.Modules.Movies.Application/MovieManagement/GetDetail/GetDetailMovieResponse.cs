@@ -15,6 +15,7 @@ namespace FB98.Modules.Movies.Application.MovieManagement.GetDetail
 		public string? PosterImage { get; set; }
 		public string? Description { get; set; }
 		public string? Language { get; set; }
+		public string? Country { get; set; }
 		public IEnumerable<GetDetailMovieDirectorResponse> Directors { get; set; } = new List<GetDetailMovieDirectorResponse>();
 		public IEnumerable<GetDetailMovieGenreResponse> Genres { get; set; } = new List<GetDetailMovieGenreResponse>();
 		public IEnumerable<GetDetailMovieCastResponse> Casts { get; set; } = new List<GetDetailMovieCastResponse>();

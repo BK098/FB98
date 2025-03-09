@@ -17,6 +17,8 @@ namespace FB98.Modules.Movies.Application.MovieManagement
 		private void Init()
 		{
 			CreateMap<CreateMovieDto, Movie>()
+				.ForMember(dest => dest.PosterImage, opt => opt.MapFrom(src => src.PosterImageUrl))
+				.ForMember(dest => dest.HeaderImage, opt => opt.MapFrom(src => src.HeaderImageUrl))
 				.ForMember(dest => dest.Casts, opt => opt.MapFrom(src => src.Casts))
 				.ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.Genres))
 				.ForMember(dest => dest.Directors, opt => opt.MapFrom(src => src.Directors));
@@ -37,6 +39,8 @@ namespace FB98.Modules.Movies.Application.MovieManagement
 				.ForMember(dest => dest.MovieId, opt => opt.Ignore());
 
 			CreateMap<UpdateMovieDto, Movie>()
+				.ForMember(dest => dest.PosterImage, opt => opt.MapFrom(src => src.PosterImageUrl))
+				.ForMember(dest => dest.HeaderImage, opt => opt.MapFrom(src => src.HeaderImageUrl))
 				.ForMember(dest => dest.Casts, opt => opt.Ignore())
 				.ForMember(dest => dest.Genres, opt => opt.Ignore())
 				.ForMember(dest => dest.Directors, opt => opt.Ignore());

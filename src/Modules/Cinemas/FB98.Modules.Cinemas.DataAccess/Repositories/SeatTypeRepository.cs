@@ -5,7 +5,7 @@ using FB98.Shared.Infrastructure.Repositpries;
 
 namespace FB98.Modules.Cinemas.DataAccess.Repositories
 {
-	internal class SeatTypeRepository : BaseRepository<SeatType, CinemaModuleDbContext>, ISeatTypeRepository
+	public class SeatTypeRepository : BaseRepository<SeatType, CinemaModuleDbContext>, ISeatTypeRepository
 	{
 		public SeatTypeRepository(CinemaModuleDbContext context) : base(context)
 		{

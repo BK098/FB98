@@ -112,52 +112,6 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Update
 				await UpdateDirectors(movie, model.Directors);
 				await UpdateCasts(movie, model.Casts);
 
-				if (movie.PosterImage != null)
-				{
-					string? posterImageUrl;
-					if (movie.PosterImage != null)
-					{
-						posterImageUrl = await _cloudinaryService.ReplaceImageAsync(model.PosterImage!, $"movie/{model.Title}");
-						movie.PosterImage = posterImageUrl;
-					}
-					else
-					{
-						posterImageUrl = await _cloudinaryService.UploadImageAsync(model.PosterImage!, "movie/{model.Title}");
-						movie.PosterImage = posterImageUrl;
-					}
-				}
-				else
-				{
-					if (movie.PosterImage != null)
-					{
-						_cloudinaryService.DeleteImage(movie.PosterImage);
-						movie.PosterImage = null;
-					}
-				}
-
-				if (movie.HeaderImage != null)
-				{
-					string? headerImageUrl;
-					if (movie.HeaderImage != null)
-					{
-						headerImageUrl = await _cloudinaryService.ReplaceImageAsync(model.HeaderImage!, $"movie/{model.Title}");
-						movie.HeaderImage = headerImageUrl;
-					}
-					else
-					{
-						headerImageUrl = await _cloudinaryService.UploadImageAsync(model.HeaderImage!, "movie/{model.Title}");
-						movie.HeaderImage = headerImageUrl;
-					}
-				}
-				else
-				{
-					if (movie.HeaderImage != null)
-					{
-						_cloudinaryService.DeleteImage(movie.HeaderImage);
-						movie.HeaderImage = null;
-					}
-				}
-
 				_unitOfWork.Entry(movie, EntityState.Modified);
 				await _unitOfWork.SaveChangesAsync();
 
@@ -193,9 +147,8 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Update
 			}
 		}
 
-		private async Task UpdateGenres(Movie movie, IList<UpdateMovieGenreDto> genreDtos)
+		private async Task UpdateGenres(Movie movie, ICollection<UpdateMovieGenreDto> genreDtos)
 		{
-			var existingGenreIds = movie.Genres.Select(g => g.GenreId).ToList();
 			var newGenreIds = genreDtos.Select(g => g.Id!.Value).ToList();
 
 			var genresToRemove = movie.Genres.Where(g => !newGenreIds.Contains(g.GenreId)).ToList();
@@ -204,17 +157,23 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Update
 				_unitOfWork.Entry(genre, EntityState.Deleted);
 			}
 
-			var genresToAdd = newGenreIds.Except(existingGenreIds).ToList();
-			var allGenres = await _genreRepository.GetByIdsAsync(genresToAdd);
+			var allGenres = await _genreRepository.GetByIdsAsync(newGenreIds);
 
-			foreach (var genreId in genresToAdd)
+			foreach (var genreDto in genreDtos)
 			{
-				var genre = allGenres.FirstOrDefault(g => g.Id == genreId);
-				if (genre != null)
+				var genreId = genreDto.Id!.Value;
+				var existingGenre = movie.Genres.FirstOrDefault(x => x.GenreId == genreId);
+
+				var genre = allGenres.FirstOrDefault(cm => cm.Id == genreId);
+				if (existingGenre != null)
+				{
+					_unitOfWork.Entry(existingGenre, EntityState.Modified);
+				}
+				else
 				{
 					var newMovieGenre = new MovieGenre
 					{
-						GenreId = genre.Id,
+						GenreId = genre!.Id,
 						MovieId = movie.Id
 					};
 					_unitOfWork.Entry(newMovieGenre, EntityState.Added);
@@ -222,9 +181,8 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Update
 			}
 		}
 
-		private async Task UpdateCasts(Movie movie, IList<UpdateMovieCastDto> castDtos)
+		private async Task UpdateCasts(Movie movie, ICollection<UpdateMovieCastDto> castDtos)
 		{
-			var existingCastIds = movie.Casts.Select(c => c.CastId).ToList();
 			var newCastIds = castDtos.Select(c => c.Id!.Value).ToList();
 
 			var castToRemove = movie.Casts.Where(c => !newCastIds.Contains(c.CastId)).ToList();
@@ -233,49 +191,63 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Update
 				_unitOfWork.Entry(cast, EntityState.Deleted);
 			}
 
-			var castMembersToAdd = newCastIds.Except(existingCastIds).ToList();
-			var allCastMembers = await _castRepository.GetByIdsAsync(castMembersToAdd);
+			var allCasts = await _castRepository.GetByIdsAsync(newCastIds);
 
-			foreach (var castId in castMembersToAdd)
+			foreach (var castDto in castDtos)
 			{
-				var castMember = allCastMembers.FirstOrDefault(cm => cm.Id == castId);
-				if (castMember != null)
+				var castId = castDto.Id!.Value;
+				var existingGenre = movie.Genres.FirstOrDefault(x => x.GenreId == castId);
+
+				var cast = allCasts.FirstOrDefault(cm => cm.Id == castId);
+				if (existingGenre != null)
 				{
-					var newMovieCastMember = new MovieCast
+					_unitOfWork.Entry(existingGenre, EntityState.Modified);
+				}
+				else
+				{
+					var newCast = new MovieCast
 					{
-						CastId = castMember.Id,
+						CastId = cast!.Id,
 						MovieId = movie.Id
 					};
-					_unitOfWork.Entry(newMovieCastMember, EntityState.Added);
+					_unitOfWork.Entry(newCast, EntityState.Added);
 				}
 			}
 		}
 
-		private async Task UpdateDirectors(Movie movie, IList<UpdateMovieDirectorDto> castDtos)
+		private async Task UpdateDirectors(Movie movie, ICollection<UpdateMovieDirectorDto> castDtos)
 		{
-			var existingDirectorIds = movie.Directors.Select(c => c.DirectorId).ToList();
 			var newDirectorIds = castDtos.Select(c => c.Id!.Value).ToList();
 
-			var castToRemove = movie.Directors.Where(c => !newDirectorIds.Contains(c.DirectorId)).ToList();
-			foreach (var cast in castToRemove)
+			var directorToRemove = movie.Directors.Where(c => !newDirectorIds.Contains(c.DirectorId)).ToList();
+			foreach (var director in directorToRemove)
 			{
-				_unitOfWork.Entry(cast, EntityState.Deleted);
+				_unitOfWork.Entry(director, EntityState.Deleted);
 			}
 
-			var castMembersToAdd = newDirectorIds.Except(existingDirectorIds).ToList();
-			var allDirectorMembers = await _castRepository.GetByIdsAsync(castMembersToAdd);
+			var allDirectors = await _directorRepository.GetByIdsAsync(newDirectorIds);
 
-			foreach (var castId in castMembersToAdd)
+			foreach (var directorDto in castDtos)
 			{
-				var castMember = allDirectorMembers.FirstOrDefault(cm => cm.Id == castId);
-				if (castMember != null)
+				var directorId = directorDto.Id!.Value;
+				var existingDirector = movie.Directors.FirstOrDefault(x => x.DirectorId == directorId);
+
+				if (existingDirector != null)
 				{
-					var newMovieDirectorMember = new MovieDirector
+					_unitOfWork.Entry(existingDirector, EntityState.Modified);
+				}
+				else
+				{
+					var director = allDirectors.FirstOrDefault(p => p.Id == directorId);
+					if (director != null)
 					{
-						DirectorId = castMember.Id,
-						MovieId = movie.Id
-					};
-					_unitOfWork.Entry(newMovieDirectorMember, EntityState.Added);
+						var newComboProduct = new MovieDirector
+						{
+							MovieId = movie.Id,
+							DirectorId = director.Id
+						};
+						_unitOfWork.Entry(newComboProduct, EntityState.Added);
+					}
 				}
 			}
 		}

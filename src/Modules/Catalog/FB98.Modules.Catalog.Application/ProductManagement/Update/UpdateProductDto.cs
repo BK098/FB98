@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace FB98.Modules.Catalog.Application.ProductManagement.Update
+﻿namespace FB98.Modules.Catalog.Application.ProductManagement.Update
 {
 	public class UpdateProductDto
 	{
@@ -10,6 +8,6 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Update
 		public Guid? CategoryId { get; set; }
 		public bool? IsEnabled { get; set; }
 		public int? Quantity { get; set; } = 0;
-		public IFormFile? ProductImage { get; set; }
+		public string? ImageUrl { get; set; }
 	}
 }

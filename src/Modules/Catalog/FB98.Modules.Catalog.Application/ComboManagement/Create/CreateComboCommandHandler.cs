@@ -48,7 +48,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Create
 					return ApiResponseBuilder.ValidationError<object>(validationResult.Errors);
 				}
 
-				var productIds = model.Products.Select(p => p.ProductId).ToList();
+				var productIds = model.Products!.Select(p => p.ProductId).ToList();
 				var existingProducts = await _productRepository.GetAll()
 					.Where(p => productIds.Contains(p.Id)).ToListAsync(cancellationToken);
 
@@ -58,11 +58,6 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Create
 				}
 
 				var combo = _mapper.Map<Combo>(model);
-				if (model.ComboImage is not null)
-				{
-					imageUrl = await _cloudinaryService.UploadImageAsync(model.ComboImage!, "catalog/combo");
-					combo.Image = imageUrl;
-				}
 
 				await _comboRepository.CreateAsync(combo);
 				await _unitOfWork.SaveChangesAsync();
@@ -71,12 +66,12 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.Create
 			}
 			catch (Exception ex)
 			{
-				if (model.ComboImage is not null)
+				if (model.ImageUrl is not null)
 				{
 					_cloudinaryService.DeleteImage(imageUrl);
 				}
 
-				_logger.LogError(ex, "Error occurred while get create combo");
+				_logger.LogError(ex, "Error occurred while create combo");
 				return ApiResponseBuilder.Error<object>("An unexpected error occurred", 500);
 			}
 		}

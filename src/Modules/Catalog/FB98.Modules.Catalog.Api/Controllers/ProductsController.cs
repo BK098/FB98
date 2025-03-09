@@ -34,7 +34,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 
 		[Authorize(Roles = "Administrator")]
 		[HttpPost]
-		public async Task<IActionResult> CreateProduct([FromForm] CreateProductDto model)
+		public async Task<IActionResult> CreateProduct([FromBody] CreateProductDto model)
 		{
 			var request = new CreateProductCommand(model);
 			var result = await _mediator.Send(request);
@@ -52,7 +52,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 
 		[Authorize(Roles = "Administrator")]
 		[HttpPut("{productId:guid}")]
-		public async Task<IActionResult> UpdateProduct(Guid productId, [FromForm] UpdateProductDto model)
+		public async Task<IActionResult> UpdateProduct(Guid productId, [FromBody] UpdateProductDto model)
 		{
 			var request = new UpdateProductCommand(productId, model);
 			var result = await _mediator.Send(request);

@@ -11,11 +11,5 @@ namespace FB98.Shared.Abstractions.Refits
 		Task<ApiResult<MovieDto>> GetMovieById(Guid movieId);
 	}
 
-	public class MovieDto
-	{
-		public Guid Id { get; set; }
-		public string Title { get; set; }
-		public int RuntimeMinutes { get; set; }
-		public string? PosterImage { get; set; }
-	}
+	public record MovieDto(string Title, int RuntimeMinutes, string? PosterImage);
 }
