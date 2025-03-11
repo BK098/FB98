@@ -5,6 +5,7 @@ using FB98.Modules.Identity.Application.Authentication.RefreshToken;
 using FB98.Modules.Identity.Application.Authentication.Register;
 using FB98.Modules.Identity.Application.Authentication.ResetPassword;
 using FB98.Modules.Identity.Application.Authentication.RevokeToken;
+using FB98.Shared.Abstractions.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -31,7 +32,7 @@ namespace FB98.Modules.Identity.Api.Controllers
 					HttpOnly = true,
 					Secure = false,
 					SameSite = SameSiteMode.Strict,
-					Expires = DateTimeOffset.UtcNow.AddMinutes(30)
+					Expires = DateTimeOffset.UtcNow.AddMinutes(15)
 				});
 				Response.Cookies.Append("refresh_token", result.Data!.RefreshToken, new CookieOptions
 				{
@@ -93,13 +94,13 @@ namespace FB98.Modules.Identity.Api.Controllers
 		[HttpPost("refresh-token")]
 		public async Task<IActionResult> RefreshToken()
 		{
-			var model = new RefreshTokenDto
+			var refreshToken = Request.Cookies["refresh_token"];
+			if (refreshToken == null)
 			{
-				Token = Request.Cookies["access_token"],
-				RefreshToken = Request.Cookies["refresh_token"]
-			};
+				return StatusCode(400, ApiResponseBuilder.Error<string>("InvalidToken"));
+			}
 
-			var request = new RefreshTokenCommand(model);
+			var request = new RefreshTokenCommand(refreshToken);
 			var result = await _mediator.Send(request);
 			if (result.IsSuccess)
 			{
@@ -108,9 +109,10 @@ namespace FB98.Modules.Identity.Api.Controllers
 					HttpOnly = true,
 					Secure = false,
 					SameSite = SameSiteMode.Strict,
-					Expires = DateTimeOffset.UtcNow.AddMinutes(30)
+					Expires = DateTimeOffset.UtcNow.AddMinutes(15)
 				});
 			}
+
 			return StatusCode(result.StatusCode, result);
 		}
 

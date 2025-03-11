@@ -1,5 +1,6 @@
 ﻿using FB98.Modules.Payments.Application.Abstractions;
 using FB98.Modules.Payments.Domain.Entities;
+using FB98.Shared.Abstractions.StatusConstants;
 using FB98.Shared.Infrastructure.Payments.VnPay;
 
 namespace FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment

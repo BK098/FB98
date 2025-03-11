@@ -1,6 +1,7 @@
 ﻿using FB98.Modules.Payments.Application.Abstractions;
 using FB98.Modules.Payments.Domain.Entities;
 using FB98.Shared.Abstractions.Events;
+using FB98.Shared.Abstractions.StatusConstants;
 using MassTransit;
 
 namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment

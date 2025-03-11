@@ -1,5 +1,6 @@
 ﻿using FB98.Modules.Orders.Application.Abstractions;
 using FB98.Modules.Orders.Domain.Entities;
+using FB98.Shared.Abstractions.StatusConstants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FB98.Modules.Cinemas.Application.Abstractions;
 using FB98.Modules.Cinemas.Domain.Entities;
+using FB98.Shared.Abstractions.StatusConstants;
 
 namespace FB98.Modules.Cinemas.Application.HallManagement.Create
 {

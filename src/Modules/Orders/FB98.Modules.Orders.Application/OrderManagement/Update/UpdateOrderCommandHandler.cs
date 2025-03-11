@@ -1,5 +1,6 @@
 ﻿using FB98.Modules.Orders.Application.Abstractions;
 using FB98.Modules.Orders.Domain.Entities;
+using FB98.Shared.Abstractions.StatusConstants;
 using Microsoft.EntityFrameworkCore;
 
 namespace FB98.Modules.Orders.Application.OrderManagement.Update

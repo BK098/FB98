@@ -1,6 +1,6 @@
-﻿namespace FB98.Modules.Tickets.Application.BookingManagement.Create
+﻿namespace FB98.Modules.Tickets.Application.BookingManagement.SeatReservation
 {
-	public class CreateBookingDto
+	public class SeatReservationDto
 	{
 		public Guid? CustomerId { get; set; }
 		public Guid ShowId { get; set; }

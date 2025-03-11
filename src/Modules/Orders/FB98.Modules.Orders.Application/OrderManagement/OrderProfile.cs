@@ -2,6 +2,7 @@
 using FB98.Modules.Orders.Application.OrderManagement.Create;
 using FB98.Modules.Orders.Application.OrderManagement.GetOrderStatusHistory;
 using FB98.Modules.Orders.Domain.Entities;
+using FB98.Shared.Abstractions.StatusConstants;
 
 namespace FB98.Modules.Orders.Application.OrderManagement
 {

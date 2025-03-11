@@ -2,7 +2,6 @@ using FB98.Shared.Infrastructure.Api;
 using FB98.Shared.Infrastructure.Cloudinaries;
 using FB98.Shared.Infrastructure.Email;
 using FB98.Shared.Infrastructure.Localization;
-using FB98.Shared.Infrastructure.Middlewares;
 using FB98.Shared.Infrastructure.Payments.VnPay;
 using FB98.Shared.Infrastructure.Postgres;
 using FB98.Shared.Infrastructure.RabbitMq;
@@ -40,8 +39,6 @@ namespace FB98.Shared.Infrastructure
 			services.AddTransient<IEmailSender, EmailSender>();
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddSingleton<ILocalizedMessageService, LocalizedMessageService>();
-			services.AddSingleton<ErrorHandlerMiddleware>();
-			services.AddSingleton<RequestTimingMiddleware>();
 			services.AddPostgres();
 			services.AddCloudinary();
 			services.AddVnPay();
@@ -53,9 +50,6 @@ namespace FB98.Shared.Infrastructure
 		//Language for localization
 		public static IApplicationBuilder UseInfrastructure(this IApplicationBuilder app)
 		{
-			app.UseMiddleware<ErrorHandlerMiddleware>();
-			app.UseMiddleware<RequestTimingMiddleware>();
-
 			var supportedCultures = new[]
 			{
 				new CultureInfo("en"),

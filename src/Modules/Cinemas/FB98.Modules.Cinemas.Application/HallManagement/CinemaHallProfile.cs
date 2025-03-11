@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FB98.Modules.Cinemas.Application.HallManagement.CheckSeats;
 using FB98.Modules.Cinemas.Application.HallManagement.Create;
 using FB98.Modules.Cinemas.Application.HallManagement.GetDetail;
 using FB98.Modules.Cinemas.Application.HallManagement.Update;
@@ -15,8 +16,14 @@ namespace FB98.Modules.Cinemas.Application.HallManagement
 
 		private void Init()
 		{
-			//CreateMap<CinemaHall, CheckSeatsResponse>()
-			//	.ForMember(dest => dest.SeatIds, opt => opt.MapFrom(src => src.Seats.Select(s => s.Id).ToList()));
+			CreateMap<CinemaHall, CheckSeatsResponse>()
+				.ForMember(dest => dest.SeatIds, opt => opt.MapFrom(src => src.Seats.Select(s => new Dictionary<Guid, Guid>
+				{
+					{
+						s.Id, s.SeatTypeId
+					}
+				}).ToList()));
+
 
 			CreateMap<CreateHallDto, CinemaHall>();
 
