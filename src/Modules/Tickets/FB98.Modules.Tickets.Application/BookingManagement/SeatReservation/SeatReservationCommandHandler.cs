@@ -4,9 +4,9 @@ using FB98.Modules.Tickets.Domain.Entities;
 using FB98.Shared.Abstractions.Refits;
 using Refit;
 
-namespace FB98.Modules.Tickets.Application.BookingManagement.Create
+namespace FB98.Modules.Tickets.Application.BookingManagement.SeatReservation
 {
-	internal sealed class CreateBookingCommandHandler : ICommandHandler<CreateBookingCommand, ApiResult<object>>
+	internal sealed class SeatReservationCommandHandler : ICommandHandler<SeatReservationCommand, ApiResult<object>>
 	{
 		private readonly IBookingRepository _bookingRepository;
 
@@ -15,23 +15,25 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.Create
 		//private readonly IBus _bus;
 		private readonly ICinemaApi _cinemaApi;
 		private readonly ILocalizedMessageService _localizedMessageService;
-		private readonly ILogger<CreateBookingCommandHandler> _logger;
+		private readonly ILogger<SeatReservationCommandHandler> _logger;
 		private readonly IMapper _mapper;
+		private readonly ISeatPriceRuleRepository _seatPriceRuleRepository;
 		private readonly IShowApi _showApi;
 		private readonly IUnitOfWork _unitOfWork;
-		private readonly IValidator<CreateBookingDto> _validator;
+		private readonly IValidator<SeatReservationDto> _validator;
 
-		public CreateBookingCommandHandler(
+		public SeatReservationCommandHandler(
 			IBookingRepository bookingRepository,
 			//IBus bus,
 			ILocalizedMessageService localizedMessageService,
-			ILogger<CreateBookingCommandHandler> logger,
+			ILogger<SeatReservationCommandHandler> logger,
 			IMapper mapper,
 			IUnitOfWork unitOfWork,
-			IValidator<CreateBookingDto> validator,
+			IValidator<SeatReservationDto> validator,
 			IShowApi showApi,
 			ICinemaApi cinemaApi,
-			IBookingSeatLockRepository bookingSeatRepository)
+			IBookingSeatLockRepository bookingSeatRepository,
+			ISeatPriceRuleRepository seatPriceRuleRepository)
 		{
 			_bookingRepository = bookingRepository;
 			//_bus = bus;
@@ -43,9 +45,10 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.Create
 			_showApi = showApi;
 			_cinemaApi = cinemaApi;
 			_bookingSeatLockRepository = bookingSeatRepository;
+			_seatPriceRuleRepository = seatPriceRuleRepository;
 		}
 
-		public async Task<ApiResult<object>> Handle(CreateBookingCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResult<object>> Handle(SeatReservationCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			try
@@ -97,12 +100,27 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.Create
 				{
 					return ApiResponseBuilder.Error<object>("Some seats are not available");
 				}
+				decimal totalPrice = 0;
+				foreach (var seatId in model.SeatIds)
+				{
+					// Lấy SeatTypeId từ hallSeats
+					var seatTypeId = hallSeats.FirstOrDefault(seat => seat.ContainsKey(seatId))?.GetValueOrDefault(seatId);
+
+					if (seatTypeId == null)
+					{
+						return ApiResponseBuilder.Error<object>($"Cannot find seat type for seat {seatId}");
+					}
+
+					//decimal? seatPrice = await _seatPriceRuleRepository.GetSeatPriceByTypeAndDate(seatTypeId.Value, showResponse.Data!.StartTime);
+					//if (seatPrice == null)
+					//{
+					//	return ApiResponseBuilder.Error<object>($"Cannot determine price for seat {seatId}");
+					//}
+
+					//totalPrice += seatPrice.Value;
+				}
 
 				var booking = _mapper.Map<Booking>(model);
-				foreach (var seat in hallSeats)
-				{
-
-				}
 				await _bookingRepository.CreateAsync(booking);
 				await _unitOfWork.SaveChangesAsync();
 

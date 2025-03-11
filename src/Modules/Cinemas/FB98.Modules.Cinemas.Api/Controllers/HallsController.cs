@@ -2,6 +2,7 @@
 using FB98.Modules.Cinemas.Application.HallManagement.Create;
 using FB98.Modules.Cinemas.Application.HallManagement.GetDetail;
 using FB98.Modules.Cinemas.Application.HallManagement.Update;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FB98.Modules.Cinemas.Api.Controllers
@@ -28,6 +29,7 @@ namespace FB98.Modules.Cinemas.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
+		[Authorize(Roles = "Administrator")]
 		[HttpPost]
 		public async Task<IActionResult> CreateHall([FromBody] CreateHallDto model)
 		{
@@ -36,6 +38,7 @@ namespace FB98.Modules.Cinemas.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
+		[Authorize]
 		[HttpPost("{hallId:guid}/check-seats")]
 		public async Task<IActionResult> CreateHall(Guid hallId, [FromBody] CheckSeatsDto model)
 		{
@@ -44,6 +47,7 @@ namespace FB98.Modules.Cinemas.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
+		[Authorize(Roles = "Administrator")]
 		[HttpPut("{hallId:guid}")]
 		public async Task<IActionResult> UpdateHall(Guid hallId, [FromBody] UpdateHallDto model)
 		{

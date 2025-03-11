@@ -41,20 +41,9 @@ namespace FB98.Modules.Cinemas.DataAccess.Repositories
 		public async Task<CinemaHall?> GetValidHallSeats(Guid? hallId, List<Guid> seatIds)
 		{
 			return await _context.CinemaHalls
-				.Include(x => x.Seats.Where(s => seatIds.Contains(s.Id)))
-				.ThenInclude(x => x.SeatType)
-				.Select(x => new CinemaHall
-				{
-					Name = x.Name,
-					Seats = new List<CinemaHallSeat>
-					{
-						new CinemaHallSeat
-						{
-
-						}
-					}
-				})
-				.FirstOrDefaultAsync(x => x.Id == hallId);
+				.AsNoTracking()
+				.Include(h => h.Seats.Where(s => seatIds.Contains(s.Id)))
+				.FirstOrDefaultAsync(h => h.Id == hallId);
 		}
 	}
 }

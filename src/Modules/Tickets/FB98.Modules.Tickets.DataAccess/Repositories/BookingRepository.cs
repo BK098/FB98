@@ -1,6 +1,7 @@
 ﻿using FB98.Modules.Tickets.Application.Abstractions;
 using FB98.Modules.Tickets.DataAccess.Data;
 using FB98.Modules.Tickets.Domain.Entities;
+using FB98.Shared.Abstractions.StatusConstants;
 using FB98.Shared.Infrastructure.Repositpries;
 using Microsoft.EntityFrameworkCore;
 

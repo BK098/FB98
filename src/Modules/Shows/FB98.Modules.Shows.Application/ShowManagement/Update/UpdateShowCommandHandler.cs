@@ -2,6 +2,7 @@
 using FB98.Modules.Shows.Application.Abstractions;
 using FB98.Modules.Shows.Domain.Entities;
 using FB98.Shared.Abstractions.Refits;
+using FB98.Shared.Abstractions.StatusConstants;
 using Microsoft.EntityFrameworkCore;
 using Refit;
 

@@ -1,6 +1,7 @@
 ﻿using FB98.Modules.Orders.Application.Abstractions;
 using FB98.Modules.Orders.Domain.Entities;
 using FB98.Shared.Abstractions.Events;
+using FB98.Shared.Abstractions.StatusConstants;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 

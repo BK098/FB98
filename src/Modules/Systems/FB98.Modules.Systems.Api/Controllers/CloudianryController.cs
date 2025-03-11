@@ -15,7 +15,7 @@ namespace FB98.Modules.Systems.Api.Controllers
 		}
 
 		[HttpPost("upload")]
-		public async Task<IActionResult> UploadImage(UploadImageDto model)
+		public async Task<IActionResult> UploadImage([FromForm] UploadImageDto model)
 		{
 			if (model.file == null || model.file.Length == 0)
 			{
@@ -33,7 +33,7 @@ namespace FB98.Modules.Systems.Api.Controllers
 		}
 
 		[HttpPut("replace")]
-		public async Task<IActionResult> ReplaceImage(ReplaceImageDto model)
+		public async Task<IActionResult> ReplaceImage([FromForm] ReplaceImageDto model)
 		{
 			var imageUrl = await _cloudinaryService.ReplaceImageAsync(model.newImage, model.folder, model.existingImageUrl);
 

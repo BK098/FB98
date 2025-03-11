@@ -1,4 +1,5 @@
 ﻿using FB98.Shared.Abstractions.Entities;
+using FB98.Shared.Abstractions.StatusConstants;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FB98.Modules.Payments.Domain.Entities

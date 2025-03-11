@@ -3,6 +3,7 @@ using FB98.Modules.Cinemas.Application.CinemaManagement.GetAll;
 using FB98.Modules.Cinemas.Application.CinemaManagement.GetDetail;
 using FB98.Modules.Cinemas.Application.CinemaManagement.Update;
 using FB98.Shared.Abstractions.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FB98.Modules.Cinemas.Api.Controllers
@@ -29,7 +30,7 @@ namespace FB98.Modules.Cinemas.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		//[Authorize(Roles = "Administrator")]
+		[Authorize(Roles = "Administrator")]
 		[HttpPost]
 		public async Task<IActionResult> CreateCinema([FromBody] CreateCinemaDto model)
 		{
@@ -38,6 +39,7 @@ namespace FB98.Modules.Cinemas.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
+		[Authorize(Roles = "Administrator")]
 		[HttpPut("{cinemaId:guid}")]
 		public async Task<IActionResult> UpdateCinema(Guid cinemaId, [FromBody] UpdateCinemaDto model)
 		{
