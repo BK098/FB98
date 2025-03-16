@@ -25,16 +25,24 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.Events
 		{
 			try
 			{
-				var booking = await _bookingRepository.GetByIdAsync(context.Message.BookingId);
+				var bookingId = context.Message.BookingId;
+				if (bookingId == null)
+				{
+					_logger.LogInformation("BookingId is null, skipping order processing.");
+					await context.ConsumeCompleted;
+					return;
+				}
+
+				var booking = await _bookingRepository.GetByIdAsync(bookingId);
 				if (booking == null)
 				{
-					_logger.LogWarning("Booking not found for ID: {BookingId}", context.Message.BookingId);
+					_logger.LogWarning("Booking not found for ID: {BookingId}", bookingId);
 					return;
 				}
 
 				if (booking.StatusId != BookingStatusConstants.Pending)
 				{
-					_logger.LogWarning("Booking status is not 'Pending' for ID: {BookingId}", context.Message.BookingId);
+					_logger.LogWarning("Booking status is not 'Pending' for ID: {BookingId}", bookingId);
 					return;
 				}
 
@@ -47,7 +55,7 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.Events
 					seat.IsReserved = true;
 				}
 
-				await _bookingSeatLockRepository.ReleaseSeatsAfterSuccessfulPayment(context.Message.BookingId!.Value);
+				await _bookingSeatLockRepository.ReleaseSeatsAfterSuccessfulPayment(bookingId!.Value);
 
 				_logger.LogInformation("Booking and seats status updated to 'Confirmed' and seat locks removed for ID: {BookingId}", context.Message.BookingId);
 			}

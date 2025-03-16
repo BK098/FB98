@@ -300,4 +300,19 @@
   <data name="StartDateBeforeEndDate" xml:space="preserve">
     <value>Ngày bắt đầu phải trước ngày kết thúc</value>
   </data>
+  <data name="ShowEnded" xml:space="preserve">
+    <value>Suất chiếu đã kết thúc</value>
+  </data>
+  <data name="SeatsAlreadyLocked" xml:space="preserve">
+    <value>Ghế đã được khóa trước đó</value>
+  </data>
+  <data name="SeatsUnlocked" xml:space="preserve">
+    <value>Đã mở khóa ghế thành công</value>
+  </data>
+  <data name="SeatsNotLocked" xml:space="preserve">
+    <value>Ghế chưa được khóa</value>
+  </data>
+  <data name="NoSeatsForReservation" xml:space="preserve">
+    <value>Không tìm thấy ghế để đặt chỗ</value>
+  </data>
 </root>
