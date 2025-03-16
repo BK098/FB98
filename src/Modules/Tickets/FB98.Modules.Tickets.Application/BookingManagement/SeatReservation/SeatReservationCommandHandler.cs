@@ -74,11 +74,12 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.SeatReservation
 				}
 
 				var seats = await _bookingSeatLockRepository.GetLockedSeatsByUser(model.CustomerId!.Value, model.ShowId!.Value);
-				var seatIds = seats.Select(x => x.SeatId).ToList();
 				if (!seats.Any())
 				{
-					return ApiResponseBuilder.Error<object>("No seats found for reservation");
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NoSeatsForReservation"));
 				}
+
+				var seatIds = seats.Select(x => x.SeatId).ToList();
 
 				ApiResult<CheckSeatsResponse>? hallResponse;
 				try

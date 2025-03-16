@@ -300,4 +300,19 @@
   <data name="StartDateBeforeEndDate" xml:space="preserve">
     <value>Start date must be before end date</value>
   </data>
+  <data name="ShowEnded" xml:space="preserve">
+    <value>Show has ended</value>
+  </data>
+  <data name="SeatsAlreadyLocked" xml:space="preserve">
+    <value>Seats are already locked</value>
+  </data>
+  <data name="SeatsUnlocked" xml:space="preserve">
+    <value>Seats unlocked successfully</value>
+  </data>
+  <data name="SeatsNotLocked" xml:space="preserve">
+    <value>Seats are not locked</value>
+  </data>
+  <data name="NoSeatsForReservation" xml:space="preserve">
+    <value>No seats found for reservation</value>
+  </data>
 </root>

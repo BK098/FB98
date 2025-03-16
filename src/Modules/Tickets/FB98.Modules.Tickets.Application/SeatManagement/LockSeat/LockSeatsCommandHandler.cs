@@ -8,6 +8,7 @@ namespace FB98.Modules.Tickets.Application.SeatManagement.LockSeat
 	internal sealed class LockSeatsCommandHandler : ICommandHandler<LockSeatsCommand, ApiResult<object>>
 	{
 		private readonly IBookingSeatLockRepository _bookingSeatLockRepository;
+		private readonly IBookingSeatRepository _bookingSeatRepository;
 		private readonly ICinemaApi _cinemaApi;
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ILogger<LockSeatsCommandHandler> _logger;
@@ -20,7 +21,8 @@ namespace FB98.Modules.Tickets.Application.SeatManagement.LockSeat
 			ICinemaApi cinemaApi, ILocalizedMessageService localizedMessageService,
 			ILogger<LockSeatsCommandHandler> logger,
 			IShowApi showApi,
-			IValidator<LockSeatsDto> validator)
+			IValidator<LockSeatsDto> validator,
+			IBookingSeatRepository bookingSeatRepository)
 		{
 			_bookingSeatLockRepository = bookingSeatLockRepository;
 			_cinemaApi = cinemaApi;
@@ -28,6 +30,7 @@ namespace FB98.Modules.Tickets.Application.SeatManagement.LockSeat
 			_logger = logger;
 			_showApi = showApi;
 			_validator = validator;
+			_bookingSeatRepository = bookingSeatRepository;
 		}
 
 		public async Task<ApiResult<object>> Handle(LockSeatsCommand request, CancellationToken cancellationToken)
@@ -77,6 +80,16 @@ namespace FB98.Modules.Tickets.Application.SeatManagement.LockSeat
 				if (hallSeats.Count > maxSeats)
 				{
 					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("MaxSeatsLimit"));
+				}
+
+				var bookedSeats = await _bookingSeatRepository.GetBookedSeatsByShow(model.ShowId!.Value);
+				var bookedSeatIds = bookedSeats.Select(bs => bs.SeatId).ToHashSet();
+
+				var availableSeats = model.SeatIds.Where(seatId => !bookedSeatIds.Contains(seatId)).ToList();
+
+				if (availableSeats.Count != model.SeatIds.Count)
+				{
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("SeatsAlreadyLocked"), 400);
 				}
 
 				var unavailableSeats = await _bookingSeatLockRepository.GetLockedSeats(model.ShowId!.Value, model.SeatIds);
