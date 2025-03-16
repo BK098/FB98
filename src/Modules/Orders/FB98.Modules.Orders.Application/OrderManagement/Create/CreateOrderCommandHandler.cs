@@ -118,7 +118,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 						var combo = comboResponses.FirstOrDefault(x => x.Data!.Id == item.ProductId);
 						if (combo is null || !combo.IsSuccess)
 						{
-							return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound") + $"combo{item.ProductId}", 404);
+							return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound") + $"combo: {item.ProductId}", 404);
 						}
 
 						foreach (var product in combo.Data!.Products)
@@ -181,7 +181,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 			catch (ApiException ex)
 			{
 				_logger.LogError($"API error: {ex.StatusCode} - {ex.Content}");
-				return ApiResponseBuilder.Error<object>("Internal Server Error", 500);
+				return ApiResponseBuilder.Error<object>("I", 404);
 			}
 			catch (Exception ex)
 			{

@@ -5,6 +5,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Services\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Services\**" />
+  </ItemGroup>
     <ItemGroup>
         <Using Include="FB98.Shared.Abstractions.CQRS"></Using>
         <Using Include="FB98.Shared.Abstractions.Responses"></Using>
@@ -15,8 +21,5 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\FB98.Modules.Payments.Domain\FB98.Modules.Payments.Domain.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Services\" />
     </ItemGroup>
 </Project>

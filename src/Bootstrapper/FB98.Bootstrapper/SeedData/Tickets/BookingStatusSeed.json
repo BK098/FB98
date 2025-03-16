@@ -1,6 +1,10 @@
 [
 	{
 		"Id": "40a31c58-816e-4c6d-9bae-b0d250150f02",
+		"Name": "Created"
+	},
+	{
+		"Id": "b2a1a1e4-5d3b-4c6e-8a2e-1a2b3c4d5e6f",
 		"Name": "Pending"
 	},
 	{
@@ -17,6 +21,10 @@
 	},
 	{
 		"Id": "0492890c-b183-41cd-b318-592839ff50e0",
-		"Name": "Canceled"
+		"Name": "Cancelled"
+	},
+	{
+		"Id": "e3a1b2c3-d4e5-6f7a-8b9c-0d1e2f3a4b5c",
+		"Name": "Expired"
 	}
 ]

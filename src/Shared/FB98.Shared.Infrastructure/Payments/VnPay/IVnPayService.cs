@@ -2,7 +2,7 @@
 {
 	public interface IVnPayService
 	{
-		string GeneratePaymentUrl(Guid? orderId, Guid? bookingId, decimal amount, string ipAddress);
+		string GeneratePaymentUrl(Guid paymentId, decimal amount, string ipAddress);
 		bool ValidateVnPayResponse(SortedDictionary<string, string> queryParams);
 	}
 }

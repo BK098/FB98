@@ -18,7 +18,7 @@ namespace FB98.Shared.Infrastructure.Payments.VnPay
 			_logger = logger;
 		}
 
-		public string GeneratePaymentUrl(Guid? orderId, Guid? bookingId, decimal amount, string ipAddress)
+		public string GeneratePaymentUrl(Guid paymentId, decimal amount, string ipAddress)
 		{
 			var vnpayData = new SortedDictionary<string, string>
 			{
@@ -31,11 +31,11 @@ namespace FB98.Shared.Infrastructure.Payments.VnPay
 				{ "vnp_CurrCode", "VND" },
 				{ "vnp_IpAddr", ipAddress },
 				{ "vnp_Locale", "vn" },
-				{ "vnp_OrderInfo", $"Thanh toan don hang {orderId}" },
+				{ "vnp_OrderInfo", $"Thanh toan don hang {paymentId}" },
 				{ "vnp_OrderType", "other" },
 				{ "vnp_ExpireDate", DateTime.UtcNow.AddHours(7).AddMinutes(15).ToString("yyyyMMddHHmmss") },
 				{ "vnp_ReturnUrl", _options.Vnp_ReturnUrl },
-				{ "vnp_TxnRef", orderId.ToString() }
+				{ "vnp_TxnRef", $"{paymentId}"}
 			};
 
 			var paymentUrl = CreateRequestUrl(vnpayData);
@@ -54,7 +54,12 @@ namespace FB98.Shared.Infrastructure.Payments.VnPay
 			queryParams.Remove("vnp_SecureHash");
 
 			var calculatedHash = CreateRequestUrl(queryParams);
-			return secureHash.Equals(calculatedHash, StringComparison.OrdinalIgnoreCase);
+			var a = secureHash.Equals(calculatedHash, StringComparison.OrdinalIgnoreCase);
+			if (a)
+			{
+				return true;
+			}
+			return false;
 		}
 
 		private string CreateRequestUrl(SortedDictionary<string, string> requestData)

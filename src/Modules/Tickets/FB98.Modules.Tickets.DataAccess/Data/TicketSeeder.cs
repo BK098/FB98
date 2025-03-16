@@ -11,7 +11,7 @@ namespace FB98.Modules.Tickets.DataAccess.Data
 		{
 			if (!context.BookingSeatStatuses.Any())
 			{
-				var jsonData = await File.ReadAllTextAsync("SeedData/Ticktets/BookingSeatStatusSeed.json");
+				var jsonData = await File.ReadAllTextAsync("SeedData/Tickets/BookingSeatStatusSeed.json");
 				var entities = JsonConvert.DeserializeObject<List<BookingSeatStatus>>(jsonData, new JsonSerializerSettings());
 				if (entities != null)
 				{
@@ -22,7 +22,7 @@ namespace FB98.Modules.Tickets.DataAccess.Data
 			}
 			if (!context.BookingStatuses.Any())
 			{
-				var jsonData = await File.ReadAllTextAsync("SeedData/Ticktets/BookingStatusSeed.json");
+				var jsonData = await File.ReadAllTextAsync("SeedData/Tickets/BookingStatusSeed.json");
 				var entities = JsonConvert.DeserializeObject<List<BookingStatus>>(jsonData, new JsonSerializerSettings());
 				if (entities != null)
 				{

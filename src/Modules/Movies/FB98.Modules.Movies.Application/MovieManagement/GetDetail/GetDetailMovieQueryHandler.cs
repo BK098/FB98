@@ -50,7 +50,7 @@ namespace FB98.Modules.Movies.Application.MovieManagement.GetDetail
 			{
 				if (redisDatabase != null)
 				{
-					var cachedMovie = await redisDatabase.StringGetAsync(cacheKey, CommandFlags.PreferMaster);
+					var cachedMovie = await redisDatabase.StringGetAsync(cacheKey);
 					if (!cachedMovie.IsNullOrEmpty)
 					{
 						var cachedResponse = JsonSerializer.Deserialize<GetDetailMovieResponse>(cachedMovie!);

@@ -28,7 +28,8 @@ namespace FB98.Modules.Orders.Application.OrderManagement.BackgroundJobs
 
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
-			_timer = new Timer(CheckOrderStatus, null, TimeSpan.Zero, TimeSpan.FromMinutes(10));
+			var taskPeriod = TimeSpan.FromMinutes(5);
+			_timer = new Timer(CheckOrderStatus, null, TimeSpan.Zero, taskPeriod);
 			return Task.CompletedTask;
 		}
 
@@ -42,41 +43,57 @@ namespace FB98.Modules.Orders.Application.OrderManagement.BackgroundJobs
 		{
 			try
 			{
-				if (false)
+				_logger.LogInformation("OrderStatusJob running at {Time}", DateTime.UtcNow);
+				using var scope = _spoceFactory.CreateScope();
+				var orderRepository = scope.ServiceProvider.GetRequiredService<IOrderRepository>();
+				var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+				var now = DateTime.UtcNow;
+				var expiredOrders = await orderRepository.GetOrdersByStatusAndTimeAsync(OrderStatusConstants.Created, now.AddMinutes(-7));
+				foreach (var order in expiredOrders)
 				{
-					using var scope = _spoceFactory.CreateScope();
-					var orderRepository = scope.ServiceProvider.GetRequiredService<IOrderRepository>();
-					var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-					var now = DateTime.UtcNow;
-					var expiredOrders = await orderRepository.GetOrdersByStatusAndTimeAsync(OrderStatusConstants.Created, now.AddMinutes(-7));
-					foreach (var order in expiredOrders)
+					_logger.LogInformation("Expiring order {OrderId}", order.Id);
+					var orderStatusHistory = new OrderStatusHistory
 					{
-						var orderStatusHistory = new OrderStatusHistory
-						{
-							OrderId = order.Id,
-							OldStatusId = order.OrderStatusId,
-							NewStatusId = OrderStatusConstants.Expired
-						};
-						orderStatusHistory.SetCreatedAt();
-						unitOfWork.Entry(orderStatusHistory, EntityState.Added);
-						order.OrderStatusId = OrderStatusConstants.Expired;
-					}
-
-					var canceledOrders = await orderRepository.GetOrdersByStatusAndTimeAsync(OrderStatusConstants.Confirmed, now.AddDays(-7));
-					foreach (var order in canceledOrders)
-					{
-						var orderStatusHistory = new OrderStatusHistory
-						{
-							OrderId = order.Id,
-							OldStatusId = order.OrderStatusId,
-							NewStatusId = OrderStatusConstants.Canceled
-						};
-						orderStatusHistory.SetCreatedAt();
-						unitOfWork.Entry(orderStatusHistory, EntityState.Added);
-						order.OrderStatusId = OrderStatusConstants.Canceled;
-					}
-					await unitOfWork.SaveChangesAsync();
+						OrderId = order.Id,
+						OldStatusId = order.OrderStatusId,
+						NewStatusId = OrderStatusConstants.Expired
+					};
+					orderStatusHistory.SetCreatedAt();
+					unitOfWork.Entry(orderStatusHistory, EntityState.Added);
+					order.OrderStatusId = OrderStatusConstants.Expired;
 				}
+				var pendingOrders = await orderRepository.GetOrdersByStatusAndTimeAsync(OrderStatusConstants.Pending, now.AddMinutes(-7));
+				foreach (var order in pendingOrders)
+				{
+					_logger.LogInformation("Expiring order {OrderId}", order.Id);
+					var orderStatusHistory = new OrderStatusHistory
+					{
+						OrderId = order.Id,
+						OldStatusId = order.OrderStatusId,
+						NewStatusId = OrderStatusConstants.Pending
+					};
+					orderStatusHistory.SetCreatedAt();
+					unitOfWork.Entry(orderStatusHistory, EntityState.Added);
+					order.OrderStatusId = OrderStatusConstants.Expired;
+				}
+
+				var canceledOrders = await orderRepository.GetOrdersByStatusAndTimeAsync(OrderStatusConstants.Confirmed, now.AddDays(-7));
+				foreach (var order in canceledOrders)
+				{
+					_logger.LogInformation("Cancelling order {OrderId}", order.Id);
+					var orderStatusHistory = new OrderStatusHistory
+					{
+						OrderId = order.Id,
+						OldStatusId = order.OrderStatusId,
+						NewStatusId = OrderStatusConstants.Canceled
+					};
+					orderStatusHistory.SetCreatedAt();
+					unitOfWork.Entry(orderStatusHistory, EntityState.Added);
+					order.OrderStatusId = OrderStatusConstants.Canceled;
+				}
+
+				await unitOfWork.SaveChangesAsync();
+				_logger.LogInformation("OrderStatusJob completed successfully at {Time}", DateTime.UtcNow);
 			}
 			catch (Exception ex)
 			{

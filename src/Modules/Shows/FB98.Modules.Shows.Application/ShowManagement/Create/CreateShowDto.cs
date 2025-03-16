@@ -4,12 +4,12 @@
 	{
 		public Guid? MovieId { get; set; }
 		public Guid? CinemaHallId { get; set; }
-		public DateTime StartTime { get; set; }
-		public ICollection<CreateShowFeatureDto> Features { get; set; } = new List<CreateShowFeatureDto>();
+		public DateTime? StartTime { get; set; }
+		public ICollection<CreateShowFeatureDto>? Features { get; set; } = new List<CreateShowFeatureDto>();
 	}
 
 	public class CreateShowFeatureDto
 	{
-		public Guid FeatureId { get; set; }
+		public Guid? FeatureId { get; set; }
 	}
 }

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 
 namespace FB98.Shared.Infrastructure.Postgres
 {
@@ -11,7 +12,7 @@ namespace FB98.Shared.Infrastructure.Postgres
 			services.AddSingleton(options);
 			try
 			{
-				using var connection = new Npgsql.NpgsqlConnection(options.ConnectionString);
+				using var connection = new NpgsqlConnection(options.ConnectionString);
 				connection.Open();
 				Console.WriteLine(@"Database connected successfully!");
 				connection.Close();
@@ -20,6 +21,7 @@ namespace FB98.Shared.Infrastructure.Postgres
 			{
 				Console.WriteLine($@"Database connection failed: {ex.Message}");
 			}
+
 			return services;
 		}
 
@@ -27,12 +29,12 @@ namespace FB98.Shared.Infrastructure.Postgres
 		{
 			var options = services.GetOptions<PostgresOptions>("postgres");
 			services.AddDbContext<T>(x =>
-				x.UseNpgsql(options.ConnectionString,
-				sqlOptions => sqlOptions.EnableRetryOnFailure(
-					maxRetryCount: 5,
-					maxRetryDelay: TimeSpan.FromSeconds(30),
-					errorCodesToAdd: null
-				))
+					x.UseNpgsql(options.ConnectionString,
+						sqlOptions => sqlOptions.EnableRetryOnFailure(
+							5,
+							TimeSpan.FromSeconds(30),
+							null
+						))
 #if DEBUG
 			//.EnableSensitiveDataLogging()
 			//.LogTo(Console.WriteLine, LogLevel.Information)
@@ -42,6 +44,7 @@ namespace FB98.Shared.Infrastructure.Postgres
 			var dbContext = scope.ServiceProvider.GetRequiredService<T>();
 			dbContext.Database.Migrate();
 			dbContext.Database.ExecuteSqlRaw("CREATE EXTENSION IF NOT EXISTS unaccent;");
+			dbContext.Database.ExecuteSqlRaw("SET TIME ZONE 'Asia/Ho_Chi_Minh';");
 
 			return services;
 		}

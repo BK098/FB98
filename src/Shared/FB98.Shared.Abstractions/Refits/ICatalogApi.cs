@@ -15,6 +15,7 @@ namespace FB98.Shared.Abstractions.Refits
 	}
 
 	public record ProductDto(Guid Id, string Name, decimal Price, decimal DiscountPrice);
+
 	public record ComboDto(Guid Id, string Name, decimal Price, decimal DiscountPrice, List<ComboProductDto> Products);
 	public record ComboProductDto(Guid Id, string Name, decimal Price, int Quantity);
 }

@@ -6,7 +6,8 @@ namespace FB98.Modules.Tickets.Domain.Entities
 	{
 		public Guid ShowId { get; set; }
 		public Guid SeatId { get; set; }
-		public Guid? CustomerId { get; set; }
+		public Guid CustomerId { get; set; }
 		public DateTime LockedUntil { get; set; }
+		public bool IsPaymentInProgress { get; set; }
 	}
 }

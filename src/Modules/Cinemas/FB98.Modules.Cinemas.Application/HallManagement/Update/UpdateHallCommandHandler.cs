@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FB98.Modules.Cinemas.Application.Abstractions;
+using StackExchange.Redis;
 
 namespace FB98.Modules.Cinemas.Application.HallManagement.Update
 {
@@ -12,6 +13,8 @@ namespace FB98.Modules.Cinemas.Application.HallManagement.Update
 		private readonly ISeatTypeRepository _seatTypeRepository;
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IValidator<UpdateHallDto> _validator;
+		private readonly IConnectionMultiplexer _redisConnection;
+
 
 		public UpdateHallCommandHandler(
 			IMapper mapper,
@@ -20,7 +23,8 @@ namespace FB98.Modules.Cinemas.Application.HallManagement.Update
 			ICinemaHallRepository hallRepository,
 			ILogger<UpdateHallCommandHandler> logger,
 			ILocalizedMessageService localizedMessageService,
-			ISeatTypeRepository seatTypeRepository)
+			ISeatTypeRepository seatTypeRepository,
+			IConnectionMultiplexer redisConnection)
 		{
 			_mapper = mapper;
 			_unitOfWork = unitOfWork;
@@ -29,12 +33,27 @@ namespace FB98.Modules.Cinemas.Application.HallManagement.Update
 			_logger = logger;
 			_localizedMessageService = localizedMessageService;
 			_seatTypeRepository = seatTypeRepository;
+			_redisConnection = redisConnection;
 		}
 
 		public async Task<ApiResult<object>> Handle(UpdateHallCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
 			var hallId = request.HallId;
+			var cacheKey = $"hall:{hallId}";
+			IDatabase? redisDatabase = null;
+			try
+			{
+				redisDatabase = _redisConnection.GetDatabase();
+			}
+			catch (RedisConnectionException ex)
+			{
+				_logger.LogWarning(ex, "Could not establish connection to Redis. Proceeding without cache.");
+			}
+			catch (RedisTimeoutException ex)
+			{
+				_logger.LogWarning(ex, "Redis timeout occurred. Skipping cache retrieval.");
+			}
 			try
 			{
 				var validationResult = await _validator.ValidateAsync(model, cancellationToken);
@@ -55,7 +74,7 @@ namespace FB98.Modules.Cinemas.Application.HallManagement.Update
 				}
 
 				_mapper.Map(model, hall);
-				foreach (var updateSeat in model.Seats)
+				foreach (var updateSeat in model.Seats!)
 				{
 					var seat = hall.Seats.FirstOrDefault(s => s.Id == updateSeat.SeatId);
 					if (seat == null)
@@ -79,6 +98,23 @@ namespace FB98.Modules.Cinemas.Application.HallManagement.Update
 
 				_hallRepository.Update(hall);
 				await _unitOfWork.SaveChangesAsync();
+				try
+				{
+					if (redisDatabase == null)
+					{
+						return ApiResponseBuilder.Success<object>(hall.Id, _localizedMessageService.GetLocalizedMessage("Updated"));
+					}
+
+					await redisDatabase.KeyDeleteAsync(cacheKey);
+				}
+				catch (RedisConnectionException ex)
+				{
+					_logger.LogWarning(ex, "Could not connect to Redis. Skipping cache save.");
+				}
+				catch (RedisTimeoutException ex)
+				{
+					_logger.LogWarning(ex, "Redis timeout occurred. Skipping cache save.");
+				}
 				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("Updated"));
 			}
 			catch (Exception ex)

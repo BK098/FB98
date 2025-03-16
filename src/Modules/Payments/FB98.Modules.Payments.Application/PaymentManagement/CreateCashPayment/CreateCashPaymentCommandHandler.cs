@@ -40,7 +40,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 				};
 				await _paymentRepository.CreateAsync(payment);
 
-				await _bus.Publish(new PaymentSuccessEvent(payment.OrderId!.Value, payment.BookingId), cancellationToken);
+				await _bus.Publish(new PaymentSuccessEvent(payment.OrderId!.Value, payment.BookingId!.Value), cancellationToken);
 				return ApiResponseBuilder.Success<object>(payment.Id, _localizedMessageService.GetLocalizedMessage("PaymentSuccessful"));
 			}
 			catch (Exception ex)

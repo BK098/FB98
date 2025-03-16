@@ -1,14 +1,13 @@
 using FB98.Shared.Abstractions.Exceptions;
 using FB98.Shared.Abstractions.Responses;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net;
-using System.Security.Claims;
-using System.Text;
 using System.Text.Json;
 
-namespace FB98.Bootstrapper.Middlewares
+namespace FB98.Shared.Infrastructure.Middlewares
 {
 	internal class ErrorHandlerMiddleware : IMiddleware
 	{
@@ -39,6 +38,7 @@ namespace FB98.Bootstrapper.Middlewares
 						await HandleForbiddenAsync(context);
 						break;
 				}
+
 				await next(context);
 			}
 			catch (Exception exception)
@@ -64,7 +64,7 @@ namespace FB98.Bootstrapper.Middlewares
 				Data = null,
 				Errors = new Dictionary<string, List<object>>
 				{
-					{ "Authorization", new List<object> { "Invalid or missing token." } }
+					{ "Authorization", ["Invalid or missing token."] }
 				},
 				Timestamp = DateTime.UtcNow
 			};
@@ -74,7 +74,7 @@ namespace FB98.Bootstrapper.Middlewares
 			await context.Response.WriteAsync(JsonSerializer.Serialize(response));
 		}
 
-		private async Task HandleForbiddenAsync(HttpContext context)
+		private static async Task HandleForbiddenAsync(HttpContext context)
 		{
 			var response = new ApiResult<string>
 			{
@@ -84,7 +84,7 @@ namespace FB98.Bootstrapper.Middlewares
 				Data = null,
 				Errors = new Dictionary<string, List<object>>
 				{
-					{ "Authorization", new List<object> { "Access to this resource is forbidden." } }
+					{ "Authorization", ["Access to this resource is forbidden."] }
 				},
 				Timestamp = DateTime.UtcNow
 			};
@@ -105,7 +105,7 @@ namespace FB98.Bootstrapper.Middlewares
 				Data = null,
 				Errors = new Dictionary<string, List<object>>
 				{
-					{ "Exception", new List<object> { exception.Message } }
+					{ "Exception", [exception.Message] }
 				},
 				Timestamp = DateTime.UtcNow
 			};
@@ -113,29 +113,6 @@ namespace FB98.Bootstrapper.Middlewares
 			context.Response.StatusCode = statusCode;
 			context.Response.ContentType = "application/json";
 			await context.Response.WriteAsync(JsonSerializer.Serialize(response));
-		}
-
-		private ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
-		{
-			var tokenValidationParameters = new TokenValidationParameters
-			{
-				ValidateIssuerSigningKey = true,
-				IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!)),
-				ValidateIssuer = false,
-				ValidateAudience = false,
-				ValidateLifetime = false
-			};
-
-			var tokenHandler = new JwtSecurityTokenHandler();
-			var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var securityToken);
-
-			if (securityToken is not JwtSecurityToken jwtSecurityToken ||
-				!jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
-			{
-				throw new SecurityTokenException("Invalid token");
-			}
-
-			return principal;
 		}
 	}
 }

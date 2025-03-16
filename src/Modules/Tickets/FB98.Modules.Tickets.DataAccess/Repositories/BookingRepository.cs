@@ -1,7 +1,6 @@
 ﻿using FB98.Modules.Tickets.Application.Abstractions;
 using FB98.Modules.Tickets.DataAccess.Data;
 using FB98.Modules.Tickets.Domain.Entities;
-using FB98.Shared.Abstractions.StatusConstants;
 using FB98.Shared.Infrastructure.Repositpries;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,16 +16,14 @@ namespace FB98.Modules.Tickets.DataAccess.Repositories
 		{
 			return await _context.Bookings
 				.Include(x => x.BookingSeats)
-				.ThenInclude(x => x.Status)
+				.ThenInclude(x => x.SeatStatus)
 				.Include(x => x.Status)
 				.FirstOrDefaultAsync(x => x.Id == id);
 		}
-
-		public async Task<IEnumerable<Guid>> GetUnavailableSeats(Guid showId, IEnumerable<Guid> seatIds)
+		public async Task<IEnumerable<Booking>> GetBookingsByStatusAndTimeAsync(Guid orderStatusId, DateTime date)
 		{
-			return await _context.BookingSeats
-				.Where(s => s.ShowId == showId && seatIds.Contains(s.SeatId) && s.StatusId != BookingSeatStatusConstants.Available) // "Available" là trạng thái của ghế
-				.Select(s => s.SeatId)
+			return await _context.Bookings
+				.Where(x => x.StatusId == orderStatusId && x.CreateAt <= date)
 				.ToListAsync();
 		}
 	}

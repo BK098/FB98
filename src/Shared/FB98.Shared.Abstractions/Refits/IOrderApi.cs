@@ -8,8 +8,8 @@ namespace FB98.Shared.Abstractions.Refits
 	internal interface IOrderApi
 	{
 		[Get("/orders-module/orders/{orderId}")]
-		Task<ApiResult<OrderDto>> GetOrderById(Guid productId);
+		Task<ApiResult<OrderDto>> GetOrderById(Guid orderId);
 	}
 
-	public record OrderDto(decimal Amount, string OrderStatus);
+	public record OrderDto(Guid Id, decimal Amount, Guid StatusId);
 }

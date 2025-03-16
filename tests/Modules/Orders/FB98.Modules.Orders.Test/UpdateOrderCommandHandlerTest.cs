@@ -42,7 +42,7 @@
 //		{
 //			// Arrange
 //			var order = new Order { Id = Guid.NewGuid(), OrderStatusId = OrderStatusConstants.CheckedIn };
-//			var command = new UpdateOrderCommand(order.Id, OrderStatusConstants.Created);
+//			var command = new CheckInCommand(order.Id, OrderStatusConstants.Created);
 
 //			_orderRepositoryMock.Setup(repo => repo.GetByIdAsync(command.OrderId))
 //				.ReturnsAsync(order);
@@ -64,7 +64,7 @@
 //		public async Task Handle_Should_Return_NotFound_When_Order_Does_Not_Exist()
 //		{
 //			//Arrange
-//			var command = new UpdateOrderCommand(Guid.NewGuid(), OrderStatusConstants.Confirmed);
+//			var command = new CheckInCommand(Guid.NewGuid(), OrderStatusConstants.Confirmed);
 //			_orderRepositoryMock.Setup(r => r.GetByIdAsync(command.OrderId))
 //				.ReturnsAsync((Order)null);
 
@@ -86,7 +86,7 @@
 //		{
 //			// Arrange
 //			var order = new Order { Id = Guid.NewGuid(), OrderStatusId = OrderStatusConstants.CheckedIn };
-//			var command = new UpdateOrderCommand(order.Id, OrderStatusConstants.Confirmed);
+//			var command = new CheckInCommand(order.Id, OrderStatusConstants.Confirmed);
 
 //			_orderRepositoryMock.Setup(repo => repo.GetByIdAsync(command.OrderId))
 //				.ReturnsAsync(order);
@@ -115,7 +115,7 @@
 //		public async Task Handle_Should_Log_Error_When_Exception_Occurs()
 //		{
 //			// Arrange
-//			var command = new UpdateOrderCommand(Guid.NewGuid(), OrderStatusConstants.Confirmed);
+//			var command = new CheckInCommand(Guid.NewGuid(), OrderStatusConstants.Confirmed);
 //			_orderRepositoryMock.Setup(repo => repo.GetByIdAsync(command.OrderId))
 //				.ThrowsAsync(new Exception("Database failure"));
 //			// Act

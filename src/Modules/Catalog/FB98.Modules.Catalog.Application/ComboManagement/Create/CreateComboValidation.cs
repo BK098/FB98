@@ -9,18 +9,28 @@
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
 
 			RuleFor(x => x.IsEnabled)
-				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
-				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
+				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"));
 
 			RuleFor(x => x.Price)
 				.GreaterThanOrEqualTo(0).WithMessage(message.GetLocalizedMessage("GreaterThanOrEqualTo0"))
-				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
-				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
-
-			RuleForEach(x => x.Products).SetValidator(new CreateComboProductValidation(message));
+				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"));
 
 			RuleFor(x => x.Products)
+				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
+				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"))
 				.Must(BeUniqueProductIds).WithMessage(message.GetLocalizedMessage("DuplicateData"));
+
+			RuleForEach(x => x.Products).ChildRules(products =>
+			{
+				products.RuleFor(p => p.ProductId)
+					.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
+					.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
+
+				products.RuleFor(p => p.Quantity)
+					.GreaterThanOrEqualTo(0).WithMessage(message.GetLocalizedMessage("GreaterThanOrEqualTo0"))
+					.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
+					.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
+			});
 		}
 
 		private bool BeUniqueProductIds(ICollection<CreateComboProductDto>? products)
@@ -32,21 +42,6 @@
 
 			var productIds = products.Where(s => s.ProductId.HasValue).Select(s => s.ProductId!.Value).ToList();
 			return productIds.Distinct().Count() == productIds.Count();
-		}
-	}
-
-	internal sealed class CreateComboProductValidation : AbstractValidator<CreateComboProductDto>
-	{
-		public CreateComboProductValidation(ILocalizedMessageService message)
-		{
-			RuleFor(x => x.ProductId)
-				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
-				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
-
-			RuleFor(x => x.Quantity)
-				.GreaterThanOrEqualTo(0).WithMessage(message.GetLocalizedMessage("GreaterThanOrEqualTo0"))
-				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
-				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
 		}
 	}
 }

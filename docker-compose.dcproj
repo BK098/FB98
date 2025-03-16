@@ -16,6 +16,5 @@
     </None>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
-    <None Include="src\Shared\FB98.Shared.Infrastructure\Cloudinaries\CloudinaryService.cs" />
   </ItemGroup>
 </Project>

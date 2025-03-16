@@ -19,10 +19,10 @@ namespace FB98.Modules.Warehouse.Application.InventoryManagement.Events
 
 		public async Task Consume(ConsumeContext<PaymentSuccessEvent> context)
 		{
-			var model = context.Message;
+			var orderId = context.Message.OrderId!.Value;
 			try
 			{
-				await _inventoryRepository.StockDeduct(model.OrderId);
+				await _inventoryRepository.StockDeduct(orderId);
 			}
 			catch (Exception ex)
 			{

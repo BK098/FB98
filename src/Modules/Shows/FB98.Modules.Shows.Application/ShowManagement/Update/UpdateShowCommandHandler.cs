@@ -60,6 +60,18 @@ namespace FB98.Modules.Shows.Application.ShowManagement.Update
 					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
+				var overlappingShows = await _showRepository.GetAll()
+					.Where(s => s.CinemaHallId == model.CinemaHallId &&
+								s.Id != showId &&
+								((s.StartTime >= model.StartTime && s.StartTime < model.EndTime) ||
+								 (s.EndTime > model.StartTime && s.EndTime <= model.EndTime)))
+					.ToListAsync(cancellationToken);
+
+				if (overlappingShows.Any())
+				{
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("ShowOverlap"), 400);
+				}
+
 				ApiResult<CinemaHallDto>? hallResponse;
 				try
 				{
@@ -80,7 +92,7 @@ namespace FB98.Modules.Shows.Application.ShowManagement.Update
 					return ApiResponseBuilder.Error<object>("Movie: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
-				var featureIds = model.Features.Select(g => g.FeatureId).ToList();
+				var featureIds = model.Features!.Select(g => g.FeatureId).ToList();
 				var existingGenres = await _featureRepository.GetAll()
 					.Where(g => featureIds.Contains(g.Id)).ToListAsync(cancellationToken);
 				if (existingGenres.Count != featureIds.Count)
@@ -97,7 +109,7 @@ namespace FB98.Modules.Shows.Application.ShowManagement.Update
 				show.EndTime = show.StartTime.AddMinutes(runtime);
 				show.ShowStatusId = ShowStatusConstants.UpComming;
 
-				await UpdateFeatures(show, model.Features);
+				await UpdateFeatures(show, model.Features!);
 
 				_unitOfWork.Entry(show, EntityState.Modified);
 				await _unitOfWork.SaveChangesAsync();

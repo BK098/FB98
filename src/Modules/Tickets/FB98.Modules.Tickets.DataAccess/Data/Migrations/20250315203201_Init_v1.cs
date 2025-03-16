@@ -22,8 +22,9 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ShowId = table.Column<Guid>(type: "uuid", nullable: false),
                     SeatId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
                     LockedUntil = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsPaymentInProgress = table.Column<bool>(type: "boolean", nullable: false),
                     CreateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -72,13 +73,14 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DaysOfWeek = table.Column<string>(type: "text", nullable: false),
-                    MinAge = table.Column<int>(type: "integer", nullable: false),
-                    MaxAge = table.Column<int>(type: "integer", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DaysOfWeek = table.Column<int>(type: "integer", nullable: true),
+                    MinAge = table.Column<int>(type: "integer", nullable: true),
+                    MaxAge = table.Column<int>(type: "integer", nullable: true),
                     IsDefault = table.Column<bool>(type: "boolean", nullable: false),
                     IsActived = table.Column<bool>(type: "boolean", nullable: false),
+                    CustomerType = table.Column<int>(type: "integer", nullable: false),
                     CreateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -98,6 +100,7 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
                     Amount = table.Column<decimal>(type: "numeric", nullable: false),
                     SubAmount = table.Column<decimal>(type: "numeric", nullable: false),
                     StatusId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ShowId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -120,9 +123,7 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     BookingId = table.Column<Guid>(type: "uuid", nullable: false),
-                    StatusId = table.Column<Guid>(type: "uuid", nullable: false),
-                    PriceApplicationId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ShowId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SeatStatusId = table.Column<Guid>(type: "uuid", nullable: false),
                     SeatId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsReserved = table.Column<bool>(type: "boolean", nullable: false),
                     Price = table.Column<decimal>(type: "numeric", nullable: false),
@@ -133,8 +134,8 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
                 {
                     table.PrimaryKey("PK_BookingSeats", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BookingSeats_BookingSeatStatuses_StatusId",
-                        column: x => x.StatusId,
+                        name: "FK_BookingSeats_BookingSeatStatuses_SeatStatusId",
+                        column: x => x.SeatStatusId,
                         principalSchema: "TicketModule",
                         principalTable: "BookingSeatStatuses",
                         principalColumn: "Id",
@@ -186,98 +187,36 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookingSeatLocks_SeatId",
-                schema: "TicketModule",
-                table: "BookingSeatLocks",
-                column: "SeatId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BookingSeatLocks_ShowId",
-                schema: "TicketModule",
-                table: "BookingSeatLocks",
-                column: "ShowId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_BookingSeats_BookingId",
                 schema: "TicketModule",
                 table: "BookingSeats",
                 column: "BookingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookingSeats_PriceApplicationId",
+                name: "IX_BookingSeats_SeatStatusId",
                 schema: "TicketModule",
                 table: "BookingSeats",
-                column: "PriceApplicationId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BookingSeats_StatusId",
-                schema: "TicketModule",
-                table: "BookingSeats",
-                column: "StatusId");
+                column: "SeatStatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SeatPriceApplications_BookingSeatId",
                 schema: "TicketModule",
                 table: "SeatPriceApplications",
-                column: "BookingSeatId");
+                column: "BookingSeatId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_SeatPriceApplications_SeatPriceRuleId",
                 schema: "TicketModule",
                 table: "SeatPriceApplications",
                 column: "SeatPriceRuleId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_BookingSeats_SeatPriceApplications_PriceApplicationId",
-                schema: "TicketModule",
-                table: "BookingSeats",
-                column: "PriceApplicationId",
-                principalSchema: "TicketModule",
-                principalTable: "SeatPriceApplications",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Bookings_BookingStatuses_StatusId",
-                schema: "TicketModule",
-                table: "Bookings");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_BookingSeats_BookingSeatStatuses_StatusId",
-                schema: "TicketModule",
-                table: "BookingSeats");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_BookingSeats_Bookings_BookingId",
-                schema: "TicketModule",
-                table: "BookingSeats");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_BookingSeats_SeatPriceApplications_PriceApplicationId",
-                schema: "TicketModule",
-                table: "BookingSeats");
-
             migrationBuilder.DropTable(
                 name: "BookingSeatLocks",
-                schema: "TicketModule");
-
-            migrationBuilder.DropTable(
-                name: "BookingStatuses",
-                schema: "TicketModule");
-
-            migrationBuilder.DropTable(
-                name: "BookingSeatStatuses",
-                schema: "TicketModule");
-
-            migrationBuilder.DropTable(
-                name: "Bookings",
                 schema: "TicketModule");
 
             migrationBuilder.DropTable(
@@ -290,6 +229,18 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "SeatPriceRules",
+                schema: "TicketModule");
+
+            migrationBuilder.DropTable(
+                name: "BookingSeatStatuses",
+                schema: "TicketModule");
+
+            migrationBuilder.DropTable(
+                name: "Bookings",
+                schema: "TicketModule");
+
+            migrationBuilder.DropTable(
+                name: "BookingStatuses",
                 schema: "TicketModule");
         }
     }

@@ -41,6 +41,9 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
                     b.Property<decimal>("DiscountPercentage")
                         .HasColumnType("numeric");
 
+                    b.Property<Guid>("ShowId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("StatusId")
                         .HasColumnType("uuid");
 
@@ -75,16 +78,10 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid>("PriceApplicationId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("SeatId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ShowId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("StatusId")
+                    b.Property<Guid>("SeatStatusId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("UpdateAt")
@@ -94,10 +91,7 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
 
                     b.HasIndex("BookingId");
 
-                    b.HasIndex("PriceApplicationId")
-                        .IsUnique();
-
-                    b.HasIndex("StatusId");
+                    b.HasIndex("SeatStatusId");
 
                     b.ToTable("BookingSeats", "TicketModule");
                 });
@@ -111,8 +105,11 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("CustomerId")
+                    b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid");
+
+                    b.Property<bool>("IsPaymentInProgress")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("LockedUntil")
                         .HasColumnType("timestamp with time zone");
@@ -127,12 +124,6 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SeatId")
-                        .IsUnique();
-
-                    b.HasIndex("ShowId")
-                        .IsUnique();
 
                     b.ToTable("BookingSeatLocks", "TicketModule");
                 });
@@ -202,7 +193,8 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookingSeatId");
+                    b.HasIndex("BookingSeatId")
+                        .IsUnique();
 
                     b.HasIndex("SeatPriceRuleId");
 
@@ -218,15 +210,17 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("DaysOfWeek")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("CustomerType")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("DaysOfWeek")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsActived")
@@ -235,10 +229,10 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
                     b.Property<bool>("IsDefault")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("MaxAge")
+                    b.Property<int?>("MaxAge")
                         .HasColumnType("integer");
 
-                    b.Property<int>("MinAge")
+                    b.Property<int?>("MinAge")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
@@ -251,7 +245,7 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
                     b.Property<Guid>("SeatTypeId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("UpdateAt")
@@ -281,30 +275,22 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FB98.Modules.Tickets.Domain.Entities.SeatPriceApplication", "SeatPriceApplication")
-                        .WithOne()
-                        .HasForeignKey("FB98.Modules.Tickets.Domain.Entities.BookingSeat", "PriceApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FB98.Modules.Tickets.Domain.Entities.BookingSeatStatus", "Status")
+                    b.HasOne("FB98.Modules.Tickets.Domain.Entities.BookingSeatStatus", "SeatStatus")
                         .WithMany()
-                        .HasForeignKey("StatusId")
+                        .HasForeignKey("SeatStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Booking");
 
-                    b.Navigation("SeatPriceApplication");
-
-                    b.Navigation("Status");
+                    b.Navigation("SeatStatus");
                 });
 
             modelBuilder.Entity("FB98.Modules.Tickets.Domain.Entities.SeatPriceApplication", b =>
                 {
                     b.HasOne("FB98.Modules.Tickets.Domain.Entities.BookingSeat", "BookingSeat")
-                        .WithMany()
-                        .HasForeignKey("BookingSeatId")
+                        .WithOne("SeatPriceApplication")
+                        .HasForeignKey("FB98.Modules.Tickets.Domain.Entities.SeatPriceApplication", "BookingSeatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -322,6 +308,12 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
             modelBuilder.Entity("FB98.Modules.Tickets.Domain.Entities.Booking", b =>
                 {
                     b.Navigation("BookingSeats");
+                });
+
+            modelBuilder.Entity("FB98.Modules.Tickets.Domain.Entities.BookingSeat", b =>
+                {
+                    b.Navigation("SeatPriceApplication")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

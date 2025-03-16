@@ -19,7 +19,7 @@ namespace FB98.Modules.Warehouse.Application.InventoryManagement.Events
 		{
 			try
 			{
-				var orderId = context.Message.OrderId;
+				var orderId = context.Message.OrderId!.Value;
 				await _inventoryRepository.ReleaseStock(orderId);
 			}
 			catch (Exception ex)

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FB98.Modules.Tickets.Application.BookingManagement.GetDetail;
 using FB98.Modules.Tickets.Application.BookingManagement.SeatReservation;
 using FB98.Modules.Tickets.Domain.Entities;
 
@@ -15,6 +16,8 @@ namespace FB98.Modules.Tickets.Application.BookingManagement
 		{
 			CreateMap<SeatReservationDto, Booking>()
 				.ForMember(dest => dest.CustomerId, opt => opt.MapFrom(src => src.CustomerId));
+
+			CreateMap<Booking, GetDetailBookingResponse>();
 		}
 	}
 }

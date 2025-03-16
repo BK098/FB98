@@ -14,5 +14,6 @@ namespace FB98.Modules.Tickets.Domain.Entities
 		public BookingSeat BookingSeat { get; set; }
 
 		public decimal AppliedPrice { get; set; }
+
 	}
 }

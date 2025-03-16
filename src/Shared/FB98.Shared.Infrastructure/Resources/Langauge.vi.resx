@@ -276,4 +276,28 @@
   <data name="DiscountPercentageRange" xml:space="preserve">
     <value>Giảm giá phần trăm phải nằm trong khoảng từ 0 đến 100</value>
   </data>
+  <data name="MaxSeatsLimit" xml:space="preserve">
+    <value>Chỉ được phép có 5 ghế (tối đa là 5 ghế)</value>
+  </data>
+  <data name="SeatsLocked" xml:space="preserve">
+    <value>Đã khóa ghế thành công</value>
+  </data>
+  <data name="SeatBooked" xml:space="preserve">
+    <value>Đã đặt</value>
+  </data>
+  <data name="SeatLocked" xml:space="preserve">
+    <value>Đã khóa</value>
+  </data>
+  <data name="SeatAvailable" xml:space="preserve">
+    <value>Sẵn sàng</value>
+  </data>
+  <data name="OrderOrBookingRequired" xml:space="preserve">
+    <value>Phải có ít nhất OrderId hoặc BookingId, không được để cả hai cùng null</value>
+  </data>
+  <data name="ShowOverlap" xml:space="preserve">
+    <value>Đã có một buổi chiếu khác được lên lịch trong rạp này trong thời gian đã chọn</value>
+  </data>
+  <data name="StartDateBeforeEndDate" xml:space="preserve">
+    <value>Ngày bắt đầu phải trước ngày kết thúc</value>
+  </data>
 </root>

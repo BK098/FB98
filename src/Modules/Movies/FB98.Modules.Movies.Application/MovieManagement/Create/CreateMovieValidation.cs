@@ -31,8 +31,6 @@
 				.LessThanOrEqualTo(250).WithMessage(message.GetLocalizedMessage("LessThanOrEqualTo250"))
 				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
-
-
 		}
 	}
 }

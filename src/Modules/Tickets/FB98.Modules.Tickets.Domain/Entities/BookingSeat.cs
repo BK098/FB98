@@ -10,21 +10,15 @@ namespace FB98.Modules.Tickets.Domain.Entities
 		public Booking Booking { get; set; }
 
 		[ForeignKey("BookingSeatStatus")]
-		public Guid StatusId { get; set; }
-		public BookingSeatStatus Status { get; set; }
+		public Guid SeatStatusId { get; set; }
+		public BookingSeatStatus SeatStatus { get; set; }
 
-		[ForeignKey("SeatPriceApplication")]
-		public Guid PriceApplicationId { get; set; }
 		public SeatPriceApplication SeatPriceApplication { get; set; }
 
-		public Guid ShowId { get; set; }
 		public Guid SeatId { get; set; }
 		public bool IsReserved { get; set; }
-		public decimal Price { get; private set; }
+		public decimal Price { get; set; }
 
-		public void SetPrice(decimal price)
-		{
-			Price = price;
-		}
+		//public ICollection<BookingSeatLock> SeatLocks { get; set; } = new List<BookingSeatLock>();
 	}
 }

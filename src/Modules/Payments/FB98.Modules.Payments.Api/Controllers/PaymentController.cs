@@ -1,7 +1,9 @@
 ﻿using FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment;
 using FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment;
 using FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FB98.Modules.Payments.Api.Controllers
 {
@@ -11,6 +13,7 @@ namespace FB98.Modules.Payments.Api.Controllers
 		{
 		}
 
+		[Authorize(Roles = "Administrator")]
 		[HttpPost("cash")]
 		public async Task<IActionResult> CreateCashPayment(CreateCashPaymentDto model)
 		{
@@ -19,9 +22,20 @@ namespace FB98.Modules.Payments.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
+		[Authorize]
 		[HttpPost("vnpay")]
 		public async Task<IActionResult> CreateVnPayPayment(CreateVnPayPaymentDto model)
 		{
+			var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+			if (userIdClaim != null)
+			{
+				model.UserId = Guid.Parse(userIdClaim.Value);
+			}
+			else
+			{
+				return Unauthorized();
+			}
+
 			var request = new CreateVnPayPaymentCommand(model);
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);

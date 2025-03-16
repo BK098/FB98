@@ -4,6 +4,6 @@ namespace FB98.Modules.Tickets.Application.Abstractions
 {
 	public interface IBookingSeatRepository : IRepository<BookingSeat>
 	{
-		Task<IEnumerable<Guid>> GetUnavailableSeats(Guid showId, IEnumerable<Guid> seatIds);
+		Task<List<BookingSeat>> GetBookedSeatsByShow(Guid showId);
 	}
 }

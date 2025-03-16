@@ -84,7 +84,7 @@ namespace FB98.Modules.Shows.Application.ShowManagement.Create
 
 				var features = model.Features.Select(f => new ShowFeature
 				{
-					FeatureId = f.FeatureId
+					FeatureId = f.FeatureId!.Value
 				}).ToList();
 
 				var runtime = movieResponse.Data!.RuntimeMinutes;
@@ -95,6 +95,17 @@ namespace FB98.Modules.Shows.Application.ShowManagement.Create
 				show.EndTime = show.StartTime.AddMinutes(runtime);
 				show.ShowStatusId = ShowStatusConstants.UpComming;
 				show.Features = features;
+
+				var overlappingShows = await _showRepository.GetAll()
+					.Where(s => s.CinemaHallId == model.CinemaHallId &&
+								((s.StartTime >= model.StartTime && s.StartTime < model.StartTime!.Value.AddMinutes(runtime)) ||
+								 (s.EndTime > model.StartTime && s.EndTime <= model.StartTime!.Value.AddMinutes(runtime))))
+					.ToListAsync(cancellationToken);
+
+				if (overlappingShows.Any())
+				{
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("ShowOverlap"), 400);
+				}
 
 				await _showRepository.CreateAsync(show);
 				await _unitOfWork.SaveChangesAsync();

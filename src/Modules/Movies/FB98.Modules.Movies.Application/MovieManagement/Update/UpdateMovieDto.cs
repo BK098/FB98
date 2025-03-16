@@ -1,5 +1,4 @@
 ﻿using FB98.Modules.Movies.Domain.Enums;
-using Microsoft.AspNetCore.Http;
 
 namespace FB98.Modules.Movies.Application.MovieManagement.Update
 {
@@ -13,8 +12,8 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Update
 		public string? Country { get; set; }
 		public string TrailerLink { get; set; }
 		public bool? IsVietSub { get; set; }
-		public IFormFile? HeaderImageUrl { get; set; }
-		public IFormFile? PosterImageUrl { get; set; }
+		public string? HeaderImageUrl { get; set; }
+		public string? PosterImageUrl { get; set; }
 		public string? Description { get; set; }
 		public string? Language { get; set; }
 

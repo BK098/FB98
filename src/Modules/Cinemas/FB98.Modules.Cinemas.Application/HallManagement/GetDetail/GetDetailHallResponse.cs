@@ -12,6 +12,7 @@
 	public class GetDetailSeatDto
 	{
 		public Guid SeatId { get; set; }
+		public Guid SeatTypeId { get; set; }
 		public string SeatType { get; set; }
 		public string SeatPosition { get; set; }
 	}

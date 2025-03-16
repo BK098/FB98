@@ -51,19 +51,19 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 				{
 					transaction.MarkSuccess();
 					_paymentRepository.Update(transaction);
-					await _bus.Publish(new PaymentSuccessEvent(transaction.OrderId!.Value, transaction.BookingId), cancellationToken);
+					await _bus.Publish(new PaymentSuccessEvent(transaction.OrderId, transaction.BookingId), cancellationToken);
 					return ApiResponseBuilder.Success(_localizedMessageService.GetLocalizedMessage("PaymentSuccessful"));
 				}
 
 				transaction.MarkFailed();
 				_paymentRepository.Update(transaction);
-				await _bus.Publish(new PaymentFailedEvent(transaction.OrderId!.Value, transaction.BookingId, "Payment failed."), cancellationToken);
+				await _bus.Publish(new PaymentFailedEvent(transaction.OrderId, transaction.BookingId, "Payment failed."), cancellationToken);
 
 				return ApiResponseBuilder.Error<string>(_localizedMessageService.GetLocalizedMessage("PaymentFailed"));
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Error occurred while proccess payment");
+				_logger.LogError(ex, "Error occurred while processing payment");
 				return ApiResponseBuilder.Error<string>("An unexpected error occurred", 500);
 			}
 		}

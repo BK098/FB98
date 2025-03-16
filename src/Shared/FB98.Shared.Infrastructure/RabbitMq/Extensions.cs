@@ -12,7 +12,7 @@ namespace FB98.Shared.Infrastructure.RabbitMq
 
 			services.Configure<MassTransitHostOptions>(opt =>
 			{
-				opt.WaitUntilStarted = true; // Đảm bảo MassTransit khởi động cùng hệ thống
+				opt.WaitUntilStarted = true;
 			});
 
 			services.AddMassTransit(opt =>

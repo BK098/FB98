@@ -1,7 +1,9 @@
 ﻿using FB98.Modules.Tickets.Application.Abstractions;
 using FB98.Modules.Tickets.DataAccess.Data;
 using FB98.Modules.Tickets.Domain.Entities;
+using FB98.Shared.Abstractions.StatusConstants;
 using FB98.Shared.Infrastructure.Repositpries;
+using Microsoft.EntityFrameworkCore;
 
 namespace FB98.Modules.Tickets.DataAccess.Repositories
 {
@@ -11,9 +13,17 @@ namespace FB98.Modules.Tickets.DataAccess.Repositories
 		{
 		}
 
-		public Task<IEnumerable<Guid>> GetUnavailableSeats(Guid showId, IEnumerable<Guid> seatIds)
+		public async Task<List<BookingSeat>> GetBookedSeatsByShow(Guid showId)
 		{
-			throw new NotImplementedException();
+			var bookedSeats = await _context.BookingSeats
+				.Include(x => x.Booking)
+				.Where(bs => bs.Booking.ShowId == showId &&
+							 (bs.SeatStatusId == BookingSeatStatusConstants.Booked ||
+							  bs.SeatStatusId == BookingSeatStatusConstants.CheckIn ||
+							  bs.SeatStatusId == BookingSeatStatusConstants.Pending))
+				.ToListAsync();
+
+			return bookedSeats;
 		}
 	}
 }

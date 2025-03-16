@@ -19,6 +19,10 @@
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
 
 			RuleFor(x => x.Value)
+				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
+				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
+
+			RuleFor(x => x.Value)
 				.InclusiveBetween(0, 100).When(x => x.IsDiscountPercentage!.Value).WithMessage(message.GetLocalizedMessage("DiscountPercentageRange"));
 
 			RuleFor(x => x.Value)
@@ -26,11 +30,11 @@
 
 			RuleFor(x => x.StartDate)
 				.GreaterThanOrEqualTo(DateTime.UtcNow.Subtract(_bufferTime))
-				.WithMessage("Thời gian bắt đầu phải từ hiện tại trở đi.");
+				.WithMessage(message.GetLocalizedMessage("StartDateValidation"));
 
 			RuleFor(x => x.EndDate)
-				.GreaterThan(x => x.StartDate.AddMinutes(5)).WithMessage("Thời gian kết thúc phải lớn hơn thời gian bắt đầu ít nhất 5 phút.")
-				.GreaterThanOrEqualTo(DateTime.UtcNow).WithMessage("Thời gian kết thúc không được nhỏ hơn thời gian hiện tại.");
+				.GreaterThan(x => x.StartDate.AddMinutes(5)).WithMessage(message.GetLocalizedMessage("EndDateValidation"))
+				.GreaterThanOrEqualTo(DateTime.UtcNow).WithMessage(message.GetLocalizedMessage("EndDateValidation"));
 		}
 	}
 }
