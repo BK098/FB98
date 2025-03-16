@@ -27,7 +27,15 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Events
 		{
 			try
 			{
-				var order = await _orderRepository.GetByIdAsync(context.Message.OrderId);
+				var orderId = context.Message.OrderId;
+				if (orderId == null)
+				{
+					_logger.LogInformation("OrderId is null, skipping order processing.");
+					await context.ConsumeCompleted;
+					return;
+				}
+
+				var order = await _orderRepository.GetByIdAsync(orderId);
 				if (order == null)
 				{
 					_logger.LogError("Notfound");

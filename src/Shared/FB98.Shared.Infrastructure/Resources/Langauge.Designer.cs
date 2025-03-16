@@ -358,6 +358,15 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No seats found for reservation.
+        /// </summary>
+        internal static string NoSeatsForReservation {
+            get {
+                return ResourceManager.GetString("NoSeatsForReservation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not empty.
         /// </summary>
         internal static string NotEmpty {
@@ -529,11 +538,47 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Seats are already locked.
+        /// </summary>
+        internal static string SeatsAlreadyLocked {
+            get {
+                return ResourceManager.GetString("SeatsAlreadyLocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Seats locked successfully.
         /// </summary>
         internal static string SeatsLocked {
             get {
                 return ResourceManager.GetString("SeatsLocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seats are not locked.
+        /// </summary>
+        internal static string SeatsNotLocked {
+            get {
+                return ResourceManager.GetString("SeatsNotLocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seats unlocked successfully.
+        /// </summary>
+        internal static string SeatsUnlocked {
+            get {
+                return ResourceManager.GetString("SeatsUnlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show has ended.
+        /// </summary>
+        internal static string ShowEnded {
+            get {
+                return ResourceManager.GetString("ShowEnded", resourceCulture);
             }
         }
         

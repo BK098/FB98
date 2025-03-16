@@ -19,6 +19,7 @@ namespace FB98.Modules.Tickets.DataAccess.Repositories
 				.Where(s => s.ShowId == showId
 							&& seatIds.Contains(s.SeatId)
 							&& s.LockedUntil > DateTime.UtcNow)
+
 				.Select(s => s.SeatId)
 				.ToListAsync();
 		}
