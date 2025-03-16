@@ -11,13 +11,16 @@ namespace FB98.Shared.Abstractions.Refits
 		[Get("/cinema-module/halls/{hallId}")]
 		Task<ApiResult<CinemaHallDto>> GetHallById(Guid hallId);
 
+		[Get("/cinema-module/halls/{hallId}/seats")]
+		Task<ApiResult<CinemaHallDto>> GetHallByIdWithSeat(Guid hallId);
+
 		[Post("/cinema-module/halls/{hallId}/check-seats")]
 		Task<ApiResult<CheckSeatsResponse>> CheckSeats(Guid hallId, [Body] CheckSeastsDto model);
 	}
 
 	public record CinemaHallDto(string Name, IList<CinemaHallSeatDto> Seats);
 
-	public record CinemaHallSeatDto(Guid SeatId, string SeatType, string SeatPosition);
+	public record CinemaHallSeatDto(Guid SeatId, Guid SeatTypeId, string SeatPosition);
 
 	public record CheckSeatsResponse(string Name, IList<Dictionary<Guid, Guid>> SeatIds);
 

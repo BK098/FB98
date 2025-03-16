@@ -276,4 +276,28 @@
   <data name="DiscountPercentageRange" xml:space="preserve">
     <value>Discount percentage must be between 0 and 100</value>
   </data>
+  <data name="MaxSeatsLimit" xml:space="preserve">
+    <value>Only up to 5 seats are allowed</value>
+  </data>
+  <data name="SeatsLocked" xml:space="preserve">
+    <value>Seats locked successfully</value>
+  </data>
+  <data name="SeatBooked" xml:space="preserve">
+    <value>Booked</value>
+  </data>
+  <data name="SeatLocked" xml:space="preserve">
+    <value>Locked</value>
+  </data>
+  <data name="SeatAvailable" xml:space="preserve">
+    <value>Available</value>
+  </data>
+  <data name="OrderOrBookingRequired" xml:space="preserve">
+    <value>At least OrderId or BookingId is required. Both cannot be null</value>
+  </data>
+  <data name="ShowOverlap" xml:space="preserve">
+    <value>There is already a show scheduled in this cinema hall during the selected time</value>
+  </data>
+  <data name="StartDateBeforeEndDate" xml:space="preserve">
+    <value>Start date must be before end date</value>
+  </data>
 </root>

@@ -3,8 +3,20 @@
 	public static class BookingSeatStatusConstants
 	{
 		public static Guid Available = Guid.Parse("0492890c-b183-41cd-b318-592839ff50e0");
-		public static Guid Booked = Guid.Parse("bb2230e9-2869-4074-8e71-9645c4471102");
 		public static Guid Pending = Guid.Parse("5e69d50b-60af-4367-b5d4-a3977a138bcb");
-		public static Guid Cancelled = Guid.Parse("2e2d9591-b9e8-4475-b7fa-dcfeb3f4a8c9");
+		public static Guid Booked = Guid.Parse("2e2d9591-b9e8-4475-b7fa-dcfeb3f4a8c9");
+		public static Guid CheckIn = Guid.Parse("6c26d077-1908-4fb1-ad5d-b4679ae66e6a");
+
+		public static string GetStatusName(Guid statusId)
+		{
+			return statusId switch
+			{
+				_ when statusId == Available => "Available",
+				_ when statusId == Pending => "Pending",
+				_ when statusId == Booked => "Booked",
+				_ when statusId == CheckIn => "CheckIn",
+				_ => "Unknown"
+			};
+		}
 	}
 }

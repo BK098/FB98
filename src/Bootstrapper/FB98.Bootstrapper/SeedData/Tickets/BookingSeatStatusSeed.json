@@ -4,15 +4,15 @@
 		"Name": "Available"
 	},
 	{
-		"Id": "bb2230e9-2869-4074-8e71-9645c4471102",
-		"Name": "Booked"
-	},
-	{
 		"Id": "5e69d50b-60af-4367-b5d4-a3977a138bcb",
 		"Name": "Pending"
 	},
 	{
 		"Id": "2e2d9591-b9e8-4475-b7fa-dcfeb3f4a8c9",
-		"Name": "Cancelled"
+		"Name": "Booked"
+	},
+	{
+		"Id": "6c26d077-1908-4fb1-ad5d-b4679ae66e6a",
+		"Name": "CheckIn"
 	}
 ]

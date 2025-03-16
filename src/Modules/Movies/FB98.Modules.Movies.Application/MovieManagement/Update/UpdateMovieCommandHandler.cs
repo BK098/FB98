@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FB98.Modules.Movies.Application.Abstractions;
 using FB98.Modules.Movies.Domain.Entities;
-using FB98.Shared.Infrastructure.Cloudinaries;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
@@ -10,7 +9,6 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Update
 	internal sealed class UpdateMovieCommandHandler : ICommandHandler<UpdateMovieCommand, ApiResult<object>>
 	{
 		private readonly ICastRepository _castRepository;
-		private readonly ICloudinaryService _cloudinaryService;
 		private readonly IDirectorRepository _directorRepository;
 		private readonly IGenreRepository _genreRepository;
 		private readonly ILocalizedMessageService _localizedMessageService;
@@ -30,7 +28,6 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Update
 			IGenreRepository genreRepository,
 			IUnitOfWork unitOfWork,
 			IValidator<UpdateMovieDto> validator,
-			ICloudinaryService cloudinaryService,
 			ILocalizedMessageService localizedMessageService,
 			IConnectionMultiplexer redisConnection)
 		{
@@ -41,7 +38,6 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Update
 			_directorRepository = directorRepository;
 			_unitOfWork = unitOfWork;
 			_validator = validator;
-			_cloudinaryService = cloudinaryService;
 			_localizedMessageService = localizedMessageService;
 			_redisConnection = redisConnection;
 			_genreRepository = genreRepository;

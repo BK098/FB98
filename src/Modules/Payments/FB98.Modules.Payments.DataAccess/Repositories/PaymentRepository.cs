@@ -33,7 +33,7 @@ namespace FB98.Modules.Payments.DataAccess.Repositories
 			return await _context.PaymentTransactions
 				.Include(x => x.PaymentStatus)
 				.Include(x => x.PaymentMethod)
-				.FirstOrDefaultAsync(p => p.OrderId == id);
+				.FirstOrDefaultAsync(p => p.Id == id);
 		}
 	}
 }

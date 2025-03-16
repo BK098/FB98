@@ -1,5 +1,4 @@
 using FB98.Bootstrapper.Extensions;
-using FB98.Bootstrapper.Middlewares;
 using FB98.Modules.Catalog.Api;
 using FB98.Modules.Cinemas.Api;
 using FB98.Modules.Customers.Api;
@@ -43,9 +42,6 @@ app.UseCustomCors();
 app.UseCustomSwagger();
 
 //Module
-app.UseMiddleware<JwtMiddleware>();
-app.UseMiddleware<ErrorHandlerMiddleware>();
-app.UseMiddleware<RequestTimingMiddleware>();
 app.UseInfrastructure();
 app.UseIdentityModule();
 app.UseCustomersModule();

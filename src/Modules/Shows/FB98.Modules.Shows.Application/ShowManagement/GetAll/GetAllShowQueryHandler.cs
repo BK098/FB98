@@ -32,7 +32,13 @@ namespace FB98.Modules.Shows.Application.ShowManagement.GetAll
 			var filter = request.Filter;
 			try
 			{
-				var shows = _showRepository.GetAll();
+				var today = DateTime.Today.ToUniversalTime();
+				var endDate = today.AddDays(3).ToUniversalTime();
+
+				var shows = _showRepository.GetAll()
+					.Where(x => x.StartTime.Date >= today &&
+								x.StartTime.Date < endDate);
+
 				var search = filter.SearchTerm?.ConvertToUnsign().Trim();
 				if (!string.IsNullOrEmpty(search))
 				{

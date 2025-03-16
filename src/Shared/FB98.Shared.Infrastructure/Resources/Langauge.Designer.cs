@@ -331,6 +331,15 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only up to 5 seats are allowed.
+        /// </summary>
+        internal static string MaxSeatsLimit {
+            get {
+                return ResourceManager.GetString("MaxSeatsLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name cannot be empty.
         /// </summary>
         internal static string NameEmpty {
@@ -372,6 +381,15 @@ namespace FB98.Shared.Infrastructure.Resources {
         internal static string NotNull {
             get {
                 return ResourceManager.GetString("NotNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to At least OrderId or BookingId is required. Both cannot be null.
+        /// </summary>
+        internal static string OrderOrBookingRequired {
+            get {
+                return ResourceManager.GetString("OrderOrBookingRequired", resourceCulture);
             }
         }
         
@@ -480,6 +498,60 @@ namespace FB98.Shared.Infrastructure.Resources {
         internal static string PhoneNumberRequired {
             get {
                 return ResourceManager.GetString("PhoneNumberRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available.
+        /// </summary>
+        internal static string SeatAvailable {
+            get {
+                return ResourceManager.GetString("SeatAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Booked.
+        /// </summary>
+        internal static string SeatBooked {
+            get {
+                return ResourceManager.GetString("SeatBooked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Locked.
+        /// </summary>
+        internal static string SeatLocked {
+            get {
+                return ResourceManager.GetString("SeatLocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Seats locked successfully.
+        /// </summary>
+        internal static string SeatsLocked {
+            get {
+                return ResourceManager.GetString("SeatsLocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is already a show scheduled in this cinema hall during the selected time.
+        /// </summary>
+        internal static string ShowOverlap {
+            get {
+                return ResourceManager.GetString("ShowOverlap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start date must be before end date.
+        /// </summary>
+        internal static string StartDateBeforeEndDate {
+            get {
+                return ResourceManager.GetString("StartDateBeforeEndDate", resourceCulture);
             }
         }
         

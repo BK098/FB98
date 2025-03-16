@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FB98.Modules.Movies.Application.Abstractions;
 using FB98.Modules.Movies.Domain.Entities;
-using FB98.Shared.Infrastructure.Cloudinaries;
 using Microsoft.EntityFrameworkCore;
 
 namespace FB98.Modules.Movies.Application.MovieManagement.Create
@@ -9,7 +8,6 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Create
 	internal sealed class CreateMovieCommandHandler : ICommandHandler<CreateMovieCommand, ApiResult<object>>
 	{
 		private readonly ICastRepository _castRepository;
-		private readonly ICloudinaryService _cloudinaryService;
 		private readonly IDirectorRepository _directorRepository;
 		private readonly IGenreRepository _genreRepository;
 		private readonly ILocalizedMessageService _localizedMessageService;
@@ -28,7 +26,6 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Create
 			IGenreRepository genreRepository,
 			IUnitOfWork unitOfWork,
 			IValidator<CreateMovieDto> validator,
-			ICloudinaryService cloudinaryService,
 			ILocalizedMessageService localizedMessageService)
 		{
 			_mapper = mapper;
@@ -38,7 +35,6 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Create
 			_directorRepository = directorRepository;
 			_unitOfWork = unitOfWork;
 			_validator = validator;
-			_cloudinaryService = cloudinaryService;
 			_localizedMessageService = localizedMessageService;
 			_genreRepository = genreRepository;
 		}

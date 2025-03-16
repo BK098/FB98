@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using FB98.Modules.Cinemas.Application.Abstractions;
 using FB98.Modules.Cinemas.Application.HallManagement.Create;
+using StackExchange.Redis;
+using System.Text.Json;
 
 namespace FB98.Modules.Cinemas.Application.HallManagement.GetDetail
 {
@@ -10,25 +12,59 @@ namespace FB98.Modules.Cinemas.Application.HallManagement.GetDetail
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ILogger<CreateHallCommandHandler> _logger;
 		private readonly IMapper _mapper;
+		private readonly IConnectionMultiplexer _redisConnection;
 
 		public GetDetailHallQueryHandler(
 			ICinemaHallRepository cinemaHallRepository,
 			ILocalizedMessageService localizedMessageService,
 			ILogger<CreateHallCommandHandler> logger,
-			IMapper mapper)
+			IMapper mapper,
+			IConnectionMultiplexer redisConnection)
 		{
 			_cinemaHallRepository = cinemaHallRepository;
 			_localizedMessageService = localizedMessageService;
 			_logger = logger;
 			_mapper = mapper;
+			_redisConnection = redisConnection;
 		}
 
 		public async Task<ApiResult<GetDetailHallResponse>> Handle(GetDetailHallQuery request, CancellationToken cancellationToken)
 		{
 			var hallId = request.HallId;
 			var isSeatRange = request.IsSeatRange;
+			string? cacheKey = null;
+
+
+			IDatabase? redisDatabase = null;
 			try
 			{
+				redisDatabase = _redisConnection.GetDatabase();
+			}
+			catch (RedisConnectionException ex)
+			{
+				_logger.LogWarning(ex, "Could not establish connection to Redis. Proceeding without cache.");
+			}
+			catch (RedisTimeoutException ex)
+			{
+				_logger.LogWarning(ex, "Redis timeout occurred. Skipping cache retrieval.");
+			}
+
+			try
+			{
+				if (redisDatabase != null && isSeatRange)
+				{
+					cacheKey = $"hallId:{hallId}/seats";
+					var cachedMovie = await redisDatabase.StringGetAsync(cacheKey);
+					if (!cachedMovie.IsNullOrEmpty)
+					{
+						var cachedResponse = JsonSerializer.Deserialize<GetDetailHallResponse>(cachedMovie!);
+						if (cachedResponse != null)
+						{
+							return ApiResponseBuilder.Success(cachedResponse, _localizedMessageService.GetLocalizedMessage("DataRetrievedFromCache"));
+						}
+					}
+				}
+
 				var hall = await _cinemaHallRepository.GetByIdAsync(hallId);
 				if (hall == null)
 				{
@@ -38,17 +74,34 @@ namespace FB98.Modules.Cinemas.Application.HallManagement.GetDetail
 				var response = _mapper.Map<GetDetailHallResponse>(hall);
 				if (isSeatRange)
 				{
-					// Lấy danh sách ghế
 					response.Seats = hall.Seats.Select(seat => _mapper.Map<GetDetailSeatDto>(seat)).ToList();
 					response.MaxSeatColumn = hall.Seats.Max(x => x.SeatColumn);
 					response.MaxSeatRow = hall.Seats.Max(x => x.SeatRow);
+
+					if (redisDatabase != null)
+					{
+						try
+						{
+							await redisDatabase.StringSetAsync(cacheKey, JsonSerializer.Serialize(response));
+						}
+						catch (RedisConnectionException ex)
+						{
+							_logger.LogWarning(ex, "Could not connect to Redis. Skipping cache save.");
+						}
+						catch (RedisTimeoutException ex)
+						{
+							_logger.LogWarning(ex, "Redis timeout occurred. Skipping cache save.");
+						}
+					}
 				}
 				else
 				{
-					// Không lấy danh sách ghế
 					response.Seats = new List<GetDetailSeatDto>();
 				}
+
 				response.SeatsCount = hall.Seats.Count;
+
+
 				return ApiResponseBuilder.Success(response, _localizedMessageService.GetLocalizedMessage("DataRetrieved"));
 			}
 			catch (Exception ex)

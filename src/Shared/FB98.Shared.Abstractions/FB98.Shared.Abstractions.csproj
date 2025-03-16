@@ -21,4 +21,8 @@
 
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\FB98.Shared.Utils\FB98.Shared.Utils.csproj" />
+    </ItemGroup>
+
 </Project>

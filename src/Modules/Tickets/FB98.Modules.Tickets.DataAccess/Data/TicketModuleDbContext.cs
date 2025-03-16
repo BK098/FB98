@@ -23,12 +23,6 @@ namespace FB98.Modules.Tickets.DataAccess.Data
 			modelBuilder.ApplyConfigurationsFromAssembly(GetType().Assembly);
 
 			base.OnModelCreating(modelBuilder);
-
-			modelBuilder.Entity<BookingSeatLock>()
-				.HasIndex(e => e.ShowId).IsUnique();
-			modelBuilder.Entity<BookingSeatLock>()
-				.HasIndex(e => e.SeatId).IsUnique();
-
 		}
 	}
 }

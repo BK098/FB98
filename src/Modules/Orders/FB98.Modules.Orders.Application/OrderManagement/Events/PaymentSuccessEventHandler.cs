@@ -34,7 +34,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Events
 					return;
 				}
 
-				if (order.OrderStatusId != OrderStatusConstants.Created)
+				if (order.OrderStatusId != OrderStatusConstants.Pending)
 				{
 					_logger.LogError("InvalidState");
 					return;

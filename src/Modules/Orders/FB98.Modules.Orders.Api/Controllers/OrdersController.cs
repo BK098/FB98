@@ -1,4 +1,6 @@
-﻿using FB98.Modules.Orders.Application.OrderManagement.Create;
+﻿using FB98.Modules.Orders.Application.OrderManagement.CheckIn;
+using FB98.Modules.Orders.Application.OrderManagement.Create;
+using FB98.Modules.Orders.Application.OrderManagement.GetDetail;
 using FB98.Modules.Orders.Application.OrderManagement.GetOrderStatusHistory;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +11,14 @@ namespace FB98.Modules.Orders.Api.Controllers
 	{
 		public OrdersController(IMediator mediator) : base(mediator)
 		{
+		}
+
+		[HttpGet("{orderId:guid}")]
+		public async Task<IActionResult> GetOrder(Guid orderId)
+		{
+			var request = new GetDetailOrderQuery(orderId);
+			var result = await _mediator.Send(request);
+			return StatusCode(result.StatusCode, result);
 		}
 
 		[Authorize]
@@ -25,6 +35,15 @@ namespace FB98.Modules.Orders.Api.Controllers
 		public async Task<IActionResult> GetOrderStatusHistory(Guid orderId)
 		{
 			var request = new GetOrderStatusHistoryQuery(orderId);
+			var result = await _mediator.Send(request);
+			return StatusCode(result.StatusCode, result);
+		}
+
+		[Authorize(Roles = "Administrator")]
+		[HttpPost("{orderId:guid}check-in")]
+		public async Task<IActionResult> CheckIn(Guid orderId)
+		{
+			var request = new CheckInCommand(orderId);
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);
 		}

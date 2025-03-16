@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
-namespace FB98.Bootstrapper.Middlewares
+namespace FB98.Shared.Infrastructure.Middlewares
 {
 	internal class RequestTimingMiddleware : IMiddleware
 	{

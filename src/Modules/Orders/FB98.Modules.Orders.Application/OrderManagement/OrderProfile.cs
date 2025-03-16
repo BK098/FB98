@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FB98.Modules.Orders.Application.OrderManagement.Create;
+using FB98.Modules.Orders.Application.OrderManagement.GetDetail;
 using FB98.Modules.Orders.Application.OrderManagement.GetOrderStatusHistory;
 using FB98.Modules.Orders.Domain.Entities;
 using FB98.Shared.Abstractions.StatusConstants;
@@ -24,6 +25,8 @@ namespace FB98.Modules.Orders.Application.OrderManagement
 			CreateMap<CreateOrderItemDto, OrderItem>()
 				.ForMember(src => src.Order, opt => opt.Ignore())
 				.ForMember(dest => dest.OrderId, opt => opt.Ignore());
+			CreateMap<Order, GetDetailOrderResponse>()
+				.ForMember(dest => dest.StatusId, opt => opt.MapFrom(src => src.OrderStatusId));
 		}
 	}
 }

@@ -16,6 +16,10 @@
 		"Name": "CheckedIn"
 	},
 	{
+		"Id": "d2a1b2c3-d4e5-f678-9abc-def012345678",
+		"Name": "Pending"
+	},
+	{
 		"Id": "0177dc59-0f43-453d-9870-7ab8bcb539d3",
 		"Name": "Canceled"
 	}

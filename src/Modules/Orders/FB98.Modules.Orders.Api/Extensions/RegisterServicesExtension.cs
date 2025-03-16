@@ -16,8 +16,8 @@ namespace FB98.Modules.Orders.Api.Extensions
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
 			services.AddMassTransit(config =>
 			{
-				// Đăng ký Consumer
 				config.AddConsumer<PaymentSuccessEventHandler>();
+				config.AddConsumer<VnPayPaymentCreatedEventHandler>();
 			});
 			return services;
 		}

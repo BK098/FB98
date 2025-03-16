@@ -111,6 +111,13 @@ namespace FB98.Modules.Identity.Api.Controllers
 					SameSite = SameSiteMode.Strict,
 					Expires = DateTimeOffset.UtcNow.AddMinutes(15)
 				});
+				Response.Cookies.Append("refresh_token", result.Data!.RefreshToken, new CookieOptions
+				{
+					HttpOnly = true,
+					Secure = false,
+					SameSite = SameSiteMode.Strict,
+					Expires = DateTimeOffset.UtcNow.AddDays(7)
+				});
 			}
 
 			return StatusCode(result.StatusCode, result);

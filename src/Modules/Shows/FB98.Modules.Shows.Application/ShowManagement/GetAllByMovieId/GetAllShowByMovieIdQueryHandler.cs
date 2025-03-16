@@ -2,6 +2,7 @@
 using FB98.Modules.Shows.Application.Abstractions;
 using FB98.Shared.Infrastructure.Paging;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace FB98.Modules.Shows.Application.ShowManagement.GetAllByMovieId
 {
@@ -29,9 +30,14 @@ namespace FB98.Modules.Shows.Application.ShowManagement.GetAllByMovieId
 			var movideId = request.MovieId;
 			try
 			{
+				var today = DateTime.Today.ToUniversalTime();
+				var endDate = today.AddDays(3).ToUniversalTime();
+
 				var shows = _showRepository.GetAll()
 					.Include(x => x.ShowStatus)
-					.Where(x => x.MovieId == request.MovieId);
+					.Where(x => x.MovieId == movideId &&
+								x.StartTime.Date >= today &&
+								x.StartTime.Date < endDate);
 
 				if (!await shows.AnyAsync(cancellationToken))
 				{
@@ -48,8 +54,8 @@ namespace FB98.Modules.Shows.Application.ShowManagement.GetAllByMovieId
 						CinemaHallName = group.First().CinemaHallName,
 						ShowTimes = group.Select(show => new GetAllShowDto
 						{
-							StartTime = show.StartTime.ToString("hh:mm"),
-							EndTime = show.EndTime.ToString("hh:mm"),
+							StartTime = show.StartTime.ToLocalTime().ToString("hh:mm", new CultureInfo("vi")),
+							EndTime = show.EndTime.ToLocalTime().ToString("hh:mm", new CultureInfo("vi")),
 							ShowId = show.Id,
 							ShowStatusId = show.ShowStatusId,
 							ShowStatusName = show.ShowStatus.Name

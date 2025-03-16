@@ -1,5 +1,4 @@
-﻿using FB98.Bootstrapper.Middlewares;
-using FB98.Shared.Infrastructure.Repositpries;
+﻿using FB98.Shared.Infrastructure.Repositpries;
 using FluentValidation;
 using Refit;
 using System.Net;
@@ -87,10 +86,6 @@ namespace FB98.Bootstrapper.Extensions
 			}
 
 			#endregion
-
-			services.AddSingleton<JwtMiddleware>();
-			services.AddSingleton<ErrorHandlerMiddleware>();
-			services.AddSingleton<RequestTimingMiddleware>();
 
 			return services;
 		}

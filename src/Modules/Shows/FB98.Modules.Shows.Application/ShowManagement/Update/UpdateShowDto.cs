@@ -6,7 +6,7 @@
 		public Guid? MovieId { get; set; }
 		public DateTime? StartTime { get; set; }
 		public DateTime? EndTime { get; set; }
-		public ICollection<UpdateShowFeatureDto> Features { get; set; } = new List<UpdateShowFeatureDto>();
+		public ICollection<UpdateShowFeatureDto>? Features { get; set; } = new List<UpdateShowFeatureDto>();
 	}
 
 	public class UpdateShowFeatureDto

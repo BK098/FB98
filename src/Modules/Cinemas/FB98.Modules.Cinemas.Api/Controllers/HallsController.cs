@@ -38,7 +38,6 @@ namespace FB98.Modules.Cinemas.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize]
 		[HttpPost("{hallId:guid}/check-seats")]
 		public async Task<IActionResult> CreateHall(Guid hallId, [FromBody] CheckSeatsDto model)
 		{

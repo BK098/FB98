@@ -14,6 +14,8 @@ namespace FB98.Modules.Tickets.Domain.Entities
 		public Guid StatusId { get; set; }
 		public BookingStatus Status { get; set; }
 
+		public Guid ShowId { get; set; }
+
 		public ICollection<BookingSeat> BookingSeats { get; set; } = new List<BookingSeat>();
 
 		public void SetDiscountPercentage()

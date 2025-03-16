@@ -73,7 +73,7 @@ namespace FB98.Modules.Shows.Application.ShowManagement.CreateRange
 					return ApiResponseBuilder.Error<object>("Movie: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
-				var featureIds = model.Features.Select(g => g.FeatureId).ToList();
+				var featureIds = model.Features!.Select(g => g.FeatureId).ToList();
 				var existingGenres = await _featureRepository.GetAll()
 					.Where(g => featureIds.Contains(g.Id)).ToListAsync(cancellationToken);
 				if (existingGenres.Count != featureIds.Count)
@@ -83,13 +83,24 @@ namespace FB98.Modules.Shows.Application.ShowManagement.CreateRange
 
 				var shows = new List<Show>();
 
-				var currentStartTime = model.StartDate;
-
-				while (currentStartTime < model.EndDate)
+				var currentStartTime = model.StartDate!.Value.ToUniversalTime();
+				var endDate = model.EndDate!.Value.ToUniversalTime();
+				while (currentStartTime < endDate)
 				{
 					var runtime = movieResponse.Data!.RuntimeMinutes;
 					var showName = currentStartTime.ToString("HH:mm");
 					var showDescription = $"{showName} - {currentStartTime.AddMinutes(runtime):HH:mm}";
+
+					var overlappingShows = await _showRepository.GetAll()
+						.Where(s => s.CinemaHallId == model.CinemaHallId &&
+									((s.StartTime >= currentStartTime && s.StartTime < currentStartTime.AddMinutes(runtime)) ||
+									 (s.EndTime > currentStartTime && s.EndTime <= currentStartTime.AddMinutes(runtime))))
+						.ToListAsync(cancellationToken);
+
+					if (overlappingShows.Any())
+					{
+						return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("ShowOverlap"), 400);
+					}
 
 					var show = new Show
 					{
@@ -103,19 +114,19 @@ namespace FB98.Modules.Shows.Application.ShowManagement.CreateRange
 						StartTime = currentStartTime,
 						EndTime = currentStartTime.AddMinutes(runtime),
 						ShowStatusId = ShowStatusConstants.UpComming,
-						Features = model.Features.Select(f => new ShowFeature
+						Features = model.Features!.Select(f => new ShowFeature
 						{
-							FeatureId = f.FeatureId
+							FeatureId = f.FeatureId!.Value
 						}).ToList()
 					};
-					if (show.EndTime > model.EndDate)
+					if (show.EndTime > endDate)
 					{
 						break;
 					}
 
 					shows.Add(show);
 
-					currentStartTime = show.EndTime.AddMinutes(model.TimeRest);
+					currentStartTime = show.EndTime.AddMinutes(model.TimeRest!.Value);
 				}
 
 				await _showRepository.CreateRangeAsync(shows);
