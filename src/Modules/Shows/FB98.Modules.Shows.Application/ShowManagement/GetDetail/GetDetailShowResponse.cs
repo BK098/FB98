@@ -7,8 +7,8 @@
 		public int MovieRuntimeMinutes { get; set; }
 		public Guid CinemaHallId { get; set; }
 		public string CinemaHallName { get; set; }
-		public DateTime StartTime { get; set; }
-		public DateTime EndTime { get; set; }
+		public string StartTime { get; set; }
+		public string EndTime { get; set; }
 		public Guid ShowStatusId { get; set; }
 		public string ShowStatusName { get; set; }
 

@@ -1,5 +1,6 @@
 using FB98.Modules.Tickets.Application.Abstractions;
 using FB98.Shared.Abstractions.StatusConstants;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -26,7 +27,7 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.BackgroundJobs
 
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
-			var taskPeriod = TimeSpan.FromMinutes(5);
+			var taskPeriod = TimeSpan.FromMinutes(1);
 			_timer = new Timer(CheckBookingStatus, null, TimeSpan.Zero, taskPeriod);
 			return Task.CompletedTask;
 		}
@@ -59,8 +60,8 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.BackgroundJobs
 					//    NewStatusId = BookingStatusConstants.Expired
 					//};
 					//bookingStatusHistory.SetCreatedAt();
-					//unitOfWork.Entry(bookingStatusHistory, EntityState.Added);
-					booking.StatusId = BookingStatusConstants.Expired;
+					unitOfWork.Entry(booking, EntityState.Deleted);
+					//booking.StatusId = BookingStatusConstants.Expired;
 				}
 
 				// Expire bookings that are still in Pending state after 15 minutes
@@ -75,8 +76,21 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.BackgroundJobs
 					//	NewStatusId = BookingStatusConstants.Expired
 					//};
 					//bookingStatusHistory.SetCreatedAt();
-					//unitOfWork.Entry(bookingStatusHistory, EntityState.Added);
-					booking.StatusId = BookingStatusConstants.Expired;
+					unitOfWork.Entry(booking, EntityState.Deleted);
+					//booking.StatusId = BookingStatusConstants.Expired;
+					var bookingSeats = booking.BookingSeats.Where(x => x.BookingId == booking.Id).ToList();
+					foreach (var bookingSeat in bookingSeats)
+					{
+						_logger.LogInformation("Expiring pending booking {BookingId}", bookingSeat.Id);
+						//var bookingStatusHistory = new BookingStatusHistory
+						//{
+						//	BookingId = booking.Id,
+						//	OldStatusId = booking.BookingStatusId,
+						//	NewStatusId = BookingStatusConstants.Expired
+						//};
+						//bookingStatusHistory.SetCreatedAt();
+						unitOfWork.Entry(bookingSeat, EntityState.Deleted);
+					}
 				}
 
 				await unitOfWork.SaveChangesAsync();

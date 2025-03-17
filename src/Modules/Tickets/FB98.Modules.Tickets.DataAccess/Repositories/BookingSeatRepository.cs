@@ -25,5 +25,12 @@ namespace FB98.Modules.Tickets.DataAccess.Repositories
 
 			return bookedSeats;
 		}
+
+		public async Task<IEnumerable<BookingSeat>> GetBookingSeatsByStatusAndTimeAsync(Guid statusId, DateTime date)
+		{
+			return await _context.BookingSeats
+				.Where(x => x.SeatStatusId == statusId && x.CreateAt <= date)
+				.ToListAsync();
+		}
 	}
 }

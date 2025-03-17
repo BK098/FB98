@@ -117,7 +117,8 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.SeatReservation
 						return ApiResponseBuilder.Error<object>($"Cannot find seat type for seat {seatId}");
 					}
 
-					var seatPrice = await _seatPriceRuleRepository.GetSeatPriceByTypeAndDate(seatTypeId!.Value, showResponse.Data!.StartTime); //, CustomerTypeEnum.Student);
+					var showDate = Convert.ToDateTime(showResponse.Data!.StartTime).ToUniversalTime();
+					var seatPrice = await _seatPriceRuleRepository.GetSeatPriceByTypeAndDate(seatTypeId!.Value, showDate);
 					if (seatPrice == null)
 					{
 						return ApiResponseBuilder.Error<object>($"Cannot determine price for seat {seatId}");

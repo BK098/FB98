@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using FB98.Modules.Shows.Application.Abstractions;
 using FB98.Shared.Infrastructure.Paging;
+using FB98.Shared.Utils.Extensions;
 using Microsoft.EntityFrameworkCore;
-using System.Globalization;
 
 namespace FB98.Modules.Shows.Application.ShowManagement.GetAllByMovieId
 {
@@ -54,8 +54,8 @@ namespace FB98.Modules.Shows.Application.ShowManagement.GetAllByMovieId
 						CinemaHallName = group.First().CinemaHallName,
 						ShowTimes = group.Select(show => new GetAllShowDto
 						{
-							StartTime = show.StartTime.ToLocalTime().ToString("hh:mm", new CultureInfo("vi")),
-							EndTime = show.EndTime.ToLocalTime().ToString("hh:mm", new CultureInfo("vi")),
+							StartTime = show.StartTime.ConvertUtcToVietnamTime().ToString("HH:mm:ss zz"),
+							EndTime = show.EndTime.ConvertUtcToVietnamTime().ToString("HH:mm:ss zz"),
 							ShowId = show.Id,
 							ShowStatusId = show.ShowStatusId,
 							ShowStatusName = show.ShowStatus.Name

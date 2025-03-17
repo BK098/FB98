@@ -20,10 +20,10 @@ namespace FB98.Modules.Tickets.DataAccess.Repositories
 				.Include(x => x.Status)
 				.FirstOrDefaultAsync(x => x.Id == id);
 		}
-		public async Task<IEnumerable<Booking>> GetBookingsByStatusAndTimeAsync(Guid orderStatusId, DateTime date)
+		public async Task<IEnumerable<Booking>> GetBookingsByStatusAndTimeAsync(Guid statusId, DateTime date)
 		{
 			return await _context.Bookings
-				.Where(x => x.StatusId == orderStatusId && x.CreateAt <= date)
+				.Where(x => x.StatusId == statusId && x.CreateAt <= date)
 				.ToListAsync();
 		}
 	}
