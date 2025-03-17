@@ -74,7 +74,7 @@ namespace FB98.Modules.Shows.Application.ShowManagement.Create
 					return ApiResponseBuilder.Error<object>("Movie: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
-				var featureIds = model.Features.Select(g => g.FeatureId).ToList();
+				var featureIds = model.Features!.Select(g => g.FeatureId).ToList();
 				var existingGenres = await _featureRepository.GetAll()
 					.Where(g => featureIds.Contains(g.Id)).ToListAsync(cancellationToken);
 				if (existingGenres.Count != featureIds.Count)
@@ -82,7 +82,7 @@ namespace FB98.Modules.Shows.Application.ShowManagement.Create
 					return ApiResponseBuilder.Error<object>("Feature: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
-				var features = model.Features.Select(f => new ShowFeature
+				var features = model.Features!.Select(f => new ShowFeature
 				{
 					FeatureId = f.FeatureId!.Value
 				}).ToList();

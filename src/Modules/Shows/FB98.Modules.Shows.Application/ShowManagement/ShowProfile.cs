@@ -5,6 +5,7 @@ using FB98.Modules.Shows.Application.ShowManagement.GetAll;
 using FB98.Modules.Shows.Application.ShowManagement.GetDetail;
 using FB98.Modules.Shows.Application.ShowManagement.Update;
 using FB98.Modules.Shows.Domain.Entities;
+using FB98.Shared.Utils.Extensions;
 
 namespace FB98.Modules.Shows.Application.ShowManagement
 {
@@ -18,12 +19,15 @@ namespace FB98.Modules.Shows.Application.ShowManagement
 		private void Init()
 		{
 			CreateMap<CreateShowDto, Show>()
+				.ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime!.Value.ToUniversalTime()))
 				.ForMember(dest => dest.Features, opt => opt.MapFrom(src => src.Features));
 			CreateMap<CreateShowFeatureDto, ShowFeature>()
 				.ForMember(dest => dest.ShowId, opt => opt.Ignore())
 				.ForMember(dest => dest.Show, opt => opt.Ignore());
 
 			CreateMap<UpdateShowDto, Show>()
+				.ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime!.Value.ToUniversalTime()))
+				.ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.EndTime!.Value.ToUniversalTime()))
 				.ForMember(dest => dest.Features, opt => opt.Ignore());
 			CreateMap<UpdateShowFeatureDto, ShowFeature>()
 				.ForMember(dest => dest.Feature, opt => opt.MapFrom(src => src.FeatureId))
@@ -37,6 +41,8 @@ namespace FB98.Modules.Shows.Application.ShowManagement
 				.ForMember(dest => dest.Show, opt => opt.Ignore());
 
 			CreateMap<Show, GetDetailShowResponse>()
+				.ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime.ConvertUtcToVietnamTime().ToString("HH:mm:ss zz")))
+				.ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.EndTime.ConvertUtcToVietnamTime().ToString("HH:mm:ss zz")))
 				.ForMember(dest => dest.Features, opt => opt.MapFrom(src => src.Features));
 			CreateMap<ShowFeature, GetDetailShowFeatureResponse>()
 				.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.FeatureId))

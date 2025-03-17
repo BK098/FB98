@@ -4,7 +4,10 @@ using Microsoft.Extensions.Hosting;
 
 namespace FB98.Modules.Tickets.Application.SeatManagement.BackgroundJobs
 {
-	public class SeatUnlockJob : IHostedService, IDisposable
+	/// <summary>
+	/// Cách 1 phút chạy ứng dùng 1 lần để mở khóa các ghế hết hạn
+	/// </summary>
+	public sealed class SeatUnlockJob : IHostedService, IDisposable
 	{
 		private readonly IServiceProvider _serviceProvider;
 		private Timer _timer;
@@ -21,12 +24,13 @@ namespace FB98.Modules.Tickets.Application.SeatManagement.BackgroundJobs
 
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
+			var taskPeriod = TimeSpan.FromMinutes(1);
 			_timer = new Timer(async _ =>
 			{
 				using var scope = _serviceProvider.CreateScope();
 				var repository = scope.ServiceProvider.GetRequiredService<IBookingSeatLockRepository>();
 				await repository.CleanupExpiredLocks();
-			}, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
+			}, null, TimeSpan.Zero, taskPeriod);
 
 			return Task.CompletedTask;
 		}

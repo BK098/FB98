@@ -75,8 +75,8 @@ namespace FB98.Modules.Shows.Application.ShowManagement.GetAll
 								ShowTimes = dateGroup.Select(x => new GetAllShowDto
 								{
 									ShowId = x.Id,
-									StartTime = x.StartTime.ToString("hh:mm"),
-									EndTime = x.EndTime.ToString("hh:mm"),
+									StartTime = x.StartTime.ConvertUtcToVietnamTime().ToString("HH:mm:ss zz"),
+									EndTime = x.EndTime.ConvertUtcToVietnamTime().ToString("HH:mm:ss zz"),
 									ShowStatusId = x.ShowStatusId,
 									ShowStatusName = x.ShowStatus.Name,
 									IsActive = x.StartTime > DateTime.UtcNow
