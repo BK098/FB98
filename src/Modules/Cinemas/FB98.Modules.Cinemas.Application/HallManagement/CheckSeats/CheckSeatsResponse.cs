@@ -3,11 +3,13 @@
 	public class CheckSeatsResponse
 	{
 		public string Name { get; set; }
+		public IList<SeatResponse> Seats { get; set; }
+	}
 
-		/// <summary>
-		///     First Guid is SeatId
-		///     Second Guid is SeatTypeId
-		/// </summary>
-		public IList<Dictionary<Guid, Guid>> SeatIds { get; set; }
+	public class SeatResponse
+	{
+		public Guid SeatId { get; set; }
+		public Guid SeatTypeId { get; set; }
+		public string SeatPosition { get; set; }
 	}
 }

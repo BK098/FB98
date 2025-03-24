@@ -5,8 +5,8 @@ namespace FB98.Modules.Orders.Domain.Entities
 {
 	public class Order : BaseEntity
 	{
-		public Guid? CustomerId { get; init; }
-		public decimal DiscountPercentage { get; private set; } // phần trăm giảm giá cho cả đơn hàng
+		public Guid? UserId { get; init; }
+		public decimal DiscountPercentage { get; private set; }
 		public decimal Amount { get; set; }
 		public decimal SubAmount { get; set; }
 

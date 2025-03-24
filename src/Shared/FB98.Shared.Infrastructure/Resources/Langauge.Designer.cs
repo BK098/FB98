@@ -493,6 +493,24 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payment has been processed.
+        /// </summary>
+        internal static string PaymentProcessed {
+            get {
+                return ResourceManager.GetString("PaymentProcessed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment successful.
+        /// </summary>
+        internal static string PaymentSuccessful {
+            get {
+                return ResourceManager.GetString("PaymentSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid phone number.
         /// </summary>
         internal static string PhoneNumberInvalid {
@@ -507,6 +525,15 @@ namespace FB98.Shared.Infrastructure.Resources {
         internal static string PhoneNumberRequired {
             get {
                 return ResourceManager.GetString("PhoneNumberRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Previous booking has not been paid yet.
+        /// </summary>
+        internal static string PreviousUnpaidBooking {
+            get {
+                return ResourceManager.GetString("PreviousUnpaidBooking", resourceCulture);
             }
         }
         

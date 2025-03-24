@@ -2,8 +2,8 @@
 {
 	public static class ShowStatusConstants
 	{
-		public static Guid UpComming = Guid.Parse("9230c5f0-db09-44d5-9d33-d4a05955a3a7");
-		public static Guid OnGoing = Guid.Parse("af113986-2f88-435f-bc38-8518df5a29dd");
-		public static Guid Ended = Guid.Parse("4cfd3bd1-062d-442f-ad42-fb4726f061e8");
+		public static Guid UpComming { get; } = Guid.Parse("9230c5f0-db09-44d5-9d33-d4a05955a3a7");
+		public static Guid OnGoing { get; } = Guid.Parse("af113986-2f88-435f-bc38-8518df5a29dd");
+		public static Guid Ended { get; } = Guid.Parse("4cfd3bd1-062d-442f-ad42-fb4726f061e8");
 	}
 }

@@ -44,10 +44,9 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment
 		public async Task<ApiResult<string>> Handle(CreateVnPayPaymentCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
+			decimal amount = 0;
 			try
 			{
-				decimal amount = 0;
-
 				try
 				{
 					if (model.OrderId != null)
@@ -66,6 +65,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment
 					if (model.BookingId != null)
 					{
 						var bookingResponse = await _bookingApi.GetBookingById(model.BookingId!.Value);
+
 						amount += bookingResponse.Data!.Amount;
 					}
 				}
@@ -76,12 +76,13 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment
 
 				var transaction = new PaymentTransaction
 				{
+					UserId = model.UserId!.Value,
 					OrderId = model.OrderId,
 					BookingId = model.BookingId,
 					Amount = amount,
-					PaymentMethodId = PaymentMethodConstants.VnPayCard,
-					PaymentStatusId = PaymentStatusConstants.Peding
+					PaymentMethodId = PaymentMethodConstants.VnPayCard
 				};
+				transaction.MarkPeding();
 
 				var ipAddress = _contextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
 				await _paymentRepository.CreateAsync(transaction);

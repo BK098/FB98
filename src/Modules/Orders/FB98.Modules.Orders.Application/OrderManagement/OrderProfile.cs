@@ -26,7 +26,10 @@ namespace FB98.Modules.Orders.Application.OrderManagement
 				.ForMember(src => src.Order, opt => opt.Ignore())
 				.ForMember(dest => dest.OrderId, opt => opt.Ignore());
 			CreateMap<Order, GetDetailOrderResponse>()
+				.ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.OrderItems))
 				.ForMember(dest => dest.StatusId, opt => opt.MapFrom(src => src.OrderStatusId));
+
+			CreateMap<OrderItem, GetDetailOrderItemResponse>();
 		}
 	}
 }

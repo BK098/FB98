@@ -315,4 +315,13 @@
   <data name="NoSeatsForReservation" xml:space="preserve">
     <value>Không tìm thấy ghế để đặt chỗ</value>
   </data>
+  <data name="PreviousUnpaidBooking" xml:space="preserve">
+    <value>Đơn hàng trước đó chưa được thanh toán</value>
+  </data>
+  <data name="PaymentSuccessful" xml:space="preserve">
+    <value>Thanh toán thành công</value>
+  </data>
+  <data name="PaymentProcessed" xml:space="preserve">
+    <value>Đơn này đã được xử lý</value>
+  </data>
 </root>

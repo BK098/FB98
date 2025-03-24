@@ -33,8 +33,8 @@ namespace FB98.Modules.Orders.Application.OrderManagement.GetDetail
 					return ApiResponseBuilder.Error<GetDetailOrderResponse>(_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
-				var orderDto = _mapper.Map<GetDetailOrderResponse>(order);
-				return ApiResponseBuilder.Success(orderDto, _localizedMessageService.GetLocalizedMessage("DataRetrieved"));
+				var response = _mapper.Map<GetDetailOrderResponse>(order);
+				return ApiResponseBuilder.Success(response, _localizedMessageService.GetLocalizedMessage("DataRetrieved"));
 			}
 			catch (Exception ex)
 			{

@@ -35,5 +35,14 @@ namespace FB98.Modules.Payments.DataAccess.Repositories
 				.Include(x => x.PaymentMethod)
 				.FirstOrDefaultAsync(p => p.Id == id);
 		}
+
+		public IQueryable<PaymentTransaction> GetAllPaymentByUser(Guid userId)
+		{
+			return _context.PaymentTransactions
+				.Include(x => x.PaymentStatus)
+				.Include(x => x.PaymentMethod)
+				.Where(x => x.UserId == userId)
+				.OrderBy(x => x.CreateAt);
+		}
 	}
 }

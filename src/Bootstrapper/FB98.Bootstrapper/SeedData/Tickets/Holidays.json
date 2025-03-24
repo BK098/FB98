@@ -1,0 +1,38 @@
+[
+    {
+        "Name": "Tết Dương lịch",
+        "Date": "01-01",
+        "Lunar": false
+    },
+		{
+			"Name": "Tết Âm lịch",
+			"Date": "01-01",
+			"Days": 5,
+			"Lunar": true
+		},
+    {
+        "Name": "Ngày Chiến thắng",
+        "Date": "30-04",
+        "Lunar": false
+    },
+    {
+        "Name": "Ngày Quốc tế lao động",
+        "Date": "01-05",
+        "Lunar": false
+    },
+		{
+			"Name": "Quốc khánh",
+			"Date": "02-09",
+			"Lunar": false
+		},
+		{
+        "Name": "Test",
+        "Date": "21-03",
+        "Lunar": false
+    },
+    {
+        "Name": "Ngày Giỗ Tổ Hùng Vương",
+        "Date": "10-03",
+        "Lunar": true
+    }
+] 

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FB98.Modules.Customers.Application\FB98.Modules.Customers.Application.csproj" />
+    <ProjectReference Include="..\FB98.Modules.Customers.Domain\FB98.Modules.Customers.Domain.csproj" />
   </ItemGroup>
 
 </Project>

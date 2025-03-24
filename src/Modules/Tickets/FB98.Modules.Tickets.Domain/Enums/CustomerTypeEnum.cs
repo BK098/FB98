@@ -3,6 +3,11 @@
 	public enum CustomerTypeEnum
 	{
 		/// <summary>
+		///     Mặc định
+		/// </summary>
+		Default,
+
+		/// <summary>
 		///     Người lớn
 		/// </summary>
 		Adult,

@@ -1,6 +1,5 @@
 ﻿using FB98.Modules.Payments.Application.Abstractions;
 using FB98.Modules.Payments.Domain.Entities;
-using FB98.Shared.Abstractions.Events;
 using FB98.Shared.Abstractions.StatusConstants;
 using MassTransit;
 
@@ -32,15 +31,16 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 			{
 				var payment = new PaymentTransaction
 				{
+					UserId = model.UserId!.Value,
 					OrderId = model.OrderId,
 					BookingId = model.BookingId,
 					Amount = model.Amount,
-					PaymentMethodId = PaymentMethodConstants.Cash,
-					PaymentStatusId = PaymentStatusConstants.Success
+					PaymentMethodId = PaymentMethodConstants.Cash
 				};
+				payment.MarkSuccess();
 				await _paymentRepository.CreateAsync(payment);
 
-				await _bus.Publish(new PaymentSuccessEvent(payment.OrderId!.Value, payment.BookingId!.Value), cancellationToken);
+				//await _bus.Publish(new PaymentSuccessEvent(payment.OrderId!.Value, payment.BookingId!.Value), cancellationToken);
 				return ApiResponseBuilder.Success<object>(payment.Id, _localizedMessageService.GetLocalizedMessage("PaymentSuccessful"));
 			}
 			catch (Exception ex)

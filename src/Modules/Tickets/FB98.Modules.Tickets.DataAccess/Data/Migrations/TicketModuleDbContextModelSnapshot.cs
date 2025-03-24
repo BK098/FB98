@@ -35,23 +35,44 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("CustomerId")
+                    b.Property<Guid>("HallId")
                         .HasColumnType("uuid");
 
-                    b.Property<decimal>("DiscountPercentage")
-                        .HasColumnType("numeric");
+                    b.Property<string>("HallName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MovieTitle")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ShowEnd")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<Guid>("ShowId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("ShowStart")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<Guid>("StatusId")
                         .HasColumnType("uuid");
 
-                    b.Property<decimal>("SubAmount")
-                        .HasColumnType("numeric");
-
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserPhone")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -81,8 +102,16 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
                     b.Property<Guid>("SeatId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("SeatPosition")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<Guid>("SeatStatusId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("SeatTypeName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("timestamp with time zone");
@@ -227,6 +256,9 @@ namespace FB98.Modules.Tickets.DataAccess.Data.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<bool>("IsDefault")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsHoliday")
                         .HasColumnType("boolean");
 
                     b.Property<int?>("MaxAge")

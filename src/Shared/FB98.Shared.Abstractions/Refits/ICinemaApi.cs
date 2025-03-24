@@ -22,7 +22,8 @@ namespace FB98.Shared.Abstractions.Refits
 
 	public record CinemaHallSeatDto(Guid SeatId, Guid SeatTypeId, string SeatPosition);
 
-	public record CheckSeatsResponse(string Name, IList<Dictionary<Guid, Guid>> SeatIds);
+	//public record CheckSeatsResponse(string Name, IList<Dictionary<Guid, Guid>> SeatIds);
+	public record CheckSeatsResponse(string Name, IList<CinemaHallSeatDto> Seats);
 
 	public record CheckSeastsDto(IList<Guid> SeatIds);
 }
