@@ -6,6 +6,7 @@ namespace FB98.Modules.Payments.Domain.Entities
 {
 	public class PaymentTransaction : BaseEntity
 	{
+		public Guid UserId { get; set; }
 		public Guid? OrderId { get; set; }
 		public Guid? BookingId { get; set; }
 		public decimal Amount { get; set; }
@@ -16,13 +17,18 @@ namespace FB98.Modules.Payments.Domain.Entities
 		public PaymentMethod PaymentMethod { get; set; }
 
 		[ForeignKey("PaymentStatus")]
-		public Guid PaymentStatusId { get; set; }
+		public Guid PaymentStatusId { get; private set; }
 		public PaymentStatus PaymentStatus { get; set; }
 
 		public void MarkSuccess(string? vnpayTransactionId = null)
 		{
 			PaymentStatusId = PaymentStatusConstants.Success;
 			VNPayTransactionId = vnpayTransactionId;
+		}
+
+		public void MarkPeding()
+		{
+			PaymentStatusId = PaymentStatusConstants.Pending;
 		}
 
 		public void MarkFailed()

@@ -5,29 +5,21 @@ namespace FB98.Modules.Tickets.Domain.Entities
 {
 	public class Booking : BaseEntity
 	{
-		public Guid? CustomerId { get; set; }
-		public decimal DiscountPercentage { get; private set; } // phần trăm giảm giá cho cả đơn hàng
+		public Guid UserId { get; set; }
+		public string UserName { get; set; }
+		public string UserPhone { get; set; }
 		public decimal Amount { get; set; }
-		public decimal SubAmount { get; set; }
+		public Guid ShowId { get; set; }
+		public Guid HallId { get; set; }
+		public string HallName { get; set; }
+		public string ShowStart { get; set; }
+		public string ShowEnd { get; set; }
+		public string MovieTitle { get; set; }
 
 		[ForeignKey("BookingStatus")]
 		public Guid StatusId { get; set; }
 		public BookingStatus Status { get; set; }
 
-		public Guid ShowId { get; set; }
-
 		public ICollection<BookingSeat> BookingSeats { get; set; } = new List<BookingSeat>();
-
-		public void SetDiscountPercentage()
-		{
-			if (SubAmount == 0)
-			{
-				DiscountPercentage = 0;
-				return;
-			}
-
-			var discountPrercentage = (SubAmount - Amount) / SubAmount * 100;
-			DiscountPercentage = Math.Round(discountPrercentage, 2);
-		}
 	}
 }

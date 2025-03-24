@@ -39,7 +39,8 @@ namespace FB98.Modules.Identity.Application.Services
 			var claims = new List<Claim>
 			{
 				new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-				new(ClaimTypes.Email, user.UserName!)
+				new(ClaimTypes.Email, user.UserName!),
+				new(ClaimTypes.MobilePhone, user.PhoneNumber!),
 			};
 
 			var userRoles = await _userManager.GetRolesAsync(user);

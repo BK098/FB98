@@ -1,0 +1,69 @@
+[
+	//Default
+	{
+		"SeatTypeId": "d9812abf-4348-4183-a227-25d2919a1097",
+		"Name": "Normal",
+		"Description": "Ghế thường",
+		"Price": 55000,
+		"CustomerType": "Default",
+		"IsDefault": true,
+		"IsActived": true
+	},
+	{
+		"SeatTypeId": "9bfce040-a42f-4bbb-9fa6-a30e8b9d7c53",
+		"Name": "Couple",
+		"Description": "Ghế đôi",
+		"Price": 100000,
+		"CustomerType": "Default",
+		"IsActived": true
+	},
+	{
+		"SeatTypeId": "731c7e33-dfa1-48bb-a65a-1df30cd57346",
+		"Name": "Vip",
+		"Description": "Ghế vip",
+		"Price": 70000,
+		"CustomerType": "Default",
+		"IsActived": true
+	},
+	//Student Discount
+	{
+		"SeatTypeId": "d9812abf-4348-4183-a227-25d2919a1097",
+		"Name": "Normal - Student Discount",
+		"Description": "Giảm giá cho sinh viên vào thứ 2, 4, 6",
+		"MinAge": 18,
+		"MaxAge": 22,
+		"Price": 45000,
+		"DaysOfWeek": 42,
+		"CustomerType": "Student",
+		"IsActived": true
+	},
+	//Holiday Increase 30%
+	{
+		"SeatTypeId": "d9812abf-4348-4183-a227-25d2919a1097",
+		"Name": "Normal - Holiday",
+		"Description": "Tăng giá 30% vào ngày lễ",
+		"Price": 71500,
+		"CustomerType": "Default",
+		"IsActived": true,
+		"IsHoliday": true
+	},
+	{
+		"SeatTypeId": "9bfce040-a42f-4bbb-9fa6-a30e8b9d7c53",
+		"Name": "Couple - Holiday",
+		"Description": "Tăng giá 30% vào ngày lễ",
+		"Price": 130000,
+		"CustomerType": "Default",
+		"IsDefault": false,
+		"IsActived": true,
+		"IsHoliday": true
+	},
+	{
+		"SeatTypeId": "731c7e33-dfa1-48bb-a65a-1df30cd57346",
+		"Name": "Vip - Holiday",
+		"Description": "Tăng giá 30% vào ngày lễ",
+		"Price": 91000,
+		"CustomerType": "Default",
+		"IsActived": true,
+		"IsHoliday": true
+	}
+]

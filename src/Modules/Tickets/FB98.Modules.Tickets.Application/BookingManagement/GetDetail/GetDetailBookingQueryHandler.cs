@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FB98.Modules.Tickets.Application.Abstractions;
+using FB98.Shared.Abstractions.StatusConstants;
 
 namespace FB98.Modules.Tickets.Application.BookingManagement.GetDetail
 {
@@ -34,6 +35,8 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.GetDetail
 				}
 
 				var response = _mapper.Map<GetDetailBookingResponse>(booking);
+				response.StatusName = BookingStatusConstants.GetStatusName(booking.StatusId);
+
 				return ApiResponseBuilder.Success(response, _localizedMessageService.GetLocalizedMessage("DataRetrieved"));
 			}
 			catch (Exception ex)

@@ -9,20 +9,17 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.Events
 	{
 		private readonly IBookingRepository _bookingRepository;
 		private readonly IBookingSeatLockRepository _bookingSeatLockRepository;
-		private readonly IBookingSeatRepository _bookingSeatRepository;
 		private readonly ILogger<VnPayPaymentCreatedEventHandler> _logger;
 		private readonly IUnitOfWork _unitOfWork;
 
 		public VnPayPaymentCreatedEventHandler(
 			IBookingRepository bookingRepository,
 			IBookingSeatLockRepository bookingSeatLockRepository,
-			IBookingSeatRepository bookingSeatRepository,
 			ILogger<VnPayPaymentCreatedEventHandler> logger,
 			IUnitOfWork unitOfWork)
 		{
 			_bookingRepository = bookingRepository;
 			_bookingSeatLockRepository = bookingSeatLockRepository;
-			_bookingSeatRepository = bookingSeatRepository;
 			_logger = logger;
 			_unitOfWork = unitOfWork;
 		}

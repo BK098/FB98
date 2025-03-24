@@ -7,7 +7,7 @@ namespace FB98.Modules.Orders.DataAccess.Data
 {
 	internal static class OrdersSeeder
 	{
-		public static async Task SeedDataAsync(OrdersModuleDbContext context)
+		public static async Task SeedDataAsync(OrderModuleDbContext context)
 		{
 			if (!context.OrderStatuses.Any())
 			{

@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FB98.Modules.Orders.DataAccess.Repositories
 {
-	public class OrderRepository : BaseRepository<Order, OrdersModuleDbContext>, IOrderRepository
+	public class OrderRepository : BaseRepository<Order, OrderModuleDbContext>, IOrderRepository
 	{
-		public OrderRepository(OrdersModuleDbContext context) : base(context)
+		public OrderRepository(OrderModuleDbContext context) : base(context)
 		{
 		}
 

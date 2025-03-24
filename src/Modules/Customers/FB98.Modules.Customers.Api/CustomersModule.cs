@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using FB98.Modules.Customers.Api.Extensions;
+using FB98.Modules.Customers.DataAccess.Data;
+using FB98.Shared.Infrastructure.Postgres;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Runtime.CompilerServices;
@@ -10,19 +13,14 @@ namespace FB98.Modules.Customers.Api
 	{
 		public static IServiceCollection AddCustomersModule(this IServiceCollection services, IConfiguration configuration)
 		{
-			//services.AddPostgres<CustomersModuleDbContext>();
-			//services.AddRegisterServicesCustomers();
-			//
+			services.AddPostgres<CustomerModuleDbContext>();
+			services.AddRegisterServices();
+
 			return services;
 		}
+
 		public static IApplicationBuilder UseCustomersModule(this IApplicationBuilder app)
 		{
-			using (var scope = app.ApplicationServices.CreateScope())
-			{
-				var services = scope.ServiceProvider;
-				//SeedData.Initialize(services);
-			}
-			//app.UseMiddleware<TokenCookieMiddleware>();
 			return app;
 		}
 	}

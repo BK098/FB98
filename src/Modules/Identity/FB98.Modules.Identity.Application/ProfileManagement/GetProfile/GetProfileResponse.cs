@@ -1,0 +1,12 @@
+﻿namespace FB98.Modules.Identity.Application.ProfileManagement.GetProfile
+{
+	public class GetProfileResponse
+	{
+		public string FirstName { get; set; }
+		public string LastName { get; set; }
+		public string Email { get; set; }
+		public string PhoneNumber { get; set; }
+		public string BirthOfDate { get; set; }
+		public bool? Gender { get; set; }
+	}
+}

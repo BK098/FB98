@@ -4,6 +4,7 @@ using FB98.Modules.Orders.Application.OrderManagement.GetDetail;
 using FB98.Modules.Orders.Application.OrderManagement.GetOrderStatusHistory;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FB98.Modules.Orders.Api.Controllers
 {
@@ -25,6 +26,16 @@ namespace FB98.Modules.Orders.Api.Controllers
 		[HttpPost]
 		public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto model)
 		{
+			var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+			if (userIdClaim != null)
+			{
+				model.UserId = Guid.Parse(userIdClaim.Value);
+			}
+			else
+			{
+				return Unauthorized();
+			}
+
 			var request = new CreateOrderCommand(model);
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);

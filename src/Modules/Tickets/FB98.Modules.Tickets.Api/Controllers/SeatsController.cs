@@ -19,7 +19,7 @@ namespace FB98.Modules.Tickets.Api.Controllers
 			var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
 			if (userIdClaim != null)
 			{
-				model.CustomerId = Guid.Parse(userIdClaim.Value);
+				model.UserId = Guid.Parse(userIdClaim.Value);
 			}
 			else
 			{

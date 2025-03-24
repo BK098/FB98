@@ -46,7 +46,7 @@ namespace FB98.Shared.Infrastructure
 			services.AddCloudinary();
 			services.AddVnPay();
 			services.AddRedis();
-
+			services.AddSignalR();
 			return services;
 		}
 

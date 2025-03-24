@@ -40,7 +40,7 @@ namespace FB98.Modules.Cinemas.Application.HallManagement.Update
 		{
 			var model = request.Model;
 			var hallId = request.HallId;
-			var cacheKey = $"hall:{hallId}";
+			var cacheKey = $"hall:{hallId}/seats";
 			IDatabase? redisDatabase = null;
 			try
 			{

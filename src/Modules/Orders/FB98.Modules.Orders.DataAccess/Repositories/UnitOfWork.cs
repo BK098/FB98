@@ -4,9 +4,9 @@ using FB98.Shared.Infrastructure.Repositpries;
 
 namespace FB98.Modules.Orders.DataAccess.Repositories
 {
-	public class UnitOfWork : BaseUnitOfWork<OrdersModuleDbContext>, IUnitOfWork
+	public class UnitOfWork : BaseUnitOfWork<OrderModuleDbContext>, IUnitOfWork
 	{
-		public UnitOfWork(OrdersModuleDbContext context) : base(context)
+		public UnitOfWork(OrderModuleDbContext context) : base(context)
 		{
 		}
 	}

@@ -31,6 +31,17 @@ namespace FB98.Modules.Tickets.DataAccess.Data
 					await Task.CompletedTask;
 				}
 			}
+			if (!context.SeatPriceRules.Any())
+			{
+				var jsonData = await File.ReadAllTextAsync("SeedData/Tickets/SeatPriceRuleSeed.json");
+				var entities = JsonConvert.DeserializeObject<List<SeatPriceRule>>(jsonData, new JsonSerializerSettings());
+				if (entities != null)
+				{
+					await context.SeatPriceRules.AddRangeAsync(entities);
+					await context.SaveChangesAsync();
+					await Task.CompletedTask;
+				}
+			}
 		}
 	}
 }
