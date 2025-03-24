@@ -93,10 +93,9 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 					}
 
 					item.ProductName = combo.Data!.Name;
-					item.FinalPrice = 0;
-					item.FinalPrice = combo.Data!.DiscountPrice > 0 ? combo.Data!.DiscountPrice : item.UnitPrice;
 					item.UnitPrice = combo.Data!.Price;
-					item.SubTotalPrice = item.UnitPrice * item.Quantity;
+					item.FinalPrice = combo.Data!.DiscountPrice > 0 ? combo.Data!.DiscountPrice : item.UnitPrice;
+					item.SubTotalPrice = combo.Data!.Price * item.Quantity;
 					item.TotalPrice = item.FinalPrice * item.Quantity;
 					order.SubAmount += item.SubTotalPrice;
 					order.Amount += item.TotalPrice;

@@ -1,9 +1,7 @@
-﻿using AutoMapper;
-using FB98.Modules.Tickets.Application.Abstractions;
+﻿using FB98.Modules.Tickets.Application.Abstractions;
 using FB98.Modules.Tickets.Domain.Entities;
 using FB98.Shared.Abstractions.Refits;
 using FB98.Shared.Abstractions.StatusConstants;
-using MassTransit;
 using Refit;
 
 namespace FB98.Modules.Tickets.Application.BookingManagement.SeatReservation
@@ -12,11 +10,10 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.SeatReservation
 	{
 		private readonly IBookingRepository _bookingRepository;
 		private readonly IBookingSeatLockRepository _bookingSeatLockRepository;
-		private readonly IBus _bus;
 		private readonly ICinemaApi _cinemaApi;
+		private readonly ICustomerApi _customerApi;
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ILogger<SeatReservationCommandHandler> _logger;
-		private readonly IMapper _mapper;
 		private readonly ISeatPriceRuleRepository _seatPriceRuleRepository;
 		private readonly IShowApi _showApi;
 		private readonly IUnitOfWork _unitOfWork;
@@ -26,31 +23,30 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.SeatReservation
 			IBookingRepository bookingRepository,
 			ILocalizedMessageService localizedMessageService,
 			ILogger<SeatReservationCommandHandler> logger,
-			IMapper mapper,
 			IUnitOfWork unitOfWork,
 			IValidator<SeatReservationDto> validator,
 			ICinemaApi cinemaApi,
 			IBookingSeatLockRepository bookingSeatRepository,
 			ISeatPriceRuleRepository seatPriceRuleRepository,
-			IBus bus,
-			IShowApi showApi)
+			IShowApi showApi,
+			ICustomerApi customerApi)
 		{
 			_bookingRepository = bookingRepository;
 			_localizedMessageService = localizedMessageService;
 			_logger = logger;
-			_mapper = mapper;
 			_unitOfWork = unitOfWork;
 			_validator = validator;
 			_cinemaApi = cinemaApi;
 			_bookingSeatLockRepository = bookingSeatRepository;
 			_seatPriceRuleRepository = seatPriceRuleRepository;
-			_bus = bus;
 			_showApi = showApi;
+			_customerApi = customerApi;
 		}
 
 		public async Task<ApiResult<object>> Handle(SeatReservationCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
+			var bookingDicount = 0;
 			try
 			{
 				var validationResult = await _validator.ValidateAsync(model, cancellationToken);
@@ -73,7 +69,7 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.SeatReservation
 					return ApiResponseBuilder.Error<object>("Show: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
-				var seats = await _bookingSeatLockRepository.GetLockedSeatsByUser(model.CustomerId!.Value, model.ShowId!.Value);
+				var seats = await _bookingSeatLockRepository.GetLockedSeatsByUser(model.UserId!.Value, model.ShowId!.Value);
 				if (!seats.Any())
 				{
 					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NoSeatsForReservation"));
@@ -88,11 +84,29 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.SeatReservation
 				}
 				catch (ApiException ex)
 				{
-					_logger.LogError(ex.ToString());
+					_logger.LogWarning(ex.ToString());
 					return ApiResponseBuilder.Error<object>("Hall: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
-				var hallSeats = hallResponse.Data!.SeatIds.ToHashSet();
+				try
+				{
+					var customerResponse = await _customerApi.GetCustomerById(model.UserId!.Value);
+					if (!customerResponse.IsSuccess)
+					{
+						bookingDicount = customerResponse.Data!.MembershipDiscount;
+					}
+				}
+				catch (ApiException ex)
+				{
+					_logger.LogWarning(ex.ToString());
+					//return ApiResponseBuilder.Error<object>("User: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
+				}
+
+				var hallSeats = hallResponse.Data!.Seats.ToDictionary(s => s.SeatId, s => new
+				{
+					s.SeatTypeId,
+					s.SeatPosition
+				});
 
 				if (hallSeats.Count != seats.Count)
 				{
@@ -101,8 +115,15 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.SeatReservation
 
 				var booking = new Booking
 				{
-					CustomerId = model.CustomerId,
+					HallId = showResponse.Data.CinemaHallId,
+					HallName = hallResponse.Data.Name,
+					MovieTitle = showResponse.Data.MovieTitle,
+					ShowStart = showResponse.Data.StartTime,
+					ShowEnd = showResponse.Data.EndTime,
+					UserId = model.UserId!.Value,
 					ShowId = model.ShowId!.Value,
+					UserName = model.UserName!,
+					UserPhone = model.UserPhone!,
 					StatusId = BookingStatusConstants.Created,
 					BookingSeats = new List<BookingSeat>()
 				};
@@ -110,15 +131,12 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.SeatReservation
 				decimal totalPrice = 0;
 				foreach (var seatId in seatIds)
 				{
-					var seatTypeId = hallSeats.FirstOrDefault(seat => seat.ContainsKey(seatId))?.GetValueOrDefault(seatId);
+					var seat = hallSeats[seatId];
 
-					if (seatTypeId == null)
-					{
-						return ApiResponseBuilder.Error<object>($"Cannot find seat type for seat {seatId}");
-					}
-
-					var showDate = Convert.ToDateTime(showResponse.Data!.StartTime).ToUniversalTime();
-					var seatPrice = await _seatPriceRuleRepository.GetSeatPriceByTypeAndDate(seatTypeId!.Value, showDate);
+					var startTime = showResponse.Data.StartTime;
+					const string format = "dd-MM-yyyy HH:mm:ss zz";
+					var showDate = DateTime.ParseExact(startTime, format, null).ToUniversalTime();
+					var seatPrice = await _seatPriceRuleRepository.GetSeatPriceByTypeAndDate(seat.SeatTypeId, showDate);
 					if (seatPrice == null)
 					{
 						return ApiResponseBuilder.Error<object>($"Cannot determine price for seat {seatId}");
@@ -127,9 +145,11 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.SeatReservation
 					totalPrice += seatPrice.Price;
 					booking.BookingSeats.Add(new BookingSeat
 					{
+						SeatPosition = seat.SeatPosition,
 						SeatId = seatId,
+						SeatTypeName = SeatTypeConstants.GetStatusName(seat.SeatTypeId),
 						SeatStatusId = BookingSeatStatusConstants.Pending,
-						Price = seatPrice.Price,
+						Price = BookingDiscount(seatPrice.Price, bookingDicount),
 						SeatPriceApplication = new SeatPriceApplication
 						{
 							SeatPriceRuleId = seatPrice.Id,
@@ -150,6 +170,13 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.SeatReservation
 				_logger.LogError(ex, "Error occurred while creating booking");
 				return ApiResponseBuilder.Error<object>("An unexpected error occurred", 500);
 			}
+		}
+
+		private static decimal BookingDiscount(decimal amount, int discount)
+		{
+			var result = amount - amount * discount / 100;
+			var roundedUp = Math.Ceiling(result);
+			return Math.Floor(roundedUp / 100) * 100;
 		}
 	}
 }

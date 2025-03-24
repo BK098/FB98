@@ -16,9 +16,9 @@ namespace FB98.Modules.Tickets.Domain.Entities
 		public SeatPriceApplication SeatPriceApplication { get; set; }
 
 		public Guid SeatId { get; set; }
+		public string SeatTypeName { get; set; }
+		public string SeatPosition { get; set; }
 		public bool IsReserved { get; set; }
 		public decimal Price { get; set; }
-
-		//public ICollection<BookingSeatLock> SeatLocks { get; set; } = new List<BookingSeatLock>();
 	}
 }

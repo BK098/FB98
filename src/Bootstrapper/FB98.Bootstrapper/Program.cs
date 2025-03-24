@@ -21,8 +21,8 @@ builder.Services.AddIdentityModule(builder.Configuration);
 builder.Services.AddCustomersModule(builder.Configuration);
 builder.Services.AddCatalogModule(builder.Configuration);
 builder.Services.AddWarehouseModule(builder.Configuration);
-builder.Services.AddOrdersModule(builder.Configuration);
-builder.Services.AddPaymentsModule(builder.Configuration);
+builder.Services.AddOrderModule(builder.Configuration);
+builder.Services.AddPaymentModule(builder.Configuration);
 builder.Services.AddCinemaModule(builder.Configuration);
 builder.Services.AddMovieModule(builder.Configuration);
 builder.Services.AddShowModule(builder.Configuration);
@@ -30,7 +30,6 @@ builder.Services.AddTicketModule(builder.Configuration);
 builder.Services.AddSystemModule(builder.Configuration);
 builder.Services.AddInfrastructure();
 builder.Services.AddRegisterServices();
-
 var app = builder.Build();
 
 //default
@@ -47,8 +46,8 @@ app.UseIdentityModule();
 app.UseCustomersModule();
 app.UseCatalogModule();
 app.UseWarehouseModule();
-app.UseOrdersModule();
-app.UsePaymentsModule();
+app.UseOrderModule();
+app.UsePaymentModule();
 app.UseCinemaModule();
 app.UseMovieModule();
 app.UseShowModule();

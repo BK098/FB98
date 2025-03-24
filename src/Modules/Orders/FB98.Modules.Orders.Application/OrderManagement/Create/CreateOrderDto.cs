@@ -1,8 +1,11 @@
-﻿namespace FB98.Modules.Orders.Application.OrderManagement.Create
+﻿using Swashbuckle.AspNetCore.Annotations;
+
+namespace FB98.Modules.Orders.Application.OrderManagement.Create
 {
 	public class CreateOrderDto
 	{
-		public Guid? CustomerId { get; set; }
+		[SwaggerIgnore]
+		public Guid UserId { get; set; }
 		public List<CreateOrderItemDto>? Items { get; set; } = new List<CreateOrderItemDto>();
 	}
 

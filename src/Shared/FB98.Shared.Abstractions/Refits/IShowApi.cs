@@ -11,5 +11,5 @@ namespace FB98.Shared.Abstractions.Refits
 		Task<ApiResult<ShowDto>> GetShowById(Guid showId);
 	}
 
-	public record ShowDto(Guid CinemaHallId, string MovieTitle, string StartTime, string EndTime, Guid ShowStatusId);
+	public record ShowDto(Guid CinemaHallId, string MovieTitle, string StartTime, string EndTime, Guid ShowStatusId, string StartDate);
 }

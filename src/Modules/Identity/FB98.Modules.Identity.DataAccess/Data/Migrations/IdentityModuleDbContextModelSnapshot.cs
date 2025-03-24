@@ -53,6 +53,9 @@ namespace FB98.Modules.Identity.DataAccess.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool?>("Gender")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Lastname")
                         .IsRequired()
                         .HasColumnType("text");
@@ -109,7 +112,7 @@ namespace FB98.Modules.Identity.DataAccess.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("DeviceId")
                         .HasColumnType("uuid");
@@ -118,7 +121,7 @@ namespace FB98.Modules.Identity.DataAccess.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("timestamp without time zone");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("IpAddress")
                         .IsRequired()

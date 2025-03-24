@@ -11,11 +11,10 @@
 
 			RuleFor(x => x.Password)
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("PasswordRequired"))
-				.MinimumLength(6).WithMessage(message.GetLocalizedMessage("PasswordTooShort"))
+				.MinimumLength(8).WithMessage(message.GetLocalizedMessage("PasswordTooShort"))
 				.Matches(@"[A-Z]").WithMessage(message.GetLocalizedMessage("PasswordMustContainUppercase"))
 				.Matches(@"[0-9]").WithMessage(message.GetLocalizedMessage("PasswordMustContainNumber"))
 				.Matches(@"[^a-zA-Z0-9]").WithMessage(message.GetLocalizedMessage("PasswordMustContainSpecialCharacter"));
-
 
 			RuleFor(x => x.PhoneNumber)
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("PhoneNumberRequired"))

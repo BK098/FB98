@@ -1,6 +1,8 @@
 ﻿using FB98.Modules.Tickets.Application.Abstractions;
 using FB98.Shared.Abstractions.Refits;
 using FB98.Shared.Abstractions.StatusConstants;
+using FB98.Shared.Infrastructure.SignalRHub;
+using Microsoft.AspNetCore.SignalR;
 using Refit;
 
 namespace FB98.Modules.Tickets.Application.SeatManagement.LockSeat
@@ -14,7 +16,8 @@ namespace FB98.Modules.Tickets.Application.SeatManagement.LockSeat
 		private readonly ILogger<LockSeatsCommandHandler> _logger;
 		private readonly IShowApi _showApi;
 		private readonly IValidator<LockSeatsDto> _validator;
-
+		private readonly IHubContext<SeatHub> _hubContext;
+		private readonly IBookingRepository _bookingRepository;
 
 		public LockSeatsCommandHandler(
 			IBookingSeatLockRepository bookingSeatLockRepository,
@@ -22,7 +25,9 @@ namespace FB98.Modules.Tickets.Application.SeatManagement.LockSeat
 			ILogger<LockSeatsCommandHandler> logger,
 			IShowApi showApi,
 			IValidator<LockSeatsDto> validator,
-			IBookingSeatRepository bookingSeatRepository)
+			IBookingSeatRepository bookingSeatRepository,
+			IHubContext<SeatHub> hubContext,
+			IBookingRepository bookingRepository)
 		{
 			_bookingSeatLockRepository = bookingSeatLockRepository;
 			_cinemaApi = cinemaApi;
@@ -31,6 +36,8 @@ namespace FB98.Modules.Tickets.Application.SeatManagement.LockSeat
 			_showApi = showApi;
 			_validator = validator;
 			_bookingSeatRepository = bookingSeatRepository;
+			_hubContext = hubContext;
+			_bookingRepository = bookingRepository;
 		}
 
 		public async Task<ApiResult<object>> Handle(LockSeatsCommand request, CancellationToken cancellationToken)
@@ -45,6 +52,14 @@ namespace FB98.Modules.Tickets.Application.SeatManagement.LockSeat
 					return ApiResponseBuilder.ValidationError<object>(validationResult.Errors);
 				}
 
+				var booking = _bookingRepository.GetAll()
+					.Where(x => x.UserId == model.UserId! &&
+								(x.StatusId == BookingStatusConstants.Created ||
+								 x.StatusId == BookingStatusConstants.Pending)).ToList();
+				if (booking.Any())
+				{
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("PreviousUnpaidBooking"), 404);
+				}
 				ApiResult<ShowDto>? showResponse;
 				try
 				{
@@ -70,7 +85,7 @@ namespace FB98.Modules.Tickets.Application.SeatManagement.LockSeat
 					return ApiResponseBuilder.Error<object>("Hall: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
-				var hallSeats = hallResponse.Data!.SeatIds.ToHashSet();
+				var hallSeats = hallResponse.Data!.Seats.ToHashSet();
 
 				if (hallSeats.Count != model.SeatIds!.Count)
 				{
@@ -98,7 +113,9 @@ namespace FB98.Modules.Tickets.Application.SeatManagement.LockSeat
 					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("SeatsAlreadyLocked"));
 				}
 
-				await _bookingSeatLockRepository.LockSeats(model.CustomerId!.Value, model.ShowId!.Value, model.SeatIds!);
+				await _bookingSeatLockRepository.LockSeats(model.UserId!.Value, model.ShowId!.Value, model.SeatIds!);
+
+				await _hubContext.Clients.All.SendAsync("SeatsStatusChanged", model.ShowId!.Value, cancellationToken);
 
 				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("SeatsLocked"));
 			}

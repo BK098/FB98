@@ -92,6 +92,9 @@ namespace FB98.Modules.Payments.DataAccess.Data.Migrations
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("VNPayTransactionId")
                         .HasColumnType("text");
 

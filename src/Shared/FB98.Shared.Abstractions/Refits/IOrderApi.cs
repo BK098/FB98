@@ -9,7 +9,12 @@ namespace FB98.Shared.Abstractions.Refits
 	{
 		[Get("/orders-module/orders/{orderId}")]
 		Task<ApiResult<OrderDto>> GetOrderById(Guid orderId);
+
+		[Get("/orders-module/orders/{orderId}")]
+		Task<ApiResult<OrderDetailDto>> GetOrderDetailById(Guid orderId);
 	}
 
 	public record OrderDto(Guid Id, decimal Amount, Guid StatusId);
+	public record OrderDetailDto(Guid Id, decimal Amount, Guid StatusId, IEnumerable<OrderDetailItemDto> Items);
+	public record OrderDetailItemDto(string ProductName, int Quantity, decimal TotalPrice, bool IsCombo);
 }

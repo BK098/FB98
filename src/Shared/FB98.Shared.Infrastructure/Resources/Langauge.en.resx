@@ -315,4 +315,13 @@
   <data name="NoSeatsForReservation" xml:space="preserve">
     <value>No seats found for reservation</value>
   </data>
+  <data name="PreviousUnpaidBooking" xml:space="preserve">
+    <value>Previous booking has not been paid yet</value>
+  </data>
+  <data name="PaymentSuccessful" xml:space="preserve">
+    <value>Payment successful</value>
+  </data>
+  <data name="PaymentProcessed" xml:space="preserve">
+    <value>Payment has been processed</value>
+  </data>
 </root>

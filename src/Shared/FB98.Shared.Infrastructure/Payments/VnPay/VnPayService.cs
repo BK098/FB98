@@ -20,31 +20,15 @@ namespace FB98.Shared.Infrastructure.Payments.VnPay
 
 		public string GeneratePaymentUrl(Guid paymentId, decimal amount, string ipAddress)
 		{
-			var vnpayData = new SortedDictionary<string, string>
-			{
-				{ "vnp_Version", _options.Vnp_Version },
-				{ "vnp_Command", _options.Vnp_Command },
-				{ "vnp_TmnCode", _options.Vnp_TmnCode },
-				{ "vnp_Amount", ((int)(amount * 100)).ToString() }, // VNPay yêu cầu nhân 100
-				{ "vnp_BankCode", "VNBANK" },
-				{ "vnp_CreateDate", DateTime.UtcNow.AddHours(7).ToString("yyyyMMddHHmmss") },
-				{ "vnp_CurrCode", "VND" },
-				{ "vnp_IpAddr", ipAddress },
-				{ "vnp_Locale", "vn" },
-				{ "vnp_OrderInfo", $"Thanh toan don hang {paymentId}" },
-				{ "vnp_OrderType", "other" },
-				{ "vnp_ExpireDate", DateTime.UtcNow.AddHours(7).AddMinutes(15).ToString("yyyyMMddHHmmss") },
-				{ "vnp_ReturnUrl", _options.Vnp_ReturnUrl },
-				{ "vnp_TxnRef", $"{paymentId}"}
-			};
-
+			var vnpayData = PrepareVnPayData(paymentId, amount, ipAddress);
 			var paymentUrl = CreateRequestUrl(vnpayData);
 			_logger.LogInformation($"VNPay URL generated: {paymentUrl}");
 			return paymentUrl;
 		}
 
-		public bool ValidateVnPayResponse(SortedDictionary<string, string> queryParams)
+		public bool ValidateVnPayResponse(SortedDictionary<string, string> queryParams, decimal expectedAmount, string expectedTxnRef)
 		{
+			expectedAmount *= 100;
 			if (!queryParams.ContainsKey("vnp_SecureHash"))
 			{
 				return false;
@@ -53,13 +37,33 @@ namespace FB98.Shared.Infrastructure.Payments.VnPay
 			var secureHash = queryParams["vnp_SecureHash"];
 			queryParams.Remove("vnp_SecureHash");
 
-			var calculatedHash = CreateRequestUrl(queryParams);
-			var a = secureHash.Equals(calculatedHash, StringComparison.OrdinalIgnoreCase);
-			if (a)
+			// Tính toán lại hash từ các tham số
+			var calculatedHash = GenerateSecureHash(CreateRequestUrl(queryParams));
+			if (secureHash.Equals(calculatedHash, StringComparison.OrdinalIgnoreCase))
 			{
-				return true;
+				return false;
 			}
-			return false;
+
+			// Kiểm tra các tham số quan trọng
+			if (!queryParams.TryGetValue("vnp_Amount", out var amountStr) ||
+				!queryParams.TryGetValue("vnp_TxnRef", out var txnRef) ||
+				!queryParams.TryGetValue("vnp_ResponseCode", out var responseCode))
+			{
+				return false;
+			}
+
+			// Kiểm tra số tiền và mã giao dịch
+			if (!decimal.TryParse(amountStr, out var amount) || amount != expectedAmount)
+			{
+				return false;
+			}
+
+			if (txnRef != expectedTxnRef || responseCode != "00")
+			{
+				return false;
+			}
+
+			return true;
 		}
 
 		private string CreateRequestUrl(SortedDictionary<string, string> requestData)
@@ -100,6 +104,26 @@ namespace FB98.Shared.Infrastructure.Payments.VnPay
 			}
 
 			return hash.ToString();
+		}
+		private SortedDictionary<string, string> PrepareVnPayData(Guid paymentId, decimal amount, string ipAddress)
+		{
+			return new SortedDictionary<string, string>
+			{
+				{ "vnp_Version", _options.Vnp_Version },
+				{ "vnp_Command", _options.Vnp_Command },
+				{ "vnp_TmnCode", _options.Vnp_TmnCode },
+				{ "vnp_Amount", ((int)(amount * 100)).ToString() }, // VNPay yêu cầu nhân 100
+				{ "vnp_BankCode", "VNBANK" },
+				{ "vnp_CreateDate", DateTime.UtcNow.AddHours(7).ToString("yyyyMMddHHmmss") },
+				{ "vnp_CurrCode", "VND" },
+				{ "vnp_IpAddr", ipAddress },
+				{ "vnp_Locale", "vn" },
+				{ "vnp_OrderInfo", $"Thanh toan don hang {paymentId}" },
+				{ "vnp_OrderType", "other" },
+				{ "vnp_ExpireDate", DateTime.UtcNow.AddHours(7).AddMinutes(15).ToString("yyyyMMddHHmmss") },
+				{ "vnp_ReturnUrl", _options.Vnp_ReturnUrl },
+				{ "vnp_TxnRef", $"{paymentId}"}
+			};
 		}
 	}
 }

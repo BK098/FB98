@@ -6,6 +6,7 @@ namespace FB98.Modules.Identity.Domain.Entities
 	{
 		public string Firstname { get; set; } = string.Empty;
 		public string Lastname { get; set; } = string.Empty;
+		public bool? Gender { get; set; } = null;
 		public byte Age { get; set; } = 0;
 		public DateOnly BirthOfDate { get; set; }
 		public virtual ICollection<TokenStore> TokenStores { get; set; } = new List<TokenStore>();

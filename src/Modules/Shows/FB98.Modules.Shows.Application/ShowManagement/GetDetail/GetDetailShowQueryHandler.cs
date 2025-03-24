@@ -73,7 +73,7 @@ namespace FB98.Modules.Shows.Application.ShowManagement.GetDetail
 					try
 					{
 						var random = new Random();
-						var ramdomTime = TimeSpan.FromMinutes(random.Next(10, 20));
+						var ramdomTime = TimeSpan.FromMinutes(random.Next(1, 5));
 						await redisDatabase.StringSetAsync(cacheKey, JsonSerializer.Serialize(response), ramdomTime);
 					}
 					catch (RedisConnectionException ex)

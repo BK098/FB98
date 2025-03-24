@@ -1,0 +1,26 @@
+[
+	{
+		"Id": "d2a4f8b1-3c4e-4b8e-9b8d-1f2a3b4c5d6e",
+		"LevelName": "Silver",
+		"TotalAmountForUpgrade": 0,
+		"DiscountRate": 0
+	},
+	{
+		"Id": "e3b5c9d2-4d5f-5e9f-8c7d-2f3b4c5d6e7f",
+		"LevelName": "Gold",
+		"TotalAmountForUpgrade": 2000000,
+		"DiscountRate": 2
+	},
+	{
+		"Id": "f4c6d0e3-5e6f-6f0f-9d8e-3f4b5c6d7e8f",
+		"LevelName": "Platinum",
+		"TotalAmountForUpgrade": 5000000,
+		"DiscountRate": 5
+	},
+	{
+		"Id": "05d7e1f4-6f7f-7f1f-0e9f-4f5b6c7d8e9f",
+		"LevelName": "Diamond",
+		"TotalAmountForUpgrade": 10000000,
+		"DiscountRate": 7
+	}
+]

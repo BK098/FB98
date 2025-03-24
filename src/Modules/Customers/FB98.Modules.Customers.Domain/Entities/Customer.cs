@@ -5,16 +5,28 @@ namespace FB98.Modules.Customers.Domain.Entities
 {
 	public class Customer : BaseEntity
 	{
+		public Customer()
+		{
+		}
+
+		public Customer(Guid userId, decimal totalSpent, int loyaltyPoints, Guid membershipId)
+		{
+			TotalSpent = totalSpent;
+			LoyaltyPoints = loyaltyPoints;
+			MembershipId = membershipId;
+			UserId = userId;
+			MemberSince = DateTime.UtcNow;
+		}
+
 		public Guid UserId { get; set; }
 		public DateTime MemberSince { get; set; }
-		public decimal TotalSpent { get; set; } = 0;
-		public int LoyaltyPoints { get; set; } = 0;
+		public decimal TotalSpent { get; set; }
+		public int LoyaltyPoints { get; set; }
 
-		[ForeignKey("CustomerMembershipBenefit")]
-		public Guid LevelName { get; set; }
-		public CustomerMembershipBenefit CustomerMembershipBenefit { get; set; } = default!;
+		[ForeignKey("Membership")]
+		public Guid MembershipId { get; set; }
+		public Membership Membership { get; set; }
 
-		//private readonly List<DomainEvent> _events = new();
-
+		public ICollection<PointTransaction> PointTransactions { get; set; } = new List<PointTransaction>();
 	}
 }
