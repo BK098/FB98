@@ -38,13 +38,16 @@ namespace FB98.Modules.Payments.Api.Controllers
 			if (userId == null)
 			{
 				var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-
+				var phoneNumberClaim = User.FindFirst(ClaimTypes.MobilePhone);
+				var emailClaim = User.FindFirst(ClaimTypes.Email);
 				if (userIdClaim == null)
 				{
 					return Unauthorized();
 				}
 
 				model.UserId = Guid.Parse(userIdClaim.Value);
+				model.PhoneNumber = phoneNumberClaim?.Value;
+				model.Email = emailClaim?.Value;
 			}
 			else
 			{
@@ -56,25 +59,12 @@ namespace FB98.Modules.Payments.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize]
 		[HttpGet("vnpay-return")]
 		public async Task<IActionResult> ProcessVnPayReturn()
 		{
-			var userMailClaim = User.FindFirst(ClaimTypes.Email);
-			var phoneNumberClaim = User.FindFirst(ClaimTypes.MobilePhone);
-			var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-
-			if (userMailClaim == null || userIdClaim == null || phoneNumberClaim == null)
-			{
-				return Unauthorized();
-			}
-
-			var email = userMailClaim.Value;
-			var phoneNumber = phoneNumberClaim.Value;
-			var userId = Guid.Parse(userIdClaim.Value);
 			var queryParams = new SortedDictionary<string, string>(Request.Query.ToDictionary(q => q.Key, q => q.Value.ToString()));
 
-			var request = new ProcessVnPayReturnCommand(queryParams, userId, email, phoneNumber);
+			var request = new ProcessVnPayReturnCommand(queryParams);
 			var result = await _mediator.Send(request);
 			if (result.IsSuccess)
 			{

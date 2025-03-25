@@ -324,4 +324,7 @@
   <data name="PaymentProcessed" xml:space="preserve">
     <value>Đơn này đã được xử lý</value>
   </data>
+  <data name="UserAlreadyExists" xml:space="preserve">
+    <value>Người dùng này đã tồn tại</value>
+  </data>
 </root>

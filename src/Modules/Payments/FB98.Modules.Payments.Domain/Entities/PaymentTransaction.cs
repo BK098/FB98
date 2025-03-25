@@ -7,6 +7,8 @@ namespace FB98.Modules.Payments.Domain.Entities
 	public class PaymentTransaction : BaseEntity
 	{
 		public Guid UserId { get; set; }
+		public string Email { get; set; }
+		public string PhoneNumber { get; set; }
 		public Guid? OrderId { get; set; }
 		public Guid? BookingId { get; set; }
 		public decimal Amount { get; set; }

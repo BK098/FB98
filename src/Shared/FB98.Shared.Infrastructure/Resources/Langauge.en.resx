@@ -324,4 +324,7 @@
   <data name="PaymentProcessed" xml:space="preserve">
     <value>Payment has been processed</value>
   </data>
+  <data name="UserAlreadyExists" xml:space="preserve">
+    <value>User already exists</value>
+  </data>
 </root>

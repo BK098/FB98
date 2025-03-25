@@ -30,10 +30,10 @@ namespace FB98.Modules.Identity.Application.Authentication.Register
 					return ApiResponseBuilder.ValidationError<object>(validationResult.Errors, _localizedMessageService.GetLocalizedMessage("ValidationFailed"));
 				}
 
-				var existingUser = await _userManager.FindByEmailAsync(model.Email!);
-				if (existingUser != null)
+				var checkUser = await _userManager.FindByEmailAsync(model.Email!);
+				if (checkUser != null || checkUser.PhoneNumber == model.PhoneNumber)
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("EmailAlreadyExists"), statusCode: 409);
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("UserAlreadyExists"), statusCode: 409);
 				}
 
 				var user = new AppUser
