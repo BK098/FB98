@@ -664,6 +664,15 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User already exists.
+        /// </summary>
+        internal static string UserAlreadyExists {
+            get {
+                return ResourceManager.GetString("UserAlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User not found.
         /// </summary>
         internal static string UserNotFound {

@@ -54,9 +54,6 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 
 		public async Task<ApiResult<string>> Handle(ProcessVnPayReturnCommand request, CancellationToken cancellationToken)
 		{
-			var phoneNumber = request.PhoneNumber;
-			var email = request.Email;
-			var userId = request.UserId;
 			var model = request.QueryParams;
 			try
 			{
@@ -85,7 +82,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 					transaction.MarkSuccess(txnRef);
 					_paymentRepository.Update(transaction);
 
-					await _bus.Publish(new PaymentSuccessEvent(transaction.OrderId, transaction.BookingId, request.UserId, amount, request.Email), cancellationToken);
+					await _bus.Publish(new PaymentSuccessEvent(transaction.OrderId, transaction.BookingId, transaction.UserId, amount, transaction.Email), cancellationToken);
 
 					BookingDetailDto? booking = null;
 					OrderDetailDto? order = null;
@@ -123,7 +120,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 						}
 					}
 
-					await SendMailAsync(email, phoneNumber, booking, order);
+					await SendMailAsync(transaction.Email, transaction.PhoneNumber, booking, order);
 
 					return ApiResponseBuilder.Success(_localizedMessageService.GetLocalizedMessage("PaymentSuccessful"));
 				}

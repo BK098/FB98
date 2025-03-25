@@ -76,6 +76,8 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment
 
 				var transaction = new PaymentTransaction
 				{
+					Email = model.Email!,
+					PhoneNumber = model.PhoneNumber!,
 					UserId = model.UserId!.Value,
 					OrderId = model.OrderId,
 					BookingId = model.BookingId,
