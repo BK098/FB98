@@ -511,6 +511,15 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Phone number existed.
+        /// </summary>
+        internal static string PhoneNumberExists {
+            get {
+                return ResourceManager.GetString("PhoneNumberExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid phone number.
         /// </summary>
         internal static string PhoneNumberInvalid {
