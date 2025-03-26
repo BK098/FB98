@@ -18,13 +18,13 @@ jobs:
             - name: Set up .NET
               uses: actions/setup-dotnet@v3
               with:
-                dotnet-version: '7.0.x'
+                dotnet-version: '8.0.x'
 
             - name: Restore dependencies
-              run: dotnet restore
+              run: dotnet restore FB98.sln
 
             - name: Build
-              run: dotnet build --no-restore
+              run: dotnet build FB98.sln --no-restore
 
     build-and-deploy:
         needs: test
@@ -66,5 +66,5 @@ jobs:
             - name: Health Check
               run: |
                 sleep 30
-                curl -f http://${{ secrets.VPS_HOST }}:5000/catalog-module || exit 1
+                curl -f http://${{ secrets.VPS_HOST }}:5000/catelog-module || exit 1
     
