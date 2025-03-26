@@ -66,12 +66,11 @@ namespace FB98.Modules.Payments.Api.Controllers
 
 			var request = new ProcessVnPayReturnCommand(queryParams);
 			var result = await _mediator.Send(request);
-			if (result.IsSuccess)
+			if (!result.IsSuccess)
 			{
-				return Redirect($"{_frontEnd}/payment-success?paymentId={queryParams["vnp_TxnRef"]}");
+				return Redirect($"{_frontEnd}/payment-error");
 			}
-
-			return Redirect($"{_frontEnd}/payment-error");
+			return Redirect($"{_frontEnd}/payment-success?paymentId={queryParams["vnp_TxnRef"]}");
 		}
 
 		[Authorize]
