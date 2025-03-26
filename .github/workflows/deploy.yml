@@ -60,7 +60,8 @@ jobs:
                   debug: true
                   use_insecure_cipher: true
                   script: |
-                    cd /fb98 /FB98
+                    cd /fb98
+                    cd FB98
                     git pull origin release
                     docker-compose pull
                     docker-compose down bootstrapper
