@@ -55,6 +55,10 @@ jobs:
                   host: ${{ secrets.VPS_HOST }}
                   username: ${{ secrets.VPS_USER }}
                   key: ${{ secrets.VPS_SSH_KEY }}
+                  port: 22
+                  script_stop: true
+                  debug: true
+                  use_insecure_cipher: true
                   script: |
                     cd /home/deploy/fb98
                     git pull origin release
