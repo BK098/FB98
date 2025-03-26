@@ -2,6 +2,7 @@
 	//Bắp
 	{
 		"Id": "04a64846-9f62-4cbc-8837-41160603483c",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/f_auto,q_auto/v1/catalog/product/fsnpouqqrnsj8hg73yln",
 		"Name": "Bắp rang bơ truyền thống",
 		"Description": "Hạt bắp nổ giòn, được trộn với bơ lỏng hoặc bơ bột. Có vị bơ thơm béo và vị mặn nhẹ.",
 		"Price": 30000,
@@ -10,6 +11,7 @@
 	},
 	{
 		"Id": "9583f068-d56a-4d30-867b-8dc75ae67d40",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740214328/catalog/product/zhjcl4olnk5uejtgtttd.png",
 		"Name": "Bắp rang caramel",
 		"Description": "Bắp được phủ một lớp caramel ngọt, giòn. Ngọt đậm, giòn tan, caramel phủ đều, hơi dính tay một chút",
 		"Price": 30000,
@@ -18,6 +20,7 @@
 	},
 	{
 		"Id": "af5365e6-e9c0-47be-ba76-caec449975d5",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740214973/catalog/product/kn6dxvbefo588zovytkc.png",
 		"Name": "Bắp phô mai",
 		"Description": "Bắp được phủ lớp phô mai bột",
 		"Price": 30000,
@@ -26,6 +29,7 @@
 	},
 	{
 		"Id": "954bd707-b24e-4fbe-ad3e-b794faee82c6",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740214510/catalog/product/ibepds5ql0nbon3acfsk.png",
 		"Name": "Bắp vị chocolate",
 		"Description": "Bắp được phủ lớp chocolate đen. Đậm vị phô mai, mặn nhẹ, béo ngậy, lớp bột phô mai bám đều",
 		"Price": 30000,
@@ -34,6 +38,7 @@
 	},
 	{
 		"Id": "32a8271d-a76d-45db-8609-8bd98efb84b4",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740214362/catalog/product/d1vo4t2cemc5jantcjnf.png",
 		"Name": "Bắp không bơ, không muối",
 		"Description": "Phù hợp cho những ai muốn ăn bắp tự nhiên, không quá béo hoặc mặn.",
 		"Price": 30000,
@@ -43,6 +48,7 @@
 	//Đồ uống
 	{
 		"Id": "1aabda88-8c26-4dbd-99d2-dbb67bc2d4f4",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040127/catalog/product/beverage-cocacola.png",
 		"Name": "Coca Cola",
 		"Price": 15000,
 		"IsEnabled": "true",
@@ -50,6 +56,7 @@
 	},
 	{
 		"Id": "40b57a04-0257-46fa-b6d9-0119a0b5976b",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203693/catalog/product/aozmajps7ki6jdhreotl.jpg",
 		"Name": "Trà C2",
 		"Price": 15000,
 		"IsEnabled": "true",
@@ -57,6 +64,7 @@
 	},
 	{
 		"Id": "627b696f-7051-432a-a8c9-6aec80e3254f",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040127/catalog/product/beverage-sprite.png",
 		"Name": "Sprite",
 		"Price": 15000,
 		"IsEnabled": "true",
@@ -64,6 +72,7 @@
 	},
 	{
 		"Id": "e848214e-1933-4928-b313-27596d244bdf",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040127/catalog/product/beverage-fanta-nho.webp",
 		"Name": "Fanta nho",
 		"Price": 15000,
 		"IsEnabled": "true",
@@ -71,6 +80,7 @@
 	},
 	{
 		"Id": "69bfc581-029e-4db1-84ac-b64ad97abd8f",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040126/catalog/product/beverage-fanta-cam.jpg",
 		"Name": "Fanta cam",
 		"Price": 15000,
 		"IsEnabled": "true",
@@ -78,6 +88,7 @@
 	},
 	{
 		"Id": "065ef203-78d9-4786-beed-401b64414325",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040126/catalog/product/beverage-cocacola-light.jpg",
 		"Name": "Coca Cola Light",
 		"Price": 15000,
 		"IsEnabled": "true",
@@ -85,6 +96,7 @@
 	},
 	{
 		"Id": "65f16e9d-58b8-4ee5-8197-c7a052c6a675",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040127/catalog/product/beverage-water.png",
 		"Name": "Nước suối Dasani",
 		"Price": 15000,
 		"IsEnabled": "true",
@@ -93,6 +105,7 @@
 	//Bánh
 	{
 		"Id": "b7778f2d-1e36-406c-917c-bc7d74ae90d6",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203746/catalog/product/uehagszpo8ajzwfm8r3e.jpg",
 		"Name": "Snack cà chua",
 		"Price": 15000,
 		"IsEnabled": "true",
@@ -100,6 +113,7 @@
 	},
 	{
 		"Id": "58bf2d1e-cdc7-4765-80b9-2d87f106eebc",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203747/catalog/product/y2fkhwggvlbd5gio613l.jpg",
 		"Name": "Snack bí đỏ",
 		"Price": 15000,
 		"IsEnabled": "true",
@@ -107,6 +121,7 @@
 	},
 	{
 		"Id": "d914b87a-1d7c-4927-a0f3-65d0e1142cf9",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203747/catalog/product/dk3bemmewko9n9axqlz6.webp",
 		"Name": "Snack mực ống",
 		"Price": 15000,
 		"IsEnabled": "true",
@@ -114,6 +129,7 @@
 	},
 	{
 		"Id": "d60e1bd7-171b-4a3e-b0e2-b5766721fd25",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203746/catalog/product/mpuslo1tgryll2yc6soc.webp",
 		"Name": "Snack hành",
 		"Price": 15000,
 		"IsEnabled": "true",
@@ -121,6 +137,7 @@
 	},
 	{
 		"Id": "6b0e32b2-95df-4d6e-8a01-853938795a05",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203749/catalog/product/szmvmsmkvalcznjiueg5.png",
 		"Name": "Snack bắp ngọt",
 		"Price": 15000,
 		"IsEnabled": "true",
@@ -128,6 +145,7 @@
 	},
 	{
 		"Id": "63c41266-9092-4253-845c-afe304b1c8aa",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203746/catalog/product/bf2vn8onusfoypdvpcgh.webp",
 		"Name": "Snack bắp ngọt phô mai",
 		"Price": 15000,
 		"IsEnabled": "true",
@@ -135,6 +153,7 @@
 	},
 	{
 		"Id": "355064da-c3de-4913-944e-925a972c4807",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203745/catalog/product/skvdmdurjtikgrglkiyc.jpg",
 		"Name": "Snack chay vị da heo quay",
 		"Price": 15000,
 		"IsEnabled": "true",
@@ -142,6 +161,7 @@
 	},
 	{
 		"Id": "99cb0adf-6575-4e5a-98e0-48ff6ad5125a",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203746/catalog/product/fuds0jbrmnkyfablcvci.webp",
 		"Name": "Snack phô mát",
 		"Price": 15000,
 		"IsEnabled": "true",
@@ -149,6 +169,7 @@
 	},
 	{
 		"Id": "58d885bd-e40a-407e-ae68-e3b248b36d60",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203748/catalog/product/njatdacsidnjlrxfkbzv.webp",
 		"Name": "Snack tôm cay",
 		"Price": 15000,
 		"IsEnabled": "true",
@@ -156,6 +177,7 @@
 	},
 	{
 		"Id": "e013c347-3120-4612-9392-cf0e431aa639",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740204013/catalog/product/wuvcvynaqftwssxvd2vl.jpg",
 		"Name": "Snack tôm cay đặc biệt",
 		"Price": 15000,
 		"IsEnabled": "true",
@@ -163,6 +185,7 @@
 	},
 	{
 		"Id": "401c5955-7ff0-4b90-8e76-a20e10344401",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203746/catalog/product/xohci2ylbst8q2v3tj5c.webp",
 		"Name": "Snack crab me",
 		"Price": 15000,
 		"IsEnabled": "true",
@@ -170,6 +193,7 @@
 	},
 	{
 		"Id": "deb103b0-42cc-4163-8846-ee34db68f5cb",
+		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203747/catalog/product/e1hs03malpwnriripqwn.jpg",
 		"Name": "Snack tôm miếng",
 		"Price": 15000,
 		"IsEnabled": "true",

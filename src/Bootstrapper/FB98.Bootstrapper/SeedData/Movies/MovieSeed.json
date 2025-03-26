@@ -7,6 +7,10 @@
 		"Language": "Tiếng Anh, Tiếng Việt",
 		"ReleaseDate": "2025-04-14T00:00:00Z",
 		"Country": "Mỹ",
+		"TrailerLink": "https://www.youtube.com/watch?v=1pHDWnXmK7Y",
+		"HeaderImage": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1742780591/movie/captain/vccyybeicv28tku5vcdy.png",
+		"PosterImage": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1742780624/movie/captain/t5ewluvv3rsl3yv0cdzo.jpg",
+		"isPublished": true,
 		"IsVietSub": true,
 		"Casts": [
 			{
@@ -51,6 +55,10 @@
 		"Language": "Tiếng Việt",
 		"ReleaseDate": "2025-02-07T00:00:00Z",
 		"Country": "Việt Nam",
+		"TrailerLink": "https://www.youtube.com/watch?v=t62Rifc9OXI",
+		"HeaderImage": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1742780750/movie/denamhon/iz5wzksh2jjbrwxanvje.webp",
+		"PosterImage": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1742780747/movie/denamhon/oz3rct5qdowvwitx3e5q.jpg",
+		"isPublished": true,
 		"IsVietSub": true,
 		"Casts": [
 			{
@@ -86,6 +94,10 @@
 		"Language": "Tiếng Nhật, Tiếng Anh, Tiếng Việt",
 		"ReleaseDate": "2025-02-07T00:00:00Z",
 		"Country": "Nhật Bản",
+		"TrailerLink": "https://www.youtube.com/watch?v=i_gcT9PR4Oc",
+		"HeaderImage": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1742780874/movie/daichienkhonglo/cohmzjaghshbrvhfontx.jpg",
+		"PosterImage": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1742780888/movie/daichienkhonglo/lvpuwieoloeqtfijfm9c.jpg",
+		"isPublished": true,
 		"IsVietSub": true,
 		"Casts": [
 			{
@@ -124,6 +136,10 @@
 		"Language": "Tiếng Anh",
 		"ReleaseDate": "2025-02-28T00:00:00Z",
 		"Country": "Mỹ",
+		"TrailerLink": "https://www.youtube.com/watch?v=M5ji4qIuIZs",
+		"HeaderImage": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1742781004/movie/kedonghanh/pwzpaz1bdmaiu2zizevm.jpg",
+		"PosterImage": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1742781055/movie/kedonghanh/ryrjpdqffzvelbc3ttki.jpg",
+		"isPublished": true,
 		"IsVietSub": true,
 		"Casts": [
 			{
@@ -162,6 +178,10 @@
 		"Language": "Tiếng Anh, Tiếng Việt, Tiếng Pháp,....",
 		"ReleaseDate": "2025-01-01T00:00:00Z",
 		"Country": "Anh, Pháp, Mỹ",
+		"TrailerLink": "https://www.youtube.com/watch?v=Lx-PFLv9dX0",
+		"HeaderImage": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1742781107/movie/paddington/zp1fhuwemqsq7qpwpk6l.jpg",
+		"PosterImage": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1742781104/movie/paddington/alf9bqbf9yrkofgpit19.jpg",
+		"isPublished": true,
 		"IsVietSub": true,
 		"Casts": [
 			{

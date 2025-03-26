@@ -327,4 +327,7 @@
   <data name="UserAlreadyExists" xml:space="preserve">
     <value>User already exists</value>
   </data>
+  <data name="PhoneNumberExists" xml:space="preserve">
+    <value>Phone number existed</value>
+  </data>
 </root>

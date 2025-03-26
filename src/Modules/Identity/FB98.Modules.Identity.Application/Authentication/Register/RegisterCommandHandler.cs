@@ -1,15 +1,18 @@
 ﻿using FB98.Modules.Identity.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace FB98.Modules.Identity.Application.Authentication.Register
 {
 	internal sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand, ApiResult<object>>
 	{
-		private readonly UserManager<AppUser> _userManager;
-		private readonly ILogger<RegisterCommandHandler> _logger;
-		private readonly IValidator<RegisterDto> _validator;
 		private readonly ILocalizedMessageService _localizedMessageService;
-		public RegisterCommandHandler(UserManager<AppUser> userManager,
+		private readonly ILogger<RegisterCommandHandler> _logger;
+		private readonly UserManager<AppUser> _userManager;
+		private readonly IValidator<RegisterDto> _validator;
+
+		public RegisterCommandHandler(
+			UserManager<AppUser> userManager,
 			ILogger<RegisterCommandHandler> logger,
 			IValidator<RegisterDto> validator,
 			ILocalizedMessageService localizedMessageService)
@@ -19,6 +22,7 @@ namespace FB98.Modules.Identity.Application.Authentication.Register
 			_validator = validator;
 			_localizedMessageService = localizedMessageService;
 		}
+
 		public async Task<ApiResult<object>> Handle(RegisterCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
@@ -31,9 +35,15 @@ namespace FB98.Modules.Identity.Application.Authentication.Register
 				}
 
 				var checkUser = await _userManager.FindByEmailAsync(model.Email!);
-				if (checkUser != null || checkUser.PhoneNumber == model.PhoneNumber)
+				if (checkUser != null)
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("UserAlreadyExists"), statusCode: 409);
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("UserAlreadyExists"), 409);
+				}
+
+				var checkPhoneNumber = await _userManager.Users.FirstOrDefaultAsync(x => x.PhoneNumber == model.PhoneNumber, cancellationToken);
+				if (checkPhoneNumber != null)
+				{
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("PhoneNumberExists"), 409);
 				}
 
 				var user = new AppUser
@@ -50,25 +60,28 @@ namespace FB98.Modules.Identity.Application.Authentication.Register
 
 				if (!result.Succeeded)
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("UserCreationFailed"), statusCode: 400);
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("UserCreationFailed"), 400);
 				}
-				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("AccountCreatedSuccessfully"), statusCode: 201);
+
+				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("AccountCreatedSuccessfully"), 201);
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, "An error occurred: Register");
-				return ApiResponseBuilder.Error<object>("An unexpected error occurred", statusCode: 500);
+				return ApiResponseBuilder.Error<object>("An unexpected error occurred", 500);
 			}
 		}
+
 		private static byte CaculatorAge(DateOnly birthOfDate)
 		{
 			var currentDate = DateOnly.FromDateTime(DateTime.Today);
-			int age = currentDate.Year - birthOfDate.Year;
+			var age = currentDate.Year - birthOfDate.Year;
 
 			if (currentDate < birthOfDate.AddYears(age))
 			{
 				--age;
 			}
+
 			return (byte)age;
 		}
 	}
