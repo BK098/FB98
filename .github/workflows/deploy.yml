@@ -63,7 +63,6 @@ jobs:
                     cd /root/fb98/FB98
                     git pull origin release
                     docker-compose pull
-                    docker-compose down bootstrapper
                     docker-compose up -d
                     docker system prune -f
 
