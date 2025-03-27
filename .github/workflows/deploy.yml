@@ -52,19 +52,20 @@ jobs:
             - name: Deploy to VPS via SSH
               uses: appleboy/ssh-action@v0.1.7
               with:
-                  host: ${{ secrets.VPS_HOST }}
-                  username: ${{ secrets.VPS_USER }}
-                  key: ${{ secrets.VPS_SSH_KEY }}
-                  port: 22
-                  script_stop: true
-                  debug: true
-                  use_insecure_cipher: true
-                  script: |
-                    cd /home/deploy/FB98
-                    git pull origin release
-                    docker-compose pull
-                    docker-compose up -d
-                    docker system prune -f
+                host: ${{ secrets.VPS_HOST }}
+                username: ${{ secrets.VPS_USER }}
+                key: ${{ secrets.VPS_SSH_KEY }}
+                port: 22
+                script_stop: true
+                debug: true
+                use_insecure_cipher: true
+                script: |
+                  cd /home/deploy/FB98
+                  git pull origin release
+                  docker-compose stop fb98.bootstrapper
+                  docker-compose rm -f fb98.bootstrapper
+                  docker-compose pull fb98.bootstrapper
+                  docker-compose up -d fb98.bootstrapper
 
             - name: Health Check
               run: |

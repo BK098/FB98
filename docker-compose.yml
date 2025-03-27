@@ -26,7 +26,6 @@ services:
       - app_data:/app/data
 
   db:
-    #image: bkhang1227/fb98:database
     image: postgres:15
     container_name: postgres-db
     restart: always
@@ -41,7 +40,6 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
   pgadmin:
-    #image: bkhang1227/fb98:pgadmin
     image: dpage/pgadmin4
     container_name: pgadmin
     ports:
@@ -54,7 +52,6 @@ services:
     networks:
       - fb98_network
   rabbitmq:
-    #image: bkhang1227/fb98:rabbitmq
     image: rabbitmq:3-management
     container_name: rabbitmq
     hostname: rabbitmq
@@ -77,7 +74,6 @@ services:
       - rabbitmq_data:/var/lib/rabbitmq
       - rabbitmq_logs:/var/log/rabbitmq
   redis:
-    #image: bkhang1227/fb98:redis
     image: redis:latest
     container_name: redis
     restart: always
