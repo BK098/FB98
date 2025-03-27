@@ -5,12 +5,49 @@ networks:
     driver: bridge
 
 services:
+#front-end
+  fb98-client:
+    container_name: fb98-client
+    image : bkhang1227/fb98.ui:latest
+    ports:
+      - "3000:80" # Map cổng 80 trong nginx container ra cổng 3000 trên máy bạn
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.react.rule=Host(`fb98.id.vn`)"
+      - "traefik.http.routers.react.entrypoints=websecure"
+      - "traefik.http.routers.react.tls.certresolver=letsencrypt"
+    restart: always
+    depends_on:
+      - bootstrapper
+    networks:
+      - fb98_network
+
+  traefik:
+    image: traefik:v2.11
+    command:
+      - "--api.insecure=true" # Có thể truy cập dashboard tại :8080 (optional)
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.letsencrypt.acme.email=buikhang122004@gmail.com"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./traefik/traefik.yml:/traefik.yml"
+      - "./traefik/acme.json:/letsencrypt/acme.json"
+    restart: always
+
+#back-end
   fb98.bootstrapper:
     container_name: bootstrapper
     image: bkhang1227/fb98:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     ports:
       - "5000:5000" #http 
     environment:
