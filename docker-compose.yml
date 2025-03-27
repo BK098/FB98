@@ -9,8 +9,6 @@ services:
   fb98-client:
     container_name: fb98-client
     image : bkhang1227/fb98.ui:latest
-    ports:
-      - "3000:80" # Map cổng 80 trong nginx container ra cổng 3000 trên máy bạn
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.react.rule=Host(`fb98.id.vn`)"
