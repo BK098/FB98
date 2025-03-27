@@ -46,9 +46,14 @@ services:
   fb98.bootstrapper:
     container_name: bootstrapper
     image: bkhang1227/fb98:latest
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile
+    build:
+      context: .
+      dockerfile: Dockerfile
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`api.fb98.id.vn`)"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls.certresolver=letsencrypt"
     ports:
       - "5000:5000" #http 
     environment:
