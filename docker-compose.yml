@@ -18,11 +18,12 @@ services:
       - "traefik.http.routers.react.tls.certresolver=letsencrypt"
     restart: always
     depends_on:
-      - bootstrapper
+      - fb98.bootstrapper
     networks:
       - fb98_network
 
   traefik:
+    container_name: traefik
     image: traefik:v2.11
     command:
       - "--api.insecure=true" # Có thể truy cập dashboard tại :8080 (optional)
@@ -35,6 +36,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      - "8081:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./traefik/traefik.yml:/traefik.yml"
@@ -82,7 +84,7 @@ services:
     image: dpage/pgadmin4
     container_name: pgadmin
     ports:
-      - "8080:80"
+      - "8888:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com # can change
       PGADMIN_DEFAULT_PASSWORD: admin # can change
