@@ -40,7 +40,8 @@ services:
       - "./traefik/traefik.yml:/traefik.yml"
       - "./traefik/acme.json:/letsencrypt/acme.json"
     restart: always
-
+    networks:
+      - fb98_network
 #back-end
   fb98.bootstrapper:
     container_name: bootstrapper
