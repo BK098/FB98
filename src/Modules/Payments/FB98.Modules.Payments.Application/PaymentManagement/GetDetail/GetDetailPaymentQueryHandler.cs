@@ -53,6 +53,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.GetDetail
 
 				if (payment.BookingId != null)
 				{
+					response.BookingId = payment.BookingId;
 					try
 					{
 						var bookingResult = await _bookingApi.GetDetailBooking(payment.BookingId.Value);
@@ -72,6 +73,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.GetDetail
 
 				if (payment.OrderId != null)
 				{
+					response.OrderId = payment.OrderId;
 					try
 					{
 						var orderResult = await _orderApi.GetOrderDetailById(payment.OrderId.Value);
@@ -91,10 +93,10 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.GetDetail
 
 				return ApiResponseBuilder.Success(response);
 			}
-			catch (Exception e)
+			catch (Exception ex)
 			{
-				Console.WriteLine(e);
-				throw;
+				_logger.LogError(ex, "Error occurred while get payment detail");
+				return ApiResponseBuilder.Error<GetDetailPaymentResponse>("An unexpected error occurred", 500);
 			}
 		}
 	}
