@@ -12,6 +12,7 @@ using FB98.Modules.Tickets.Api;
 using FB98.Modules.Warehouse.Api;
 using FB98.Shared.Infrastructure;
 using FB98.Shared.Infrastructure.Configurations;
+using FB98.Shared.Infrastructure.SignalRHub;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,9 +35,8 @@ var app = builder.Build();
 
 //default
 app.UseRouting();
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.MapControllers();
 app.UseCustomCors();
 app.UseCustomSwagger();
 
@@ -54,4 +54,9 @@ app.UseShowModule();
 app.UseTicketModule();
 app.UseSystemModule();
 //default
+app.UseEndpoints(endpoints =>
+{
+	endpoints?.MapControllers();
+	endpoints?.MapSignalRHubs();
+});
 app.Run();

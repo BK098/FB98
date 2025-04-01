@@ -22,18 +22,8 @@ namespace FB98.Modules.Tickets.Api.Extensions
 			{
 				config.AddConsumer<PaymentSuccessEventHandler>();
 				config.AddConsumer<VnPayPaymentCreatedEventHandler>();
-
-				//config.UsingRabbitMq((context, cfg) =>
-				//{
-				//	cfg.ReceiveEndpoint("ticket-module-events", e =>
-				//	{
-				//		e.ConfigureConsumer<PaymentSuccessEventHandler>(context);
-				//		e.ConfigureConsumer<VnPayPaymentCreatedEventHandler>(context);
-				//	});
-				//});
 			});
-			//services.AddScoped<PaymentSuccessEventHandler>();
-			//services.AddScoped<VnPayPaymentCreatedEventHandler>();
+
 			return services;
 		}
 	}

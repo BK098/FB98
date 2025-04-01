@@ -9,15 +9,15 @@ namespace FB98.Modules.Tickets.Application.SeatManagement.LockSeat
 {
 	internal sealed class LockSeatsCommandHandler : ICommandHandler<LockSeatsCommand, ApiResult<object>>
 	{
+		private readonly IBookingRepository _bookingRepository;
 		private readonly IBookingSeatLockRepository _bookingSeatLockRepository;
 		private readonly IBookingSeatRepository _bookingSeatRepository;
 		private readonly ICinemaApi _cinemaApi;
+		private readonly IHubContext<SeatHub> _hubContext;
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ILogger<LockSeatsCommandHandler> _logger;
 		private readonly IShowApi _showApi;
 		private readonly IValidator<LockSeatsDto> _validator;
-		private readonly IHubContext<SeatHub> _hubContext;
-		private readonly IBookingRepository _bookingRepository;
 
 		public LockSeatsCommandHandler(
 			IBookingSeatLockRepository bookingSeatLockRepository,
@@ -60,6 +60,7 @@ namespace FB98.Modules.Tickets.Application.SeatManagement.LockSeat
 				{
 					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("PreviousUnpaidBooking"), 404);
 				}
+
 				ApiResult<ShowDto>? showResponse;
 				try
 				{
@@ -92,7 +93,8 @@ namespace FB98.Modules.Tickets.Application.SeatManagement.LockSeat
 					return ApiResponseBuilder.Error<object>($"Invalid seat selection. Expected {model.SeatIds.Count}, but got {hallSeats.Count}");
 				}
 
-				if (hallSeats.Count > maxSeats)
+				var seatLocks = await _bookingSeatLockRepository.GetLockedSeatsByUser(model.UserId!.Value, model.ShowId!.Value);
+				if (seatLocks.Count > maxSeats || hallSeats.Count > maxSeats)
 				{
 					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("MaxSeatsLimit"));
 				}
@@ -104,7 +106,7 @@ namespace FB98.Modules.Tickets.Application.SeatManagement.LockSeat
 
 				if (availableSeats.Count != model.SeatIds.Count)
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("SeatsAlreadyLocked"), 400);
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("SeatsAlreadyLocked"));
 				}
 
 				var unavailableSeats = await _bookingSeatLockRepository.GetLockedSeats(model.ShowId!.Value, model.SeatIds);

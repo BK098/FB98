@@ -7,6 +7,7 @@ using FB98.Shared.Infrastructure.Payments.VnPay;
 using FB98.Shared.Infrastructure.Postgres;
 using FB98.Shared.Infrastructure.RabbitMq;
 using FB98.Shared.Infrastructure.Redis;
+using FB98.Shared.Infrastructure.SignalRHub;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
@@ -46,7 +47,7 @@ namespace FB98.Shared.Infrastructure
 			services.AddCloudinary();
 			services.AddVnPay();
 			services.AddRedis();
-			services.AddSignalR();
+			services.AddSignalRHub();
 			return services;
 		}
 
