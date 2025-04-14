@@ -1,13 +1,16 @@
 ﻿using FB98.Modules.Tickets.Domain.Enums;
 using FB98.Shared.Abstractions.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace FB98.Modules.Tickets.Domain.Entities
 {
 	public class SeatPriceRule : BaseEntity
 	{
 		public Guid SeatTypeId { get; set; }
-		public string Name { get; set; }
-		public string Description { get; set; }
+
+		[StringLength(255)]
+		public string Name { get; set; } = null!;
+		public string? Description { get; set; }
 		public decimal Price { get; set; }
 		public int? DaysOfWeek { get; set; }
 		public DateTime? StartDate { get; set; }

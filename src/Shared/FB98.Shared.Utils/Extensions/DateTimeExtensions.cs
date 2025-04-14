@@ -7,7 +7,7 @@
 		// Chuyển đổi từ UTC sang giờ Việt Nam
 		public static DateTime ConvertUtcToVietnamTime(this DateTime utcDateTime)
 		{
-			return TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, VietnamTimeZone);
+			return utcDateTime.ToLocalTime();
 		}
 
 		// Chuyển đổi từ giờ Việt Nam sang UTC

@@ -2,7 +2,7 @@
 {
 	public class GetDetailHallResponse
 	{
-		public string Name { get; set; }
+		public string Name { get; set; } = null!;
 		public int SeatsCount { get; set; }
 		public int MaxSeatRow { get; set; }
 		public int MaxSeatColumn { get; set; }
@@ -13,7 +13,7 @@
 	{
 		public Guid SeatId { get; set; }
 		public Guid SeatTypeId { get; set; }
-		public string SeatType { get; set; }
-		public string SeatPosition { get; set; }
+		public string SeatType { get; set; } = null!;
+		public string SeatPosition { get; set; } = null!;
 	}
 }

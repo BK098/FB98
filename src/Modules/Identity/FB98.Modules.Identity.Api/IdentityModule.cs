@@ -23,14 +23,14 @@ namespace FB98.Modules.Identity.Api
 			services.AddPostgres<IdentityModuleDbContext>();
 			services.AddRegisterServicesIdentity();
 			services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
-			{
-				options.Password.RequireDigit = true;
-				options.Password.RequiredLength = 8;
-				options.Password.RequireUppercase = true;
-				options.Password.RequireNonAlphanumeric = true;
-			})
-			.AddEntityFrameworkStores<IdentityModuleDbContext>()
-			.AddDefaultTokenProviders();
+				{
+					options.Password.RequireDigit = true;
+					options.Password.RequiredLength = 8;
+					options.Password.RequireUppercase = true;
+					options.Password.RequireNonAlphanumeric = true;
+				})
+				.AddEntityFrameworkStores<IdentityModuleDbContext>()
+				.AddDefaultTokenProviders();
 
 			services.Configure<DataProtectionTokenProviderOptions>(options =>
 			{
@@ -38,43 +38,55 @@ namespace FB98.Modules.Identity.Api
 			});
 
 			services.AddAuthentication(options =>
-			{
-				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-			})
-			.AddJwtBearer(options =>
-			{
-				options.RequireHttpsMetadata = false;
-				options.SaveToken = true;
-				options.TokenValidationParameters = new TokenValidationParameters
 				{
-					ValidateIssuer = true,
-					ValidateAudience = true,
-					ValidateLifetime = true,
-					ValidateIssuerSigningKey = true,
-					ValidIssuer = configuration["Jwt:Issuer"],
-					ValidAudience = configuration["Jwt:Audience"],
-					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
-				};
-				options.Events = new JwtBearerEvents
+					options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+					options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+				})
+				.AddJwtBearer(options =>
 				{
-					OnAuthenticationFailed = context =>
+					options.RequireHttpsMetadata = false;
+					options.SaveToken = true;
+					options.TokenValidationParameters = new TokenValidationParameters
 					{
-						Console.WriteLine($@"Authentication failed: {context.Exception.Message}");
-						return Task.CompletedTask;
-					},
-					OnMessageReceived = context =>
+						ValidateIssuer = true,
+						ValidateAudience = true,
+						ValidateLifetime = true,
+						ValidateIssuerSigningKey = true,
+						ValidIssuer = configuration["Jwt:Issuer"],
+						ValidAudience = configuration["Jwt:Audience"],
+						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
+					};
+					options.Events = new JwtBearerEvents
 					{
-						var accessToken = context.Request.Cookies["access_token"];
-						if (!string.IsNullOrEmpty(accessToken))
+						OnAuthenticationFailed = context =>
 						{
-							context.Token = accessToken;
+							Console.WriteLine($@"Authentication failed: {context.Exception.Message}");
+							return Task.CompletedTask;
+						},
+						OnMessageReceived = context =>
+						{
+							var accessToken = context.Request.Query["access_token"];
+							var path = context.HttpContext.Request.Path;
+
+							if (!string.IsNullOrEmpty(accessToken) &&
+								(path.StartsWithSegments("/webhook/notification") || path.StartsWithSegments("/webhook/seathub")))
+							{
+								context.Token = accessToken;
+							}
+							else
+							{
+								// 👇 Nếu gọi API thông thường thì lấy từ cookie
+								var cookieToken = context.Request.Cookies["access_token"];
+								if (!string.IsNullOrEmpty(cookieToken))
+								{
+									context.Token = cookieToken;
+								}
+							}
+							return Task.CompletedTask;
 						}
-						return Task.CompletedTask;
-					}
-				};
-				options.SaveToken = true;
-			});
+					};
+					options.SaveToken = true;
+				});
 			services.AddSession(options =>
 			{
 				options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -84,6 +96,7 @@ namespace FB98.Modules.Identity.Api
 
 			return services;
 		}
+
 		public static IApplicationBuilder UseIdentityModule(this IApplicationBuilder app)
 		{
 			//app.UseMiddleware<TokenCookieMiddleware>();

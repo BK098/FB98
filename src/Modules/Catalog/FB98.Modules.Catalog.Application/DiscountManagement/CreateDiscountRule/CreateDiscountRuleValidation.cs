@@ -23,7 +23,7 @@
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
 
 			RuleFor(x => x.Value)
-				.InclusiveBetween(0, 100).When(x => x.IsDiscountPercentage!.Value).WithMessage(message.GetLocalizedMessage("DiscountPercentageRange"));
+				.InclusiveBetween(1, 100).When(x => x.IsDiscountPercentage!.Value).WithMessage(message.GetLocalizedMessage("DiscountPercentageRange"));
 
 			RuleFor(x => x.Value)
 				.GreaterThanOrEqualTo(1000).When(x => !x.IsDiscountPercentage!.Value).WithMessage(message.GetLocalizedMessage("GreaterThanOrEqualTo1000"));

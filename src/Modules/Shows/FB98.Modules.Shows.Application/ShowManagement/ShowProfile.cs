@@ -41,8 +41,8 @@ namespace FB98.Modules.Shows.Application.ShowManagement
 				.ForMember(dest => dest.Show, opt => opt.Ignore());
 
 			CreateMap<Show, GetDetailShowResponse>()
-				.ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime.ConvertUtcToVietnamTime().ToString("dd-MM-yyyy HH:mm:ss zz")))
-				.ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.EndTime.ConvertUtcToVietnamTime().ToString("dd-MM-yyyy HH:mm:ss zz")))
+				.ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime.ConvertUtcToVietnamTime().ToString("dd-MM-yyyy HH:mm:ss")))
+				.ForMember(dest => dest.EndTime, opt => opt.MapFrom(src => src.EndTime.ConvertUtcToVietnamTime().ToString("dd-MM-yyyy HH:mm:ss")))
 				.ForMember(dest => dest.Features, opt => opt.MapFrom(src => src.Features));
 			CreateMap<ShowFeature, GetDetailShowFeatureResponse>()
 				.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.FeatureId))

@@ -4,13 +4,19 @@ using FB98.Modules.Tickets.Domain.Entities;
 using FB98.Shared.Abstractions.StatusConstants;
 using FB98.Shared.Infrastructure.Repositpries;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace FB98.Modules.Tickets.DataAccess.Repositories
 {
 	public class BookingSeatLockRepository : BaseRepository<BookingSeatLock, TicketModuleDbContext>, IBookingSeatLockRepository
 	{
-		public BookingSeatLockRepository(TicketModuleDbContext context) : base(context)
+		private readonly ILogger<BookingSeatLockRepository> _logger;
+
+		public BookingSeatLockRepository(
+			TicketModuleDbContext context,
+			ILogger<BookingSeatLockRepository> logger) : base(context)
 		{
+			_logger = logger;
 		}
 
 		public async Task<IEnumerable<Guid>> GetLockedSeats(Guid showId, IEnumerable<Guid> seatIds)
@@ -19,12 +25,11 @@ namespace FB98.Modules.Tickets.DataAccess.Repositories
 				.Where(s => s.ShowId == showId
 							&& seatIds.Contains(s.SeatId)
 							&& s.LockedUntil > DateTime.UtcNow)
-
 				.Select(s => s.SeatId)
 				.ToListAsync();
 		}
 
-		public async Task<bool> LockSeats(Guid customerId, Guid showId, ICollection<Guid> seatIds)
+		public async Task<bool> LockSeats(Guid customerId, Guid showId, ICollection<Guid> seatIds, DateTime expirationTime)
 		{
 			var executionStrategy = _context.Database.CreateExecutionStrategy();
 			return await executionStrategy.ExecuteAsync(async () =>
@@ -56,7 +61,7 @@ namespace FB98.Modules.Tickets.DataAccess.Repositories
 						ShowId = showId,
 						SeatId = seatId,
 						CustomerId = customerId,
-						LockedUntil = DateTime.UtcNow.AddMinutes(5),
+						LockedUntil = expirationTime,
 						IsPaymentInProgress = false
 					});
 
@@ -68,11 +73,13 @@ namespace FB98.Modules.Tickets.DataAccess.Repositories
 				catch (DbUpdateException dbEx)
 				{
 					await transaction.RollbackAsync();
+					_logger.LogError(dbEx, "Error while locking seats");
 					return false;
 				}
 				catch (Exception ex)
 				{
 					await transaction.RollbackAsync();
+					_logger.LogError(ex, "Error while locking seats");
 					return false;
 				}
 			});
@@ -97,28 +104,51 @@ namespace FB98.Modules.Tickets.DataAccess.Repositories
 			return true;
 		}
 
-		public async Task CleanupExpiredLocks()
+		public async Task<List<BookingSeatLock>?> CleanupExpiredLocks()
 		{
-			var now = DateTime.UtcNow;
-
-			var expiredLocks = await _context.BookingSeatLocks
-				.Where(s => s.LockedUntil < now)
-				.ToListAsync();
-
-			if (expiredLocks.Any())
+			try
 			{
-				_context.Set<BookingSeatLock>().RemoveRange(expiredLocks);
+				var now = DateTime.UtcNow;
+
+				var expiredLocks = await _context.BookingSeatLocks
+					.Where(s => s.LockedUntil < now)
+					.ToListAsync();
+
+				if (expiredLocks.Any())
+				{
+					_context.Set<BookingSeatLock>().RemoveRange(expiredLocks);
+					await _context.SaveChangesAsync();
+				}
+
+				var paymentTimeoutLocks = await _context.BookingSeatLocks
+					.Where(s => s.LockedUntil < now.AddMinutes(-15) && s.IsPaymentInProgress)
+					.ToListAsync();
+
+				var affectedShow = expiredLocks
+					.Concat(paymentTimeoutLocks)
+					.Distinct()
+					.ToList();
+
+				await _context.BookingSeatLocks
+					.Where(s => s.LockedUntil < now)
+					.ExecuteDeleteAsync();
+
+				await _context.BookingSeatLocks
+					.Where(s => s.LockedUntil < now.AddMinutes(-15) && s.IsPaymentInProgress)
+					.ExecuteDeleteAsync();
+
 				await _context.SaveChangesAsync();
+				return affectedShow;
 			}
-
-			var paymentTimeoutLocks = await _context.BookingSeatLocks
-				.Where(s => s.LockedUntil < now.AddMinutes(-15) && s.IsPaymentInProgress)
-				.ToListAsync();
-
-			if (paymentTimeoutLocks.Any())
+			catch (DbUpdateConcurrencyException ex)
 			{
-				_context.BookingSeatLocks.RemoveRange(paymentTimeoutLocks);
-				await _context.SaveChangesAsync();
+				_logger.LogWarning("Concurrency issue while removing expired locks: " + ex.Message);
+				return null;
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				throw;
 			}
 		}
 

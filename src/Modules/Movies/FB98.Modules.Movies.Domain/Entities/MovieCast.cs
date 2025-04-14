@@ -7,10 +7,10 @@ namespace FB98.Modules.Movies.Domain.Entities
 	{
 		[ForeignKey("Movie")]
 		public Guid MovieId { get; set; }
-		public Movie Movie { get; set; }
+		public Movie? Movie { get; set; }
 
 		[ForeignKey("Cast")]
 		public Guid CastId { get; set; }
-		public Cast Cast { get; set; }
+		public Cast? Cast { get; set; }
 	}
 }

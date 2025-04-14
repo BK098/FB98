@@ -10,10 +10,10 @@ namespace FB98.Modules.Catalog.Domain.Entities
 		[ForeignKey("Product")]
 		public Guid ProductId { get; set; }
 
-		public Product Product { get; set; } = null!;
+		public Product? Product { get; set; }
 
 		[ForeignKey("Combo")]
 		public Guid ComboId { get; set; }
-		public Combo Combo { get; set; } = default!;
+		public Combo? Combo { get; set; }
 	}
 }

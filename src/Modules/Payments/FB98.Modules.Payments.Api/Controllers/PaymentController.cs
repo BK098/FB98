@@ -1,4 +1,5 @@
-﻿using FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment;
+﻿using FB98.Modules.Payments.Application.PaymentManagement.ApplyCoupon;
+using FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment;
 using FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment;
 using FB98.Modules.Payments.Application.PaymentManagement.GetDetail;
 using FB98.Modules.Payments.Application.PaymentManagement.GetPaymentHisotry;
@@ -68,16 +69,17 @@ namespace FB98.Modules.Payments.Api.Controllers
 			var result = await _mediator.Send(request);
 			if (!result.IsSuccess)
 			{
-				return Redirect($"{_frontEnd}/payment-error");
+				return BadRequest(result.Message);
 			}
-			return Redirect($"{_frontEnd}/payment-success?paymentId={queryParams["vnp_TxnRef"]}");
+
+			return Redirect($"{_frontEnd}/payment-success?paymentId={result.Data}");
 		}
 
 		[Authorize]
 		[HttpGet]
 		public async Task<IActionResult> GetAllPaymentByUserId([FromQuery] Guid? userId, [FromQuery] Filter filter)
 		{
-			var currentUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+			var currentUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
 			if (userId == null || userId == currentUserId)
 			{
@@ -99,6 +101,16 @@ namespace FB98.Modules.Payments.Api.Controllers
 		public async Task<IActionResult> PaymentHistoryByUserId(Guid paymentId)
 		{
 			var request = new GetDetailPaymentQuery(paymentId);
+			var result = await _mediator.Send(request);
+
+			return StatusCode(result.StatusCode, result);
+		}
+
+		[Authorize]
+		[HttpPost("apply-coupon")]
+		public async Task<IActionResult> ApplyCoupon(ApplyCouponDto model)
+		{
+			var request = new ApplyCouponCommand(model);
 			var result = await _mediator.Send(request);
 
 			return StatusCode(result.StatusCode, result);

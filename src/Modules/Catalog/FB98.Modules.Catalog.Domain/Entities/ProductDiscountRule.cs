@@ -1,12 +1,14 @@
 ﻿using FB98.Shared.Abstractions.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FB98.Modules.Catalog.Domain.Entities
 {
 	public class ProductDiscountRule : BaseEntity
 	{
-		public string Name { get; set; }
-		public string Description { get; set; }
+		[StringLength(255)]
+		public string Name { get; set; } = null!;
+		public string Description { get; set; } = null!;
 		public decimal Value { get; set; }
 		public bool IsCombo { get; set; }
 		public bool IsDiscountPercentage { get; set; }

@@ -23,6 +23,103 @@ namespace FB98.Modules.Payments.DataAccess.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("FB98.Modules.Payments.Domain.Entities.Coupon", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsDiscountPercentage")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsLimited")
+                        .HasColumnType("boolean");
+
+                    b.Property<decimal?>("MaxDiscountAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("MaxUsage")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("MinPaymentAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("bytea");
+
+                    b.Property<int>("SoftUsageCount")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UsageCount")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Value")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Coupons", "PaymentsModule");
+                });
+
+            modelBuilder.Entity("FB98.Modules.Payments.Domain.Entities.CouponApplication", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("AppliedAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("AppliedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CouponId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreateAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("PaymentTransactionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("UpdateAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CouponId");
+
+                    b.HasIndex("PaymentTransactionId");
+
+                    b.ToTable("CouponApplications", "PaymentsModule");
+                });
+
             modelBuilder.Entity("FB98.Modules.Payments.Domain.Entities.PaymentMethod", b =>
                 {
                     b.Property<Guid>("Id")
@@ -34,7 +131,8 @@ namespace FB98.Modules.Payments.DataAccess.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("timestamp with time zone");
@@ -55,7 +153,8 @@ namespace FB98.Modules.Payments.DataAccess.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("timestamp with time zone");
@@ -77,12 +176,17 @@ namespace FB98.Modules.Payments.DataAccess.Data.Migrations
                     b.Property<Guid?>("BookingId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("CouponCode")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<Guid?>("OrderId")
                         .HasColumnType("uuid");
@@ -95,7 +199,11 @@ namespace FB98.Modules.Payments.DataAccess.Data.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.Property<decimal>("SubAmount")
+                        .HasColumnType("numeric");
 
                     b.Property<DateTime>("UpdateAt")
                         .HasColumnType("timestamp with time zone");
@@ -104,7 +212,8 @@ namespace FB98.Modules.Payments.DataAccess.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("VNPayTransactionId")
-                        .HasColumnType("text");
+                        .HasMaxLength(36)
+                        .HasColumnType("character varying(36)");
 
                     b.HasKey("Id");
 
@@ -113,6 +222,25 @@ namespace FB98.Modules.Payments.DataAccess.Data.Migrations
                     b.HasIndex("PaymentStatusId");
 
                     b.ToTable("PaymentTransactions", "PaymentsModule");
+                });
+
+            modelBuilder.Entity("FB98.Modules.Payments.Domain.Entities.CouponApplication", b =>
+                {
+                    b.HasOne("FB98.Modules.Payments.Domain.Entities.Coupon", "Coupon")
+                        .WithMany()
+                        .HasForeignKey("CouponId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FB98.Modules.Payments.Domain.Entities.PaymentTransaction", "PaymentTransaction")
+                        .WithMany()
+                        .HasForeignKey("PaymentTransactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Coupon");
+
+                    b.Navigation("PaymentTransaction");
                 });
 
             modelBuilder.Entity("FB98.Modules.Payments.Domain.Entities.PaymentTransaction", b =>

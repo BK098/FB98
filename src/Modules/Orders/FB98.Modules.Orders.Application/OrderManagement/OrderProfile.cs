@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using FB98.Modules.Orders.Application.OrderManagement.Create;
+using FB98.Modules.Orders.Application.OrderManagement.GetAllOrder;
 using FB98.Modules.Orders.Application.OrderManagement.GetDetail;
 using FB98.Modules.Orders.Application.OrderManagement.GetOrderStatusHistory;
 using FB98.Modules.Orders.Domain.Entities;
 using FB98.Shared.Abstractions.StatusConstants;
+using FB98.Shared.Utils.Extensions;
 
 namespace FB98.Modules.Orders.Application.OrderManagement
 {
@@ -30,6 +32,10 @@ namespace FB98.Modules.Orders.Application.OrderManagement
 				.ForMember(dest => dest.StatusId, opt => opt.MapFrom(src => src.OrderStatusId));
 
 			CreateMap<OrderItem, GetDetailOrderItemResponse>();
+
+			CreateMap<Order, GetAllOrderResponse>()
+				.ForMember(dest => dest.OrderStatusName, opt => opt.MapFrom(src => src.OrderStatus!.Name))
+				.ForMember(dest => dest.CreateAt, opt => opt.MapFrom(src => src.CreateAt.ConvertUtcToVietnamTime().ToString("dd-MM-yyyy HH:mm:ss")));
 		}
 	}
 }

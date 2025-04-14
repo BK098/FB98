@@ -1,4 +1,6 @@
-﻿namespace FB98.Modules.Movies.Application.MovieManagement.Create
+﻿using static FB98.Modules.Movies.Application.MovieManagement.Create.CreateMovieDto;
+
+namespace FB98.Modules.Movies.Application.MovieManagement.Create
 {
 	internal sealed class CreateMovieValidation : AbstractValidator<CreateMovieDto>
 	{
@@ -31,6 +33,54 @@
 				.LessThanOrEqualTo(250).WithMessage(message.GetLocalizedMessage("LessThanOrEqualTo250"))
 				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
+
+			RuleFor(x => x.Casts)
+				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
+				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"))
+				.Must(BeUniqueCastIds).WithMessage(message.GetLocalizedMessage("DuplicateData"));
+
+			RuleFor(x => x.Genres)
+				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
+				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"))
+				.Must(BeUniqueGenreIds).WithMessage(message.GetLocalizedMessage("DuplicateData"));
+
+			RuleFor(x => x.Directors)
+				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
+				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"))
+				.Must(BeUniqueDirectorIds).WithMessage(message.GetLocalizedMessage("DuplicateData"));
+		}
+
+		private bool BeUniqueCastIds(ICollection<CreateMovieCastDto>? casts)
+		{
+			if (casts == null)
+			{
+				return true;
+			}
+
+			var productIds = casts.Where(s => s.Id.HasValue).Select(s => s.Id!.Value).ToList();
+			return productIds.Distinct().Count() == productIds.Count();
+		}
+
+		private bool BeUniqueGenreIds(ICollection<CreateMovieGenreDto>? genres)
+		{
+			if (genres == null)
+			{
+				return true;
+			}
+
+			var productIds = genres.Where(s => s.Id.HasValue).Select(s => s.Id!.Value).ToList();
+			return productIds.Distinct().Count() == productIds.Count();
+		}
+
+		private bool BeUniqueDirectorIds(ICollection<CreateMovieDirectorDto>? directors)
+		{
+			if (directors == null)
+			{
+				return true;
+			}
+
+			var productIds = directors.Where(s => s.Id.HasValue).Select(s => s.Id!.Value).ToList();
+			return productIds.Distinct().Count() == productIds.Count();
 		}
 	}
 }

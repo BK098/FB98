@@ -54,8 +54,8 @@ namespace FB98.Modules.Shows.Application.ShowManagement.GetAllByMovieId
 						CinemaHallName = group.First().CinemaHallName,
 						ShowTimes = group.Select(show => new GetAllShowDto
 						{
-							StartTime = show.StartTime.ConvertUtcToVietnamTime().ToString("HH:mm:ss zz"),
-							EndTime = show.EndTime.ConvertUtcToVietnamTime().ToString("HH:mm:ss zz"),
+							StartTime = show.StartTime.ConvertUtcToVietnamTime().ToString("HH:mm:ss"),
+							EndTime = show.EndTime.ConvertUtcToVietnamTime().ToString("HH:mm:ss"),
 							ShowId = show.Id,
 							ShowStatusId = show.ShowStatusId,
 							ShowStatusName = show.ShowStatus.Name

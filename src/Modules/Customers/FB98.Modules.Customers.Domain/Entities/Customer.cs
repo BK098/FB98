@@ -5,10 +5,6 @@ namespace FB98.Modules.Customers.Domain.Entities
 {
 	public class Customer : BaseEntity
 	{
-		public Customer()
-		{
-		}
-
 		public Customer(Guid userId, decimal totalSpent, int loyaltyPoints, Guid membershipId)
 		{
 			TotalSpent = totalSpent;
@@ -25,7 +21,7 @@ namespace FB98.Modules.Customers.Domain.Entities
 
 		[ForeignKey("Membership")]
 		public Guid MembershipId { get; set; }
-		public Membership Membership { get; set; }
+		public Membership? Membership { get; set; }
 
 		public ICollection<PointTransaction> PointTransactions { get; set; } = new List<PointTransaction>();
 	}

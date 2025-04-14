@@ -12,11 +12,10 @@ namespace FB98.Modules.Orders.Domain.Entities
 		public decimal FinalPrice { get; set; } // tiền đã giảm giá
 		public decimal SubTotalPrice { get; set; } // tổng tiền của 1 sản phẩm
 		public decimal TotalPrice { get; set; } // tổng tiền của 1 sản phẩm sau khi giảm giá
-
 		public bool IsCombo { get; set; } = false;
 
 		[ForeignKey("Order")]
 		public Guid OrderId { get; set; }
-		public Order Order { get; set; } = default!;
+		public Order? Order { get; set; }
 	}
 }

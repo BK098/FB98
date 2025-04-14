@@ -16,8 +16,8 @@ namespace FB98.Modules.Payments.Application.PaymentManagement
 		private void Init()
 		{
 			CreateMap<PaymentTransaction, GetPaymentHisotryResponse>()
-				.ForMember(dest => dest.Method, opt => opt.MapFrom(src => src.PaymentMethod.Name))
-				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.PaymentStatus.Name));
+				.ForMember(dest => dest.Method, opt => opt.MapFrom(src => src.PaymentMethod!.Name))
+				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.PaymentStatus!.Name));
 
 			CreateMap<BookingDetailDto, GetDeteailBookingPaymentResponse>()
 				.ForMember(dest => dest.Seats, opt => opt.MapFrom(src => src.Seats));

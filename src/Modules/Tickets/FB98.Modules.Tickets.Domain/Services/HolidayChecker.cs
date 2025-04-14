@@ -60,8 +60,8 @@ namespace FB98.Modules.Tickets.Domain.Services
 
 	public class Holiday
 	{
-		public string Name { get; set; }
-		public string Date { get; set; }
+		public string Name { get; set; } = null!;
+		public string Date { get; set; } = null!;
 		public bool Lunar { get; set; }
 		public int Days { get; set; }
 	}

@@ -15,6 +15,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment
 		private readonly IBookingApi _bookingApi;
 		private readonly IBus _bus;
 		private readonly IHttpContextAccessor _contextAccessor;
+		private readonly ICouponRepository _couponRepository;
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ILogger<CreateVnPayPaymentCommandHandler> _logger;
 		private readonly IOrderApi _orderApi;
@@ -29,7 +30,8 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment
 			IHttpContextAccessor contextAccessor,
 			IOrderApi orderApi,
 			IBookingApi bookingApi,
-			ILocalizedMessageService localizedMessageService)
+			ILocalizedMessageService localizedMessageService,
+			ICouponRepository couponRepository)
 		{
 			_vnPayService = vnPayService;
 			_logger = logger;
@@ -39,14 +41,21 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment
 			_orderApi = orderApi;
 			_bookingApi = bookingApi;
 			_localizedMessageService = localizedMessageService;
+			_couponRepository = couponRepository;
 		}
 
 		public async Task<ApiResult<string>> Handle(CreateVnPayPaymentCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
+			var now = DateTime.UtcNow;
 			decimal amount = 0;
 			try
 			{
+				if (model.OrderId == null && model.BookingId == null)
+				{
+					return ApiResponseBuilder.Error<string>(_localizedMessageService.GetLocalizedMessage("OrderOrBookingRequired"));
+				}
+
 				try
 				{
 					if (model.OrderId != null)
@@ -74,6 +83,19 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment
 					return ApiResponseBuilder.Error<string>("Booking: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
+				decimal discount = 0;
+				if (!string.IsNullOrWhiteSpace(model.CouponCode))
+				{
+					var coupon = await _couponRepository.GetValidCouponAsync(model.CouponCode.Normalize().ToUpper().Trim(), amount, now);
+					if (coupon == null)
+					{
+						return ApiResponseBuilder.Error<string>(_localizedMessageService.GetLocalizedMessage("CouponInvalid"));
+					}
+
+					discount = coupon.CalculateDiscount(amount);
+				}
+
+				var finalAmount = amount - discount;
 				var transaction = new PaymentTransaction
 				{
 					Email = model.Email!,
@@ -81,7 +103,8 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment
 					UserId = model.UserId!.Value,
 					OrderId = model.OrderId,
 					BookingId = model.BookingId,
-					Amount = amount,
+					Amount = finalAmount,
+					SubAmount = amount,
 					PaymentMethodId = PaymentMethodConstants.VnPayCard
 				};
 				transaction.MarkPeding();

@@ -42,8 +42,6 @@ namespace FB98.Modules.Movies.Application.MovieManagement.Create
 		public async Task<ApiResult<object>> Handle(CreateMovieCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.Model;
-			string? headerImageUrl = null;
-			string? postermageUrl = null;
 			try
 			{
 				var validationResult = await _validator.ValidateAsync(model, cancellationToken);
