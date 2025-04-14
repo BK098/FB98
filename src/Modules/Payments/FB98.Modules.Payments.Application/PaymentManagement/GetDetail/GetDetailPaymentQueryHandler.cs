@@ -45,9 +45,9 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.GetDetail
 					UserId = payment.UserId,
 					Amount = payment.Amount,
 					PaymentMethodId = payment.PaymentMethodId,
-					PaymentMethodName = payment.PaymentMethod.Name,
+					PaymentMethodName = payment.PaymentMethod!.Name,
 					PaymentStatusId = payment.PaymentStatusId,
-					PaymentStatusName = payment.PaymentStatus.Name,
+					PaymentStatusName = payment.PaymentStatus!.Name,
 					CreateAt = payment.CreateAt
 				};
 

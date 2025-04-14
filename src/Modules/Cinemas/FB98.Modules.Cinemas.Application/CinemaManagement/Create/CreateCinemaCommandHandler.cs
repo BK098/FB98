@@ -40,7 +40,7 @@ namespace FB98.Modules.Cinemas.Application.CinemaManagement.Create
 					return ApiResponseBuilder.ValidationError<object>(validationResult.Errors);
 				}
 
-				if (await _cinemaRepository.IsCinemaExisted(model.Name))
+				if (await _cinemaRepository.IsCinemaExisted(model.Name!))
 				{
 					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("Existed"));
 				}

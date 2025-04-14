@@ -33,7 +33,7 @@
 				return true;
 			}
 
-			var seatIds = seats.Where(s => s.SeatId.HasValue).Select(s => s.SeatId.Value).ToList();
+			var seatIds = seats.Where(s => s.SeatId.HasValue).Select(s => s.SeatId!.Value).ToList();
 			return seatIds.Distinct().Count() == seatIds.Count();
 		}
 	}

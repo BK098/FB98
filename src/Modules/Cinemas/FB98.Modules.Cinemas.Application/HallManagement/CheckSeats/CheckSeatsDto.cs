@@ -2,6 +2,6 @@
 {
 	public class CheckSeatsDto
 	{
-		public List<Guid> SeatIds { get; set; }
+		public List<Guid>? SeatIds { get; set; }
 	}
 }

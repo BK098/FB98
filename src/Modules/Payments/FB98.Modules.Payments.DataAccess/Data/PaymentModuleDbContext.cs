@@ -12,6 +12,8 @@ namespace FB98.Modules.Payments.DataAccess.Data
 		public DbSet<PaymentTransaction> PaymentTransactions { get; set; }
 		public DbSet<PaymentStatus> PaymentStatuses { get; set; }
 		public DbSet<PaymentMethod> PaymentMethods { get; set; }
+		public DbSet<Coupon> Coupons { get; set; }
+		public DbSet<CouponApplication> CouponApplications { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

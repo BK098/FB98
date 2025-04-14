@@ -3,6 +3,6 @@
 	public class CheckInDto
 	{
 		public Guid BookingId { get; set; }
-		public IList<Guid> SeatIds { get; set; }
+		public IList<Guid>? SeatIds { get; set; }
 	}
 }

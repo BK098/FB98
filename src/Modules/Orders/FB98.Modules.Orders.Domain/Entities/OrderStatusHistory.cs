@@ -7,7 +7,7 @@ namespace FB98.Modules.Orders.Domain.Entities
 	{
 		[ForeignKey("Order")]
 		public Guid OrderId { get; set; }
-		public Order Order { get; set; }
+		public Order? Order { get; set; }
 
 		public Guid OldStatusId { get; set; }
 		public Guid NewStatusId { get; set; }

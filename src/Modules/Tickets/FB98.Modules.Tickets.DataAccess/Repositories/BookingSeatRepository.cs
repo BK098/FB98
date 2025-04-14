@@ -17,7 +17,7 @@ namespace FB98.Modules.Tickets.DataAccess.Repositories
 		{
 			var bookedSeats = await _context.BookingSeats
 				.Include(x => x.Booking)
-				.Where(bs => bs.Booking.ShowId == showId &&
+				.Where(bs => bs.Booking!.ShowId == showId &&
 							 (bs.SeatStatusId == BookingSeatStatusConstants.Booked ||
 							  bs.SeatStatusId == BookingSeatStatusConstants.CheckIn ||
 							  bs.SeatStatusId == BookingSeatStatusConstants.Pending))

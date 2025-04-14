@@ -12,7 +12,7 @@ namespace FB98.Modules.Orders.Domain.Entities
 
 		[ForeignKey("OrderStatus")]
 		public Guid OrderStatusId { get; set; }
-		public OrderStatus OrderStatus { get; set; }
+		public OrderStatus? OrderStatus { get; set; }
 
 		public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 		public ICollection<OrderStatusHistory>? StatusHistories { get; set; } = new List<OrderStatusHistory>();

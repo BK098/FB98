@@ -7,13 +7,12 @@ namespace FB98.Modules.Tickets.Domain.Entities
 	{
 		[ForeignKey("SeatPriceRule")]
 		public Guid SeatPriceRuleId { get; set; }
-		public SeatPriceRule SeatPriceRule { get; set; }
+		public SeatPriceRule? SeatPriceRule { get; set; }
 
 		[ForeignKey("BookingSeat")]
 		public Guid BookingSeatId { get; set; }
-		public BookingSeat BookingSeat { get; set; }
+		public BookingSeat? BookingSeat { get; set; }
 
 		public decimal AppliedPrice { get; set; }
-
 	}
 }

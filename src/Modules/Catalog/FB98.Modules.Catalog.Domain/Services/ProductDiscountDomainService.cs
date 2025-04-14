@@ -6,7 +6,7 @@ namespace FB98.Modules.Catalog.Domain.Services
 	{
 		public decimal GetDiscountedPrice(BaseProduct product)
 		{
-			var activeDiscount = product.DiscountRules
+			var activeDiscount = product.DiscountRules?
 				.Where(d => d.IsValid())
 				.OrderByDescending(d => d.StartDate)
 				.FirstOrDefault();
@@ -20,7 +20,7 @@ namespace FB98.Modules.Catalog.Domain.Services
 
 		public ProductDiscountApplication? ApplyDiscount(BaseProduct product, Guid orderDetailId)
 		{
-			var discount = product.DiscountRules
+			var discount = product.DiscountRules?
 				.Where(d => d.IsValid())
 				.OrderByDescending(d => d.StartDate)
 				.FirstOrDefault();

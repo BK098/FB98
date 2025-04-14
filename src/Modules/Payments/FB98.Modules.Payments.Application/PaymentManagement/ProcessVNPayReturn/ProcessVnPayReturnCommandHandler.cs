@@ -20,6 +20,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 		private readonly IBookingApi _bookingApi;
 		private readonly IBus _bus;
 		private readonly IConfiguration _configuration;
+		private readonly ICouponRepository _couponRepository;
 		private readonly IEmailSender _emailSender;
 		private readonly IHubContext<SeatHub> _hubContext;
 		private readonly ILocalizedMessageService _localizedMessageService;
@@ -38,7 +39,8 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 			IBookingApi bookingApi,
 			IEmailSender emailSender,
 			IOrderApi orderApi,
-			IConfiguration configuration)
+			IConfiguration configuration,
+			ICouponRepository couponRepository)
 		{
 			_vnPayService = vnPayService;
 			_paymentRepository = paymentRepository;
@@ -50,11 +52,13 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 			_emailSender = emailSender;
 			_orderApi = orderApi;
 			_configuration = configuration;
+			_couponRepository = couponRepository;
 		}
 
 		public async Task<ApiResult<string>> Handle(ProcessVnPayReturnCommand request, CancellationToken cancellationToken)
 		{
 			var model = request.QueryParams;
+			const string suscessCode = "00";
 			try
 			{
 				var txnRef = model["vnp_TxnRef"];
@@ -77,7 +81,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 					return ApiResponseBuilder.Error<string>(_localizedMessageService.GetLocalizedMessage("Invalid"));
 				}
 
-				if (responseCode == "00")
+				if (responseCode == "suscessCode")
 				{
 					transaction.MarkSuccess(txnRef);
 					_paymentRepository.Update(transaction);
@@ -96,6 +100,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 							{
 								booking = bookingResponse.Data;
 							}
+
 							await _hubContext.Clients.All.SendAsync("SeatsStatusChanged", bookingResponse.Data!.ShowId, cancellationToken);
 						}
 						catch (ApiException ex)
@@ -120,9 +125,17 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 						}
 					}
 
+					if (!string.IsNullOrWhiteSpace(transaction.CouponCode))
+					{
+						await _couponRepository.ApplyCouponAfterPaymentAsync(
+							transaction.CouponCode,
+							transaction.Id,
+							transaction.Amount);
+					}
+
 					await SendMailAsync(transaction.Email, transaction.PhoneNumber, booking, order);
 
-					return ApiResponseBuilder.Success(_localizedMessageService.GetLocalizedMessage("PaymentSuccessful"));
+					return ApiResponseBuilder.Success(transaction.Id.ToString(), _localizedMessageService.GetLocalizedMessage("PaymentSuccessful"));
 				}
 
 				transaction.MarkFailed();
@@ -140,7 +153,8 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 
 		private async Task SendMailAsync(string email, string phoneNumber, BookingDetailDto? booking, OrderDetailDto? order)
 		{
-			byte[] qrBooking = null, qrOrder = null;
+			byte[]? qrBooking = null;
+			byte[]? qrOrder = null;
 			var baseUrl = _configuration["BackEndBaseUrl"];
 			if (booking != null)
 			{
@@ -163,7 +177,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 				? GetBookingAndOrderTemplate(email, phoneNumber, booking, order)
 				: booking != null
 					? GetBookingOnlyTemplate(email, phoneNumber, booking)
-					: GetOrderOnlyTemplate(email, phoneNumber, order);
+					: GetOrderOnlyTemplate(email, phoneNumber, order!);
 
 			var attachments = new List<(byte[], string)>();
 			if (qrBooking != null)
@@ -183,7 +197,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 				attachments);
 		}
 
-		private byte[] GenerateQrCode(object qrDataObject, string urlEndpoint)
+		private static byte[]? GenerateQrCode(object qrDataObject, string urlEndpoint)
 		{
 			var qrCurl = $"""
 			              curl -X 'POST' \
@@ -214,7 +228,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 			return stream.ToArray();
 		}
 
-		private string GetBookingOnlyTemplate(string email, string phone, BookingDetailDto booking)
+		private static string GetBookingOnlyTemplate(string email, string phone, BookingDetailDto booking)
 		{
 			var emailBody = $$"""
 			                  <!DOCTYPE html>
@@ -318,7 +332,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 			return emailBody;
 		}
 
-		private string GetOrderOnlyTemplate(string email, string phone, OrderDetailDto order)
+		private static string GetOrderOnlyTemplate(string email, string phone, OrderDetailDto order)
 		{
 			var emailBody = $$"""
 			                  <!DOCTYPE html>
@@ -424,7 +438,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 			return emailBody;
 		}
 
-		private string GetBookingAndOrderTemplate(string email, string phone, BookingDetailDto booking, OrderDetailDto order)
+		private static string GetBookingAndOrderTemplate(string email, string phone, BookingDetailDto booking, OrderDetailDto order)
 		{
 			var mailBody = $$"""
 			                 <!DOCTYPE html>

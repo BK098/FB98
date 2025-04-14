@@ -7,10 +7,10 @@ namespace FB98.Modules.Shows.Domain.Entities
 	{
 		[ForeignKey("Show")]
 		public Guid ShowId { get; set; }
-		public Show Show { get; set; }
+		public Show? Show { get; set; }
 
 		[ForeignKey("Feature")]
 		public Guid FeatureId { get; set; }
-		public Feature Feature { get; set; }
+		public Feature? Feature { get; set; }
 	}
 }

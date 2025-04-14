@@ -2,6 +2,7 @@
 using FB98.Shared.Abstractions.Refits;
 using FB98.Shared.Abstractions.StatusConstants;
 using FB98.Shared.Infrastructure.SignalRHub;
+using FB98.Shared.Utils.Extensions;
 using Microsoft.AspNetCore.SignalR;
 using Refit;
 
@@ -56,6 +57,7 @@ namespace FB98.Modules.Tickets.Application.SeatManagement.LockSeat
 					.Where(x => x.UserId == model.UserId! &&
 								(x.StatusId == BookingStatusConstants.Created ||
 								 x.StatusId == BookingStatusConstants.Pending)).ToList();
+
 				if (booking.Any())
 				{
 					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("PreviousUnpaidBooking"), 404);
@@ -115,11 +117,21 @@ namespace FB98.Modules.Tickets.Application.SeatManagement.LockSeat
 					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("SeatsAlreadyLocked"));
 				}
 
-				await _bookingSeatLockRepository.LockSeats(model.UserId!.Value, model.ShowId!.Value, model.SeatIds!);
+				DateTime expirationTime;
+				if (seatLocks == null || !seatLocks.Any())
+				{
+					expirationTime = DateTime.UtcNow.AddMinutes(0.3);
+				}
+				else
+				{
+					expirationTime = seatLocks.Min(x => x.LockedUntil);
+				}
 
-				await _hubContext.Clients.All.SendAsync("SeatsStatusChanged", model.ShowId!.Value, cancellationToken);
+				await _bookingSeatLockRepository.LockSeats(model.UserId!.Value, model.ShowId!.Value, model.SeatIds!, expirationTime);
 
-				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("SeatsLocked"));
+				await _hubContext.Clients.Group(model.ShowId!.Value.ToString()).SendAsync("SeatsStatusChanged", model.ShowId!.Value, cancellationToken);
+				var test = expirationTime.ConvertUtcToVietnamTime();
+				return ApiResponseBuilder.Success<object>(test, _localizedMessageService.GetLocalizedMessage("SeatsLocked"));
 			}
 			catch (Exception ex)
 			{

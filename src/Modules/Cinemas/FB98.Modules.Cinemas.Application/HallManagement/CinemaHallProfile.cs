@@ -36,7 +36,7 @@ namespace FB98.Modules.Cinemas.Application.HallManagement
 			CreateMap<CinemaHallSeat, GetDetailSeatDto>()
 				.ForMember(dest => dest.SeatId, opt => opt.MapFrom(src => src.Id))
 				.ForMember(dest => dest.SeatTypeId, opt => opt.MapFrom(src => src.SeatTypeId))
-				.ForMember(dest => dest.SeatType, opt => opt.MapFrom(src => src.SeatType.Name));
+				.ForMember(dest => dest.SeatType, opt => opt.MapFrom(src => src.SeatType!.Name));
 
 			CreateMap<UpdateHallDto, CinemaHall>()
 				.ForMember(dest => dest.Seats, opt => opt.Ignore());
