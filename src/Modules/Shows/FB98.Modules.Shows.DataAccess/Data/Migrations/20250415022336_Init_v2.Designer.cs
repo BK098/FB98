@@ -3,6 +3,7 @@ using System;
 using FB98.Modules.Shows.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FB98.Modules.Shows.DataAccess.Data.Migrations
 {
     [DbContext(typeof(ShowModuleDbContext))]
-    partial class ShowModuleDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250415022336_Init_v2")]
+    partial class Init_v2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
