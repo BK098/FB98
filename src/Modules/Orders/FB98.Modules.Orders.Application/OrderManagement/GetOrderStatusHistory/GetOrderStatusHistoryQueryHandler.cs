@@ -3,7 +3,7 @@ using FB98.Modules.Orders.Application.Abstractions;
 
 namespace FB98.Modules.Orders.Application.OrderManagement.GetOrderStatusHistory
 {
-	internal sealed class GetOrderStatusHistoryQueryHandler : IQueryHandler<GetOrderStatusHistoryQuery, ApiResult<IEnumerable<GetOrderStatusHistoryResponse>>>
+	public  sealed class GetOrderStatusHistoryQueryHandler : IQueryHandler<GetOrderStatusHistoryQuery, ApiResult<IEnumerable<GetOrderStatusHistoryResponse>>>
 	{
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ILogger<GetOrderStatusHistoryQueryHandler> _logger;

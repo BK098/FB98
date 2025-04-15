@@ -2,6 +2,7 @@
 using FB98.Shared.Abstractions.Events;
 using FB98.Shared.Abstractions.StatusConstants;
 using FB98.Shared.Infrastructure.Email;
+using FB98.Shared.Abstractions.Events;  // Import kiểu PaymentSuccessEvent từ đây
 using MassTransit;
 
 namespace FB98.Modules.Tickets.Application.BookingManagement.Events

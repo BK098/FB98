@@ -3,7 +3,7 @@ using FB98.Modules.Cinemas.Application.Abstractions;
 
 namespace FB98.Modules.Cinemas.Application.HallManagement.CheckSeats
 {
-	internal sealed class CheckSeatsCommandHandler : ICommandHandler<CheckSeatsCommand, ApiResult<CheckSeatsResponse>>
+	public sealed class CheckSeatsCommandHandler : ICommandHandler<CheckSeatsCommand, ApiResult<CheckSeatsResponse>>
 	{
 		private readonly ICinemaHallRepository _hallRepository;
 		private readonly ILocalizedMessageService _localizedMessageService;

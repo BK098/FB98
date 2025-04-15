@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("FB98.Modules.Shows.Application")]
 namespace FB98.Shared.Abstractions.Refits
 {
-	internal interface IMovieApi
+	public  interface IMovieApi
 	{
 		[Get("/movie-module/movies/{movieId}")]
 		Task<ApiResult<MovieDto>> GetMovieById(Guid movieId);

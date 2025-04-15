@@ -6,7 +6,7 @@ using Refit;
 
 namespace FB98.Modules.Tickets.Application.BookingManagement.SeatReservation
 {
-	internal sealed class SeatReservationCommandHandler : ICommandHandler<SeatReservationCommand, ApiResult<object>>
+	public  sealed class SeatReservationCommandHandler : ICommandHandler<SeatReservationCommand, ApiResult<object>>
 	{
 		private readonly IBookingRepository _bookingRepository;
 		private readonly IBookingSeatLockRepository _bookingSeatLockRepository;

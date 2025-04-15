@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FB98.Modules.Shows.Application.FeatureManagement.GetAll
 {
-	internal sealed class GetAllFeatureQueryHandler : IQueryHandler<GetAllFeatureQuery, ApiResult<PaginatedResult<GetAllFeatureResponse>>>
+	public  sealed class GetAllFeatureQueryHandler : IQueryHandler<GetAllFeatureQuery, ApiResult<PaginatedResult<GetAllFeatureResponse>>>
 	{
 		private readonly List<string> _allowedProperties = ["Name"];
 		private readonly IFeatureRepository _featureRepository;

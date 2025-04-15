@@ -3,7 +3,7 @@ using FB98.Shared.Abstractions.StatusConstants;
 
 namespace FB98.Modules.Tickets.Application.BookingManagement.CheckIn
 {
-	internal class CheckInCommandHandler : ICommandHandler<CheckInCommand, ApiResult<object>>
+	public  class CheckInCommandHandler : ICommandHandler<CheckInCommand, ApiResult<object>>
 	{
 		private readonly IBookingRepository _bookingRepository;
 		private readonly ILocalizedMessageService _localizedMessageService;

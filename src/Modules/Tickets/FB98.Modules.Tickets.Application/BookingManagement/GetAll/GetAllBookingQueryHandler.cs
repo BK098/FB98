@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FB98.Modules.Tickets.Application.BookingManagement.GetAll
 {
-	internal sealed class GetAllBookingQueryHandler : IQueryHandler<GetAllBookingQuery, ApiResult<PaginatedResult<GetAllBookingResponse>>>
+	public  sealed class GetAllBookingQueryHandler : IQueryHandler<GetAllBookingQuery, ApiResult<PaginatedResult<GetAllBookingResponse>>>
 	{
 		private readonly List<string> _allowedProperties = ["UserPhone, Amount, ShowStart"];
 		private readonly IBookingRepository _bookingRepository;

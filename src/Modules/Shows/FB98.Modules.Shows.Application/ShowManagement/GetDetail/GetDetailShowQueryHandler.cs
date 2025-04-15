@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace FB98.Modules.Shows.Application.ShowManagement.GetDetail
 {
-	internal sealed class GetDetailShowQueryHandler : IQueryHandler<GetDetailShowQuery, ApiResult<GetDetailShowResponse>>
+	public  sealed class GetDetailShowQueryHandler : IQueryHandler<GetDetailShowQuery, ApiResult<GetDetailShowResponse>>
 	{
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ILogger<GetDetailShowQueryHandler> _logger;

@@ -1,4 +1,5 @@
-﻿using FB98.Modules.Identity.Application.Abtractions;
+﻿using System.Runtime.CompilerServices;
+using FB98.Modules.Identity.Application.Abtractions;
 using FB98.Modules.Identity.Application.Services;
 using FB98.Modules.Identity.Domain.Entities;
 using Microsoft.AspNetCore.Http;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FB98.Modules.Identity.Application.Authentication.Login
 {
-	internal sealed class LoginCommandHandler : ICommandHandler<LoginCommand, ApiResult<LoginResponse>>
+	public sealed class LoginCommandHandler : ICommandHandler<LoginCommand, ApiResult<LoginResponse>>
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly ILogger<LoginCommandHandler> _logger;

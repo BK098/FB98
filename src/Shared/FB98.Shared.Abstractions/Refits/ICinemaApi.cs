@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("FB98.Modules.Tickets.Application")]
 namespace FB98.Shared.Abstractions.Refits
 {
-	internal interface ICinemaApi
+	public  interface ICinemaApi
 	{
 		[Get("/cinema-module/halls/{hallId}")]
 		Task<ApiResult<CinemaHallDto>> GetHallById(Guid hallId);

@@ -9,7 +9,7 @@ using Refit;
 
 namespace FB98.Modules.Orders.Application.OrderManagement.Create
 {
-	internal sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, ApiResult<object>>
+	public sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, ApiResult<object>>
 	{
 		private readonly IBus _bus;
 		private readonly ICatalogApi _catalogApi;

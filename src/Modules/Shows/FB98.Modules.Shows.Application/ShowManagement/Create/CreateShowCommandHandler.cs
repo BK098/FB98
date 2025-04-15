@@ -9,7 +9,7 @@ using Refit;
 
 namespace FB98.Modules.Shows.Application.ShowManagement.Create
 {
-	internal sealed class CreateShowCommandHandler : ICommandHandler<CreateShowCommand, ApiResult<object>>
+	public  sealed class CreateShowCommandHandler : ICommandHandler<CreateShowCommand, ApiResult<object>>
 	{
 		private readonly ICinemaApi _cinemaApi;
 		private readonly IFeatureRepository _featureRepository;

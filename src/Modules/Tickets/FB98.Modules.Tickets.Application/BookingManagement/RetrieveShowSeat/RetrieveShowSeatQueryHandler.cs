@@ -5,7 +5,7 @@ using Refit;
 
 namespace FB98.Modules.Tickets.Application.BookingManagement.RetrieveShowSeat
 {
-	internal sealed class RetrieveShowSeatQueryHandler : IQueryHandler<RetrieveShowSeatQuery, ApiResult<RetrieveShowSeatResponse>>
+	public  sealed class RetrieveShowSeatQueryHandler : IQueryHandler<RetrieveShowSeatQuery, ApiResult<RetrieveShowSeatResponse>>
 	{
 		private readonly IBookingSeatLockRepository _bookingSeatLockRepository;
 		private readonly IBookingSeatRepository _bookingSeatRepository;

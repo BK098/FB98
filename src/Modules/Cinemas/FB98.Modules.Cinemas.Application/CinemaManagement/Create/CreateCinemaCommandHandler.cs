@@ -4,7 +4,7 @@ using FB98.Modules.Cinemas.Domain.Entities;
 
 namespace FB98.Modules.Cinemas.Application.CinemaManagement.Create
 {
-	internal sealed class CreateCinemaCommandHandler : ICommandHandler<CreateCinemaCommand, ApiResult<object>>
+	public sealed class CreateCinemaCommandHandler : ICommandHandler<CreateCinemaCommand, ApiResult<object>>
 	{
 		private readonly ICinemaRepository _cinemaRepository;
 		private readonly ILocalizedMessageService _localizedMessageService;

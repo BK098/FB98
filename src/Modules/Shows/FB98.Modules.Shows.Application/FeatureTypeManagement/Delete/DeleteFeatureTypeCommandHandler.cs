@@ -2,7 +2,7 @@
 
 namespace FB98.Modules.Shows.Application.FeatureTypeManagement.Delete
 {
-	internal sealed class DeleteFeatureTypeCommandHandler : ICommandHandler<DeleteFeatureTypeCommand, ApiResult<object>>
+	public  sealed class DeleteFeatureTypeCommandHandler : ICommandHandler<DeleteFeatureTypeCommand, ApiResult<object>>
 	{
 		private readonly IFeatureTypeRepository _featureTypeRepository;
 		private readonly ILocalizedMessageService _localizedMessageService;

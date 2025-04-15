@@ -3,7 +3,7 @@ using FB98.Modules.Shows.Application.Abstractions;
 
 namespace FB98.Modules.Shows.Application.FeatureTypeManagement.GetDetail
 {
-	internal class GetDetailFeatureTypeQueryHandler : IQueryHandler<GetDetailFeatureTypeQuery, ApiResult<GetDetailFeatureTypeResponse>>
+	public  class GetDetailFeatureTypeQueryHandler : IQueryHandler<GetDetailFeatureTypeQuery, ApiResult<GetDetailFeatureTypeResponse>>
 	{
 		private readonly IFeatureTypeRepository _featureTypeRepository;
 		private readonly ILocalizedMessageService _localizedMessageService;

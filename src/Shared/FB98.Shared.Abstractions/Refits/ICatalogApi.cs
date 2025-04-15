@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("FB98.Modules.Orders.Application")]
 namespace FB98.Shared.Abstractions.Refits
 {
-	internal interface ICatalogApi
+	public interface ICatalogApi
 	{
 		[Get("/catalog-module/Products/{productId}")]
 		Task<ApiResult<ProductDto>> GetProductById(Guid productId);

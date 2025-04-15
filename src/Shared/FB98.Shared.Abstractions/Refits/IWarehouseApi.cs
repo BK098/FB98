@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("FB98.Modules.Catalog.Application")]
 namespace FB98.Shared.Abstractions.Refits
 {
-	internal interface IWarehouseApi
+	public interface IWarehouseApi
 	{
 		[Get("/warehouse-module/Inventories/get-stock/{productId}")]
 		Task<ApiResult<StockResponse>> GetStock(Guid productId);

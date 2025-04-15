@@ -3,7 +3,7 @@ using FB98.Modules.Shows.Application.Abstractions;
 
 namespace FB98.Modules.Shows.Application.FeatureTypeManagement.Update
 {
-	internal sealed class UpdateFeatureTypeCommandHandler : ICommandHandler<UpdateFeatureTypeCommand, ApiResult<object>>
+	public  sealed class UpdateFeatureTypeCommandHandler : ICommandHandler<UpdateFeatureTypeCommand, ApiResult<object>>
 	{
 		private readonly IFeatureTypeRepository _featureTypeRepository;
 		private readonly ILocalizedMessageService _localizedMessageService;

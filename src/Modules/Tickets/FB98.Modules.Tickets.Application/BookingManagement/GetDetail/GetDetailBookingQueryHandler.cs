@@ -4,7 +4,7 @@ using FB98.Shared.Abstractions.StatusConstants;
 
 namespace FB98.Modules.Tickets.Application.BookingManagement.GetDetail
 {
-	internal sealed class GetDetailBookingQueryHandler : IQueryHandler<GetDetailBookingQuery, ApiResult<GetDetailBookingResponse>>
+	public  sealed class GetDetailBookingQueryHandler : IQueryHandler<GetDetailBookingQuery, ApiResult<GetDetailBookingResponse>>
 	{
 		private readonly IBookingRepository _bookingRepository;
 		private readonly ILocalizedMessageService _localizedMessageService;

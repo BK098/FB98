@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("FB98.Modules.Payments.Application")]
 namespace FB98.Shared.Abstractions.Refits
 {
-	internal interface ICustomerApi
+	public  interface ICustomerApi
 	{
 		[Get("/customer-module/Customer?userId={userId}")]
 		Task<ApiResult<CustomerDto>> GetCustomerById(Guid userId);

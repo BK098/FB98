@@ -8,7 +8,7 @@ using Refit;
 
 namespace FB98.Modules.Shows.Application.ShowManagement.Update
 {
-	internal sealed class UpdateShowCommandHandler : ICommandHandler<UpdateShowCommand, ApiResult<object>>
+	public  sealed class UpdateShowCommandHandler : ICommandHandler<UpdateShowCommand, ApiResult<object>>
 	{
 		private readonly ICinemaApi _cinemaApi;
 		private readonly IFeatureRepository _featureRepository;

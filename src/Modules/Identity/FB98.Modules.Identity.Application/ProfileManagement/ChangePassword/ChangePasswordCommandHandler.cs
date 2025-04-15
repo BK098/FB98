@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FB98.Modules.Identity.Application.ProfileManagement.ChangePassword
 {
-	internal sealed class ChangePasswordCommandHandler : ICommandHandler<ChangePasswordCommand, ApiResult<object>>
+	public  sealed class ChangePasswordCommandHandler : ICommandHandler<ChangePasswordCommand, ApiResult<object>>
 	{
 		private readonly UserManager<AppUser> _userManager;
 		private readonly ILogger<ChangePasswordCommandHandler> _logger;

@@ -4,7 +4,7 @@ using StackExchange.Redis;
 
 namespace FB98.Modules.Cinemas.Application.HallManagement.Update
 {
-	internal sealed class UpdateHallCommandHandler : ICommandHandler<UpdateHallCommand, ApiResult<object>>
+	public sealed class UpdateHallCommandHandler : ICommandHandler<UpdateHallCommand, ApiResult<object>>
 	{
 		private readonly ICinemaHallRepository _hallRepository;
 		private readonly ILocalizedMessageService _localizedMessageService;

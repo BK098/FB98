@@ -4,7 +4,7 @@ using FB98.Modules.Tickets.Domain.Entities;
 
 namespace FB98.Modules.Tickets.Application.SeatPriceRules.Create
 {
-	internal sealed class CreateRuleCommandHandler : ICommandHandler<CreateRuleCommand, ApiResult<object>>
+	public  sealed class CreateRuleCommandHandler : ICommandHandler<CreateRuleCommand, ApiResult<object>>
 	{
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ILogger<CreateRuleCommandHandler> _logger;

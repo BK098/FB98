@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FB98.Modules.Shows.Application.ShowManagement.GetAllByMovieId
 {
-	internal sealed class GetAllShowByMovieIdQueryHandler : IQueryHandler<GetAllShowByMovieIdQuery, ApiResult<PaginatedResult<GetAllShowByMovieIdResponse>>>
+	public  sealed class GetAllShowByMovieIdQueryHandler : IQueryHandler<GetAllShowByMovieIdQuery, ApiResult<PaginatedResult<GetAllShowByMovieIdResponse>>>
 	{
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ILogger<GetAllShowByMovieIdQueryHandler> _logger;

@@ -1,6 +1,6 @@
 ﻿namespace FB98.Modules.Tickets.Application.SeatManagement.UnlockSeat
 {
-	internal sealed class UnlockSeatsValidation : AbstractValidator<UnlockSeatsDto>
+	public  sealed class UnlockSeatsValidation : AbstractValidator<UnlockSeatsDto>
 	{
 		public UnlockSeatsValidation(ILocalizedMessageService message)
 		{

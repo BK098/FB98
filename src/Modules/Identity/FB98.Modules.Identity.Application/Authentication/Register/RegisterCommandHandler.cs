@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FB98.Modules.Identity.Application.Authentication.Register
 {
-	internal sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand, ApiResult<object>>
+	public sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand, ApiResult<object>>
 	{
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ILogger<RegisterCommandHandler> _logger;

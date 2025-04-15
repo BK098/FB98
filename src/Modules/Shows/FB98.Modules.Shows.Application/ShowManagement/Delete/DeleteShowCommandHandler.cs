@@ -2,7 +2,7 @@
 
 namespace FB98.Modules.Shows.Application.ShowManagement.Delete
 {
-	internal sealed class DeleteShowCommandHandler : ICommandHandler<DeleteShowCommand, ApiResult<object>>
+	public  sealed class DeleteShowCommandHandler : ICommandHandler<DeleteShowCommand, ApiResult<object>>
 	{
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ILogger<DeleteShowCommandHandler> _logger;

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FB98.Modules.Identity.Application.Authentication.Logout
 {
-	internal sealed class LogoutCommandHandler : ICommandHandler<LogoutCommand, ApiResult<object>>
+	public sealed class LogoutCommandHandler : ICommandHandler<LogoutCommand, ApiResult<object>>
 	{
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly UserManager<AppUser> _userManager;

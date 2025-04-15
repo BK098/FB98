@@ -3,7 +3,7 @@ using FB98.Modules.Orders.Application.Abstractions;
 
 namespace FB98.Modules.Orders.Application.OrderManagement.GetDetail
 {
-	internal class GetDetailOrderQueryHandler : IQueryHandler<GetDetailOrderQuery, ApiResult<GetDetailOrderResponse>>
+	public  class GetDetailOrderQueryHandler : IQueryHandler<GetDetailOrderQuery, ApiResult<GetDetailOrderResponse>>
 	{
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ILogger<GetDetailOrderQueryHandler> _logger;

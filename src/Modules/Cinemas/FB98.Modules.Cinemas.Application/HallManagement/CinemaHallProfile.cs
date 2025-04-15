@@ -7,7 +7,7 @@ using FB98.Modules.Cinemas.Domain.Entities;
 
 namespace FB98.Modules.Cinemas.Application.HallManagement
 {
-	internal sealed class CinemaHallProfile : Profile
+	public sealed class CinemaHallProfile : Profile
 	{
 		public CinemaHallProfile()
 		{

@@ -4,7 +4,7 @@ using FB98.Modules.Shows.Domain.Entities;
 
 namespace FB98.Modules.Shows.Application.FeatureManagement.Create
 {
-	internal sealed class CreateFeatureCommandHandler : ICommandHandler<CreateFeatureCommand, ApiResult<object>>
+	public  sealed class CreateFeatureCommandHandler : ICommandHandler<CreateFeatureCommand, ApiResult<object>>
 	{
 		private readonly IFeatureRepository _featureRepository;
 		private readonly IFeatureTypeRepository _featureTypeRepository;

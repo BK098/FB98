@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FB98.Modules.Shows.Application.ShowManagement.GetAll
 {
-	internal sealed class GetAllShowQueryHandler : IQueryHandler<GetAllShowQuery, ApiResult<PaginatedResult<GetAllShowResponse>>>
+	public  sealed class GetAllShowQueryHandler : IQueryHandler<GetAllShowQuery, ApiResult<PaginatedResult<GetAllShowResponse>>>
 	{
 		private readonly List<string> _allowedProperties = ["StartTime, MovieTitle"];
 		private readonly ILocalizedMessageService _localizedMessageService;

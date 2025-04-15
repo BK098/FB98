@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("FB98.Modules.Tickets.Application")]
 namespace FB98.Shared.Abstractions.Refits
 {
-	internal interface IShowApi
+	public  interface IShowApi
 	{
 		[Get("/show-module/shows/{showId}")]
 		Task<ApiResult<ShowDto>> GetShowById(Guid showId);

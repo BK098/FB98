@@ -1,6 +1,6 @@
 ﻿namespace FB98.Modules.Shows.Application.FeatureTypeManagement.Create
 {
-	internal sealed class CreateFeatureTypeValidation : AbstractValidator<CreateFeatureTypeDto>
+	public sealed class CreateFeatureTypeValidation : AbstractValidator<CreateFeatureTypeDto>
 	{
 		public CreateFeatureTypeValidation(ILocalizedMessageService message)
 		{

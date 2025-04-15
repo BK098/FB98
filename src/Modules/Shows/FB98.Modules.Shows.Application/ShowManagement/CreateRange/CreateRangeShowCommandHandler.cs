@@ -8,7 +8,7 @@ using Refit;
 
 namespace FB98.Modules.Shows.Application.ShowManagement.CreateRange
 {
-	internal sealed class CreateRangeShowCommandHandler : ICommandHandler<CreateRangeShowCommand, ApiResult<object>>
+	public  sealed class CreateRangeShowCommandHandler : ICommandHandler<CreateRangeShowCommand, ApiResult<object>>
 	{
 		private readonly ICinemaApi _cinemaApi;
 		private readonly IFeatureRepository _featureRepository;

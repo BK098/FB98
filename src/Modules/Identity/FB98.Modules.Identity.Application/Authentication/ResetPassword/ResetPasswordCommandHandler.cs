@@ -4,7 +4,7 @@ using System.Web;
 
 namespace FB98.Modules.Identity.Application.Authentication.ResetPassword
 {
-	internal sealed class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordCommand, ApiResult<object>>
+	public sealed class ResetPasswordCommandHandler : ICommandHandler<ResetPasswordCommand, ApiResult<object>>
 	{
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ILogger<ResetPasswordCommandHandler> _logger;
