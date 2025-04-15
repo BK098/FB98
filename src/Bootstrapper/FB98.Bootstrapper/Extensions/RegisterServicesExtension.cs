@@ -71,6 +71,7 @@ namespace FB98.Bootstrapper.Extensions
 			#region Refit
 
 			var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
+
 			var refitInterfaceType = typeof(IHttpClientFactory);
 			var refitInterfaces = assemblies.SelectMany(a => a.GetTypes())
 				.Where(t => t.IsInterface && t.GetMethods()
@@ -82,7 +83,7 @@ namespace FB98.Bootstrapper.Extensions
 					.GetMethod(nameof(AddRefitClient), BindingFlags.NonPublic | BindingFlags.Static)?
 					.MakeGenericMethod(refitInterface);
 
-				method?.Invoke(null, [services, configuration]); // Chỉ truyền `services`, không truyền baseUrl nữa
+				method?.Invoke(null, [services, configuration]);
 			}
 
 			#endregion
@@ -96,16 +97,6 @@ namespace FB98.Bootstrapper.Extensions
 			if (string.IsNullOrEmpty(baseUrl))
 			{
 				baseUrl = configuration["ApiSettings:BaseUrl"];
-			}
-
-			// Nếu vẫn không có, kiểm tra IP runtime
-			if (string.IsNullOrEmpty(baseUrl))
-			{
-				baseUrl = GetServerIp() switch
-				{
-					"127.0.0.1" => "http://localhost:5097", // Local chạy HTTP
-					_ => "http://18.143.76.187:5000" // Server AWS chạy HTTP
-				};
 			}
 
 			services.AddRefitClient<T>()

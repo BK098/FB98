@@ -1,33 +1,79 @@
+version: "3.9"
+
 networks:
   fb98_network:
     driver: bridge
 
 services:
+#front-end
+  fb98-client:
+    container_name: fb98-client
+    image : bkhang1227/fb98.ui:latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.react.rule=Host(`fb98.id.vn`)"
+      - "traefik.http.routers.react.entrypoints=websecure"
+      - "traefik.http.routers.react.tls.certresolver=letsencrypt"
+    restart: always
+    depends_on:
+      - fb98.bootstrapper
+    networks:
+      - fb98_network
+
+  traefik:
+    container_name: traefik
+    image: traefik:v2.11
+    command:
+      - "--api.insecure=true" # Có thể truy cập dashboard tại :8080 (optional)
+      - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.letsencrypt.acme.email=buikhang122004@gmail.com"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./traefik/traefik.yml:/traefik.yml"
+      - "./traefik/acme.json:/letsencrypt/acme.json"
+    restart: always
+    networks:
+      - fb98_network
+#back-end
   fb98.bootstrapper:
-    image: bkhang1227/fb98:bootstrapper
+    container_name: bootstrapper
+    image: bkhang1227/fb98:latest
     build:
       context: .
       dockerfile: Dockerfile
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`api.fb98.id.vn`)"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls.certresolver=letsencrypt"
     ports:
       - "5000:5000" #http 
     environment:
       - ASPNETCORE_ENVIRONMENT=Development  
-      - Redis__ConnectionString=redis://:your_secure_password@redis:6379
-      - ASPNETCORE_ENVIRONMENT=Development
+      - Redis__ConnectionString=redis:6379,password=your_secure_password,abortConnect=false,connectTimeout=1000
       - ConnectionStrings__RabbitMq=amqp://myuser:mypassword@rabbitmq:5672/
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=fb98db;Username=postgres;Password=yourpassword
     depends_on:
       - rabbitmq
       - db
+      - redis
     networks:
       - fb98_network
     volumes:
       - app_data:/app/data
 
   db:
-    image: bkhang1227/fb98:database
-    #image: postgres:15
+    image: postgres:15
     container_name: postgres-db
+    restart: always
     ports:
       - "5432:5432"
     environment:
@@ -39,11 +85,10 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
   pgadmin:
-    image: bkhang1227/fb98:pgadmin
-    #image: dpage/pgadmin4
+    image: dpage/pgadmin4
     container_name: pgadmin
     ports:
-      - "8080:80"
+      - "8888:80"
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com # can change
       PGADMIN_DEFAULT_PASSWORD: admin # can change
@@ -52,15 +97,15 @@ services:
     networks:
       - fb98_network
   rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
     hostname: rabbitmq
+    restart: always
     healthcheck:
         test: ["CMD", "rabbitmqctl", "status"]
         interval: 10s
         timeout: 5s
         retries: 3
-    image: bkhang1227/fb98:rabbitmq
-    # image: rabbitmq:3-management
-    container_name: rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -86,6 +131,11 @@ services:
     environment:
       - REDIS_PASSWORD=your_secure_password
     command: ["redis-server", "--requirepass", "your_secure_password", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 volumes:
   rabbitmq_data:
   rabbitmq_logs:
