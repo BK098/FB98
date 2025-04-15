@@ -134,7 +134,7 @@ namespace FB98.Modules.Tickets.Application.BookingManagement.SeatReservation
 					var seat = hallSeats[seatId];
 
 					var startTime = showResponse.Data.StartTime;
-					const string format = "dd-MM-yyyy HH:mm:ss zz";
+					const string format = "dd-MM-yyyy HH:mm:ss";
 					var showDate = DateTime.ParseExact(startTime, format, null).ToUniversalTime();
 					var seatPrice = await _seatPriceRuleRepository.GetSeatPriceByTypeAndDate(seat.SeatTypeId, showDate);
 					if (seatPrice == null)
