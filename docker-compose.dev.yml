@@ -1,0 +1,12 @@
+services:
+  fb98.bootstrapper:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5000:5000"
+  fb98-client:
+    ports:
+      - "5173:80"
+  fb98-admin:
+    ports:
+      - "3000:80"

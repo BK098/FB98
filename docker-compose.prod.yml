@@ -1,0 +1,42 @@
+services:
+  traefik:
+    image: traefik:v2.11
+    container_name: traefik
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
+      - --certificatesresolvers.letsencrypt.acme.email=buikhang122004@gmail.com
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.yml:/traefik.yml
+      - ./acme.json:/letsencrypt/acme.json
+    networks: [proxy]
+
+  fb98.bootstrapper:
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.fb98-api.rule=Host(`api.fb98.id.vn`)
+      - traefik.http.routers.fb98-api.entrypoints=websecure
+      - traefik.http.routers.fb98-api.tls.certresolver=letsencrypt
+
+  fb98-client:
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.fb98-client.rule=Host(`fb98.id.vn`)
+      - traefik.http.routers.fb98-client.entrypoints=websecure
+      - traefik.http.routers.fb98-client.tls.certresolver=letsencrypt
+
+  fb98-admin:
+    labels:
+      - traefik.enable=true
+      # - traefik.http.routers.fb98-admin.rule=Host(`admin.fb98.id.vn`)
+      - traefik.http.routers.fb98-admin.entrypoints=websecure
+      - traefik.http.routers.fb98-admin.tls.certresolver=letsencrypt
