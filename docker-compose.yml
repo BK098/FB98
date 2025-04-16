@@ -27,6 +27,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production  
       - Redis__ConnectionString=redis:6379,password=your_secure_password,abortConnect=false,connectTimeout=1000

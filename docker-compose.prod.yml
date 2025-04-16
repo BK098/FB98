@@ -21,8 +21,6 @@ services:
     networks: [proxy, fb98_network]
 
   fb98.bootstrapper:
-    ports:
-      - "5000:5000"
     labels:
       - traefik.enable=true
       - traefik.http.routers.fb98-api.rule=Host(`api.fb98.id.vn`)
