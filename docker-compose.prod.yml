@@ -16,9 +16,9 @@ services:
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./traefik.yml:/traefik.yml
+      - ./traefik.yml:/traefik/traefik.yml:ro
       - ./acme.json:/letsencrypt/acme.json
-    networks: [proxy]
+    networks: [proxy, fb98_network]
 
   fb98.bootstrapper:
     labels:
@@ -37,6 +37,6 @@ services:
   fb98-admin:
     labels:
       - traefik.enable=true
-      # - traefik.http.routers.fb98-admin.rule=Host(`admin.fb98.id.vn`)
+      - traefik.http.routers.fb98-admin.rule=Host(`admin.fb98.id.vn`)
       - traefik.http.routers.fb98-admin.entrypoints=websecure
       - traefik.http.routers.fb98-admin.tls.certresolver=letsencrypt
