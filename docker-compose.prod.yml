@@ -17,7 +17,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./traefik.yml:/traefik/traefik.yml:ro
-      - ./acme.json:/letsencrypt/acme.json
+      - ./acme.json:/traefik/acme.json
     networks: [proxy, fb98_network]
 
   fb98.bootstrapper:
