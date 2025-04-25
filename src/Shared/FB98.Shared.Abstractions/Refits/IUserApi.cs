@@ -3,11 +3,12 @@ using Refit;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("FB98.Modules.Payments.Application")]
+[assembly: InternalsVisibleTo("FB98.Shared.Infrastructure")]
 namespace FB98.Shared.Abstractions.Refits
 {
 	internal interface IUserApi
 	{
-		[Get("/identity-module/Customer?userId={userId}")]
+		[Get("/identity-module/Profile?UserId={model.UserId}&Email={model.Email}&PhoneNumber={model.PhoneNumber}")]
 		Task<ApiResult<UserResponse>> GetUserProfile(UserDto model);
 	}
 

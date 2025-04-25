@@ -38,7 +38,7 @@ namespace FB98.Modules.Identity.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize]
+		//[Authorize]
 		[HttpGet]
 		public async Task<IActionResult> GetUser([FromQuery] GetProfileDto model)
 		{
