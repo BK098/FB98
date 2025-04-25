@@ -1,4 +1,5 @@
 ﻿using FB98.Modules.Movies.Application.CastManagement.Create;
+using FB98.Modules.Movies.Application.CastManagement.Delete;
 using FB98.Modules.Movies.Application.CastManagement.GetAll;
 using FB98.Modules.Movies.Application.CastManagement.GetDetail;
 using FB98.Modules.Movies.Application.CastManagement.Update;
@@ -48,13 +49,13 @@ namespace FB98.Modules.Movies.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		//[Authorize(Roles = "adminstrator")]
-		//[HttpDelete("{castId:guid}")]
-		//public async Task<IActionResult> DeleteCast(Guid castId)
-		//{
-		//	var request = new DeleteCastCommand(castId);
-		//	var result = await _mediator.Send(request);
-		//	return StatusCode(result.StatusCode, result);
-		//}
+		[Authorize(Roles = "adminstrator")]
+		[HttpDelete("{castId:guid}")]
+		public async Task<IActionResult> DeleteCast(Guid castId)
+		{
+			var request = new DeleteCastCommand(castId);
+			var result = await _mediator.Send(request);
+			return StatusCode(result.StatusCode, result);
+		}
 	}
 }

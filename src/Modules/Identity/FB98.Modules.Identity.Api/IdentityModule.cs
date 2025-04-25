@@ -18,7 +18,6 @@ namespace FB98.Modules.Identity.Api
 	{
 		public static IServiceCollection AddIdentityModule(this IServiceCollection services, IConfiguration configuration)
 		{
-			services.AddHttpContextAccessor();
 			services.AddMemoryCache();
 			services.AddPostgres<IdentityModuleDbContext>();
 			services.AddRegisterServicesIdentity();

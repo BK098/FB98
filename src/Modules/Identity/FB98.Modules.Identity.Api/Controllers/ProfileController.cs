@@ -38,22 +38,22 @@ namespace FB98.Modules.Identity.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize]
+		//[Authorize]
 		[HttpGet]
-		public async Task<IActionResult> GetUser([FromQuery] Guid? userId)
+		public async Task<IActionResult> GetUser([FromQuery] GetProfileDto model)
 		{
-			var currentUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+			var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			if (userId == null || userId == currentUserId)
+			if (model.UserId == null || model.UserId == currentUserId)
 			{
-				userId = currentUserId;
+				model.UserId = currentUserId;
 			}
-			else if (!User.IsInRole("Administrator"))
+			if (model.UserId != null && model.UserId != currentUserId && !User.IsInRole("Administrator"))
 			{
 				return Forbid();
 			}
 
-			var request = new GetProfileQuery(userId.ToString()!);
+			var request = new GetProfileQuery(model);
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);
 		}

@@ -81,7 +81,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 					return ApiResponseBuilder.Error<string>(_localizedMessageService.GetLocalizedMessage("Invalid"));
 				}
 
-				if (responseCode == "suscessCode")
+				if (responseCode == suscessCode)
 				{
 					transaction.MarkSuccess(txnRef);
 					_paymentRepository.Update(transaction);
@@ -197,7 +197,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 				attachments);
 		}
 
-		private static byte[]? GenerateQrCode(object qrDataObject, string urlEndpoint)
+		private static byte[] GenerateQrCode(object qrDataObject, string urlEndpoint)
 		{
 			var qrCurl = $"""
 			              curl -X 'POST' \
