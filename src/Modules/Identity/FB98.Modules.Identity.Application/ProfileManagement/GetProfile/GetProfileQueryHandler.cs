@@ -24,9 +24,24 @@ namespace FB98.Modules.Identity.Application.ProfileManagement.GetProfile
 
 		public async Task<ApiResult<GetProfileResponse>> Handle(GetProfileQuery request, CancellationToken cancellationToken)
 		{
+			var model = request.Model;
 			try
 			{
-				var user = await _userManager.FindByIdAsync(request.UserId);
+				AppUser? user = null;
+
+				if (!string.IsNullOrEmpty(model.UserId))
+				{
+					user = await _userManager.FindByIdAsync(model.UserId);
+				}
+				else if (!string.IsNullOrEmpty(model.Email))
+				{
+					user = await _userManager.FindByEmailAsync(model.Email);
+				}
+				else if (!string.IsNullOrEmpty(model.PhoneNumber))
+				{
+					user = _userManager.Users.FirstOrDefault(u => u.PhoneNumber == model.PhoneNumber);
+				}
+
 				if (user == null)
 				{
 					return ApiResponseBuilder.Error<GetProfileResponse>(_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
