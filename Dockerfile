@@ -92,16 +92,9 @@ WORKDIR /app
 USER root
 COPY --from=publish /app/publish .
 
-#RUN mkdir -p /app/Certificates
-#COPY ["src/Bootstrapper/FB98.Bootstrapper/Certificates/aspnetapp.crt", "/app/Certificates/aspnetapp.crt"]
-#RUN chmod 644 /app/Certificates/aspnetapp.crt
-
 USER app
 
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV ASPNETCORE_URLS="http://+:5000"
-#ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/app/Certificates/aspnetapp.crt
-
-#ENV ASPNETCORE_Kestrel__Certificates__Default__Password=YourPassword
 
 ENTRYPOINT ["dotnet", "FB98.Bootstrapper.dll"]

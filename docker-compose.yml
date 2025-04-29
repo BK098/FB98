@@ -33,7 +33,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production  
       - Redis__ConnectionString=redis:6379,password=your_secure_password,abortConnect=false,connectTimeout=1000
       - ConnectionStrings__RabbitMq=amqp://myuser:mypassword@rabbitmq:5672/
-      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=fb98db;Username=postgres;Password=yourpassword
+      - ConnectionStrings__DefaultConnection=Host=postgres-db;Port=5432;Database=fb98db;Username=postgres;Password=yourpassword
     depends_on:
       - db
       - rabbitmq
