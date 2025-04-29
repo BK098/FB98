@@ -16,7 +16,7 @@ services:
       - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./traefik/traefik.yml:/etc/traefik/traefik.yml
+      - ./traefik/traefik.yml:/home/traefik/traefik.yml
       - ./traefik/acme.json:/letsencrypt/acme.json
     networks: [proxy, fb98_network]
 
