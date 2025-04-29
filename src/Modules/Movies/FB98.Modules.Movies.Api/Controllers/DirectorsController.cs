@@ -1,4 +1,5 @@
 ﻿using FB98.Modules.Movies.Application.DirectorManagement.Create;
+using FB98.Modules.Movies.Application.DirectorManagement.Delete;
 using FB98.Modules.Movies.Application.DirectorManagement.GetAll;
 using FB98.Modules.Movies.Application.DirectorManagement.GetDetail;
 using FB98.Modules.Movies.Application.DirectorManagement.Update;
@@ -48,13 +49,13 @@ namespace FB98.Modules.Movies.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		//[Authorize(Roles = "Administrator")]
-		//[HttpDelete("{directorId:guid}")]
-		//public async Task<IActionResult> DeleteDirector(Guid directorId)
-		//{
-		//	var request = new DeleteDirectorCommand(directorId);
-		//	var result = await _mediator.Send(request);
-		//	return StatusCode(result.StatusCode, result);
-		//}
+		[Authorize(Roles = "Administrator")]
+		[HttpDelete("{directorId:guid}")]
+		public async Task<IActionResult> DeleteDirector(Guid directorId)
+		{
+			var request = new DeleteDirectorCommand(directorId);
+			var result = await _mediator.Send(request);
+			return StatusCode(result.StatusCode, result);
+		}
 	}
 }

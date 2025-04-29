@@ -49,7 +49,7 @@ namespace FB98.Modules.Movies.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "adminstrator")]
+		[Authorize(Roles = "Administrator")]
 		[HttpDelete("{castId:guid}")]
 		public async Task<IActionResult> DeleteCast(Guid castId)
 		{

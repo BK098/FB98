@@ -87,19 +87,22 @@ namespace FB98.Modules.Shows.Application.ShowManagement.Create
 					FeatureId = f.FeatureId!.Value
 				}).ToList();
 
+				var currentStartTime = model.StartTime!.Value.ToUniversalTime();
 				var runtime = movieResponse.Data!.RuntimeMinutes;
 				var show = _mapper.Map<Show>(model);
+
 				show.CinemaHallName = hallResponse.Data!.Name;
 				show.MovieTitle = movieResponse.Data!.Title;
 				show.MovieRuntimeMinutes = runtime;
 				show.EndTime = show.StartTime.AddMinutes(runtime);
 				show.ShowStatusId = ShowStatusConstants.UpComming;
 				show.Features = features;
+				show.StartTime = currentStartTime;
 
 				var overlappingShows = await _showRepository.GetAll()
 					.Where(s => s.CinemaHallId == model.CinemaHallId &&
-								((s.StartTime >= model.StartTime && s.StartTime < model.StartTime!.Value.AddMinutes(runtime)) ||
-								 (s.EndTime > model.StartTime && s.EndTime <= model.StartTime!.Value.AddMinutes(runtime))))
+								((s.StartTime >= currentStartTime && s.StartTime < currentStartTime.AddMinutes(runtime)) ||
+								 (s.EndTime > currentStartTime && s.EndTime <= currentStartTime.AddMinutes(runtime))))
 					.ToListAsync(cancellationToken);
 
 				if (overlappingShows.Any())

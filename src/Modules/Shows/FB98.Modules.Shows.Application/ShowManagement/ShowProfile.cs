@@ -19,7 +19,6 @@ namespace FB98.Modules.Shows.Application.ShowManagement
 		private void Init()
 		{
 			CreateMap<CreateShowDto, Show>()
-				.ForMember(dest => dest.StartTime, opt => opt.MapFrom(src => src.StartTime!.Value.ToUniversalTime()))
 				.ForMember(dest => dest.Features, opt => opt.MapFrom(src => src.Features));
 			CreateMap<CreateShowFeatureDto, ShowFeature>()
 				.ForMember(dest => dest.ShowId, opt => opt.Ignore())
