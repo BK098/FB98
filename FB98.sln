@@ -19,8 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FB98.Shared.Infrastructure"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FB98.Shared.Abstractions", "src\Shared\FB98.Shared.Abstractions\FB98.Shared.Abstractions.csproj", "{C4319772-D10F-4427-A7D8-D33EE26B2026}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{29297B68-C888-4183-A4C2-D7F65B3AACA5}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{45668706-EE47-427A-8FA6-61AD88408A65}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -162,8 +160,6 @@ Global
 		{C4319772-D10F-4427-A7D8-D33EE26B2026}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4319772-D10F-4427-A7D8-D33EE26B2026}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4319772-D10F-4427-A7D8-D33EE26B2026}.Release|Any CPU.Build.0 = Release|Any CPU
-		{29297B68-C888-4183-A4C2-D7F65B3AACA5}.Debug|Any CPU.ActiveCfg = CatalogModule|Any CPU
-		{29297B68-C888-4183-A4C2-D7F65B3AACA5}.Release|Any CPU.ActiveCfg = CatalogModule|Any CPU
 		{A679DF6F-DE48-4CEC-BFCA-A4128300FFF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A679DF6F-DE48-4CEC-BFCA-A4128300FFF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A679DF6F-DE48-4CEC-BFCA-A4128300FFF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
