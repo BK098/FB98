@@ -5,11 +5,8 @@ using FB98.Shared.Abstractions.Refits;
 using FB98.Shared.Abstractions.StatusConstants;
 using FB98.Shared.Infrastructure.Email;
 using MassTransit;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using Refit;
-using SkiaSharp;
-using SkiaSharp.QrCode;
+using System.Text.Json;
 
 namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 {
@@ -17,7 +14,6 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 	{
 		private readonly IBookingApi _bookingApi;
 		private readonly IBus _bus;
-		private readonly IConfiguration _configuration;
 		private readonly ICouponRepository _couponRepository;
 		private readonly IEmailSender _emailSender;
 		private readonly ILocalizedMessageService _localizedMessageService;
@@ -35,8 +31,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 			IOrderApi orderApi,
 			IBookingApi bookingApi,
 			ICouponRepository couponRepository,
-			IEmailSender emailSender,
-			IConfiguration configuration)
+			IEmailSender emailSender)
 		{
 			_paymentRepository = paymentRepository;
 			_logger = logger;
@@ -47,7 +42,6 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 			_bookingApi = bookingApi;
 			_couponRepository = couponRepository;
 			_emailSender = emailSender;
-			_configuration = configuration;
 		}
 
 		public async Task<ApiResult<object>> Handle(CreateCashPaymentCommand request, CancellationToken cancellationToken)
@@ -172,26 +166,6 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 
 		private async Task SendMailAsync(string email, string phoneNumber, BookingDetailDto? booking, OrderDetailDto? order)
 		{
-			byte[]? qrBooking = null;
-			byte[]? qrOrder = null;
-			var baseUrl = _configuration["BackEndBaseUrl"];
-			if (booking != null)
-			{
-				qrBooking = GenerateQrCode(new
-				{
-					bookingId = booking.Id,
-					seatIds = booking.Seats.Select(bs => bs.SeatId).ToList()
-				}, $"{baseUrl}/ticket-module/bookings/check-in");
-			}
-
-			if (order != null)
-			{
-				qrOrder = GenerateQrCode(new
-				{
-					orderId = order.Id
-				}, $"{baseUrl}/order-module/orders/check-in");
-			}
-
 			var emailBody = booking != null && order != null
 				? GetBookingAndOrderTemplate(email, phoneNumber, booking, order)
 				: booking != null
@@ -199,15 +173,6 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 					: GetOrderOnlyTemplate(email, phoneNumber, order!);
 
 			var attachments = new List<(byte[], string)>();
-			if (qrBooking != null)
-			{
-				attachments.Add((qrBooking, "BookingQR.png"));
-			}
-
-			if (qrOrder != null)
-			{
-				attachments.Add((qrOrder, "OrderQR.png"));
-			}
 
 			await _emailSender.SendEmailWithMultipleInlineAttachmentsAsync(
 				email,
@@ -216,39 +181,15 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 				attachments);
 		}
 
-		private static byte[] GenerateQrCode(object qrDataObject, string urlEndpoint)
-		{
-			var qrCurl = $"""
-			              curl -X 'POST' \
-			              '{urlEndpoint}' \
-			              -H 'accept: */*' \
-			              -H 'Content-Type: application/json-patch+json' \
-			              -d '{JsonConvert.SerializeObject(qrDataObject, Formatting.Indented)}'
-			              """;
-
-			var qrCodeData = new QRCodeGenerator().CreateQrCode(qrCurl, ECCLevel.L);
-			const int size = 300;
-			var moduleSize = size / qrCodeData.ModuleMatrix.Count;
-
-			using var bitmap = new SKBitmap(size, size);
-			using var canvas = new SKCanvas(bitmap);
-			canvas.Clear(SKColors.White);
-
-			for (var row = 0; row < qrCodeData.ModuleMatrix.Count; row++)
-				for (var col = 0; col < qrCodeData.ModuleMatrix[row].Count; col++)
-				{
-					var color = qrCodeData.ModuleMatrix[row][col] ? SKColors.Black : SKColors.White;
-					canvas.DrawRect(col * moduleSize, row * moduleSize, moduleSize, moduleSize, new SKPaint { Color = color });
-				}
-
-			using var data = bitmap.Encode(SKEncodedImageFormat.Png, 100);
-			using var stream = new MemoryStream();
-			data.SaveTo(stream);
-			return stream.ToArray();
-		}
-
 		private static string GetBookingOnlyTemplate(string email, string phone, BookingDetailDto booking)
 		{
+			var bookingData = new
+			{
+				bookingId = booking.Id,
+				seatIds = booking.Seats.Select(bs => bs.SeatId).ToList()
+			};
+			var bookingJson = JsonSerializer.Serialize(bookingData);
+			var bookingUrl = $"https://api.qrserver.com/v1/create-qr-code/?data={Uri.EscapeDataString(bookingJson)}&size=200x200";
 			var emailBody = $$"""
 			                  <!DOCTYPE html>
 			                  <html lang='vi'>
@@ -336,7 +277,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 			                                 <div style='display: flex; justify-content: center; align-items: center;'>
 			                                     <div style='text-align: center;'>
 			                                         <p>Vé xem phim:</p>
-			                                         <img src="cid:BookingQR.png" alt='QR Code' width='200' height='200' />
+			                                         <img src='{{bookingUrl}}' alt='QR Code' width='200' height='200' />
 			                                     </div>
 			                                 </div>
 			                             </div>
@@ -353,6 +294,13 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 
 		private static string GetOrderOnlyTemplate(string email, string phone, OrderDetailDto order)
 		{
+			var orderData = new
+			{
+				orderId = order.Id
+			};
+			var orderJson = JsonSerializer.Serialize(orderData);
+			var orderUrl = $"https://api.qrserver.com/v1/create-qr-code/?data={Uri.EscapeDataString(orderJson)}&size=200x200";
+
 			var emailBody = $$"""
 			                  <!DOCTYPE html>
 			                  <html lang='vi'>
@@ -442,7 +390,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 			                                  <div style='display: flex; justify-content: center; align-items: center;'>
 			                                      <div style='text-align: center;'>
 			                                          <p>Vé lấy đồ ăn:</p>
-			                                          <img src='cid:OrderQR.png' alt='QR Code' width='200' height='200' />
+			                                          <img src='{{orderUrl}}' alt='QR Code' width='200' height='200' />
 			                                      </div>
 			                                  </div>
 			                              </div>
@@ -459,6 +407,19 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 
 		private static string GetBookingAndOrderTemplate(string email, string phone, BookingDetailDto booking, OrderDetailDto order)
 		{
+			var orderData = new
+			{
+				orderId = order.Id
+			};
+			var orderJson = JsonSerializer.Serialize(orderData);
+			var orderUrl = $"https://api.qrserver.com/v1/create-qr-code/?data={Uri.EscapeDataString(orderJson)}&size=200x200";
+			var bookingData = new
+			{
+				bookingId = booking.Id,
+				seatIds = booking.Seats.Select(bs => bs.SeatId).ToList()
+			};
+			var bookingJson = JsonSerializer.Serialize(bookingData);
+			var bookingUrl = $"https://api.qrserver.com/v1/create-qr-code/?data={Uri.EscapeDataString(bookingJson)}&size=200x200";
 			var mailBody = $$"""
 			                 <!DOCTYPE html>
 			                 <html lang='vi'>
@@ -555,7 +516,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 			                                    </tr>
 			                                </thead>
 			                                <tbody>
-			                                    {{string.Join("", order.Items.Select(item =>
+			                                 {{string.Join("", order.Items.Select(item =>
 													$"<tr><td>{item.ProductName}</td>" +
 													$"<td>{item.Quantity}</td>" +
 													$"<td>{item.TotalPrice:N0} VNĐ</td></tr>"))}}
@@ -566,11 +527,11 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 			                                <div style='display: flex; justify-content: center; align-items: center;'>
 			                                    <div style='text-align: center;'>
 			                                        <p>Vé xem phim:</p>
-			                                        <img src='cid:BookingQR.png' alt='QR Code' width='200' height='200' />
+			                                        <img src='{{bookingUrl}}' alt='QR Code' width='200' height='200' />
 			                                    </div>
 			                                    <div style='text-align: center; margin-left: 20px;'>
 			                                        <p>Vé lấy đồ ăn:</p>
-			                                        <img src='cid:OrderQR.png' alt='QR Code' width='200' height='200' />
+			                                        <img src='{{orderUrl}}' alt='QR Code' width='200' height='200' />
 			                                    </div>
 			                                </div>
 			                            </div>
