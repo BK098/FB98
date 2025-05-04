@@ -3,6 +3,7 @@ using FB98.Modules.Payments.Application.PaymentManagement.GetDetail;
 using FB98.Modules.Payments.Application.PaymentManagement.GetPaymentHisotry;
 using FB98.Modules.Payments.Domain.Entities;
 using FB98.Shared.Abstractions.Refits;
+using FB98.Shared.Utils.Extensions;
 
 namespace FB98.Modules.Payments.Application.PaymentManagement
 {
@@ -16,6 +17,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement
 		private void Init()
 		{
 			CreateMap<PaymentTransaction, GetPaymentHisotryResponse>()
+				.ForMember(dest => dest.PairedAt, opt => opt.MapFrom(src => src.CreateAt!.ConvertUtcToVietnamTime().ToString("dd-MM-yyyy HH:mm:ss zz")))
 				.ForMember(dest => dest.Method, opt => opt.MapFrom(src => src.PaymentMethod!.Name))
 				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.PaymentStatus!.Name));
 

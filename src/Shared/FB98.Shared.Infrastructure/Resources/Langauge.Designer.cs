@@ -79,6 +79,15 @@ namespace FB98.Shared.Infrastructure.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Coupon Code Format.
+        /// </summary>
+        internal static string CouponCodeFormat {
+            get {
+                return ResourceManager.GetString("CouponCodeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Created.
         /// </summary>
         internal static string Created {

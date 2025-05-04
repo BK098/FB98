@@ -6,5 +6,6 @@
 		public decimal Amount { get; set; }
 		public string Status { get; set; } = null!;
 		public string Method { get; set; } = null!;
+		public string PairedAt { get; set; }
 	}
 }

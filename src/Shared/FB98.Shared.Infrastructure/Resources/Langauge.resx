@@ -330,4 +330,7 @@
   <data name="PhoneNumberExists" xml:space="preserve">
     <value>Phone number existed</value>
   </data>
+  <data name="CouponCodeFormat" xml:space="preserve">
+    <value>Coupon Code Format</value>
+  </data>
 </root>

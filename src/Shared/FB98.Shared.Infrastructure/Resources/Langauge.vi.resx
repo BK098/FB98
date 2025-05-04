@@ -330,4 +330,7 @@
   <data name="PhoneNumberExists" xml:space="preserve">
     <value>Số điện thoại đã tồn tại</value>
   </data>
+  <data name="CouponCodeFormat" xml:space="preserve">
+    <value>Mã giảm giá phải bắt đầu bằng chữ và chỉ chứa chữ hoặc số</value>
+  </data>
 </root>

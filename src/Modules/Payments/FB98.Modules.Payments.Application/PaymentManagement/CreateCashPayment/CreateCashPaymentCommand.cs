@@ -1,6 +1,4 @@
-﻿using FB98.Shared.Abstractions.Refits;
-
-namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
+﻿namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 {
-	public record CreateCashPaymentCommand(UserDto? Filter, CreateCashPaymentDto Model) : ICommand<ApiResult<object>>;
+	public record CreateCashPaymentCommand(string? SearchTerm, CreateCashPaymentDto Model) : ICommand<ApiResult<object>>;
 }

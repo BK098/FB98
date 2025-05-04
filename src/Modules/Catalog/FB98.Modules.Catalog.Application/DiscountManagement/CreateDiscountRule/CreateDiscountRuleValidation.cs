@@ -2,7 +2,7 @@
 {
 	internal sealed class CreateDiscountRuleValidation : AbstractValidator<CreateDiscountRuleDto>
 	{
-		private readonly TimeSpan _bufferTime = TimeSpan.FromSeconds(60);
+		private readonly TimeSpan _bufferTime = TimeSpan.FromMinutes(5);
 
 		public CreateDiscountRuleValidation(ILocalizedMessageService message)
 		{

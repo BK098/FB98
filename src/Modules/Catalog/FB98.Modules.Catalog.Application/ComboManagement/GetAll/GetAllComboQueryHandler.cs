@@ -44,6 +44,7 @@ namespace FB98.Modules.Catalog.Application.ComboManagement.GetAll
 				}
 
 				combos = combos.SortBy(filter.SortColumn, _allowedProperties, filter.IsDescending);
+				combos = combos.Include(x => x.DiscountRules);
 
 				var paginatedResult = await PaginatedResult<Combo>.CreateAsync(
 					combos,

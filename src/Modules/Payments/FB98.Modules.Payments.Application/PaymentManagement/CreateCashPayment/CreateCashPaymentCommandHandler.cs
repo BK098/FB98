@@ -46,12 +46,36 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 
 		public async Task<ApiResult<object>> Handle(CreateCashPaymentCommand request, CancellationToken cancellationToken)
 		{
+			var searchTerm = request.SearchTerm?.Trim();
 			var model = request.Model;
-			var filter = request.Filter;
 			decimal amount = 0;
 			var now = DateTime.UtcNow;
 			try
 			{
+				var email = string.Empty;
+				var phoneNumber = string.Empty;
+				var userId = Guid.Empty;
+				try
+				{
+					if (searchTerm != null)
+					{
+						var userResponse = await _userApi.GetUserProfile(new UserDto(searchTerm));
+
+						email = userResponse.Data!.Email;
+						phoneNumber = userResponse.Data!.PhoneNumber;
+						userId = Guid.Parse(userResponse.Data!.UserId);
+					}
+				}
+				catch (ApiException)
+				{
+					return ApiResponseBuilder.Error<object>("User: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
+				}
+
+				if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phoneNumber) || userId == Guid.Empty)
+				{
+					return ApiResponseBuilder.Error<object>("User: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
+				}
+
 				if (model.OrderId == null && model.BookingId == null)
 				{
 					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("OrderOrBookingRequired"));
@@ -96,6 +120,17 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 					return ApiResponseBuilder.Error<object>("Booking: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
+				var transaction = new PaymentTransaction
+				{
+					Email = email,
+					PhoneNumber = phoneNumber,
+					UserId = userId,
+					OrderId = model.OrderId,
+					BookingId = model.BookingId,
+					SubAmount = amount,
+					PaymentMethodId = PaymentMethodConstants.Cash
+				};
+
 				decimal discount = 0;
 				if (!string.IsNullOrWhiteSpace(model.CouponCode))
 				{
@@ -106,44 +141,11 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 					}
 
 					discount = coupon.CalculateDiscount(amount);
-				}
-
-				var email = string.Empty;
-				var phoneNumber = string.Empty;
-				var userId = Guid.Empty;
-				try
-				{
-					if (filter != null)
-					{
-						var userResponse = await _userApi.GetUserProfile(filter);
-
-						email = userResponse.Data!.Email;
-						phoneNumber = userResponse.Data!.PhoneNumber;
-						userId = Guid.Parse(userResponse.Data!.UserId);
-					}
-				}
-				catch (ApiException)
-				{
-					return ApiResponseBuilder.Error<object>("User: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
-				}
-
-				if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phoneNumber) || userId == Guid.Empty)
-				{
-					return ApiResponseBuilder.Error<object>("User: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
+					transaction.CouponCode = coupon.Code;
 				}
 
 				var finalAmount = amount - discount;
-				var transaction = new PaymentTransaction
-				{
-					Email = email,
-					PhoneNumber = phoneNumber,
-					UserId = userId,
-					OrderId = model.OrderId,
-					BookingId = model.BookingId,
-					Amount = finalAmount,
-					SubAmount = amount,
-					PaymentMethodId = PaymentMethodConstants.Cash
-				};
+				transaction.Amount = finalAmount;
 
 				transaction.MarkSuccess();
 				await _paymentRepository.CreateAsync(transaction);
@@ -155,6 +157,8 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 
 				await SendMailAsync(transaction.Email, transaction.PhoneNumber, booking, order);
 				await _bus.Publish(new VnPayPaymentCreatedEvent(userId, model.BookingId, model.OrderId), cancellationToken);
+				Thread.Sleep(50);
+				await _bus.Publish(new PaymentSuccessEvent(transaction.OrderId, transaction.BookingId, transaction.UserId, amount, transaction.Email), cancellationToken);
 				return ApiResponseBuilder.Success<object>(transaction.Id, _localizedMessageService.GetLocalizedMessage("PaymentSuccessful"));
 			}
 			catch (Exception ex)
@@ -517,9 +521,9 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateCashPayment
 			                                </thead>
 			                                <tbody>
 			                                 {{string.Join("", order.Items.Select(item =>
-													$"<tr><td>{item.ProductName}</td>" +
-													$"<td>{item.Quantity}</td>" +
-													$"<td>{item.TotalPrice:N0} VNĐ</td></tr>"))}}
+												 $"<tr><td>{item.ProductName}</td>" +
+												 $"<td>{item.Quantity}</td>" +
+												 $"<td>{item.TotalPrice:N0} VNĐ</td></tr>"))}}
 			                                </tbody>
 			                            </table>
 			                 

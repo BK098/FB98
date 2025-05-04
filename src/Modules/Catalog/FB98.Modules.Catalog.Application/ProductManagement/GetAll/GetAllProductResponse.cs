@@ -8,5 +8,6 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.GetAll
 		public string? Name { get; set; }
 		public string? Image { get; set; }
 		public decimal Price { get; set; }
+		public decimal DiscountPrice { get; set; }
 	}
 }

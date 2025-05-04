@@ -44,13 +44,13 @@ namespace FB98.Modules.Identity.Api.Controllers
 		{
 			var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			if (model.UserId == null || model.UserId == currentUserId)
+			if (string.IsNullOrEmpty(model.SearchTerm))
 			{
-				model.UserId = currentUserId;
+				model.SearchTerm = currentUserId;
 			}
-			if (model.UserId != null && model.UserId != currentUserId && !User.IsInRole("Administrator"))
+			else if (model.SearchTerm != currentUserId && !User.IsInRole("Administrator"))
 			{
-				return Forbid();
+				//return Forbid();
 			}
 
 			var request = new GetProfileQuery(model);

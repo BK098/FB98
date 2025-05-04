@@ -6,13 +6,9 @@ using Microsoft.Extensions.Hosting;
 
 namespace FB98.Modules.Tickets.Application.SeatManagement.BackgroundJobs
 {
-	/// <summary>
-	///     Cách 1 phút chạy ứng dùng 1 lần để mở khóa các ghế hết hạn
-	/// </summary>
 	public sealed class SeatUnlockJob : IHostedService, IDisposable
 	{
 		private readonly ILogger<SeatUnlockJob> _logger;
-		private readonly IHubContext<NotificationHub> _notificationHubContext;
 		private readonly IHubContext<SeatHub> _seatHubContext;
 		private readonly IServiceProvider _serviceProvider;
 		private Timer? _timer;
@@ -20,13 +16,11 @@ namespace FB98.Modules.Tickets.Application.SeatManagement.BackgroundJobs
 		public SeatUnlockJob(
 			IServiceProvider serviceProvider,
 			IHubContext<SeatHub> seatHubContext,
-			ILogger<SeatUnlockJob> logger,
-			IHubContext<NotificationHub> notificationHubContext)
+			ILogger<SeatUnlockJob> logger)
 		{
 			_serviceProvider = serviceProvider;
 			_seatHubContext = seatHubContext;
 			_logger = logger;
-			_notificationHubContext = notificationHubContext;
 		}
 
 		public void Dispose()

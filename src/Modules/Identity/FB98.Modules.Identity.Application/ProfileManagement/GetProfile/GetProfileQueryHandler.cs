@@ -24,22 +24,27 @@ namespace FB98.Modules.Identity.Application.ProfileManagement.GetProfile
 
 		public async Task<ApiResult<GetProfileResponse>> Handle(GetProfileQuery request, CancellationToken cancellationToken)
 		{
-			var model = request.Model;
+			var searchTerm = request.Model.SearchTerm?.Trim();
 			try
 			{
 				AppUser? user = null;
 
-				if (!string.IsNullOrEmpty(model.UserId))
+				if (!string.IsNullOrEmpty(searchTerm))
 				{
-					user = await _userManager.FindByIdAsync(model.UserId);
-				}
-				else if (!string.IsNullOrEmpty(model.Email))
-				{
-					user = await _userManager.FindByEmailAsync(model.Email);
-				}
-				else if (!string.IsNullOrEmpty(model.PhoneNumber))
-				{
-					user = _userManager.Users.FirstOrDefault(u => u.PhoneNumber == model.PhoneNumber);
+					if (Guid.TryParse(searchTerm, out _))
+					{
+						user = await _userManager.FindByIdAsync(searchTerm);
+					}
+
+					if (user == null)
+					{
+						user = _userManager.Users.FirstOrDefault(u => u.PhoneNumber == searchTerm);
+					}
+
+					if (user == null)
+					{
+						user = await _userManager.FindByEmailAsync(searchTerm);
+					}
 				}
 
 				if (user == null)

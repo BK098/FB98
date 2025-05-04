@@ -45,7 +45,7 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.GetAll
 				}
 
 				products = products.SortBy(filter.SortColumn, _allowedProperties, filter.IsDescending);
-
+				products = products.Include(x => x.DiscountRules);
 				var paginatedResult = await PaginatedResult<Product>.CreateAsync(
 					products,
 					filter.PageIndex,

@@ -38,21 +38,13 @@ namespace FB98.Modules.Payments.Application.CouponManagement.Create
 				}
 
 				var normalizedCode = model.Code!.Normalize().ToUpper().Trim();
-				if (!string.IsNullOrWhiteSpace(model.Code))
+				if (await _couponRepository.IsCouponExisted(normalizedCode))
 				{
-					if (!normalizedCode.Equals(model.Code, StringComparison.Ordinal))
-					{
-						if (await _couponRepository.IsCouponExisted(normalizedCode))
-						{
-							return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("Existed"));
-						}
-
-						model.Code = normalizedCode;
-					}
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("Existed"));
 				}
 
 				var coupon = _mapper.Map<Coupon>(model);
-				coupon.Code = model.Code;
+				coupon.Code = normalizedCode;
 				coupon.StartDate = model.StartDate!.Value.ToUniversalTime();
 				coupon.EndDate = model.EndDate!.Value.ToUniversalTime();
 

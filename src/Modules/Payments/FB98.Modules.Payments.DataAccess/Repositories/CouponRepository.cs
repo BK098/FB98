@@ -33,6 +33,13 @@ namespace FB98.Modules.Payments.DataAccess.Repositories
 			return true;
 		}
 
+		public override bool Delete(Coupon entity)
+		{
+			base.Delete(entity);
+			_context.SaveChanges();
+			return true;
+		}
+
 		public async Task<Coupon?> GetValidCouponAsync(string code, decimal orderAmount, DateTime now)
 		{
 			return await _context.Coupons

@@ -9,23 +9,12 @@
 			RuleFor(x => x.Code)
 				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"))
+				.Matches("^[A-Za-z][A-Za-z0-9]*$").WithMessage(message.GetLocalizedMessage("CouponCodeFormat"))
 				.MaximumLength(50).WithMessage(message.GetLocalizedMessage("MaxLength").Replace("{Max}", "50"));
 
 			RuleFor(x => x.IsDiscountPercentage)
 				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"));
-
-			RuleFor(x => x.StartDate)
-				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
-				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"))
-				.GreaterThanOrEqualTo(DateTime.UtcNow.Subtract(_bufferTime))
-				.WithMessage(message.GetLocalizedMessage("StartDateValidation"));
-
-			RuleFor(x => x.EndDate)
-				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
-				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"))
-				.Must((dto, endDate) => endDate > dto.StartDate)
-				.GreaterThanOrEqualTo(DateTime.UtcNow).WithMessage(message.GetLocalizedMessage("EndDateValidation"));
 
 			RuleFor(x => x.Value)
 				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))

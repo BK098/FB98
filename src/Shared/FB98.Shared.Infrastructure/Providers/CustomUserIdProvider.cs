@@ -7,9 +7,11 @@ namespace FB98.Shared.Infrastructure.Providers
 	{
 		public string? GetUserId(HubConnectionContext connection)
 		{
-			var userId = connection.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			var userId = connection.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value
+						 ?? connection.User?.FindFirst("sub")?.Value;
 
-			Console.WriteLine(@"[SignalR] Connected UserId: {UserId}", userId);
+			Console.WriteLine("UserId: {0}", userId);
+			//Console.WriteLine(@"[SignalR] Connected UserId: {UserId}", userId);
 
 			return userId;
 		}

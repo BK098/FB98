@@ -1,6 +1,7 @@
 ﻿using FB98.Modules.Payments.Application.CouponManagement.Create;
 using FB98.Modules.Payments.Application.CouponManagement.Delete;
 using FB98.Modules.Payments.Application.CouponManagement.GetAll;
+using FB98.Modules.Payments.Application.CouponManagement.GetCouponPublic;
 using FB98.Modules.Payments.Application.CouponManagement.GetDetail;
 using FB98.Modules.Payments.Application.CouponManagement.Update;
 using FB98.Shared.Abstractions.Entities;
@@ -20,6 +21,14 @@ namespace FB98.Modules.Payments.Api.Controllers
 		public async Task<IActionResult> CreateCoupon(CreateCouponDto model)
 		{
 			var request = new CreateCouponCommand(model);
+			var result = await _mediator.Send(request);
+			return StatusCode(result.StatusCode, result);
+		}
+
+		[HttpGet("public")]
+		public async Task<IActionResult> GetPublicCoupon([FromQuery] decimal? amount)
+		{
+			var request = new GetCouponPublicQuery(amount);
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);
 		}
