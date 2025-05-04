@@ -29,5 +29,13 @@ namespace FB98.Modules.Systems.Api.Controllers
 				.SendAsync("SendSeatUnlocks", $"🔓 Ghế bạn đang giữ đã hết thời gian và được mở khóa.");
 			return Ok(new { message = $"Sent to user {userId}" });
 		}
+
+		[HttpGet("{userId}/{showId}")]
+		public async Task<IActionResult> Send(Guid userId, Guid showId)
+		{
+			var message = $"Ghế của bạn tại suất chiếu {showId} đã hết thời gian giữ và được mở khóa.";
+			await _hubContext.Clients.User(userId.ToString()).SendAsync("SendSeatUnlocks", message);
+			return Ok("Sent");
+		}
 	}
 }

@@ -6,6 +6,7 @@ using FB98.Modules.Shows.Application.ShowManagement.GetAllByMovieId;
 using FB98.Modules.Shows.Application.ShowManagement.GetDetail;
 using FB98.Modules.Shows.Application.ShowManagement.Update;
 using FB98.Shared.Abstractions.Entities;
+using FB98.Shared.Abstractions.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,32 @@ namespace FB98.Modules.Shows.Api.Controllers
 		public ShowsController(IMediator mediator) : base(mediator)
 		{
 		}
+
+		[HttpGet("{movieId:guid}/exists")]
+		public async Task<IActionResult> IsMovieInAnyShow(Guid movieId)
+		{
+			var request = new GetAllShowByMovieIdQuery(movieId);
+			var result = await _mediator.Send(request);
+
+			if (result.StatusCode != 200 || result.Data == null)
+			{
+				return StatusCode(result.StatusCode, new ApiResult<bool>
+				{
+					Data = false,
+					StatusCode = result.StatusCode,
+					Message = result.Message
+				});
+			}
+
+			var hasShow = result.Data.Items.Any();
+
+			return Ok(new ApiResult<bool>
+			{
+				Data = hasShow,
+				StatusCode = 200
+			});
+		}
+
 
 		[HttpGet("{movieId:guid}/movie")]
 		public async Task<IActionResult> GetAllShow(Guid movieId)

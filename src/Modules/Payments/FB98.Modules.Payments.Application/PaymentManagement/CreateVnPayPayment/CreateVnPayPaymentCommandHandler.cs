@@ -83,6 +83,17 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment
 					return ApiResponseBuilder.Error<string>("Booking: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
+				var transaction = new PaymentTransaction
+				{
+					Email = model.Email!,
+					PhoneNumber = model.PhoneNumber!,
+					UserId = model.UserId!.Value,
+					OrderId = model.OrderId,
+					BookingId = model.BookingId,
+					SubAmount = amount,
+					PaymentMethodId = PaymentMethodConstants.VnPayCard
+				};
+
 				decimal discount = 0;
 				if (!string.IsNullOrWhiteSpace(model.CouponCode))
 				{
@@ -93,25 +104,17 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment
 					}
 
 					discount = coupon.CalculateDiscount(amount);
+					transaction.CouponCode = coupon.Code;
 				}
 
 				var finalAmount = amount - discount;
-				var transaction = new PaymentTransaction
-				{
-					Email = model.Email!,
-					PhoneNumber = model.PhoneNumber!,
-					UserId = model.UserId!.Value,
-					OrderId = model.OrderId,
-					BookingId = model.BookingId,
-					Amount = finalAmount,
-					SubAmount = amount,
-					PaymentMethodId = PaymentMethodConstants.VnPayCard
-				};
+
+				transaction.Amount = finalAmount;
 				transaction.MarkPeding();
 
 				var ipAddress = _contextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
 				await _paymentRepository.CreateAsync(transaction);
-				var paymentUrl = _vnPayService.GeneratePaymentUrl(transaction.Id, amount, ipAddress);
+				var paymentUrl = _vnPayService.GeneratePaymentUrl(transaction.Id, transaction.Amount, ipAddress);
 
 				await _bus.Publish(new VnPayPaymentCreatedEvent(model.UserId!.Value, model.BookingId, model.OrderId), cancellationToken);
 

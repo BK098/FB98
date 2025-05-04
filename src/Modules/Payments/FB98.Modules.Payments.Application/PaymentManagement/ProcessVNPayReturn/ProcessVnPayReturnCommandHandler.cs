@@ -77,9 +77,6 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 
 				if (responseCode == suscessCode)
 				{
-					transaction.MarkSuccess(txnRef);
-					_paymentRepository.Update(transaction);
-
 					await _bus.Publish(new PaymentSuccessEvent(transaction.OrderId, transaction.BookingId, transaction.UserId, amount, transaction.Email), cancellationToken);
 
 					BookingDetailDto? booking = null;
@@ -128,7 +125,8 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 					}
 
 					await SendMailAsync(transaction.Email, transaction.PhoneNumber, booking, order);
-
+					transaction.MarkSuccess(txnRef);
+					_paymentRepository.Update(transaction);
 					return ApiResponseBuilder.Success(transaction.Id.ToString(), _localizedMessageService.GetLocalizedMessage("PaymentSuccessful"));
 				}
 
@@ -498,9 +496,9 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn
 			                                </thead>
 			                                <tbody>
 			                                 {{string.Join("", order.Items.Select(item =>
-													$"<tr><td>{item.ProductName}</td>" +
-													$"<td>{item.Quantity}</td>" +
-													$"<td>{item.TotalPrice:N0} VNĐ</td></tr>"))}}
+												 $"<tr><td>{item.ProductName}</td>" +
+												 $"<td>{item.Quantity}</td>" +
+												 $"<td>{item.TotalPrice:N0} VNĐ</td></tr>"))}}
 			                                </tbody>
 			                            </table>
 			                 

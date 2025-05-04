@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FB98.Modules.Shows.Application.Abstractions;
+﻿using FB98.Modules.Shows.Application.Abstractions;
 using FB98.Shared.Infrastructure.Paging;
 using FB98.Shared.Utils.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -10,18 +9,15 @@ namespace FB98.Modules.Shows.Application.ShowManagement.GetAllByMovieId
 	{
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ILogger<GetAllShowByMovieIdQueryHandler> _logger;
-		private readonly IMapper _mapper;
 		private readonly IShowRepository _showRepository;
 
 		public GetAllShowByMovieIdQueryHandler(
 			ILocalizedMessageService localizedMessageService,
 			ILogger<GetAllShowByMovieIdQueryHandler> logger,
-			IMapper mapper,
 			IShowRepository showRepository)
 		{
 			_localizedMessageService = localizedMessageService;
 			_logger = logger;
-			_mapper = mapper;
 			_showRepository = showRepository;
 		}
 
@@ -49,16 +45,16 @@ namespace FB98.Modules.Shows.Application.ShowManagement.GetAllByMovieId
 					.GroupBy(x => new { x.StartTime.Date, x.CinemaHallId })
 					.Select(group => new GetAllShowByMovieIdResponse
 					{
-						Date = group.Key.Date.ToString("M"),
+						Date = group.Key.Date.ConvertUtcToVietnamTime().ToString("MM-dd zz"),
 						CinemaHallId = group.Key.CinemaHallId,
 						CinemaHallName = group.First().CinemaHallName,
 						ShowTimes = group.Select(show => new GetAllShowDto
 						{
-							StartTime = show.StartTime.ConvertUtcToVietnamTime().ToString("HH:mm:ss"),
-							EndTime = show.EndTime.ConvertUtcToVietnamTime().ToString("HH:mm:ss"),
+							StartTime = show.StartTime.ConvertUtcToVietnamTime().ToString("HH:mm:ss zz"),
+							EndTime = show.EndTime.ConvertUtcToVietnamTime().ToString("HH:mm:ss zz"),
 							ShowId = show.Id,
 							ShowStatusId = show.ShowStatusId,
-							ShowStatusName = show.ShowStatus.Name
+							ShowStatusName = show.ShowStatus!.Name
 						}).OrderBy(x => x.StartTime).ToList()
 					}).OrderBy(x => x.Date).ToList();
 

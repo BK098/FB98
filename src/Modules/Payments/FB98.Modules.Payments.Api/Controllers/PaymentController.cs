@@ -5,7 +5,6 @@ using FB98.Modules.Payments.Application.PaymentManagement.GetDetail;
 using FB98.Modules.Payments.Application.PaymentManagement.GetPaymentHisotry;
 using FB98.Modules.Payments.Application.PaymentManagement.ProcessVNPayReturn;
 using FB98.Shared.Abstractions.Entities;
-using FB98.Shared.Abstractions.Refits;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -26,9 +25,9 @@ namespace FB98.Modules.Payments.Api.Controllers
 
 		[Authorize(Roles = "Administrator")]
 		[HttpPost("pay-cash")]
-		public async Task<IActionResult> CreateCashPayment([FromQuery] UserDto filter, CreateCashPaymentDto model)
+		public async Task<IActionResult> CreateCashPayment([FromQuery] string? searchTerm, CreateCashPaymentDto model)
 		{
-			var request = new CreateCashPaymentCommand(filter, model);
+			var request = new CreateCashPaymentCommand(searchTerm, model);
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);
 		}
@@ -70,7 +69,7 @@ namespace FB98.Modules.Payments.Api.Controllers
 			var result = await _mediator.Send(request);
 			if (!result.IsSuccess)
 			{
-				return BadRequest(result.Message);
+				return Redirect($"{_frontEnd}/payment-error");
 			}
 
 			return Redirect($"{_frontEnd}/payment-success?paymentId={result.Data}");

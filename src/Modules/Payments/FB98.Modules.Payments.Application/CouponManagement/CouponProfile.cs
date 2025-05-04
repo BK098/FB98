@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FB98.Modules.Payments.Application.CouponManagement.Create;
 using FB98.Modules.Payments.Application.CouponManagement.GetAll;
+using FB98.Modules.Payments.Application.CouponManagement.GetCouponPublic;
 using FB98.Modules.Payments.Application.CouponManagement.GetDetail;
 using FB98.Modules.Payments.Application.CouponManagement.Update;
 using FB98.Modules.Payments.Domain.Entities;
@@ -17,9 +18,18 @@ namespace FB98.Modules.Payments.Application.CouponManagement
 
 		private void Init()
 		{
-			CreateMap<Coupon, GetAllCouponResponse>();
+			CreateMap<Coupon, GetAllCouponResponse>()
+				.ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate.ConvertUtcToVietnamTime().ToString("dd-MM-yyyy HH:mm:ss zz")))
+				.ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate.ConvertUtcToVietnamTime().ToString("dd-MM-yyyy HH:mm:ss zz")));
+
+			CreateMap<Coupon, GetCouponPublicResponse>()
+				.ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate.ConvertUtcToVietnamTime().ToString("dd-MM-yyyy HH:mm:ss zz")))
+				.ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate.ConvertUtcToVietnamTime().ToString("dd-MM-yyyy HH:mm:ss zz")));
+
 			CreateMap<UpdateCouponDto, Coupon>();
+
 			CreateMap<CreateCouponDto, Coupon>();
+
 			CreateMap<Coupon, GetDetailCouponResponse>()
 				.ForMember(dest => dest.StartDate, opt => opt.MapFrom(src => src.StartDate.ConvertUtcToVietnamTime().ToString("dd-MM-yyyy HH:mm:ss zz")))
 				.ForMember(dest => dest.EndDate, opt => opt.MapFrom(src => src.EndDate.ConvertUtcToVietnamTime().ToString("dd-MM-yyyy HH:mm:ss zz")));

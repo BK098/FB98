@@ -1,4 +1,5 @@
 ﻿using FB98.Modules.Movies.Application.MovieManagement.Create;
+using FB98.Modules.Movies.Application.MovieManagement.Delete;
 using FB98.Modules.Movies.Application.MovieManagement.GetAll;
 using FB98.Modules.Movies.Application.MovieManagement.GetDetail;
 using FB98.Modules.Movies.Application.MovieManagement.Update;
@@ -44,6 +45,15 @@ namespace FB98.Modules.Movies.Api.Controllers
 		public async Task<IActionResult> UpdateMovie(Guid movieId, [FromBody] UpdateMovieDto model)
 		{
 			var request = new UpdateMovieCommand(movieId, model);
+			var result = await _mediator.Send(request);
+			return StatusCode(result.StatusCode, result);
+		}
+
+		[Authorize(Roles = "Administrator")]
+		[HttpDelete("{movieId:guid}")]
+		public async Task<IActionResult> DeleteMovie(Guid movieId)
+		{
+			var request = new DeleteMovieCommand(movieId);
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);
 		}

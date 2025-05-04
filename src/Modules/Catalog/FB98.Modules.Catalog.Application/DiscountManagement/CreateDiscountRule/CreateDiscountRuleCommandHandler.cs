@@ -56,6 +56,8 @@ namespace FB98.Modules.Catalog.Application.DiscountManagement.CreateDiscountRule
 				}
 
 				var discountRule = _mapper.Map<ProductDiscountRule>(model);
+				discountRule.StartDate = model.StartDate.ToUniversalTime();
+				discountRule.EndDate = model.EndDate.ToUniversalTime();
 				discountRule.ProductId = model.IsCombo!.Value ? null : productId;
 				discountRule.ComboId = model.IsCombo!.Value ? productId : null;
 				discountRule.IsCombo = model.IsCombo!.Value;

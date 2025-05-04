@@ -12,7 +12,6 @@ namespace FB98.Modules.Shows.Application.ShowManagement.GetAll
 		private readonly List<string> _allowedProperties = ["StartTime, MovieTitle"];
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ILogger<GetAllShowQueryHandler> _logger;
-		private readonly IMapper _mapper;
 		private readonly IShowRepository _showRepository;
 
 		public GetAllShowQueryHandler(
@@ -23,7 +22,6 @@ namespace FB98.Modules.Shows.Application.ShowManagement.GetAll
 		{
 			_localizedMessageService = localizedMessageService;
 			_logger = logger;
-			_mapper = mapper;
 			_showRepository = showRepository;
 		}
 
@@ -59,7 +57,7 @@ namespace FB98.Modules.Shows.Application.ShowManagement.GetAll
 					cancellationToken);
 
 				var groupedShows = paginatedResult.Items
-					.GroupBy(x => new { x.MovieId, x.CinemaHallId }) // Nhóm theo movieId và cinemaHallId
+					.GroupBy(x => new { x.MovieId, x.CinemaHallId })
 					.Select(group => new GetAllShowResponse
 					{
 						MovieId = group.Key.MovieId,

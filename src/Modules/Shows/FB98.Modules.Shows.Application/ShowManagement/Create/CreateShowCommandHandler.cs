@@ -107,7 +107,7 @@ namespace FB98.Modules.Shows.Application.ShowManagement.Create
 
 				if (overlappingShows.Any())
 				{
-					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("ShowOverlap"), 400);
+					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("ShowOverlap"));
 				}
 
 				await _showRepository.CreateAsync(show);

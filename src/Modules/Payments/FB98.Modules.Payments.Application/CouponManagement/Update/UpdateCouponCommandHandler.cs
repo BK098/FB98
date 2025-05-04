@@ -42,19 +42,36 @@ namespace FB98.Modules.Payments.Application.CouponManagement.Update
 					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
-				var normalizedCode = model.Code!.Normalize().ToUpper().Trim();
-				if (!string.IsNullOrWhiteSpace(model.Code))
+				if (model.StartDate != coupon.StartDate)
 				{
-					if (!normalizedCode.Equals(coupon.Code, StringComparison.Ordinal))
+					if (model.StartDate < DateTime.Now.Subtract(TimeSpan.FromSeconds(60)))
 					{
-						if (await _couponRepository.IsCouponExisted(normalizedCode))
-						{
-							return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("Existed"));
-						}
-
-						coupon.Code = normalizedCode;
+						return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("StartDateValidation"));
 					}
 				}
+
+				if (model.EndDate != coupon.EndDate)
+				{
+					if (model.EndDate <= model.StartDate)
+					{
+						return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("EndDateValidation"));
+					}
+
+					if (model.EndDate < DateTime.Now)
+					{
+						return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("EndDateValidation"));
+					}
+				}
+
+				var normalizedCode = model.Code!.Normalize().ToUpper().Trim();
+				if (await _couponRepository.IsCouponExisted(normalizedCode))
+				{
+					if (normalizedCode != coupon.Code)
+					{
+						return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("Existed"));
+					}
+				}
+
 				_mapper.Map(model, coupon);
 				coupon.Code = normalizedCode;
 				coupon.StartDate = model.StartDate!.Value.ToUniversalTime();

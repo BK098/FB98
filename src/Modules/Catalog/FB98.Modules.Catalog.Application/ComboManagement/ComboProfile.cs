@@ -34,7 +34,9 @@ namespace FB98.Modules.Catalog.Application.ComboManagement
 				.ForMember(src => src.Combo, opt => opt.Ignore())
 				.ForMember(dest => dest.ComboId, opt => opt.Ignore());
 
-			CreateMap<Combo, GetAllComboResponse>();
+			CreateMap<Combo, GetAllComboResponse>()
+				.ForMember(dest => dest.DiscountPrice, opt => opt.MapFrom(src => src.GetDiscountedPrice()));
+
 			CreateMap<Combo, GetDetailComboResponse>()
 				.ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.ComboProducts));
 			CreateMap<ComboProduct, GetDetailComboProductResponse>()

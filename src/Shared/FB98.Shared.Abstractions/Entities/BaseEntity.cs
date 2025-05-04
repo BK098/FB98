@@ -11,12 +11,12 @@ namespace FB98.Shared.Abstractions.Entities
 
 		public void SetUpdatedAt()
 		{
-			UpdateAt = DateTime.UtcNow;
+			UpdateAt = DateTime.Now.ToUniversalTime();
 		}
 
 		public void SetCreatedAt()
 		{
-			CreateAt = DateTime.UtcNow;
+			CreateAt = DateTime.Now.ToUniversalTime();
 		}
 	}
 }

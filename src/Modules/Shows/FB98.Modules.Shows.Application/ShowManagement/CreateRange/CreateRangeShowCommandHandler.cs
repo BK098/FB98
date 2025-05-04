@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FB98.Modules.Shows.Application.Abstractions;
+﻿using FB98.Modules.Shows.Application.Abstractions;
 using FB98.Modules.Shows.Domain.Entities;
 using FB98.Shared.Abstractions.Refits;
 using FB98.Shared.Abstractions.StatusConstants;
@@ -14,7 +13,6 @@ namespace FB98.Modules.Shows.Application.ShowManagement.CreateRange
 		private readonly IFeatureRepository _featureRepository;
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ILogger<CreateRangeShowCommandHandler> _logger;
-		private readonly IMapper _mapper;
 		private readonly IMovieApi _movieApi;
 		private readonly IShowRepository _showRepository;
 		private readonly IUnitOfWork _unitOfWork;
@@ -28,8 +26,7 @@ namespace FB98.Modules.Shows.Application.ShowManagement.CreateRange
 			ILocalizedMessageService localizedMessageService,
 			ICinemaApi cinemaApi,
 			IMovieApi movieApi,
-			IUnitOfWork unitOfWork,
-			IMapper mapper)
+			IUnitOfWork unitOfWork)
 		{
 			_featureRepository = featureRepository;
 			_logger = logger;
@@ -39,7 +36,6 @@ namespace FB98.Modules.Shows.Application.ShowManagement.CreateRange
 			_cinemaApi = cinemaApi;
 			_movieApi = movieApi;
 			_unitOfWork = unitOfWork;
-			_mapper = mapper;
 		}
 
 		public async Task<ApiResult<object>> Handle(CreateRangeShowCommand request, CancellationToken cancellationToken)
@@ -91,15 +87,16 @@ namespace FB98.Modules.Shows.Application.ShowManagement.CreateRange
 					var showName = currentStartTime.ToString("HH:mm");
 					var showDescription = $"{showName} - {currentStartTime.AddMinutes(runtime):HH:mm}";
 
+					var time = currentStartTime;
 					var overlappingShows = await _showRepository.GetAll()
 						.Where(s => s.CinemaHallId == model.CinemaHallId &&
-									((s.StartTime >= currentStartTime && s.StartTime < currentStartTime.AddMinutes(runtime)) ||
-									 (s.EndTime > currentStartTime && s.EndTime <= currentStartTime.AddMinutes(runtime))))
+									((s.StartTime >= time && s.StartTime < time.AddMinutes(runtime)) ||
+									 (s.EndTime > time && s.EndTime <= time.AddMinutes(runtime))))
 						.ToListAsync(cancellationToken);
 
 					if (overlappingShows.Any())
 					{
-						return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("ShowOverlap"), 400);
+						return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("ShowOverlap"));
 					}
 
 					var show = new Show
@@ -111,8 +108,8 @@ namespace FB98.Modules.Shows.Application.ShowManagement.CreateRange
 						CinemaHallName = hallResponse.Data!.Name,
 						MovieTitle = movieResponse.Data!.Title,
 						MovieRuntimeMinutes = runtime,
-						StartTime = currentStartTime,
-						EndTime = currentStartTime.AddMinutes(runtime),
+						StartTime = currentStartTime.ToUniversalTime(),
+						EndTime = currentStartTime.AddMinutes(runtime).ToUniversalTime(),
 						ShowStatusId = ShowStatusConstants.UpComming,
 						Features = model.Features!.Select(f => new ShowFeature
 						{

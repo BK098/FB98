@@ -32,7 +32,6 @@ namespace FB98.Modules.Catalog.Application.CategoryManagement.Delete
 					return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
-
 				_categoryRepository.Delete(category);
 				await _unitOfWork.SaveChangesAsync();
 				return ApiResponseBuilder.Success<object>("", _localizedMessageService.GetLocalizedMessage("Deleted"));

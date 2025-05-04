@@ -34,14 +34,14 @@ builder.Services.AddRegisterServices();
 var app = builder.Build();
 
 //default
-app.UseRouting();
+app.UseInfrastructure();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseCustomCors();
+app.UseRouting();
 app.UseCustomSwagger();
 
 //Module
-app.UseInfrastructure();
 app.UseIdentityModule();
 app.UseCustomersModule();
 app.UseCatalogModule();

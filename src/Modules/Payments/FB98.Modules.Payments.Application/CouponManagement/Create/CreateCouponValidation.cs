@@ -9,6 +9,7 @@
 			RuleFor(x => x.Code)
 				.NotNull().WithMessage(message.GetLocalizedMessage("NotNull"))
 				.NotEmpty().WithMessage(message.GetLocalizedMessage("NotEmpty"))
+				.Matches("^[A-Za-z][A-Za-z0-9]*$").WithMessage(message.GetLocalizedMessage("CouponCodeFormat"))
 				.MaximumLength(50).WithMessage(message.GetLocalizedMessage("MaxLength").Replace("{Max}", "50"));
 
 			RuleFor(x => x.IsDiscountPercentage)

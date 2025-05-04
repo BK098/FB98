@@ -22,7 +22,7 @@
 		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040686/catalog/combo/combo-kitkat.jpg",
 		"Name": "Combo Tình thương",
 		"Description": "Combo snack + bắp + nước",
-		"Price": 1000,
+		"Price": 55000,
 		"IsEnabled": "true",
 		"ComboProducts": [
 			{
@@ -45,7 +45,7 @@
 		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040685/catalog/combo/combo-single.jpg",
 		"Name": "Combo Fanta cho vui hơn nha",
 		"Description": "Combo fanta + bắp thường + snack",
-		"Price": 1000,
+		"Price": 55000,
 		"IsEnabled": "true",
 		"ComboProducts": [
 			{
@@ -68,7 +68,7 @@
 		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040686/catalog/combo/combo-couple-kitkat.jpg",
 		"Name": "Combo tạo sprite",
 		"Description": "Combo snack hành + sprite + bắp thường",
-		"Price": 1000,
+		"Price": 55000,
 		"IsEnabled": "true",
 		"ComboProducts": [
 			{
@@ -91,7 +91,7 @@
 		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040686/catalog/combo/combo-couple-kitkat.jpg",
 		"Name": "Combo Bùng lổ yêu thương",
 		"Description": "Combo Bắp thường + sprite + Bắp caramel",
-		"Price": 1000,
+		"Price": 60000,
 		"IsEnabled": "true",
 		"ComboProducts": [
 			{

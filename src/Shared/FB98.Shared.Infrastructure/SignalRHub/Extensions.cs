@@ -15,7 +15,6 @@ namespace FB98.Shared.Infrastructure.SignalRHub
 			return services;
 		}
 
-
 		public static IEndpointRouteBuilder MapSignalRHubs(this IEndpointRouteBuilder endpoints)
 		{
 			endpoints.MapHub<SeatHub>("/webhook/seathub");
