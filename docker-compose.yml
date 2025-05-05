@@ -20,6 +20,12 @@ services:
     depends_on: [fb98.bootstrapper]
     networks: [fb98_network, proxy]
 
+  fb98-frontdesk:
+    container_name: ui.front-desk
+    image: bkhang1227/fb98.ui:front-desk
+    depends_on: [fb98.bootstrapper]
+    networks: [fb98_network, proxy]
+
 #back-end
   fb98.bootstrapper:
     container_name: bootstrapper
