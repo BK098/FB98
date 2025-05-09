@@ -13,11 +13,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Update
 		private readonly IOrderRepository _orderRepository;
 		private readonly IUnitOfWork _unitOfWork;
 
-		public CheckInCommandHandler(
-			ILogger<CheckInCommandHandler> logger,
-			ILocalizedMessageService localizedMessageService,
-			IOrderRepository orderRepository,
-			IUnitOfWork unitOfWork)
+		public CheckInCommandHandler(ILogger<CheckInCommandHandler> logger, ILocalizedMessageService localizedMessageService, IOrderRepository orderRepository, IUnitOfWork unitOfWork)
 		{
 			_logger = logger;
 			_localizedMessageService = localizedMessageService;

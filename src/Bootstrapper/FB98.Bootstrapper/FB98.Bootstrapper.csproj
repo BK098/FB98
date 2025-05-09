@@ -28,15 +28,12 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Modules\Catalog\FB98.Modules.Catalog.Api\FB98.Modules.Catalog.Api.csproj" />
-        <ProjectReference Include="..\..\Modules\Cinemas\FB98.Modules.Cinemas.Api\FB98.Modules.Cinemas.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Customers\FB98.Modules.Customers.Api\FB98.Modules.Customers.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Identity\FB98.Modules.Identity.Api\FB98.Modules.Identity.Api.csproj" />
-        <ProjectReference Include="..\..\Modules\Movies\FB98.Modules.Movies.Api\FB98.Modules.Movies.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Orders\FB98.Modules.Orders.Api\FB98.Modules.Orders.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Payments\FB98.Modules.Payments.Api\FB98.Modules.Payments.Api.csproj" />
-        <ProjectReference Include="..\..\Modules\Shows\FB98.Modules.Shows.Api\FB98.Modules.Shows.Api.csproj" />
+        <ProjectReference Include="..\..\Modules\ShoppingList\FB98.Modules.ShoppingList.Api\FB98.Modules.ShoppingList.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Systems\FB98.Modules.Systems.Api\FB98.Modules.Systems.Api.csproj" />
-        <ProjectReference Include="..\..\Modules\Tickets\FB98.Modules.Tickets.Api\FB98.Modules.Tickets.Api.csproj" />
         <ProjectReference Include="..\..\Modules\Warehouse\FB98.Modules.Warehouse.Api\FB98.Modules.Warehouse.Api.csproj" />
     </ItemGroup>
 

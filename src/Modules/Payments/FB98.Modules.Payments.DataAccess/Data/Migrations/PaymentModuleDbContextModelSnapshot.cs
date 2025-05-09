@@ -173,9 +173,6 @@ namespace FB98.Modules.Payments.DataAccess.Data.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid?>("BookingId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("CouponCode")
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");

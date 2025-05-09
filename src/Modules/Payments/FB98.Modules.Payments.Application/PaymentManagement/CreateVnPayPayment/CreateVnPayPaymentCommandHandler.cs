@@ -12,7 +12,6 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment
 {
 	internal sealed class CreateVnPayPaymentCommandHandler : ICommandHandler<CreateVnPayPaymentCommand, ApiResult<string>>
 	{
-		private readonly IBookingApi _bookingApi;
 		private readonly IBus _bus;
 		private readonly IHttpContextAccessor _contextAccessor;
 		private readonly ICouponRepository _couponRepository;
@@ -29,7 +28,6 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment
 			IBus bus,
 			IHttpContextAccessor contextAccessor,
 			IOrderApi orderApi,
-			IBookingApi bookingApi,
 			ILocalizedMessageService localizedMessageService,
 			ICouponRepository couponRepository)
 		{
@@ -39,7 +37,6 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment
 			_bus = bus;
 			_contextAccessor = contextAccessor;
 			_orderApi = orderApi;
-			_bookingApi = bookingApi;
 			_localizedMessageService = localizedMessageService;
 			_couponRepository = couponRepository;
 		}
@@ -51,11 +48,6 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment
 			decimal amount = 0;
 			try
 			{
-				if (model.OrderId == null && model.BookingId == null)
-				{
-					return ApiResponseBuilder.Error<string>(_localizedMessageService.GetLocalizedMessage("OrderOrBookingRequired"));
-				}
-
 				try
 				{
 					if (model.OrderId != null)
@@ -69,27 +61,12 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment
 					return ApiResponseBuilder.Error<string>("Order: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
 				}
 
-				try
-				{
-					if (model.BookingId != null)
-					{
-						var bookingResponse = await _bookingApi.GetBookingById(model.BookingId!.Value);
-
-						amount += bookingResponse.Data!.Amount;
-					}
-				}
-				catch (ApiException)
-				{
-					return ApiResponseBuilder.Error<string>("Booking: " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
-				}
-
 				var transaction = new PaymentTransaction
 				{
 					Email = model.Email!,
 					PhoneNumber = model.PhoneNumber!,
 					UserId = model.UserId!.Value,
 					OrderId = model.OrderId,
-					BookingId = model.BookingId,
 					SubAmount = amount,
 					PaymentMethodId = PaymentMethodConstants.VnPayCard
 				};
@@ -116,7 +93,7 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.CreateVnPayPayment
 				await _paymentRepository.CreateAsync(transaction);
 				var paymentUrl = _vnPayService.GeneratePaymentUrl(transaction.Id, transaction.Amount, ipAddress);
 
-				await _bus.Publish(new VnPayPaymentCreatedEvent(model.UserId!.Value, model.BookingId, model.OrderId), cancellationToken);
+				await _bus.Publish(new PaymentCreatedEvent(model.UserId!.Value, model.OrderId), cancellationToken);
 
 				return ApiResponseBuilder.Success(paymentUrl);
 			}

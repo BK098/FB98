@@ -7,10 +7,10 @@ namespace FB98.Shared.Infrastructure.Configurations
 	internal static class CorsPolicySetup
 	{
 		private const string CorsPolicyName = "AllowSpecificOrigins";
+		//private const string CorsPolicyName = "AllowAll";
 
 		public static void AddCustomCors(this IServiceCollection services, IConfiguration configuration)
 		{
-			// Đọc danh sách các origin từ appsettings.json
 			var allowedOrigins = configuration.GetSection("AllowedOrigins").Get<string[]>();
 
 			services.AddCors(options =>
@@ -19,7 +19,8 @@ namespace FB98.Shared.Infrastructure.Configurations
 				{
 					if (allowedOrigins != null && allowedOrigins.Any())
 					{
-						policy.WithOrigins(allowedOrigins)
+						policy//.AllowAnyOrigin()
+							.WithOrigins(allowedOrigins)
 							.AllowCredentials()
 							.AllowAnyHeader()
 							.AllowAnyMethod();

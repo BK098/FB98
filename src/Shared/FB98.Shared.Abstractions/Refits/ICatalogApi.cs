@@ -3,6 +3,7 @@ using Refit;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("FB98.Modules.Orders.Application")]
+[assembly: InternalsVisibleTo("FB98.Modules.ShoppingList.Application")]
 namespace FB98.Shared.Abstractions.Refits
 {
 	internal interface ICatalogApi

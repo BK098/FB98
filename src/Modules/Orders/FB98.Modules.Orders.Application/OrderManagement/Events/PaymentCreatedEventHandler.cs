@@ -7,23 +7,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FB98.Modules.Orders.Application.OrderManagement.Events
 {
-	public class VnPayPaymentCreatedEventHandler : IConsumer<VnPayPaymentCreatedEvent>
+	public class PaymentCreatedEventHandler : IConsumer<PaymentCreatedEvent>
 	{
+		private readonly ILogger<PaymentCreatedEventHandler> _logger;
 		private readonly IOrderRepository _orderRepository;
 		private readonly IUnitOfWork _unitOfWork;
-		private readonly ILogger<VnPayPaymentCreatedEventHandler> _logger;
 
-		public VnPayPaymentCreatedEventHandler(
-			IOrderRepository orderRepository,
-			IUnitOfWork unitOfWork,
-			ILogger<VnPayPaymentCreatedEventHandler> logger)
+		public PaymentCreatedEventHandler(IOrderRepository orderRepository, IUnitOfWork unitOfWork, ILogger<PaymentCreatedEventHandler> logger)
 		{
 			_orderRepository = orderRepository;
 			_unitOfWork = unitOfWork;
 			_logger = logger;
 		}
 
-		public async Task Consume(ConsumeContext<VnPayPaymentCreatedEvent> context)
+		public async Task Consume(ConsumeContext<PaymentCreatedEvent> context)
 		{
 			try
 			{
@@ -34,6 +31,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Events
 					await context.ConsumeCompleted;
 					return;
 				}
+
 				var order = await _orderRepository.GetByIdAsync(orderId);
 				if (order == null)
 				{
@@ -66,7 +64,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Events
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Error occurred while processing VnPayPaymentCreatedEvent");
+				_logger.LogError(ex, "Error occurred while processing PaymentCreatedEvent");
 			}
 		}
 	}

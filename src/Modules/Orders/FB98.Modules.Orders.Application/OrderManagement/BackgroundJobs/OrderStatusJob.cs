@@ -2,6 +2,7 @@
 using FB98.Modules.Orders.Domain.Entities;
 using FB98.Shared.Abstractions.StatusConstants;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -9,16 +10,16 @@ namespace FB98.Modules.Orders.Application.OrderManagement.BackgroundJobs
 {
 	public sealed class OrderStatusJob : IHostedService, IDisposable
 	{
+		private readonly IConfiguration _configuration;
 		private readonly ILogger<OrderStatusJob> _logger;
 		private readonly IServiceScopeFactory _spoceFactory;
 		private Timer? _timer;
 
-		public OrderStatusJob(
-			ILogger<OrderStatusJob> logger,
-			IServiceScopeFactory spoceFactory)
+		public OrderStatusJob(ILogger<OrderStatusJob> logger, IServiceScopeFactory spoceFactory, IConfiguration configuration)
 		{
 			_logger = logger;
 			_spoceFactory = spoceFactory;
+			_configuration = configuration;
 		}
 
 		public void Dispose()
@@ -28,8 +29,16 @@ namespace FB98.Modules.Orders.Application.OrderManagement.BackgroundJobs
 
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
-			var taskPeriod = TimeSpan.FromMinutes(5);
-			_timer = new Timer(CheckOrderStatus, null, TimeSpan.Zero, taskPeriod);
+			var orderStatusJobEnabled = _configuration.GetValue<bool>("BackGroundJobs:OrdersModule:OrderStatusJob:Enabled");
+			var orderStatusJobInterval = _configuration.GetValue<int>("BackGroundJobs:OrdersModule:OrderStatusJob:Interval");
+			_logger.LogInformation($"OrderStatusJob is {(orderStatusJobEnabled ? "enabled" : "disabled")}");
+
+			var taskPeriod = TimeSpan.FromSeconds(orderStatusJobInterval);
+			if (orderStatusJobEnabled)
+			{
+				_timer = new Timer(CheckOrderStatus, null, TimeSpan.Zero, taskPeriod);
+			}
+
 			return Task.CompletedTask;
 		}
 
@@ -62,6 +71,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.BackgroundJobs
 					unitOfWork.Entry(orderStatusHistory, EntityState.Added);
 					order.OrderStatusId = OrderStatusConstants.Expired;
 				}
+
 				var pendingOrders = await orderRepository.GetOrdersByStatusAndTimeAsync(OrderStatusConstants.Pending, now.AddMinutes(-7));
 				foreach (var order in pendingOrders)
 				{

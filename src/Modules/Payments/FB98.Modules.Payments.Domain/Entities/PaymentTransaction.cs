@@ -17,7 +17,6 @@ namespace FB98.Modules.Payments.Domain.Entities
 		[StringLength(10)]
 		public string PhoneNumber { get; set; } = null!;
 		public Guid? OrderId { get; set; }
-		public Guid? BookingId { get; set; }
 		public decimal Amount { get; set; }
 		public decimal SubAmount { get; set; }
 		[StringLength(36)]

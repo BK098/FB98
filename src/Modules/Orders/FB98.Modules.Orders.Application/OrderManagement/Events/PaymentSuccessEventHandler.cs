@@ -13,10 +13,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Events
 		private readonly IOrderRepository _orderRepository;
 		private readonly IUnitOfWork _unitOfWork;
 
-		public PaymentSuccessEventHandler(
-			IOrderRepository orderRepository,
-			ILogger<PaymentSuccessEventHandler> logger,
-			IUnitOfWork unitOfWork)
+		public PaymentSuccessEventHandler(IOrderRepository orderRepository, ILogger<PaymentSuccessEventHandler> logger, IUnitOfWork unitOfWork)
 		{
 			_orderRepository = orderRepository;
 			_logger = logger;

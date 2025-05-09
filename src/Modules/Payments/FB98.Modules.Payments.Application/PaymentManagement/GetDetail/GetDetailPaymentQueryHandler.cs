@@ -7,7 +7,6 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.GetDetail
 {
 	internal sealed class GetDetailPaymentQueryHandler : IQueryHandler<GetDetailPaymentQuery, ApiResult<GetDetailPaymentResponse>>
 	{
-		private readonly IBookingApi _bookingApi;
 		private readonly ILocalizedMessageService _localizedMessageService;
 		private readonly ILogger<GetDetailPaymentQueryHandler> _logger;
 		private readonly IMapper _mapper;
@@ -15,14 +14,12 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.GetDetail
 		private readonly IPaymentRepository _paymentRepository;
 
 		public GetDetailPaymentQueryHandler(
-			IBookingApi bookingApi,
 			ILocalizedMessageService localizedMessageService,
 			ILogger<GetDetailPaymentQueryHandler> logger,
 			IMapper mapper,
 			IOrderApi orderApi,
 			IPaymentRepository paymentRepository)
 		{
-			_bookingApi = bookingApi;
 			_localizedMessageService = localizedMessageService;
 			_logger = logger;
 			_mapper = mapper;
@@ -50,26 +47,6 @@ namespace FB98.Modules.Payments.Application.PaymentManagement.GetDetail
 					PaymentStatusName = payment.PaymentStatus!.Name,
 					CreateAt = payment.CreateAt
 				};
-
-				if (payment.BookingId != null)
-				{
-					response.BookingId = payment.BookingId;
-					try
-					{
-						var bookingResult = await _bookingApi.GetDetailBooking(payment.BookingId.Value);
-						if (bookingResult.IsSuccess)
-						{
-							response.Tickets = new List<GetDeteailBookingPaymentResponse>
-							{
-								_mapper.Map<GetDeteailBookingPaymentResponse>(bookingResult.Data)
-							};
-						}
-					}
-					catch (ApiException)
-					{
-						return ApiResponseBuilder.Error<GetDetailPaymentResponse>("Booking " + _localizedMessageService.GetLocalizedMessage("NotFound"), 404);
-					}
-				}
 
 				if (payment.OrderId != null)
 				{

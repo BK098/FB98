@@ -38,7 +38,6 @@ namespace FB98.Modules.Customers.Application.CustomerManagement.Events
 				var userId = context.Message.UserId;
 				var amount = context.Message.Amount / 100;
 				var orderId = context.Message.OrderId;
-				var bookingId = context.Message.BookingId;
 
 				var customer = await _customerRepository.GetByIdAsync(userId);
 
@@ -51,7 +50,7 @@ namespace FB98.Modules.Customers.Application.CustomerManagement.Events
 				}
 
 				var points = CalculatePoints(amount);
-				AddPoints(customer, amount, orderId, bookingId);
+				AddPoints(customer, amount, orderId);
 
 				_unitOfWork.Entry(customer, EntityState.Modified);
 
@@ -71,7 +70,7 @@ namespace FB98.Modules.Customers.Application.CustomerManagement.Events
 			return (int)(amount * PointRate);
 		}
 
-		public void AddPoints(Customer customer, decimal amount, Guid? orderId = null, Guid? bookingId = null)
+		public void AddPoints(Customer customer, decimal amount, Guid? orderId = null)
 		{
 			var points = (int)(amount * PointRate);
 			customer.LoyaltyPoints += points;
@@ -82,8 +81,7 @@ namespace FB98.Modules.Customers.Application.CustomerManagement.Events
 				CustomerId = customer.Id,
 				PointChange = points,
 				TransactionType = "add",
-				OrderId = orderId,
-				BookingId = bookingId
+				OrderId = orderId
 			};
 			//customer.PointTransactions.Add(transaction);
 			_unitOfWork.Entry(transaction, EntityState.Added);

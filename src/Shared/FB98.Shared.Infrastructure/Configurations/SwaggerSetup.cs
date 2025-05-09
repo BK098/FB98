@@ -60,7 +60,7 @@ namespace FB98.Shared.Infrastructure.Configurations
 			app.UseSwaggerUI(opt =>
 			{
 				opt.EnableFilter();
-				opt.SwaggerEndpoint("/swagger/v1/swagger.json", "Cinema FB98 Cinema");
+				opt.SwaggerEndpoint("/swagger/v1/swagger.json", "FB98");
 			});
 		}
 	}

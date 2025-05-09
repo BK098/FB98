@@ -17,19 +17,9 @@ namespace FB98.Modules.Orders.Api.Extensions
 			services.AddMassTransit(config =>
 			{
 				config.AddConsumer<PaymentSuccessEventHandler>();
-				config.AddConsumer<VnPayPaymentCreatedEventHandler>();
-
-				//config.UsingRabbitMq((context, cfg) =>
-				//{
-				//	cfg.ReceiveEndpoint("order-module-events", e =>
-				//	{
-				//		e.ConfigureConsumer<PaymentSuccessEventHandler>(context);
-				//		e.ConfigureConsumer<VnPayPaymentCreatedEventHandler>(context);
-				//	});
-				//});
+				config.AddConsumer<PaymentCreatedEventHandler>();
 			});
-			//services.AddScoped<PaymentSuccessEventHandler>();
-			//services.AddScoped<VnPayPaymentCreatedEventHandler>();
+
 			return services;
 		}
 	}

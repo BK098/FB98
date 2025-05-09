@@ -9,7 +9,6 @@ using FB98.Modules.Catalog.Application.ProductManagement.GetAll;
 using FB98.Modules.Catalog.Application.ProductManagement.GetDetail;
 using FB98.Modules.Catalog.Application.ProductManagement.Update;
 using FB98.Shared.Abstractions.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FB98.Modules.Catalog.Api.Controllers
@@ -36,7 +35,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "Administrator")]
+		//[Authorize(Roles = "Administrator")]
 		[HttpPost]
 		public async Task<IActionResult> CreateProduct([FromBody] CreateProductDto model)
 		{
@@ -45,7 +44,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "Administrator")]
+		//[Authorize(Roles = "Administrator")]
 		[HttpPut("{productId:guid}")]
 		public async Task<IActionResult> UpdateProduct(Guid productId, [FromBody] UpdateProductDto model)
 		{
@@ -54,7 +53,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "adminstrator")]
+		//[Authorize(Roles = "adminstrator")]
 		[HttpDelete("{productId:guid}")]
 		public async Task<IActionResult> DeleteProduct(Guid productId)
 		{
@@ -63,7 +62,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "Administrator")]
+		//[Authorize(Roles = "Administrator")]
 		[HttpPost("{productId:guid}/discount-rule")]
 		public async Task<IActionResult> CreateProductDiscountRule(Guid productId, [FromBody] CreateDiscountRuleDto model)
 		{
@@ -72,7 +71,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "Administrator")]
+		//[Authorize(Roles = "Administrator")]
 		[HttpGet("discount-rules")]
 		public async Task<IActionResult> GetAllDiscountRule([FromQuery] Filter filter)
 		{
@@ -81,7 +80,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "Administrator")]
+		//[Authorize(Roles = "Administrator")]
 		[HttpGet("{productId:guid}/discount-rule")]
 		public async Task<IActionResult> GetDetailProductDiscountRule(Guid productId)
 		{
@@ -90,7 +89,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "Administrator")]
+		//[Authorize(Roles = "Administrator")]
 		[HttpPut("discount-rule/{ruleId:guid}")]
 		public async Task<IActionResult> UpdateProductDiscountRule(Guid ruleId, [FromBody] UpdateDiscountRuleDto model)
 		{
@@ -99,7 +98,7 @@ namespace FB98.Modules.Catalog.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "Administrator")]
+		//[Authorize(Roles = "Administrator")]
 		[HttpDelete("discount-rule/{ruleId:guid}")]
 		public async Task<IActionResult> DeleteProductDiscountRule(Guid ruleId)
 		{

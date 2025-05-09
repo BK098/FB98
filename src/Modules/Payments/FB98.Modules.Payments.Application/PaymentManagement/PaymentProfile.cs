@@ -21,14 +21,6 @@ namespace FB98.Modules.Payments.Application.PaymentManagement
 				.ForMember(dest => dest.Method, opt => opt.MapFrom(src => src.PaymentMethod!.Name))
 				.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.PaymentStatus!.Name));
 
-			CreateMap<BookingDetailDto, GetDeteailBookingPaymentResponse>()
-				.ForMember(dest => dest.Seats, opt => opt.MapFrom(src => src.Seats));
-
-			CreateMap<BookingSeatDetailDto, GetDeteailBookingSeatPaymentResponse>()
-				.ForMember(dest => dest.SeatPosition, opt => opt.MapFrom(src => src.SeatPosition))
-				.ForMember(dest => dest.SeatTypeName, opt => opt.MapFrom(src => src.SeatTypeName))
-				.ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price));
-
 			CreateMap<OrderDetailDto, GetDeteailOrderPaymentResponse>()
 				.ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
 
