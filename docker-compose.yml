@@ -1,66 +1,72 @@
+# version: "3.9"
+
 networks:
   fb98_network:
     driver: bridge
+  proxy:
+    external: true
 
 services:
+#back-end
   fb98.bootstrapper:
-    image: bkhang1227/fb98:bootstrapper
+    container_name: bootstrapper
+    image: bkhang1227/veggie:back-end
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "5000:5000" #http 
+      - "5000:5000"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development  
-      - Redis__ConnectionString=redis://:your_secure_password@redis:6379
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production  
+      - Redis__ConnectionString=redis:6379,password=your_secure_password,abortConnect=false,connectTimeout=1000
       - ConnectionStrings__RabbitMq=amqp://myuser:mypassword@rabbitmq:5672/
-      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=fb98db;Username=postgres;Password=yourpassword
+      - ConnectionStrings__DefaultConnection=Host=postgres-db;Port=5432;Database=fb98db;Username=postgres;Password=yourpassword
     depends_on:
-      - rabbitmq
       - db
-    networks:
-      - fb98_network
+      - rabbitmq
+      - redis
+    networks: 
+      - fb98_network 
+      - proxy
     volumes:
       - app_data:/app/data
 
   db:
-    image: bkhang1227/fb98:database
-    #image: postgres:15
+    image: postgres:15
     container_name: postgres-db
+    restart: always
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: postgres # can change
-      POSTGRES_PASSWORD: yourpassword # can change
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yourpassword
       POSTGRES_DB: fb98db
     networks:
       - fb98_network
     volumes:
       - db_data:/var/lib/postgresql/data
   pgadmin:
-    image: bkhang1227/fb98:pgadmin
-    #image: dpage/pgadmin4
+    image: dpage/pgadmin4
     container_name: pgadmin
     ports:
-      - "8080:80"
+      - "8888:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com # can change
-      PGADMIN_DEFAULT_PASSWORD: admin # can change
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
     depends_on:
       - db
     networks:
       - fb98_network
   rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
     hostname: rabbitmq
+    restart: always
     healthcheck:
         test: ["CMD", "rabbitmqctl", "status"]
         interval: 10s
         timeout: 5s
         retries: 3
-    image: bkhang1227/fb98:rabbitmq
-    # image: rabbitmq:3-management
-    container_name: rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -86,6 +92,11 @@ services:
     environment:
       - REDIS_PASSWORD=your_secure_password
     command: ["redis-server", "--requirepass", "your_secure_password", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 volumes:
   rabbitmq_data:
   rabbitmq_logs:
