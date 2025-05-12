@@ -1,202 +1,182 @@
 [
-	//Bắp
 	{
-		"Id": "04a64846-9f62-4cbc-8837-41160603483c",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/f_auto,q_auto/v1/catalog/product/fsnpouqqrnsj8hg73yln",
-		"Name": "Bắp rang bơ truyền thống",
-		"Description": "Hạt bắp nổ giòn, được trộn với bơ lỏng hoặc bơ bột. Có vị bơ thơm béo và vị mặn nhẹ.",
+		"Id": "a1b2c3d4-e5f6-4a1b-9c2d-3e4f5a6b7c8d",
+		"Name": "Cà chua",
+		"Description": "Cà chua tươi, chín đỏ, phù hợp cho salad và nấu ăn.",
+		"Price": 25000,
+		"IsEnabled": "true",
+		"Unit": "Unknown",
+		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
+	},
+	{
+		"Id": "b2c3d4e5-f6a7-4b2c-8d3e-4f5a6b7c8d9e",
+		"Name": "Dưa leo",
+		"Description": "Dưa leo giòn, tươi, lý tưởng cho món salad hoặc ăn kèm.",
+		"Price": 20000,
+		"IsEnabled": "true",
+		"Unit": "Unknown",
+		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
+	},
+	{
+		"Id": "c3d4e5f6-a7b8-4c3d-9e4f-5a6b7c8d9e0f",
+		"Name": "Cà rốt",
+		"Description": "Cà rốt ngọt, giàu vitamin A, dùng cho súp hoặc juice.",
+		"Price": 22000,
+		"IsEnabled": "true",
+		"Unit": "Unknown",
+		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
+	},
+	{
+		"Id": "d4e5f6a7-b8c9-4d4e-0f5a-6b7c8d9e0f1a",
+		"Name": "Bắp cải",
+		"Description": "Bắp cải trắng, tươi, thích hợp cho món xào hoặc cuốn.",
+		"Price": 18000,
+		"IsEnabled": "true",
+		"Unit": "Unknown",
+		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
+	},
+	{
+		"Id": "e5f6a7b8-c9d0-4e5f-1a6b-7c8d9e0f1a2b",
+		"Name": "Khoai tây",
+		"Description": "Khoai tây vàng, dùng để chiên, nướng hoặc nấu súp.",
+		"Price": 26000,
+		"IsEnabled": "true",
+		"Unit": "Unknown",
+		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
+	},
+	{
+		"Id": "f6a7b8c9-d0e1-4f6a-2b7c-8d9e0f1a2b3c",
+		"Name": "Rau muống",
+		"Description": "Rau muống xanh tươi, phổ biến trong các món xào hoặc luộc.",
+		"Price": 15000,
+		"IsEnabled": "true",
+		"Unit": "Unknown",
+		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
+	},
+	{
+		"Id": "a7b8c9d0-e1f2-4a7b-3c8d-9e0f1a2b3c4d",
+		"Name": "Cải bó xôi",
+		"Description": "Cải bó xôi giàu dinh dưỡng, dùng cho salad hoặc nấu canh.",
+		"Price": 28000,
+		"IsEnabled": "true",
+		"Unit": "Unknown",
+		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
+	},
+	{
+		"Id": "b8c9d0e1-f2a3-4b8c-4d9e-0f1a2b3c4d5e",
+		"Name": "Ớt chuông",
+		"Description": "Ớt chuông nhiều màu, ngọt, dùng cho món xào hoặc nướng.",
+		"Price": 35000,
+		"IsEnabled": "true",
+		"Unit": "Unknown",
+		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
+	},
+	{
+		"Id": "c9d0e1f2-a3b4-4c9d-5e0f-1a2b3c4d5e6f",
+		"Name": "Nấm rơm",
+		"Description": "Nấm rơm tươi, thơm, phù hợp cho món xào hoặc lẩu.",
+		"Price": 40000,
+		"IsEnabled": "true",
+		"Unit": "Unknown",
+		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
+	},
+	{
+		"Id": "d0e1f2a3-b4c5-4d0e-6f1a-2b3c4d5e6f7a",
+		"Name": "Hành tây",
+		"Description": "Hành tây ngọt, dùng để xào, làm salad hoặc nấu súp.",
+		"Price": 23000,
+		"IsEnabled": "true",
+		"Unit": "Unknown",
+		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
+	},
+	{
+		"Id": "e1f2a3b4-c5d6-4e1f-7a2b-3c4d5e6f7a8b",
+		"Name": "Táo",
+		"Description": "Táo đỏ nhập khẩu, ngọt, giòn, giàu vitamin.",
+		"Price": 60000,
+		"IsEnabled": "true",
+		"Unit": "Unknown",
+		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
+	},
+	{
+		"Id": "f2a3b4c5-d6e7-4f2a-8b3c-4d5e6f7a8b9c",
+		"Name": "Chuối",
+		"Description": "Chuối chín vàng, ngọt, phù hợp để ăn trực tiếp hoặc làm sinh tố.",
+		"Price": 25000,
+		"IsEnabled": "true",
+		"Unit": "Unknown",
+		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
+	},
+	{
+		"Id": "a3b4c5d6-e7f8-4a3b-9c4d-5e6f7a8b9c0d",
+		"Name": "Cam",
+		"Description": "Cam ngọt, mọng nước, giàu vitamin C.",
+		"Price": 35000,
+		"IsEnabled": "true",
+		"Unit": "Unknown",
+		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
+	},
+	{
+		"Id": "b4c5d6e7-f8a9-4b4c-0d5e-6f7a8b9c0d1e",
+		"Name": "Xoài",
+		"Description": "Xoài chín, ngọt, thơm, dùng để ăn trực tiếp hoặc làm nước ép.",
+		"Price": 40000,
+		"IsEnabled": "true",
+		"Unit": "Unknown",
+		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
+	},
+	{
+		"Id": "c5d6e7f8-a9b0-4c5d-1e6f-7a8b9c0d1e2f",
+		"Name": "Dưa hấu",
+		"Description": "Dưa hấu ngọt, mọng nước, thích hợp giải nhiệt mùa hè.",
+		"Price": 20000,
+		"IsEnabled": "true",
+		"Unit": "Unknown",
+		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
+	},
+	{
+		"Id": "d6e7f8a9-b0c1-4d6e-2f7a-8b9c0d1e2f3a",
+		"Name": "Nho",
+		"Description": "Nho tím nhập khẩu, ngọt, không hạt, ăn trực tiếp.",
+		"Price": 80000,
+		"IsEnabled": "true",
+		"Unit": "Unknown",
+		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
+	},
+	{
+		"Id": "e7f8a9b0-c1d2-4e7f-3a8b-9c0d1e2f3a4b",
+		"Name": "Dứa",
+		"Description": "Dứa ngọt, thơm, dùng để ăn trực tiếp hoặc ép nước.",
 		"Price": 30000,
 		"IsEnabled": "true",
+		"Unit": "Unknown",
 		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
 	},
 	{
-		"Id": "9583f068-d56a-4d30-867b-8dc75ae67d40",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740214328/catalog/product/zhjcl4olnk5uejtgtttd.png",
-		"Name": "Bắp rang caramel",
-		"Description": "Bắp được phủ một lớp caramel ngọt, giòn. Ngọt đậm, giòn tan, caramel phủ đều, hơi dính tay một chút",
-		"Price": 30000,
+		"Id": "f8a9b0c1-d2e3-4f8a-4b9c-0d1e2f3a4b5c",
+		"Name": "Lê",
+		"Description": "Lê ngọt, giòn, nhập khẩu, giàu chất xơ.",
+		"Price": 55000,
 		"IsEnabled": "true",
+		"Unit": "Unknown",
 		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
 	},
 	{
-		"Id": "af5365e6-e9c0-47be-ba76-caec449975d5",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740214973/catalog/product/kn6dxvbefo588zovytkc.png",
-		"Name": "Bắp phô mai",
-		"Description": "Bắp được phủ lớp phô mai bột",
-		"Price": 30000,
+		"Id": "a9b0c1d2-e3f4-4a9b-5c0d-1e2f3a4b5c6d",
+		"Name": "Thanh long",
+		"Description": "Thanh long ruột trắng, ngọt nhẹ, giải nhiệt tốt.",
+		"Price": 28000,
 		"IsEnabled": "true",
+		"Unit": "Unknown",
 		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
 	},
 	{
-		"Id": "954bd707-b24e-4fbe-ad3e-b794faee82c6",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740214510/catalog/product/ibepds5ql0nbon3acfsk.png",
-		"Name": "Bắp vị chocolate",
-		"Description": "Bắp được phủ lớp chocolate đen. Đậm vị phô mai, mặn nhẹ, béo ngậy, lớp bột phô mai bám đều",
-		"Price": 30000,
+		"Id": "b0c1d2e3-f4a5-4b0c-6d1e-2f3a4b5c6d7e",
+		"Name": "Chôm chôm",
+		"Description": "Chôm chôm ngọt, mọng, vỏ đỏ, dễ bóc.",
+		"Price": 32000,
 		"IsEnabled": "true",
+		"Unit": "Unknown",
 		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
-	},
-	{
-		"Id": "32a8271d-a76d-45db-8609-8bd98efb84b4",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740214362/catalog/product/d1vo4t2cemc5jantcjnf.png",
-		"Name": "Bắp không bơ, không muối",
-		"Description": "Phù hợp cho những ai muốn ăn bắp tự nhiên, không quá béo hoặc mặn.",
-		"Price": 30000,
-		"IsEnabled": "true",
-		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
-	},
-	//Đồ uống
-	{
-		"Id": "1aabda88-8c26-4dbd-99d2-dbb67bc2d4f4",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040127/catalog/product/beverage-cocacola.png",
-		"Name": "Coca Cola",
-		"Price": 15000,
-		"IsEnabled": "true",
-		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
-	},
-	{
-		"Id": "40b57a04-0257-46fa-b6d9-0119a0b5976b",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203693/catalog/product/aozmajps7ki6jdhreotl.jpg",
-		"Name": "Trà C2",
-		"Price": 15000,
-		"IsEnabled": "true",
-		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
-	},
-	{
-		"Id": "627b696f-7051-432a-a8c9-6aec80e3254f",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040127/catalog/product/beverage-sprite.png",
-		"Name": "Sprite",
-		"Price": 15000,
-		"IsEnabled": "true",
-		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
-	},
-	{
-		"Id": "e848214e-1933-4928-b313-27596d244bdf",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040127/catalog/product/beverage-fanta-nho.webp",
-		"Name": "Fanta nho",
-		"Price": 15000,
-		"IsEnabled": "true",
-		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
-	},
-	{
-		"Id": "69bfc581-029e-4db1-84ac-b64ad97abd8f",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040126/catalog/product/beverage-fanta-cam.jpg",
-		"Name": "Fanta cam",
-		"Price": 15000,
-		"IsEnabled": "true",
-		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
-	},
-	{
-		"Id": "065ef203-78d9-4786-beed-401b64414325",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040126/catalog/product/beverage-cocacola-light.jpg",
-		"Name": "Coca Cola Light",
-		"Price": 15000,
-		"IsEnabled": "true",
-		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
-	},
-	{
-		"Id": "65f16e9d-58b8-4ee5-8197-c7a052c6a675",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040127/catalog/product/beverage-water.png",
-		"Name": "Nước suối Dasani",
-		"Price": 15000,
-		"IsEnabled": "true",
-		"CategoryId": "7152c151-0a82-49cb-b066-98bb2e2a892c"
-	},
-	//Bánh
-	{
-		"Id": "b7778f2d-1e36-406c-917c-bc7d74ae90d6",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203746/catalog/product/uehagszpo8ajzwfm8r3e.jpg",
-		"Name": "Snack cà chua",
-		"Price": 15000,
-		"IsEnabled": "true",
-		"CategoryId": "b92b4dcf-44a0-4a80-83e3-9cb7461e3c0a"
-	},
-	{
-		"Id": "58bf2d1e-cdc7-4765-80b9-2d87f106eebc",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203747/catalog/product/y2fkhwggvlbd5gio613l.jpg",
-		"Name": "Snack bí đỏ",
-		"Price": 15000,
-		"IsEnabled": "true",
-		"CategoryId": "b92b4dcf-44a0-4a80-83e3-9cb7461e3c0a"
-	},
-	{
-		"Id": "d914b87a-1d7c-4927-a0f3-65d0e1142cf9",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203747/catalog/product/dk3bemmewko9n9axqlz6.webp",
-		"Name": "Snack mực ống",
-		"Price": 15000,
-		"IsEnabled": "true",
-		"CategoryId": "b92b4dcf-44a0-4a80-83e3-9cb7461e3c0a"
-	},
-	{
-		"Id": "d60e1bd7-171b-4a3e-b0e2-b5766721fd25",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203746/catalog/product/mpuslo1tgryll2yc6soc.webp",
-		"Name": "Snack hành",
-		"Price": 15000,
-		"IsEnabled": "true",
-		"CategoryId": "b92b4dcf-44a0-4a80-83e3-9cb7461e3c0a"
-	},
-	{
-		"Id": "6b0e32b2-95df-4d6e-8a01-853938795a05",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203749/catalog/product/szmvmsmkvalcznjiueg5.png",
-		"Name": "Snack bắp ngọt",
-		"Price": 15000,
-		"IsEnabled": "true",
-		"CategoryId": "b92b4dcf-44a0-4a80-83e3-9cb7461e3c0a"
-	},
-	{
-		"Id": "63c41266-9092-4253-845c-afe304b1c8aa",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203746/catalog/product/bf2vn8onusfoypdvpcgh.webp",
-		"Name": "Snack bắp ngọt phô mai",
-		"Price": 15000,
-		"IsEnabled": "true",
-		"CategoryId": "b92b4dcf-44a0-4a80-83e3-9cb7461e3c0a"
-	},
-	{
-		"Id": "355064da-c3de-4913-944e-925a972c4807",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203745/catalog/product/skvdmdurjtikgrglkiyc.jpg",
-		"Name": "Snack chay vị da heo quay",
-		"Price": 15000,
-		"IsEnabled": "true",
-		"CategoryId": "b92b4dcf-44a0-4a80-83e3-9cb7461e3c0a"
-	},
-	{
-		"Id": "99cb0adf-6575-4e5a-98e0-48ff6ad5125a",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203746/catalog/product/fuds0jbrmnkyfablcvci.webp",
-		"Name": "Snack phô mát",
-		"Price": 15000,
-		"IsEnabled": "true",
-		"CategoryId": "b92b4dcf-44a0-4a80-83e3-9cb7461e3c0a"
-	},
-	{
-		"Id": "58d885bd-e40a-407e-ae68-e3b248b36d60",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203748/catalog/product/njatdacsidnjlrxfkbzv.webp",
-		"Name": "Snack tôm cay",
-		"Price": 15000,
-		"IsEnabled": "true",
-		"CategoryId": "b92b4dcf-44a0-4a80-83e3-9cb7461e3c0a"
-	},
-	{
-		"Id": "e013c347-3120-4612-9392-cf0e431aa639",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740204013/catalog/product/wuvcvynaqftwssxvd2vl.jpg",
-		"Name": "Snack tôm cay đặc biệt",
-		"Price": 15000,
-		"IsEnabled": "true",
-		"CategoryId": "b92b4dcf-44a0-4a80-83e3-9cb7461e3c0a"
-	},
-	{
-		"Id": "401c5955-7ff0-4b90-8e76-a20e10344401",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203746/catalog/product/xohci2ylbst8q2v3tj5c.webp",
-		"Name": "Snack crab me",
-		"Price": 15000,
-		"IsEnabled": "true",
-		"CategoryId": "b92b4dcf-44a0-4a80-83e3-9cb7461e3c0a"
-	},
-	{
-		"Id": "deb103b0-42cc-4163-8846-ee34db68f5cb",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740203747/catalog/product/e1hs03malpwnriripqwn.jpg",
-		"Name": "Snack tôm miếng",
-		"Price": 15000,
-		"IsEnabled": "true",
-		"CategoryId": "b92b4dcf-44a0-4a80-83e3-9cb7461e3c0a"
 	}
 ]

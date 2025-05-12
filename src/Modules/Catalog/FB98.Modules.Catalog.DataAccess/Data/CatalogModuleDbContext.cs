@@ -15,6 +15,7 @@ namespace FB98.Modules.Catalog.DataAccess.Data
 		public DbSet<ComboProduct> ComboProducts { get; set; }
 		public DbSet<ProductDiscountRule> ProductDiscountRules { get; set; }
 		public DbSet<ProductDiscountApplication> ProductDiscountApplications { get; set; }
+		public DbSet<ProductPriceHistory> ProductPriceHistories { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{

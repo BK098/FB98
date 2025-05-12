@@ -61,7 +61,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 
 				var productTasks = new List<Task<ApiResult<ProductDto>>>();
 				var comboTasks = new List<Task<ApiResult<ComboDto>>>();
-				var stockTasks = new Dictionary<Guid, Task<ApiResult<StockResponse>>>();
+				//var stockTasks = new Dictionary<Guid, Task<ApiResult<StockResponse>>>();
 
 				foreach (var item in order.OrderItems)
 				{
@@ -72,7 +72,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 					else
 					{
 						productTasks.Add(_catalogApi.GetProductById(item.ProductId));
-						stockTasks.Add(item.ProductId, _warehouseApi.GetStock(item.ProductId));
+						//stockTasks.Add(item.ProductId, _warehouseApi.GetStock(item.ProductId));
 					}
 				}
 
@@ -100,13 +100,13 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 					order.SubAmount += item.SubTotalPrice;
 					order.Amount += item.TotalPrice;
 
-					foreach (var product in combo.Data.Products.Where(product => !stockTasks.ContainsKey(product.Id)))
-					{
-						stockTasks[product.Id] = _warehouseApi.GetStock(product.Id);
-					}
+					//foreach (var product in combo.Data.Products.Where(product => !stockTasks.ContainsKey(product.Id)))
+					//{
+					//	stockTasks[product.Id] = _warehouseApi.GetStock(product.Id);
+					//}
 				}
 
-				await Task.WhenAll(stockTasks.Values);
+				//await Task.WhenAll(stockTasks.Values);
 
 				var stockItems = new List<StockItem>();
 
@@ -120,7 +120,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 							return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound") + $"combo: {item.ProductId}", 404);
 						}
 
-						foreach (var product in combo.Data!.Products)
+						/*foreach (var product in combo.Data!.Products)
 						{
 							var stockResponse = await stockTasks[product.Id];
 							if (!stockResponse.IsSuccess)
@@ -134,7 +134,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 							}
 
 							stockItems.Add(new StockItem(product.Id, product.Quantity));
-						}
+						}*/
 					}
 					else
 					{
@@ -144,7 +144,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 							return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotFound") + $"{item.ProductId}", 404);
 						}
 
-						var stockResponse = await stockTasks[item.ProductId];
+						/*var stockResponse = await stockTasks[item.ProductId];
 						if (!stockResponse.IsSuccess)
 						{
 							return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("WarehouseError"), 500);
@@ -155,7 +155,7 @@ namespace FB98.Modules.Orders.Application.OrderManagement.Create
 							return ApiResponseBuilder.Error<object>(_localizedMessageService.GetLocalizedMessage("NotEnoughStock"));
 						}
 
-						stockItems.Add(new StockItem(item.ProductId, item.Quantity));
+						stockItems.Add(new StockItem(item.ProductId, item.Quantity));*/
 
 						item.ProductName = product.Data!.Name;
 						item.UnitPrice = product.Data!.Price;
