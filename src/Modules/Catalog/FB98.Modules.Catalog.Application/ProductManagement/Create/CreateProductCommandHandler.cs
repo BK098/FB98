@@ -57,7 +57,12 @@ namespace FB98.Modules.Catalog.Application.ProductManagement.Create
 				}
 
 				var product = _mapper.Map<Product>(model);
-
+				product.PriceHistories?.Add(new ProductPriceHistory
+				{
+					ProductId = product.Id,
+					NewPrice = product.Price,
+					OldPrice = 0
+				});
 				await _productRepository.CreateAsync(product);
 				await _unitOfWork.SaveChangesAsync();
 				await _bus.Publish(new ProductCreatedEvent(product.Id, model.StockQuantity!.Value, model.StockIsLimited!.Value), cancellationToken);

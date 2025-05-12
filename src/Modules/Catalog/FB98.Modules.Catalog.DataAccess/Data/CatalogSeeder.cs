@@ -33,17 +33,17 @@ namespace FB98.Modules.Catalog.DataAccess.Data
 				}
 			}
 
-			if (!context.Combos.Any())
-			{
-				var jsonData = await File.ReadAllTextAsync("SeedData/Catalog/ComboSeed.json");
-				var entities = JsonConvert.DeserializeObject<List<Combo>>(jsonData, new JsonSerializerSettings());
-				if (entities != null)
-				{
-					await context.Combos.AddRangeAsync(entities);
-					await context.SaveChangesAsync();
-					await Task.CompletedTask;
-				}
-			}
+			//if (!context.Combos.Any())
+			//{
+			//	var jsonData = await File.ReadAllTextAsync("SeedData/Catalog/ComboSeed.json");
+			//	var entities = JsonConvert.DeserializeObject<List<Combo>>(jsonData, new JsonSerializerSettings());
+			//	if (entities != null)
+			//	{
+			//		await context.Combos.AddRangeAsync(entities);
+			//		await context.SaveChangesAsync();
+			//		await Task.CompletedTask;
+			//	}
+			//}
 		}
 	}
 }

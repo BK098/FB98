@@ -4,9 +4,7 @@ using FB98.Modules.Orders.Application.OrderManagement.GetAllOrder;
 using FB98.Modules.Orders.Application.OrderManagement.GetDetail;
 using FB98.Modules.Orders.Application.OrderManagement.GetOrderStatusHistory;
 using FB98.Shared.Abstractions.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace FB98.Modules.Orders.Api.Controllers
 {
@@ -16,7 +14,7 @@ namespace FB98.Modules.Orders.Api.Controllers
 		{
 		}
 
-		[Authorize(Roles = "Administrator")]
+		//[Authorize(Roles = "Administrator")]
 		[HttpGet]
 		public async Task<IActionResult> GetAllOrders([FromQuery] Filter filter)
 		{
@@ -33,26 +31,26 @@ namespace FB98.Modules.Orders.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize]
+		//[Authorize]
 		[HttpPost]
 		public async Task<IActionResult> CreateOrder([FromBody] CreateOrderDto model)
 		{
-			var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-			if (userIdClaim != null)
-			{
-				model.UserId = Guid.Parse(userIdClaim.Value);
-			}
-			else
-			{
-				return Unauthorized();
-			}
+			//var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+			//if (userIdClaim != null)
+			//{
+			//	model.UserId = Guid.Parse(userIdClaim.Value);
+			//}
+			//else
+			//{
+			//	return Unauthorized();
+			//}
 
 			var request = new CreateOrderCommand(model);
 			var result = await _mediator.Send(request);
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize]
+		//[Authorize]
 		[HttpGet("{orderId:guid}/history")]
 		public async Task<IActionResult> GetOrderStatusHistory(Guid orderId)
 		{
@@ -61,7 +59,7 @@ namespace FB98.Modules.Orders.Api.Controllers
 			return StatusCode(result.StatusCode, result);
 		}
 
-		[Authorize(Roles = "Administrator")]
+		//[Authorize(Roles = "Administrator")]
 		[HttpPost("{orderId:guid}check-in")]
 		public async Task<IActionResult> CheckIn(Guid orderId)
 		{
