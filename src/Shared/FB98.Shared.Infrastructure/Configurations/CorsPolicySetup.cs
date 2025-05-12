@@ -6,8 +6,8 @@ namespace FB98.Shared.Infrastructure.Configurations
 {
 	internal static class CorsPolicySetup
 	{
-		private const string CorsPolicyName = "AllowSpecificOrigins";
-		//private const string CorsPolicyName = "AllowAll";
+		//private const string CorsPolicyName = "AllowSpecificOrigins";
+		private const string CorsPolicyName = "AllowAll";
 
 		public static void AddCustomCors(this IServiceCollection services, IConfiguration configuration)
 		{
@@ -19,9 +19,9 @@ namespace FB98.Shared.Infrastructure.Configurations
 				{
 					if (allowedOrigins != null && allowedOrigins.Any())
 					{
-						policy//.AllowAnyOrigin()
-							.WithOrigins(allowedOrigins)
-							.AllowCredentials()
+						policy.AllowAnyOrigin()
+							//.WithOrigins(allowedOrigins)
+							//.AllowCredentials()
 							.AllowAnyHeader()
 							.AllowAnyMethod();
 					}
