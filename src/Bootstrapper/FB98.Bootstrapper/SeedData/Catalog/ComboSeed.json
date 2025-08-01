@@ -1,112 +1,112 @@
-[
-	{
-		"Id": "c74ed1a2-9b70-46e8-b0fe-0df27ad2a778",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040686/catalog/combo/combo-couple.jpg",
-		"Name": "Combo couple",
-		"Description": "Combo 2 bắp và 2 coca",
-		"Price": 79000,
-		"IsEnabled": "true",
-		"ComboProducts": [
-			{
-				"ProductId": "1aabda88-8c26-4dbd-99d2-dbb67bc2d4f4", // coca
-				"Quantity": 2
-			},
-			{
-				"ProductId": "04a64846-9f62-4cbc-8837-41160603483c", // bắp rang bơ
-				"Quantity": 2
-			}
-		]
-	},
-	{
-		"Id": "500caf8f-91f0-471e-b0c4-2bc3b891c393",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040686/catalog/combo/combo-kitkat.jpg",
-		"Name": "Combo Tình thương",
-		"Description": "Combo snack + bắp + nước",
-		"Price": 55000,
-		"IsEnabled": "true",
-		"ComboProducts": [
-			{
-				"ProductId": "b7778f2d-1e36-406c-917c-bc7d74ae90d6", // snack ca chua
-				"Quantity": 1
-			},
-			{
-				"ProductId": "1aabda88-8c26-4dbd-99d2-dbb67bc2d4f4", // coca
-				"Quantity": 1
-			},
+//[
+//	{
+//		"Id": "c74ed1a2-9b70-46e8-b0fe-0df27ad2a778",
+//		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040686/catalog/combo/combo-couple.jpg",
+//		"Name": "Combo couple",
+//		"Description": "Combo 2 bắp và 2 coca",
+//		"Price": 79000,
+//		"IsEnabled": "true",
+//		"ComboProducts": [
+//			{
+//				"ProductId": "1aabda88-8c26-4dbd-99d2-dbb67bc2d4f4", // coca
+//				"Quantity": 2
+//			},
+//			{
+//				"ProductId": "04a64846-9f62-4cbc-8837-41160603483c", // bắp rang bơ
+//				"Quantity": 2
+//			}
+//		]
+//	},
+//	{
+//		"Id": "500caf8f-91f0-471e-b0c4-2bc3b891c393",
+//		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040686/catalog/combo/combo-kitkat.jpg",
+//		"Name": "Combo Tình thương",
+//		"Description": "Combo snack + bắp + nước",
+//		"Price": 55000,
+//		"IsEnabled": "true",
+//		"ComboProducts": [
+//			{
+//				"ProductId": "b7778f2d-1e36-406c-917c-bc7d74ae90d6", // snack ca chua
+//				"Quantity": 1
+//			},
+//			{
+//				"ProductId": "1aabda88-8c26-4dbd-99d2-dbb67bc2d4f4", // coca
+//				"Quantity": 1
+//			},
 
-			{
-				"ProductId": "1aabda88-8c26-4dbd-99d2-dbb67bc2d4f4", // bắp rang bơ
-				"Quantity": 1
-			}
-		]
-	},
-	{
-		"Id": "4cc68c5c-6398-469a-9166-9dcd2cbd73d2",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040685/catalog/combo/combo-single.jpg",
-		"Name": "Combo Fanta cho vui hơn nha",
-		"Description": "Combo fanta + bắp thường + snack",
-		"Price": 55000,
-		"IsEnabled": "true",
-		"ComboProducts": [
-			{
-				"ProductId": "58bf2d1e-cdc7-4765-80b9-2d87f106eebc", // snack bi do
-				"Quantity": 1
-			},
-			{
-				"ProductId": "e848214e-1933-4928-b313-27596d244bdf", // fanta nho
-				"Quantity": 1
-			},
+//			{
+//				"ProductId": "1aabda88-8c26-4dbd-99d2-dbb67bc2d4f4", // bắp rang bơ
+//				"Quantity": 1
+//			}
+//		]
+//	},
+//	{
+//		"Id": "4cc68c5c-6398-469a-9166-9dcd2cbd73d2",
+//		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040685/catalog/combo/combo-single.jpg",
+//		"Name": "Combo Fanta cho vui hơn nha",
+//		"Description": "Combo fanta + bắp thường + snack",
+//		"Price": 55000,
+//		"IsEnabled": "true",
+//		"ComboProducts": [
+//			{
+//				"ProductId": "58bf2d1e-cdc7-4765-80b9-2d87f106eebc", // snack bi do
+//				"Quantity": 1
+//			},
+//			{
+//				"ProductId": "e848214e-1933-4928-b313-27596d244bdf", // fanta nho
+//				"Quantity": 1
+//			},
 
-			{
-				"ProductId": "1aabda88-8c26-4dbd-99d2-dbb67bc2d4f4", // bắp rang bơ
-				"Quantity": 1
-			}
-		]
-	},
-	{
-		"Id": "1aa43d2f-4e3f-438c-a0d1-49a21691480e",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040686/catalog/combo/combo-couple-kitkat.jpg",
-		"Name": "Combo tạo sprite",
-		"Description": "Combo snack hành + sprite + bắp thường",
-		"Price": 55000,
-		"IsEnabled": "true",
-		"ComboProducts": [
-			{
-				"ProductId": "d60e1bd7-171b-4a3e-b0e2-b5766721fd25", // snack hanh
-				"Quantity": 1
-			},
-			{
-				"ProductId": "627b696f-7051-432a-a8c9-6aec80e3254f", // sprite
-				"Quantity": 2
-			},
+//			{
+//				"ProductId": "1aabda88-8c26-4dbd-99d2-dbb67bc2d4f4", // bắp rang bơ
+//				"Quantity": 1
+//			}
+//		]
+//	},
+//	{
+//		"Id": "1aa43d2f-4e3f-438c-a0d1-49a21691480e",
+//		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040686/catalog/combo/combo-couple-kitkat.jpg",
+//		"Name": "Combo tạo sprite",
+//		"Description": "Combo snack hành + sprite + bắp thường",
+//		"Price": 55000,
+//		"IsEnabled": "true",
+//		"ComboProducts": [
+//			{
+//				"ProductId": "d60e1bd7-171b-4a3e-b0e2-b5766721fd25", // snack hanh
+//				"Quantity": 1
+//			},
+//			{
+//				"ProductId": "627b696f-7051-432a-a8c9-6aec80e3254f", // sprite
+//				"Quantity": 2
+//			},
 
-			{
-				"ProductId": "1aabda88-8c26-4dbd-99d2-dbb67bc2d4f4", // bắp rang bơ
-				"Quantity": 1
-			}
-		]
-	},
-	{
-		"Id": "a7ee0431-b4a3-408d-9ce5-acbeda6aa566",
-		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040686/catalog/combo/combo-couple-kitkat.jpg",
-		"Name": "Combo Bùng lổ yêu thương",
-		"Description": "Combo Bắp thường + sprite + Bắp caramel",
-		"Price": 60000,
-		"IsEnabled": "true",
-		"ComboProducts": [
-			{
-				"ProductId": "9583f068-d56a-4d30-867b-8dc75ae67d40", // bap cammeo
-				"Quantity": 1
-			},
-			{
-				"ProductId": "627b696f-7051-432a-a8c9-6aec80e3254f", // sprite
-				"Quantity": 1
-			},
+//			{
+//				"ProductId": "1aabda88-8c26-4dbd-99d2-dbb67bc2d4f4", // bắp rang bơ
+//				"Quantity": 1
+//			}
+//		]
+//	},
+//	{
+//		"Id": "a7ee0431-b4a3-408d-9ce5-acbeda6aa566",
+//		"Image": "https://res.cloudinary.com/bkhang1227fb98/image/upload/v1740040686/catalog/combo/combo-couple-kitkat.jpg",
+//		"Name": "Combo Bùng lổ yêu thương",
+//		"Description": "Combo Bắp thường + sprite + Bắp caramel",
+//		"Price": 60000,
+//		"IsEnabled": "true",
+//		"ComboProducts": [
+//			{
+//				"ProductId": "9583f068-d56a-4d30-867b-8dc75ae67d40", // bap cammeo
+//				"Quantity": 1
+//			},
+//			{
+//				"ProductId": "627b696f-7051-432a-a8c9-6aec80e3254f", // sprite
+//				"Quantity": 1
+//			},
 
-			{
-				"ProductId": "1aabda88-8c26-4dbd-99d2-dbb67bc2d4f4", // bắp rang bơ
-				"Quantity": 1
-			}
-		]
-	}
-]
+//			{
+//				"ProductId": "1aabda88-8c26-4dbd-99d2-dbb67bc2d4f4", // bắp rang bơ
+//				"Quantity": 1
+//			}
+//		]
+//	}
+//]
