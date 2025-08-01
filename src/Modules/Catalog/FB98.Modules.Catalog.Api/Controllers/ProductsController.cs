@@ -6,6 +6,7 @@ using FB98.Modules.Catalog.Application.DiscountManagement.UpdateDiscountRule;
 using FB98.Modules.Catalog.Application.ProductManagement.Create;
 using FB98.Modules.Catalog.Application.ProductManagement.Delete;
 using FB98.Modules.Catalog.Application.ProductManagement.GetAll;
+using FB98.Modules.Catalog.Application.ProductManagement.GetAllWCategory;
 using FB98.Modules.Catalog.Application.ProductManagement.GetDetail;
 using FB98.Modules.Catalog.Application.ProductManagement.Update;
 using FB98.Shared.Abstractions.Entities;
@@ -20,6 +21,13 @@ namespace FB98.Modules.Catalog.Api.Controllers
 		{
 		}
 
+		[HttpGet("categories")]
+		public async Task<IActionResult> GetProductsWCategory([FromQuery] Filter filter)
+		{
+			var request = new GetAllWCategoryQuery(filter);
+			var result = await _mediator.Send(request);
+			return StatusCode(result.StatusCode, result);
+		}
 		[HttpGet]
 		public async Task<IActionResult> GetProducts([FromQuery] Filter filter)
 		{
